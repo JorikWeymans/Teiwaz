@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+#Output (does not need to be on git)
+_DEBUG/
+_RELEASE/
 # User-specific files
 *.rsuser
 *.suo
