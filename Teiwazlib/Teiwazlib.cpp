@@ -10,5 +10,5 @@
 void Test(HINSTANCE hInstance)
 {
 	auto hr = SDXL_Init(hInstance, "Teiwazlib", 1280, 720);
-
+	//Test
 }
