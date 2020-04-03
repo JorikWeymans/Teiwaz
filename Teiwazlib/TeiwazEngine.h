@@ -1,23 +1,32 @@
 #pragma once
+#include <string>
 namespace tyr
 {
 	class GameContext;
+	class SceneManager;
 	class TeiwazEngine
 	{
 	public:
-		HRESULT Initialize(HINSTANCE hInstance);
-		bool ProcessInput();
-		void Update();
-		void FixedUpdate();
+		explicit TeiwazEngine(float fixedTimeStep);
+		virtual ~TeiwazEngine() = default;
 		
-		void Render() const;
+
+		
 		void Run();
 
-		void Cleanup();
-
+		
 	protected:
-		GameContext* m_pContext = nullptr;
-		float m_FixedTimeStep = 0.02f; // 50 frames per second;
+		virtual bool ProcessInput() = 0;
+		virtual void LoadGame() = 0;
+		virtual void Cleanup() = 0;
+
+		HRESULT Initialize(HINSTANCE hInstance, const std::string& name, int width, int height);
+		
+		SceneManager* m_pSceneManager;
+		GameContext* m_pContext;
+		float m_FixedTimeStep ; 
+
+	public:
 		
 	};
 

@@ -1,23 +1,39 @@
-// BubbleBobble.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "stdafx.h"
+#include "BubbleBobble.h"
+#include "Scene.h"
+#include "SceneManager.h"
+#include "MiniginScene.h"
 
-#include <iostream>
-#include <Windows.h>
-#include <Teiwazlib.h>
-#include <TeiwazEngine.h>
-#include <vld.h>
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-	_In_opt_ HINSTANCE,
-	_In_	 LPWSTR,
-	_In_	 int)
+bub::BubbleBobble::BubbleBobble()
+	: TeiwazEngine(0.02f) // 50 frames per second;
+{
+}
+
+void bub::BubbleBobble::Initialize(HINSTANCE hinstance)
 {
 
-
-	tyr::TeiwazEngine engine;
-
-	engine.Initialize(hInstance);
-	engine.Run();
+	UNREFERENCED_PARAMETER(hinstance);
+	tyr::TeiwazEngine::Initialize(hinstance, "BubbleBobble", 640, 480);
 	
+}
+
+bool bub::BubbleBobble::ProcessInput()
+{
+	SDXL::SDXL_EVENT event;
+	SDXL_PollEvent(event);
+	if (event.type == SDXL::SDXL_EventType::SDXL_QUIT)
+		return false;
+
+
+	return true;
+}
+
+void bub::BubbleBobble::LoadGame()
+{
+	m_pSceneManager->AddScene(new MiniginScene());
+}
+
+void bub::BubbleBobble::Cleanup()
+{
 	
-	return 0;
 }

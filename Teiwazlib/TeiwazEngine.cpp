@@ -1,86 +1,57 @@
-#include "pch.h"
+#include "tyrpch.h"
 #include "TeiwazEngine.h"
-#include <SDXLLibrary.h>
-#pragma warning(disable : 4091)
-#include <SDXLStructs.h>
+
 #include <chrono>
 #include <sstream>
 #include "GameContext.h"
 #include "Time.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
-HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance)
+tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
+	: m_pSceneManager(nullptr)
+	, m_pContext(nullptr)
+	, m_FixedTimeStep(fixedTimeStep)  
 {
-	auto hr =  SDXL_Init(hInstance, "TeiwazEngine", 1280, 720);
+}
+
+HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& name, int width, int height)
+{
+	auto hr =  SDXL_Init(hInstance, name, width, height);
 	hr = SDXL_InitRenderers(L"./Data/Effects/ImageRenderer.fx",
 		L"./Data/Effects/TextRenderer.fx",
 		L"./Data/Effects/DebugRenderer.fx");
 
+	m_pContext = new GameContext(new Time());
+	m_pSceneManager = new SceneManager(m_pContext);
 
-
-	OutputDebugStringA("hey");
 	return hr;
 
 	
 }
 
-bool tyr::TeiwazEngine::ProcessInput()
-{
-	SDXL::SDXL_EVENT event;
-	SDXL_PollEvent(event);
-	if (event.type == SDXL::SDXL_EventType::SDXL_QUIT)
-		return false;
-
-
-
-	return true;
-	
-}
-
-void tyr::TeiwazEngine::Update()
-{
-	
-	
-}
-
-void tyr::TeiwazEngine::FixedUpdate()
-{
-}
-
-void tyr::TeiwazEngine::Cleanup()
-{
-	SAFE_DELETE(m_pContext);
-}
-
-void tyr::TeiwazEngine::Render() const
-{
-	SDXL_Clear();
-
-	//Draw images here;
-	
-	SDXL_Present();
-}
-
 void tyr::TeiwazEngine::Run()
 {
 	using namespace std::chrono;
-	
-	m_pContext = new GameContext(new Time());
 
+	
+	LoadGame();
+	
 	auto previousTime = high_resolution_clock::now();
 	float fixedElapsed = 0.0f;
 	
 	while(ProcessInput())
 	{
-		Update();
+		m_pSceneManager->Update();
 		if (fixedElapsed >= m_FixedTimeStep)
 		{
 			m_pContext->pTime->fixedDeltaTime = fixedElapsed;
-			FixedUpdate();
+			m_pSceneManager->FixedUpdate();
 			
 			fixedElapsed = 0;
 		}
 
-		Render();
+		m_pSceneManager->Render();
 
 		// timings for next frame
 		const auto thisTime = high_resolution_clock::now();
@@ -92,4 +63,7 @@ void tyr::TeiwazEngine::Run()
 	}
 
 	Cleanup();
+	
+	SAFE_DELETE(m_pContext);
+	SAFE_DELETE(m_pSceneManager);
 }
