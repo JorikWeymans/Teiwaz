@@ -8,6 +8,12 @@
 #define PCH_H
 
 // add headers that you want to pre-compile here
-#include "framework.h"
 #include "Windows.h"
+
+
+#define SAFE_DELETE(pointer) {if(pointer) {delete pointer; pointer = nullptr;}}
+
+
+
+
 #endif //PCH_H
