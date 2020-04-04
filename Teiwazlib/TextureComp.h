@@ -1,12 +1,15 @@
 #pragma once
 #include "BaseComponent.h"
+#include "TyrEnums.h"
+#include "Vectors.h"
+
 namespace tyr
 {
 	class TransformComp;
 	class TextureComp final: public BaseComponent
 	{
 	public:
-		TextureComp(const std::wstring& texturePath);
+		explicit TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode = PivotMode::TopLeft);
 		~TextureComp() override;
 		
 		void Initialize() override;
@@ -21,7 +24,8 @@ namespace tyr
 	private:
 		std::wstring m_TexturePath;
 		SDXL::SDXLImage* m_pTexture;
-		const TransformComp* m_pTranform; //Weak pointer
+		TransformComp const* m_pTransform; //Weak pointer
+		Vector2 m_Pivot;
 	public:
 		TextureComp() = delete;
 		TextureComp(const TextureComp&) = delete;

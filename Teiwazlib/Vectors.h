@@ -1,10 +1,12 @@
 #pragma once
 namespace tyr
 {
+	enum class PivotMode;
 	class Vector2
 	{
 	public:
 		explicit Vector2(float x, float y);
+		explicit Vector2(const PivotMode& pMode);
 		float x, y;
 		
 	};

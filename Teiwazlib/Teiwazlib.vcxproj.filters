@@ -17,6 +17,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{cd2c8980-d1c9-4e78-8eed-ee0d5cd2e9d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{cb727dc8-9be7-476a-90aa-24e36281d5d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TeiwazEngine.h">
@@ -57,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="TextureComp.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TyrEnums.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

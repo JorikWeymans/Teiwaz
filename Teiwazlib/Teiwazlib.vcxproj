@@ -197,6 +197,7 @@
     <ClInclude Include="GameContext.h" />
     <ClInclude Include="TeiwazComps.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TyrEnums.h" />
     <ClInclude Include="tyrpch.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

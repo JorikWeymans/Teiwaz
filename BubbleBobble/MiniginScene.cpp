@@ -21,8 +21,8 @@ void bub::MiniginScene::Initialize()
 	auto pBackground = new tyr::SceneObject(tyr::transform(tyr::Vector2(0.0f, 0.0f)));
 	pBackground->AddComponent(new tyr::TextureComp(L"./Data/Textures/Background.png"));
 	
-	auto pLogo = new tyr::SceneObject(tyr::transform(tyr::Vector2(640.f / 2 -102, 480.f / 2 - 32)));
-	pLogo->AddComponent(new tyr::TextureComp(L"./Data/Textures/Logo.png"));
+	auto pLogo = new tyr::SceneObject(tyr::transform(tyr::Vector2(640.f / 2 , 480.f / 2 )));
+	pLogo->AddComponent(new tyr::TextureComp(L"./Data/Textures/Logo.png", tyr::PivotMode::Center));
 
 	AddSceneObject(pBackground);
 	AddSceneObject(pLogo);
