@@ -11,8 +11,6 @@ namespace bub
 	protected:
 		void Render() const override;
 
-	private:
-		SDXL::SDXLFont* m_pFont = nullptr;
 	};
 
 

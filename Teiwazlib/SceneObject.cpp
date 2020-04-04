@@ -8,6 +8,7 @@ tyr::SceneObject::SceneObject(const transform& transform)
 	: m_pComponents(std::vector<BaseComponent*>())
 	, m_pTransform(new TransformComp(transform))
 	, m_IsDestroyed(false)
+	, m_pContext(nullptr)
 {
 }
 
@@ -61,4 +62,9 @@ void tyr::SceneObject::AddComponent(BaseComponent* pComp)
 const tyr::TransformComp* tyr::SceneObject::GetTransform() const
 {
 	return m_pTransform;
+}
+
+const tyr::GameContext* tyr::SceneObject::GetGameContext() const
+{
+	return m_pContext;
 }

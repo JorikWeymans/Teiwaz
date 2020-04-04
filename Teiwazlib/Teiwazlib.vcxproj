@@ -192,10 +192,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="FPSComp.h" />
+    <ClInclude Include="Textcomp.h" />
     <ClInclude Include="TextureComp.h" />
     <ClInclude Include="TransformComp.h" />
     <ClInclude Include="GameContext.h" />
-    <ClInclude Include="TeiwazComps.h" />
+    <ClInclude Include="TyrComps.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TyrEnums.h" />
     <ClInclude Include="tyrpch.h" />
@@ -208,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="FPSComp.cpp" />
+    <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="TextureComp.cpp" />
     <ClCompile Include="TransformComp.cpp" />
     <ClCompile Include="GameContext.cpp" />

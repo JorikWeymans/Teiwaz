@@ -11,24 +11,18 @@ tyr::Vector2::Vector2(const PivotMode& pMode)
 {
 	switch (pMode)
 	{
-	case PivotMode::TopLeft: // no need to do this (by default it its 0 0
-		break;
-	case PivotMode::TopRight:
-		x = 1.f;
-		y = 0.f;
-		break;
-	case PivotMode::BotLeft:
-		x = 0.f;
-		y = 1.f;
-		break;
-	case PivotMode::BotRight:
-		x = 1.f;
-		y = 1.f;
-		break;
-	case PivotMode::Center:
-		x = .5f;
-		y = .5f;
-		break;
+	case PivotMode::TopLeft:     x = 0.0f; y = 0.0f; break;
+	case PivotMode::TopCenter:   x = 0.5f; y = 0.0f; break;
+	case PivotMode::TopRight:    x = 1.0f; y = 0.0f; break;
+		
+	case PivotMode::CenterLeft:  x = 0.0f; y = 0.5f; break;
+	case PivotMode::Center:      x = 0.5f; y = 0.5f; break;
+	case PivotMode::CenterRight: x = 1.0f; y = 0.5f; break;
+
+	case PivotMode::BotLeft:     x = 0.0f; y = 1.0f; break;
+	case PivotMode::BotCenter:   x = 0.5f; y = 1.0f; break;
+	case PivotMode::BotRight:    x = 1.0f; y = 1.0f; break;
+		
 	default:
 		;
 	}

@@ -15,8 +15,9 @@ tyr::SceneManager::~SceneManager()
 
 void tyr::SceneManager::AddScene(Scene* pScene)
 {
-	pScene->Initialize();
 	pScene->m_pContext = m_pContext;
+	pScene->Initialize();
+
 	m_pScenes.emplace_back(pScene);
 	
 }

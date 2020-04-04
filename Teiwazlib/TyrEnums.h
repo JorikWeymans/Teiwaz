@@ -4,9 +4,15 @@ namespace tyr
 	enum class PivotMode
 	{
 		TopLeft,
+		TopCenter,
 		TopRight,
-		BotLeft,
-		BotRight,
+		
+		CenterLeft,
 		Center,
+		CenterRight,
+		
+		BotLeft,
+		BotCenter,
+		BotRight,
 	};
 }

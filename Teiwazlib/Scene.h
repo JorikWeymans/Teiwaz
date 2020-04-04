@@ -20,7 +20,7 @@ namespace tyr
 		virtual void Render() const;
 	private:
 		friend SceneManager;
-		GameContext* m_pContext;
+		GameContext const* m_pContext; //Weak pointer
 		std::vector<SceneObject*> m_pSceneObjects;
 	};
 

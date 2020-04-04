@@ -40,9 +40,6 @@
     <ClInclude Include="SceneObject.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TeiwazComps.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="tyrpch.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -63,6 +60,16 @@
     </ClInclude>
     <ClInclude Include="TyrEnums.h">
       <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Textcomp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSComp.h" />
+    <ClInclude Include="TyrComps.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,5 +106,12 @@
     <ClCompile Include="TextureComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Textcomp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSComp.cpp" />
   </ItemGroup>
 </Project>

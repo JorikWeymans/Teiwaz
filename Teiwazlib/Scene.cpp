@@ -16,17 +16,18 @@ tyr::Scene::~Scene()
 
 void tyr::Scene::AddSceneObject(SceneObject* pObj)
 {
+	pObj->m_pContext = m_pContext;
 	m_pSceneObjects.emplace_back(pObj);
 }
 
 void tyr::Scene::Update()
 {
-	//OutputDebugStringA("Update Scene\n");
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Update(); });
 }
 
 void tyr::Scene::FixedUpdate()
 {
-	//OutputDebugStringA("FixedUpdate Scene\n");
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->FixedUpdate(); });
 }
 
 void tyr::Scene::Render() const
