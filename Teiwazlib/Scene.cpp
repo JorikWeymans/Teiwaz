@@ -31,5 +31,6 @@ void tyr::Scene::FixedUpdate()
 
 void tyr::Scene::Render() const
 {
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Render(); });
 	//OutputDebugStringA("Render Scene\n");
 }

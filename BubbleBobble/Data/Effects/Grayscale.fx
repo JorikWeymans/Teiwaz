@@ -1,3 +1,5 @@
+//Grayscale post processingEffect
+
 Texture2D gTexture;
 
 SamplerState samPoint

@@ -1,3 +1,4 @@
+//used for rendering images
 float4x4 gTransform : WorldViewProjection;
 Texture2D gTexture;
 float2 gTextureSize;

@@ -191,16 +191,24 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="TextureComp.h" />
+    <ClInclude Include="TransformComp.h" />
     <ClInclude Include="GameContext.h" />
+    <ClInclude Include="TeiwazComps.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="tyrpch.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="TeiwazEngine.h" />
-    <ClInclude Include="Teiwazlib.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="Vectors.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="TextureComp.cpp" />
+    <ClCompile Include="TransformComp.cpp" />
     <ClCompile Include="GameContext.cpp" />
     <ClCompile Include="tyrpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='_DEBUG|Win32'">Create</PrecompiledHeader>
@@ -212,8 +220,8 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="TeiwazEngine.cpp" />
-    <ClCompile Include="Teiwazlib.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Vectors.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

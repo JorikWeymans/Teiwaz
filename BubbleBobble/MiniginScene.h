@@ -12,8 +12,6 @@ namespace bub
 		void Render() const override;
 
 	private:
-		SDXL::SDXLImage* m_pBackground = nullptr;
-		SDXL::SDXLImage* m_pLogo = nullptr;
 		SDXL::SDXLFont* m_pFont = nullptr;
 	};
 
