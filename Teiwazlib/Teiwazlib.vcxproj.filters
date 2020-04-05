@@ -8,9 +8,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{b577cda3-8361-48e2-9e8b-fccf37bed39b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{89ff41b1-f5bf-414b-bf7d-7323649b202a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{c678920e-6d5d-4563-900f-f3bb678f79a8}</UniqueIdentifier>
     </Filter>
@@ -22,6 +19,12 @@
     </Filter>
     <Filter Include="Content">
       <UniqueIdentifier>{e540bb35-8f72-4ac1-b793-3248fac4bc97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{89ff41b1-f5bf-414b-bf7d-7323649b202a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers\Binary">
+      <UniqueIdentifier>{16f760eb-62bb-4b65-bd18-50f4abc3feb2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +88,12 @@
     <ClInclude Include="ContentManager.h">
       <Filter>Content</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryReader.h">
+      <Filter>Helpers\Binary</Filter>
+    </ClInclude>
+    <ClInclude Include="TyrFunctions.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -137,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="ContentManager.cpp">
       <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryReader.cpp">
+      <Filter>Helpers\Binary</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

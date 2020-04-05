@@ -192,6 +192,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Font.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="TyrComps.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TyrEnums.h" />
+    <ClInclude Include="TyrFunctions.h" />
     <ClInclude Include="tyrpch.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -214,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Font.cpp" />
