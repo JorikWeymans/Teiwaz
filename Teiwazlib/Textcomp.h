@@ -6,6 +6,7 @@
 
 namespace tyr
 {
+	class Font;
 	class TransformComp;
 	class TextComp final : public BaseComponent
 	{
@@ -26,7 +27,7 @@ namespace tyr
 	private:
 		std::wstring m_TextPath;
 		std::wstring m_Text;
-		SDXL::SDXLFont* m_pFont;
+		Font* m_pFont;
 		Color m_Color;
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Offset;

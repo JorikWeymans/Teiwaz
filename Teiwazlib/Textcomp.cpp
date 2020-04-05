@@ -4,7 +4,8 @@
 #include "TransformComp.h"
 #include "GameContext.h"
 #include "Time.h"
-
+#include "ContentManager.h"
+#include "Font.h"
 tyr::TextComp::TextComp(const std::wstring& textPath, const std::wstring& text, const Color& color, const Vector2& offset)
 	: m_TextPath(textPath)
 	, m_Text(text)
@@ -16,14 +17,13 @@ tyr::TextComp::TextComp(const std::wstring& textPath, const std::wstring& text, 
 
 tyr::TextComp::~TextComp()
 {
-	SDXL_DestroyFont(&m_pFont);
 }
 
 void tyr::TextComp::Initialize()
 {
 	m_pTransform = m_pSceneObject->GetTransform();
 
-	SDXL_CreateFont(&m_pFont, m_TextPath);
+	m_pFont = CONTENT_MANAGER->LoadFont(m_TextPath);
 }
 
 void tyr::TextComp::Update()
@@ -39,7 +39,7 @@ void tyr::TextComp::Render() const
 	auto pos = m_pTransform->GetPosition();
 	pos.x += m_Offset.x;
 	pos.y += m_Offset.y;
-	SDXL_RenderText(m_pFont, m_Text, { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
+	SDXL_RenderText(m_pFont->SDXL(), m_Text, { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
 }
 
 void tyr::TextComp::Destroy()

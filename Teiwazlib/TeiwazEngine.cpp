@@ -7,6 +7,7 @@
 #include "Time.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "ContentManager.h"
 
 tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 	: m_pSceneManager(nullptr)
@@ -25,6 +26,10 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 	m_pContext = new GameContext(new Time());
 	m_pSceneManager = new SceneManager(m_pContext);
 
+	ContentManager::GetInstance()->Initialize(L"./Data/");
+	
+
+	
 	return hr;
 
 	
@@ -62,6 +67,8 @@ void tyr::TeiwazEngine::Run()
 		previousTime = thisTime;
 	}
 
+	ContentManager::Destroy();
+	
 	Cleanup();
 	
 	SAFE_DELETE(m_pContext);

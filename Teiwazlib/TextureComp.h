@@ -6,6 +6,7 @@
 namespace tyr
 {
 	class TransformComp;
+	class Texture;
 	class TextureComp final: public BaseComponent
 	{
 	public:
@@ -23,7 +24,7 @@ namespace tyr
 
 	private:
 		std::wstring m_TexturePath;
-		SDXL::SDXLImage* m_pTexture;
+		Texture* m_pTexture; //Weak pointer
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Pivot;
 	public:
