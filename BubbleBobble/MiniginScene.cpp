@@ -11,10 +11,8 @@ bub::MiniginScene::~MiniginScene()
 void bub::MiniginScene::Initialize()
 {
 	
-
 	auto pBackground = new tyr::SceneObject(tyr::transform(tyr::Vector2(0.0f, 0.0f)));
 	AddSceneObject(pBackground);
-	pBackground->AddComponent(new tyr::TextureComp(L"Textures/Background.png"));
 	pBackground->AddComponent(new tyr::TextureComp(L"Textures/Background.png"));
 
 

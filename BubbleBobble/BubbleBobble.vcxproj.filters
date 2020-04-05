@@ -25,6 +25,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>GameScenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniginScene.h">
@@ -35,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>GameScenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

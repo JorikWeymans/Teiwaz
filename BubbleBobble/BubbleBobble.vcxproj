@@ -189,11 +189,13 @@
   <ItemGroup>
     <ClCompile Include="BubbleBobble.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MiniginScene.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BubbleBobble.h" />
+    <ClInclude Include="MainScene.h" />
     <ClInclude Include="MiniginScene.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
