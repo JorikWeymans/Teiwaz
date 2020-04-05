@@ -1,16 +1,22 @@
 #pragma once
 namespace tyr
 {
+	class ContentManager;
+
 	class Font final
 	{
 	public:
+
+		SDXL::SDXLFont* SDXL() const;
+	private:
+		friend ContentManager;
+
 		explicit Font(const std::wstring& dataFolder, const std::wstring& path);
 		~Font();
-		SDXL::SDXLFont* SDXL() const;
+		
+		friend bool operator==(Font* lhs, const std::wstring& rhs); //rhs == dataPath that gets hashed on creation
+		
 
-		//rhs == dataPath that gets hashed on creation
-		friend bool operator==(Font* lhs, const std::wstring& rhs);
-	private:
 		SDXL::SDXLFont* m_pFont;
 		size_t m_Hash;
 

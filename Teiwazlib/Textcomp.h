@@ -27,8 +27,9 @@ namespace tyr
 	private:
 		std::wstring m_TextPath;
 		std::wstring m_Text;
-		Font* m_pFont;
 		Color m_Color;
+		
+		Font const* m_pFont; //Weak pointer
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Offset;
 	public:

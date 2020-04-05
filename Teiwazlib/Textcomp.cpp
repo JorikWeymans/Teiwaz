@@ -9,8 +9,8 @@
 tyr::TextComp::TextComp(const std::wstring& textPath, const std::wstring& text, const Color& color, const Vector2& offset)
 	: m_TextPath(textPath)
 	, m_Text(text)
-	, m_pFont(nullptr)
 	, m_Color(color)
+	, m_pFont(nullptr)
 	, m_pTransform(nullptr)
 	, m_Offset(offset)
 {}
@@ -27,7 +27,7 @@ void tyr::TextComp::Initialize()
 }
 
 void tyr::TextComp::Update()
-{
+{	
 }
 
 void tyr::TextComp::FixedUpdate()

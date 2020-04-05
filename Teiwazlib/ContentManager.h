@@ -15,7 +15,7 @@ namespace tyr
 		static void Destroy();
 
 		Texture* LoadTexture(const std::wstring& path);
-		Font* LoadFont(const std::wstring& path);
+		Font const* LoadFont(const std::wstring& path);
 	private:
 		ContentManager();
 		~ContentManager();

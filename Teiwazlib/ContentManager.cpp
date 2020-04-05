@@ -57,7 +57,7 @@ tyr::Texture* tyr::ContentManager::LoadTexture(const std::wstring& path)
 	m_pTextures.emplace_back(pTemp);
 	return pTemp;
 }
-tyr::Font* tyr::ContentManager::LoadFont(const std::wstring& path)
+tyr::Font const* tyr::ContentManager::LoadFont(const std::wstring& path)
 {
 	auto found = std::find(m_pFonts.begin(), m_pFonts.end(), path);
 
