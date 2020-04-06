@@ -43,6 +43,8 @@ void tyr::TeiwazEngine::Run()
 
 	
 	LoadGame();
+
+	m_pContext->pInput->AddAction("QUIT", tyr::ButtonState::Pressed, VK_ESCAPE);
 	
 	auto previousTime = high_resolution_clock::now();
 	float fixedElapsed = 0.0f;
@@ -54,11 +56,11 @@ void tyr::TeiwazEngine::Run()
 		{
 			m_pContext->pTime->fixedDeltaTime = fixedElapsed;
 			m_pSceneManager->FixedUpdate();
-			
+			m_pSceneManager->Render(); // TODO: enable vsync, otherwise leave it here
 			fixedElapsed = 0;
 		}
 
-		m_pSceneManager->Render();
+
 
 		// timings for next frame
 		const auto thisTime = high_resolution_clock::now();
@@ -85,8 +87,6 @@ bool tyr::TeiwazEngine::ProcessInput()
 		return false;
 	
 	m_pContext->pInput->Update();
-	
 
-	
-	return true;
+	return !m_pContext->pInput->IsActionTriggered("QUIT");
 }

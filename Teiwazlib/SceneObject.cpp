@@ -64,6 +64,11 @@ const tyr::TransformComp* tyr::SceneObject::GetTransform() const
 	return m_pTransform;
 }
 
+void tyr::SceneObject::Translate(float x, float y)
+{
+	m_pTransform->Translate(x, y);
+}
+
 const tyr::GameContext* tyr::SceneObject::GetGameContext() const
 {
 	return m_pContext;

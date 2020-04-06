@@ -44,7 +44,7 @@ namespace tyr
 		void Update();
 		// Key -1 means no keyboard action, button == ControllerButton::None means no controller button, both can be used at the same time
 		void AddAction(const std::string& name, ButtonState state, int key = -1, ControllerButton button = ControllerButton::None);
-		bool IsButtonTriggered(const std::string& name);
+		bool IsActionTriggered(const std::string& name);
 
 	private:
 		XINPUT_STATE *m_ControllerState, *m_ControllerStatePrevious;

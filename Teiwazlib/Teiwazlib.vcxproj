@@ -195,6 +195,7 @@
     <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
+    <ClInclude Include="Elapser.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
     <ClInclude Include="InputHandler.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
+    <ClCompile Include="Elapser.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />

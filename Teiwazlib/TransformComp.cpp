@@ -16,6 +16,12 @@ tyr::TransformComp::TransformComp(const Vector2& position, const Vector2& scale,
 {
 }
 
+void tyr::TransformComp::Translate(float x, float y)
+{
+	m_Transform.position.x += x;
+	m_Transform.position.y += y;
+}
+
 void tyr::TransformComp::Update()
 {
 }

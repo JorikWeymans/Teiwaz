@@ -100,6 +100,7 @@
     <ClInclude Include="Time.h">
       <Filter>GameContext</Filter>
     </ClInclude>
+    <ClInclude Include="Elapser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -159,5 +160,6 @@
     <ClCompile Include="Time.cpp">
       <Filter>GameContext</Filter>
     </ClCompile>
+    <ClCompile Include="Elapser.cpp" />
   </ItemGroup>
 </Project>

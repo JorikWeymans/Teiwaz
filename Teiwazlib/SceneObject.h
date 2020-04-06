@@ -20,7 +20,8 @@ namespace tyr
 
 		void AddComponent(BaseComponent* pComp);
 		const TransformComp* GetTransform() const;
-		
+
+		void Translate(float x, float y);
 		template <typename T>
 		T* GetComponent(unsigned int index = 0) //index used when there are more than one component of the same type on the object.
 		{

@@ -12,6 +12,8 @@ namespace tyr
 		explicit TransformComp(const Vector2& position, const Vector2& scale, float rotation);
 		~TransformComp() override = default;
 
+		void Translate(float x, float y);
+		
 		void Initialize() override {};
 		void Update() override;
 		void FixedUpdate() override;

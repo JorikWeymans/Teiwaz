@@ -3,7 +3,6 @@
 #include <Xinput.h>
 #include <algorithm>
 #include <sstream>
-#include "TyrFunctions.h"
 tyr::InputHandler::InputHandler()
 	: m_ControllerState(new XINPUT_STATE())
 	, m_ControllerStatePrevious(static_cast<XINPUT_STATE*>(malloc(sizeof(XINPUT_STATE))))
@@ -135,7 +134,7 @@ void tyr::InputHandler::AddAction(const std::string& name, ButtonState state, in
 	}
 }
 
-bool tyr::InputHandler::IsButtonTriggered(const std::string& name)
+bool tyr::InputHandler::IsActionTriggered(const std::string& name)
 {
 	const auto found = m_Actions.find(name);
 	if (found == m_Actions.end()) return false;

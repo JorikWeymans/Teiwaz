@@ -9,8 +9,10 @@ namespace bub
 		~MainScene() = default;
 		void Initialize() override;
 		void Update() override;
+		void FixedUpdate() override;
 	private:
 		void LoadBackground();
+		tyr::SceneObject* m_pPlayer;
 	public:
 		MainScene(const MainScene&) = delete;
 		MainScene(MainScene&&) = delete;

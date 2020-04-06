@@ -62,3 +62,4 @@ SDXLLibrary_API void SDXL_RenderDebugLine(const SDXL::SDXLVec2& start, const SDX
 
 SDXLLibrary_API HRESULT SDXL_Present();
 
+SDXLLibrary_API SDXL::SDXLVec2 SDXL_GetImageDimensions(SDXL::SDXLImage* pImage);

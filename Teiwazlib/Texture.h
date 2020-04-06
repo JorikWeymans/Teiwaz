@@ -1,4 +1,6 @@
 #pragma once
+#include "Vectors.h"
+
 namespace tyr
 {
 	class ContentManager;
@@ -7,7 +9,7 @@ namespace tyr
 	{
 	public:
 		SDXL::SDXLImage* SDXL() const;
-		
+		const Vector2& GetDimension() const;
 	private:
 		friend ContentManager;
 
@@ -19,6 +21,7 @@ namespace tyr
 		
 		SDXL::SDXLImage* m_pImage;
 		size_t m_Hash;
+		Vector2 m_Dimension;
 
 	public:
 		Texture(const Texture&) = delete;
