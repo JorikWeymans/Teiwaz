@@ -22,13 +22,13 @@ namespace tyr
 	};
 
 
-	class Rectangle
+	class Rect
 	{
 	public:
-		explicit Rectangle();
-		explicit Rectangle(float x, float y, float width, float height);
-		explicit Rectangle(const Vector2& pos, float width, float height);
-		explicit Rectangle(const Vector2& pos, const Vector2& dimension);
+		explicit Rect();
+		explicit Rect(float x, float y, float width, float height);
+		explicit Rect(const Vector2& pos, float width, float height);
+		explicit Rect(const Vector2& pos, const Vector2& dimension);
 		explicit operator SDXL::SDXLRect() const;
 
 		void Set(float x, float y, float width, float height);

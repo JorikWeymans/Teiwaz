@@ -1,14 +1,12 @@
 #include "tyrpch.h"
 #include "Animation.h"
 
-tyr::Animation::Animation()
-	: m_AniElapser(1.0f/8)
+tyr::Animation::Animation(float tpf,SpritePositions&& sp)
+	: m_AniElapser(tpf)
 	, m_CurrentAnimation(0)
 {
-	for(unsigned int i{0}; i < 8; i++)
-	{
-		m_AniSprites.emplace_back(Rectangle(i * 48.f, 0.f, 48, 48));
-	}
+	m_AniSprites = std::move(sp);
+	
 	
 }
 
@@ -26,7 +24,13 @@ void tyr::Animation::Update(float elapsed)
 	
 }
 
-const tyr::Rectangle& tyr::Animation::GetCurrentAnimation() const
+const tyr::Rect& tyr::Animation::GetCurrentAnimation() const
 {
-	return m_AniSprites[m_CurrentAnimation];
+	return m_AniSprites.at(m_CurrentAnimation);
+}
+
+void tyr::Animation::Reset()
+{
+	m_AniElapser.Reset();
+	m_CurrentAnimation = 0;
 }

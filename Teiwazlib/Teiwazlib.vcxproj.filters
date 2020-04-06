@@ -17,9 +17,6 @@
     <Filter Include="Helpers">
       <UniqueIdentifier>{cb727dc8-9be7-476a-90aa-24e36281d5d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Content">
-      <UniqueIdentifier>{e540bb35-8f72-4ac1-b793-3248fac4bc97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{89ff41b1-f5bf-414b-bf7d-7323649b202a}</UniqueIdentifier>
     </Filter>
@@ -28,6 +25,9 @@
     </Filter>
     <Filter Include="GameContext">
       <UniqueIdentifier>{07aec113-066f-463e-9c9e-49dde7257d0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{e540bb35-8f72-4ac1-b793-3248fac4bc97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -77,13 +77,13 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="ContentManager.h">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="BinaryReader.h">
       <Filter>Helpers\Binary</Filter>
@@ -104,10 +104,13 @@
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="TyrException.h">
       <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -148,13 +151,13 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="ContentManager.cpp">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="BinaryReader.cpp">
       <Filter>Helpers\Binary</Filter>
@@ -172,10 +175,13 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
-      <Filter>Content</Filter>
+      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="TyrException.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

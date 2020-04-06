@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include <iostream>
 
-tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, const Rectangle& rect)
+tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, const Rect& rect)
 	: m_TexturePath(texturePath)
 	, m_pTexture(nullptr)
 	, m_pTransform(nullptr)
@@ -64,7 +64,7 @@ void tyr::TextureComp::Destroy()
 	m_TexturePath = L"";
 }
 
-void tyr::TextureComp::SetSourceRect(const Rectangle& rect)
+void tyr::TextureComp::SetSourceRect(const Rect& rect)
 {
 	m_SrcRect = rect;
 }

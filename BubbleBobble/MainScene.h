@@ -1,9 +1,9 @@
 #pragma once
 #include "Scene.h"
-#include "Animation.h"
 namespace tyr
 {
 	class TextureComp;
+	class Animator;
 }
 namespace bub
 {
@@ -12,16 +12,15 @@ namespace bub
 	{
 	public:
 		MainScene() = default;
-		~MainScene() = default;
+		~MainScene();
 		void Initialize() override;
 		void Update() override;
 		void FixedUpdate() override;
-
 	private:
 		void LoadBackground();
 		tyr::SceneObject* m_pPlayer = nullptr;
 		tyr::TextureComp* m_pTexture = nullptr;
-		tyr::Animation m_Ani;
+		tyr::Animator* m_Ani = nullptr;
 		
 	public:
 		MainScene(const MainScene&) = delete;

@@ -9,23 +9,57 @@
 #include "InputHandler.h"
 #include "Time.h"
 #include "TyrException.h"
+#include "Animation.h"
+#include "Animator.h"
+bub::MainScene::~MainScene()
+{
+	delete m_Ani;
+	m_Ani = nullptr;
+}
+
 void bub::MainScene::Initialize()
 {
-	LoadBackground();
-	m_pPlayer = new tyr::SceneObject(tyr::transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(1,1)));
-	AddSceneObject(m_pPlayer);
-
-	m_pTexture = new tyr::TextureComp(L"BBSprites/spritesSCALED.png", tyr::PivotMode::TopCenter, tyr::Rectangle(0.f, 0.f, 48.f, 48.f));
-
-	m_pPlayer->AddComponent(m_pTexture);
-
-	
-	
-	m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
-	m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
-
 	try
 	{
+		LoadBackground();
+		m_pPlayer = new tyr::SceneObject(tyr::transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(1,1)));
+		AddSceneObject(m_pPlayer);
+
+		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopCenter, tyr::Rect(0.f, 0.f, 48.f, 48.f));
+
+		m_pPlayer->AddComponent(m_pTexture);
+
+		
+		
+		m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
+		m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
+
+		//for (unsigned int i{ 0 }; i < 8; i++)
+		//{
+		//	m_AniSprites.emplace_back(Rect(i * 48.f, 0.f, 48, 48));
+		//}
+		
+
+		//TODO: Add component, animatorComp with datamember Animator given to paramater;
+		
+		m_Ani = new tyr::Animator();
+		
+		auto walkAni = new tyr::Animation(.25f, tyr::SpritePositions{   {0, tyr::Rect(0.f ,0.f,48,48)},
+																			{1, tyr::Rect(48.f,0.f,48,48)},
+																			{2, tyr::Rect(48.f * 2,0.f,48,48)} ,
+																			{3, tyr::Rect(48.f * 3,0.f,48,48)} });
+
+
+		auto EatAni = new tyr::Animation(.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f + 4 * 48.f ,0.f,48,48)},
+																		{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
+																		{2, tyr::Rect(48.f * 2 + 4 * 48.f,0.f,48,48)} ,
+																		{3, tyr::Rect(48.f * 3 + 4 * 48.f,0.f,48,48)} });
+
+		
+		m_Ani->AddAnimation("Walking", walkAni);
+		m_Ani->AddAnimation("Eating", EatAni);
+		m_Ani->SetAnimation("Walking");
+
 		
 	}
 	catch(tyr::TyrException& e)
@@ -38,8 +72,8 @@ void bub::MainScene::Initialize()
 void bub::MainScene::Update()
 {
 	tyr::Scene::Update();
-	m_Ani.Update(m_pContext->pTime->deltaTime);
-	m_pTexture->SetSourceRect(m_Ani.GetCurrentAnimation());
+	m_Ani->Update(m_pContext->pTime->deltaTime);
+	m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
 
 	
 }
@@ -50,12 +84,16 @@ void bub::MainScene::FixedUpdate()
 	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
 	{
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-
+		
+		m_Ani->SetAnimation("Eating");
 		m_pPlayer->Translate(-150 * elapsed, 0);
+
 
 	}
 	if (m_pContext->pInput->IsActionTriggered("MoveRight"))
+		
 	{
+		m_Ani->SetAnimation("Walking");
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 
 		m_pPlayer->Translate(150 * elapsed, 0);

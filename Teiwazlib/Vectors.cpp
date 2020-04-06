@@ -38,32 +38,32 @@ tyr::Vector3::Vector3(const Vector2& vec)
 {
 }
 
-tyr::Rectangle::Rectangle()
+tyr::Rect::Rect()
 	: m_Pos(0.f, 0.f), m_Width(0.f), m_Height(0.f)
 	, m_IsSet(false)
 {
 }
 
-tyr::Rectangle::Rectangle(float x, float y, float width, float height)
-	: Rectangle( Vector2(x,y), width, height)
+tyr::Rect::Rect(float x, float y, float width, float height)
+	: Rect( Vector2(x,y), width, height)
 
 {
 }
-tyr::Rectangle::Rectangle(const Vector2& pos, float width, float height)
+tyr::Rect::Rect(const Vector2& pos, float width, float height)
 	: m_Pos(pos), m_Width(width), m_Height(height)
 	, m_IsSet(true)
 {
 }
-tyr::Rectangle::Rectangle(const Vector2& pos, const Vector2& dimension)
-	: Rectangle(pos.x, pos.y, dimension.x, dimension.y)
+tyr::Rect::Rect(const Vector2& pos, const Vector2& dimension)
+	: Rect(pos.x, pos.y, dimension.x, dimension.y)
 {
 }
-tyr::Rectangle::operator SDXL::SDXLRect() const
+tyr::Rect::operator SDXL::SDXLRect() const
 {
 	return SDXL::SDXLRect{ m_Pos.x, m_Pos.y,m_Width, m_Height };
 }
 
-void tyr::Rectangle::Set(float x, float y, float width, float height)
+void tyr::Rect::Set(float x, float y, float width, float height)
 {
 	m_Pos.x = x;
 	m_Pos.y = y;
@@ -73,7 +73,7 @@ void tyr::Rectangle::Set(float x, float y, float width, float height)
 	m_IsSet = true;
 }
 
-tyr::Rectangle::operator bool() const
+tyr::Rect::operator bool() const
 {
 	return m_IsSet;
 }
