@@ -5,6 +5,7 @@
 #include <sstream>
 #include "GameContext.h"
 #include "Time.h"
+#include "InputHandler.h"
 #include "SceneManager.h"
 #include "Scene.h"
 #include "ContentManager.h"
@@ -19,11 +20,12 @@ tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& name, int width, int height)
 {
 	auto hr =  SDXL_Init(hInstance, name, width, height);
+	
 	hr = SDXL_InitRenderers(L"./Data/Effects/ImageRenderer.fx",
 		L"./Data/Effects/TextRenderer.fx",
 		L"./Data/Effects/DebugRenderer.fx");
 
-	m_pContext = new GameContext(new Time());
+	m_pContext = new GameContext(new Time(), new InputHandler());
 	m_pSceneManager = new SceneManager(m_pContext);
 
 	ContentManager::GetInstance()->Initialize(L"./Data/");
@@ -73,4 +75,18 @@ void tyr::TeiwazEngine::Run()
 	
 	SAFE_DELETE(m_pContext);
 	SAFE_DELETE(m_pSceneManager);
+}
+
+bool tyr::TeiwazEngine::ProcessInput()
+{
+	SDXL::SDXL_EVENT event;
+	SDXL_PollEvent(event);
+	if (event.type == SDXL::SDXL_EventType::SDXL_QUIT)
+		return false;
+	
+	m_pContext->pInput->Update();
+	
+
+	
+	return true;
 }

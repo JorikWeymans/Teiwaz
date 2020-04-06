@@ -18,9 +18,12 @@ namespace tyr
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Render() const;
-	private:
+		
+	protected:
 		friend SceneManager;
 		GameContext const* m_pContext; //Weak pointer
+	private:
+
 		std::vector<SceneObject*> m_pSceneObjects;
 	};
 

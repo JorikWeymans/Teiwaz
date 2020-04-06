@@ -8,7 +8,9 @@ namespace bub
 		MainScene() = default;
 		~MainScene() = default;
 		void Initialize() override;
-		
+		void Update() override;
+	private:
+		void LoadBackground();
 	public:
 		MainScene(const MainScene&) = delete;
 		MainScene(MainScene&&) = delete;

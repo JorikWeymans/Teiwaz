@@ -5,31 +5,51 @@
 #include "SceneObject.h"
 #include "BinaryReader.h"
 #include "TyrFunctions.h"
-
+#include "GameContext.h"
+#include "InputHandler.h"
 void bub::MainScene::Initialize()
 {
-	//auto pBackground = new tyr::SceneObject(tyr::transform(tyr::Vector2(0.0f, 0.0f)));
-	//AddSceneObject(pBackground);
-	//pBackground->AddComponent(new tyr::TextureComp(L"Textures/Ref2.png"));
-	//
-	//float scale = 3.f * 8.f; //game scale from original scale;
-	//
-	//auto pinkSquare = new tyr::SceneObject(tyr::transform(tyr::Vector2(0.0f, 0.0f), tyr::Vector2(scale, scale)));
-	//AddSceneObject(pinkSquare);
-	//pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
+	LoadBackground();
+	
+	m_pContext->pInput->AddButton("TestReleased", tyr::ControllerButton::ButtonA, tyr::ButtonState::Released);
+	m_pContext->pInput->AddButton("TestPressed", tyr::ControllerButton::ButtonB, tyr::ButtonState::Pressed);
+	m_pContext->pInput->AddButton("TestDown", tyr::ControllerButton::ButtonX, tyr::ButtonState::Down);
+}
 
+void bub::MainScene::Update()
+{
+	tyr::Scene::Update();
+	if(m_pContext->pInput->IsButtonTriggered("TestReleased"))
+	{
+		OutputDebugStringA("TestReleased\n");
+	}
+
+	if (m_pContext->pInput->IsButtonTriggered("TestPressed"))
+	{
+		OutputDebugStringA("TestPressed\n");
+	}
+
+	if (m_pContext->pInput->IsButtonTriggered("TestDown"))
+	{
+		OutputDebugStringA("TestDown\n");
+	}
+	
+}
+
+void bub::MainScene::LoadBackground()
+{
 	tyr::BinaryReader reader{ L"./Data/BBSprites/leveldata.dat" };
 
 	if (!reader.IsOpen()) return;
 
 	std::vector<std::string> vec{};
 	float scale = 3.f * 8.f; //game scale from original scale;
-	
+
 	tyr::Vector2 pos(0, 0);
-	
+
 	vec.clear();
 	reader.moveBufferPosition(sizeof(int) * 25 * 2);
-	
+
 	for (int i{ 0 }; i < 25; i++)
 	{
 		//           BIG to LITTLE
@@ -40,23 +60,14 @@ void bub::MainScene::Initialize()
 		for (int j{ sizeof(read) * 8U - 1 }; j >= 0; --j)
 		{
 			pos.x = ((sizeof(read) * 8U - 1) * scale) - j * scale;
-			
-			if(read& (1u << j))
+
+			if (read & (1u << j))
 			{
 				//1
 				auto pinkSquare = new tyr::SceneObject(tyr::transform(pos, tyr::Vector2(scale, scale)));
 				AddSceneObject(pinkSquare);
 				pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
 			}
-			else
-			{
-				//0
-			}
 		}
-		
-		
-		
-		//reader.moveBufferPosition(sizeof(int) * 9);
-	
 	}
 }

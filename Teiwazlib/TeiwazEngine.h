@@ -16,7 +16,7 @@ namespace tyr
 
 		
 	protected:
-		virtual bool ProcessInput() = 0;
+		bool ProcessInput();
 		virtual void LoadGame() = 0;
 		virtual void Cleanup() = 0;
 

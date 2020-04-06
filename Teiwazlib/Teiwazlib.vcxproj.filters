@@ -26,15 +26,12 @@
     <Filter Include="Helpers\Binary">
       <UniqueIdentifier>{16f760eb-62bb-4b65-bd18-50f4abc3feb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContext">
+      <UniqueIdentifier>{07aec113-066f-463e-9c9e-49dde7257d0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TeiwazEngine.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GameContext.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Time.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
@@ -94,15 +91,18 @@
     <ClInclude Include="TyrFunctions.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="GameContext.h">
+      <Filter>GameContext</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>GameContext</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>GameContext</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GameContext.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Time.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
@@ -149,6 +149,15 @@
     </ClCompile>
     <ClCompile Include="BinaryReader.cpp">
       <Filter>Helpers\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="GameContext.cpp">
+      <Filter>GameContext</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>GameContext</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>GameContext</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

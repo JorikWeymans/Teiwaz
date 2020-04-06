@@ -10,7 +10,6 @@ namespace  bub
 		void Initialize(HINSTANCE hinstance);
 
 	protected:
-		bool ProcessInput() override;
 		void LoadGame() override;
 		void Cleanup() override;
 	};

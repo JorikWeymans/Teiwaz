@@ -107,7 +107,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDXL.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDXL.lib; xinput.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;C:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -130,7 +130,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDXL.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDXL.lib; xinput.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;C:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -157,7 +157,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDXL.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDXL.lib; xinput.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;C:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -184,7 +184,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDXL.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDXL.lib; xinput.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;C:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -197,6 +197,7 @@
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureComp.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureComp.cpp" />
