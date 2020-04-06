@@ -106,6 +106,9 @@
     <ClInclude Include="Animation.h">
       <Filter>Content</Filter>
     </ClInclude>
+    <ClInclude Include="TyrException.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -170,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Content</Filter>
+    </ClCompile>
+    <ClCompile Include="TyrException.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,10 +11,9 @@ namespace tyr
 	//BYTE ch = 0b1000'1000;
 	//
 	//auto chbin = tyr::ToBinaryString(ch);
-
 	
 	template<typename T>
-	inline std::string ToBinaryString(T var)
+	std::string ToBinaryString(T var)
 	{
 		std::stringstream ss;
 		for (int i{ sizeof(var) * 8U - 1 }; i >= 0; --i)

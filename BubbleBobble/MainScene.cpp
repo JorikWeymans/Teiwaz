@@ -8,6 +8,7 @@
 #include "GameContext.h"
 #include "InputHandler.h"
 #include "Time.h"
+#include "TyrException.h"
 void bub::MainScene::Initialize()
 {
 	LoadBackground();
@@ -22,6 +23,15 @@ void bub::MainScene::Initialize()
 	
 	m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
 	m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
+
+	try
+	{
+		
+	}
+	catch(tyr::TyrException& e)
+	{
+		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
+	}
 	
 }
 

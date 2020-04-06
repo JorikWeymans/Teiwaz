@@ -4,6 +4,8 @@
 #include "TransformComp.h"
 #include "ContentManager.h"
 #include "Texture.h"
+#include <iostream>
+
 tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, const Rectangle& rect)
 	: m_TexturePath(texturePath)
 	, m_pTexture(nullptr)
@@ -37,6 +39,7 @@ void tyr::TextureComp::Initialize()
 
 void tyr::TextureComp::Update()
 {
+	std::cout << "ok";
 }
 
 void tyr::TextureComp::FixedUpdate()

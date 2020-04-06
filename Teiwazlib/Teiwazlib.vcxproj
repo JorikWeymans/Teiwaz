@@ -208,6 +208,7 @@
     <ClInclude Include="TyrComps.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TyrEnums.h" />
+    <ClInclude Include="TyrException.h" />
     <ClInclude Include="TyrFunctions.h" />
     <ClInclude Include="tyrpch.h" />
     <ClInclude Include="Scene.h" />
@@ -232,6 +233,7 @@
     <ClCompile Include="TextureComp.cpp" />
     <ClCompile Include="TransformComp.cpp" />
     <ClCompile Include="GameContext.cpp" />
+    <ClCompile Include="TyrException.cpp" />
     <ClCompile Include="tyrpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='_DEBUG|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='_DEBUG|x64'">Create</PrecompiledHeader>

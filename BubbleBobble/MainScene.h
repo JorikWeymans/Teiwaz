@@ -19,8 +19,8 @@ namespace bub
 
 	private:
 		void LoadBackground();
-		tyr::SceneObject* m_pPlayer;
-		tyr::TextureComp* m_pTexture;
+		tyr::SceneObject* m_pPlayer = nullptr;
+		tyr::TextureComp* m_pTexture = nullptr;
 		tyr::Animation m_Ani;
 		
 	public:

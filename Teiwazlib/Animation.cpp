@@ -2,7 +2,7 @@
 #include "Animation.h"
 
 tyr::Animation::Animation()
-	: m_AniElapser(0.2f)
+	: m_AniElapser(1.0f/8)
 	, m_CurrentAnimation(0)
 {
 	for(unsigned int i{0}; i < 8; i++)
