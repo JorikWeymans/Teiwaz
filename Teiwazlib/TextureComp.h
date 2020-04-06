@@ -20,7 +20,7 @@ namespace tyr
 		void Render() const override;
 
 		void Destroy();
-
+		void SetSourceRect(const Rectangle& rect);
 
 	private:
 		std::wstring m_TexturePath;

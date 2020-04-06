@@ -11,21 +11,14 @@
 void bub::MainScene::Initialize()
 {
 	LoadBackground();
-	m_pPlayer = new tyr::SceneObject(tyr::transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(-1,1)));
+	m_pPlayer = new tyr::SceneObject(tyr::transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(1,1)));
 	AddSceneObject(m_pPlayer);
-	m_pPlayer->AddComponent(new tyr::TextureComp(L"BBSprites/spritesSCALED.png", tyr::PivotMode::TopCenter, tyr::Rectangle(48.f,48.f,48.f,48.f)));
 
+	m_pTexture = new tyr::TextureComp(L"BBSprites/spritesSCALED.png", tyr::PivotMode::TopCenter, tyr::Rectangle(0.f, 0.f, 48.f, 48.f));
 
+	m_pPlayer->AddComponent(m_pTexture);
 
-	auto pFPS = new tyr::SceneObject(tyr::transform(tyr::Vector2(650, 10.0f)));
-	AddSceneObject(pFPS);
-	pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
-	pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
-	pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::Update, 0));
-	pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::FixedUpdate, 1));
-
-
-
+	
 	
 	m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
 	m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
@@ -35,7 +28,8 @@ void bub::MainScene::Initialize()
 void bub::MainScene::Update()
 {
 	tyr::Scene::Update();
-
+	m_Ani.Update(m_pContext->pTime->deltaTime);
+	m_pTexture->SetSourceRect(m_Ani.GetCurrentAnimation());
 
 	
 }
@@ -93,4 +87,12 @@ void bub::MainScene::LoadBackground()
 			}
 		}
 	}
+
+
+	auto pFPS = new tyr::SceneObject(tyr::transform(tyr::Vector2(650, 10.0f)));
+	AddSceneObject(pFPS);
+	pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
+	pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
+	pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::Update, 0));
+	pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::FixedUpdate, 1));
 }

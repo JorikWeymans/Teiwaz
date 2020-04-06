@@ -60,3 +60,8 @@ void tyr::TextureComp::Destroy()
 	m_pTransform = nullptr;
 	m_TexturePath = L"";
 }
+
+void tyr::TextureComp::SetSourceRect(const Rectangle& rect)
+{
+	m_SrcRect = rect;
+}
