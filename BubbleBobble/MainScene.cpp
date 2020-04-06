@@ -11,9 +11,9 @@ void bub::MainScene::Initialize()
 {
 	LoadBackground();
 	
-	m_pContext->pInput->AddButton("TestReleased", tyr::ControllerButton::ButtonA, tyr::ButtonState::Released);
-	m_pContext->pInput->AddButton("TestPressed", tyr::ControllerButton::ButtonB, tyr::ButtonState::Pressed);
-	m_pContext->pInput->AddButton("TestDown", tyr::ControllerButton::ButtonX, tyr::ButtonState::Down);
+	m_pContext->pInput->AddAction("TestReleased", tyr::ButtonState::Released, -1,  tyr::ControllerButton::ButtonA);
+	m_pContext->pInput->AddAction("TestPressed", tyr::ButtonState::Pressed, -1, tyr::ControllerButton::ButtonB);
+	m_pContext->pInput->AddAction("TestDown", tyr::ButtonState::Down, -1,  tyr::ControllerButton::ButtonX);
 }
 
 void bub::MainScene::Update()

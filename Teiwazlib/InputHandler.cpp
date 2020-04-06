@@ -3,63 +3,122 @@
 #include <Xinput.h>
 #include <algorithm>
 #include <sstream>
+#include "TyrFunctions.h"
 tyr::InputHandler::InputHandler()
-	//: m_pControllerState(new XINPUT_STATE())
-	//, m_pControllerStatePrevious(nullptr)
-	: m_Buttons(std::map<std::string, MappedButton*>())
+	: m_ControllerState(new XINPUT_STATE())
+	, m_ControllerStatePrevious(static_cast<XINPUT_STATE*>(malloc(sizeof(XINPUT_STATE))))
+	, m_KeyboardState(new BYTE[KEYBOARD_SIZE])
+	, m_KeyboardStatePrevious(static_cast<BYTE*>(malloc(KEYBOARD_SIZE))) //sizeof(BYTE) * KEYBOARD_SIZE == redundant cuz sizeof(BYTE) == 1
+	, m_Actions(std::map<std::string, MappedAction*>())
 {
-	ZeroMemory(&m_pControllerState, sizeof(XINPUT_STATE));
+	ZeroMemory(m_ControllerState, sizeof(XINPUT_STATE));
+	if(m_ControllerStatePrevious) ZeroMemory(m_ControllerStatePrevious, sizeof(XINPUT_STATE));
+
+	ZeroMemory(m_KeyboardState, KEYBOARD_SIZE);
+	if(m_KeyboardStatePrevious) ZeroMemory(m_KeyboardStatePrevious, KEYBOARD_SIZE);
+
 }
 
 tyr::InputHandler::~InputHandler()
 {
-	std::for_each(m_Buttons.begin(), m_Buttons.end(), [](auto& mappedButton) {delete mappedButton.second; mappedButton.second = nullptr; });
-	m_Buttons.clear();
+	//Controller
+	delete m_ControllerState;
+	m_ControllerState = nullptr;
+	
+	free(m_ControllerStatePrevious);
+
+	//Keyboard
+	delete[] m_KeyboardState;
+	m_KeyboardState = nullptr;
+
+	free(m_KeyboardStatePrevious);
+
+	
+	std::for_each(m_Actions.begin(), m_Actions.end(), [](auto& mappedButton) {delete mappedButton.second; mappedButton.second = nullptr; });
+	m_Actions.clear();
 }
 
 void tyr::InputHandler::Update()
 {
-	m_pControllerStatePrevious = m_pControllerState;
 
-	ZeroMemory(&m_pControllerState, sizeof(XINPUT_STATE));
-	XInputGetState(0, &m_pControllerState);
+	//Controller state
+	memcpy(m_ControllerStatePrevious, m_ControllerState, sizeof(XINPUT_STATE));
+	
+	ZeroMemory(m_ControllerState, sizeof(XINPUT_STATE));
+	XInputGetState(0, m_ControllerState);
 
-	for (auto mappedButton : m_Buttons)
+	//Keyboard state
+	memcpy(m_KeyboardStatePrevious, m_KeyboardState, KEYBOARD_SIZE);
+	
+	ZeroMemory(m_KeyboardState, KEYBOARD_SIZE);
+	const bool success = GetKeyboardState(m_KeyboardState);
+	if (!success)
+		return;
+
+	
+	for (auto& mappedButton : m_Actions)
 	{
 		auto b = mappedButton.second;
-	
+		b->IsTriggered = false;
+		
 		switch (b->state)
 		{
 		case ButtonState::Pressed:
-			if (m_pControllerState.Gamepad.wButtons == static_cast<WORD>(b->button) &&
-				m_pControllerStatePrevious.Gamepad.wButtons != static_cast<WORD>(b->button))
+			//controller
+			if(b->button != ControllerButton::None)
 			{
-				b->IsTriggered = true;
+				if (m_ControllerState->Gamepad.wButtons == static_cast<WORD>(b->button) &&
+					m_ControllerStatePrevious->Gamepad.wButtons != static_cast<WORD>(b->button))
+				{
+					b->IsTriggered = true;
+				}
 			}
-			else
+			//Keyboard
+			if (b->key != -1)
 			{
-				b->IsTriggered = false;
+				if (m_KeyboardState[static_cast<unsigned int>(b->key)] & 0x80 &&
+					!(m_KeyboardStatePrevious[static_cast<unsigned int>(b->key)] & 0x80))
+				{
+					b->IsTriggered = true;
+				}
 			}
 			break;
 		case ButtonState::Down:
-			if (m_pControllerState.Gamepad.wButtons == static_cast<WORD>(b->button))
+			//controller
+			if (b->button != ControllerButton::None)
 			{
-				b->IsTriggered = true;
+				if (m_ControllerState->Gamepad.wButtons == static_cast<WORD>(b->button))
+				{
+					b->IsTriggered = true;
+				}
 			}
-			else
+			//Keyboard
+			if (b->key != -1)
 			{
-				b->IsTriggered = false;
+				if (m_KeyboardState[static_cast<unsigned int>(b->key)] & 0x80)
+				{
+					b->IsTriggered = true;
+				}
 			}
 			break;
 		case ButtonState::Released:
-			if (m_pControllerState.Gamepad.wButtons != static_cast<WORD>(b->button) &&
-				m_pControllerStatePrevious.Gamepad.wButtons == static_cast<WORD>(b->button))
+			//controller
+			if (b->button != ControllerButton::None)
 			{
-				b->IsTriggered = true;
+				if (m_ControllerState->Gamepad.wButtons != static_cast<WORD>(b->button) &&
+					m_ControllerStatePrevious->Gamepad.wButtons == static_cast<WORD>(b->button))
+				{
+					b->IsTriggered = true;
+				}
 			}
-			else
+			//Keyboard
+			if(b->key != -1)
 			{
-				b->IsTriggered = false;
+				if(!(m_KeyboardState[static_cast<unsigned int>(b->key)] & 0x80) &&
+					m_KeyboardStatePrevious[static_cast<unsigned int>(b->key)] & 0x80)
+				{
+					b->IsTriggered = true;
+				}
 			}
 			break;
 		}
@@ -67,19 +126,19 @@ void tyr::InputHandler::Update()
 	
 }
 
-void tyr::InputHandler::AddButton(const std::string& name, ControllerButton button, ButtonState state)
+void tyr::InputHandler::AddAction(const std::string& name, ButtonState state, int key,ControllerButton button)
 {
-	const auto found = m_Buttons.find(name);
-	if(found == m_Buttons.end())
+	const auto found = m_Actions.find(name);
+	if(found == m_Actions.end())
 	{
-		m_Buttons.insert({ name, new MappedButton(button, state) });
+		m_Actions.insert({ name, new MappedAction(button, state, key) });
 	}
 }
 
 bool tyr::InputHandler::IsButtonTriggered(const std::string& name)
 {
-	const auto found = m_Buttons.find(name);
-	if (found == m_Buttons.end()) return false;
+	const auto found = m_Actions.find(name);
+	if (found == m_Actions.end()) return false;
 
 	return found->second->IsTriggered;
 }

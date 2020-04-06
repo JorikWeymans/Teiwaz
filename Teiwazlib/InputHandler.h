@@ -1,10 +1,14 @@
 #pragma once
 #include <map>
 #include <Xinput.h>
+#include <vector>
+
+#define KEYBOARD_SIZE 256
 namespace tyr
 {
 	enum class ControllerButton : WORD
 	{
+		None        = 0xFFFF,
 		ButtonA     = XINPUT_GAMEPAD_A,
 		ButtonB     = XINPUT_GAMEPAD_B,
 		ButtonX     = XINPUT_GAMEPAD_X,
@@ -19,15 +23,18 @@ namespace tyr
 		Down,
 		Released
 	};
-	struct MappedButton
+	struct MappedAction
 	{
-		explicit MappedButton(ControllerButton b, ButtonState s)
-		: button(b), state(s), IsTriggered(false) {}
+		explicit MappedAction(ControllerButton b, ButtonState s, int key)
+		: button(b), key(key), state(s), IsTriggered(false) {}
 		ControllerButton button;
+		int key;
 		ButtonState state;
 		bool IsTriggered;
 	};
 
+
+	
 	class InputHandler final
 	{
 	public:
@@ -35,13 +42,14 @@ namespace tyr
 		~InputHandler();
 
 		void Update();
-		void AddButton(const std::string& name, ControllerButton button, ButtonState state);
+		// Key -1 means no keyboard action, button == ControllerButton::None means no controller button, both can be used at the same time
+		void AddAction(const std::string& name, ButtonState state, int key = -1, ControllerButton button = ControllerButton::None);
 		bool IsButtonTriggered(const std::string& name);
 
 	private:
-		XINPUT_STATE m_pControllerState;
-		XINPUT_STATE m_pControllerStatePrevious; //weak pointer
-		std::map<std::string, MappedButton*> m_Buttons;
+		XINPUT_STATE *m_ControllerState, *m_ControllerStatePrevious;
+		BYTE *m_KeyboardState, *m_KeyboardStatePrevious;
+		std::map<std::string, MappedAction*> m_Actions;
 		
 		
 	public:

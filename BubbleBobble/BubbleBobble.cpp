@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "BubbleBobble.h"
-#include "Scene.h"
 #include "SceneManager.h"
-#include "MiniginScene.h"
 #include "MainScene.h"
 
 bub::BubbleBobble::BubbleBobble()
@@ -14,6 +12,9 @@ void bub::BubbleBobble::Initialize(HINSTANCE hinstance)
 {
 
 	tyr::TeiwazEngine::Initialize(hinstance, "BubbleBobble", 768, 672);
+
+
+	
 	
 }
 
