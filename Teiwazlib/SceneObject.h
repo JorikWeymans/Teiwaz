@@ -4,23 +4,28 @@
 namespace tyr
 {
 	class Scene;
-	struct transform;
+	struct Transform;
 	class BaseComponent;
 	class TransformComp;
 	class GameContext;
+	class Transform;
 	class SceneObject final
 	{
 	public:
-		explicit SceneObject(const transform& transform);
+		explicit SceneObject(const Transform& transform);
 		~SceneObject();
 		
 		void Update();
 		void FixedUpdate();
+#ifdef USE_IM_GUI
+		void Debug();
+#endif
 		void Render() const;
 
 		void AddComponent(BaseComponent* pComp);
 		const TransformComp* GetTransform() const;
-
+		Transform* Transform();
+		
 		void Translate(float x, float y);
 		template <typename T>
 		T* GetComponent(unsigned int index = 0) //index used when there are more than one component of the same type on the object.

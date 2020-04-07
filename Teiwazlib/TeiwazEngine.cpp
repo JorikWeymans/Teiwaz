@@ -10,6 +10,7 @@
 #include "Scene.h"
 #include "ContentManager.h"
 
+
 tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 	: m_pSceneManager(nullptr)
 	, m_pContext(nullptr)
@@ -29,9 +30,7 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 	m_pSceneManager = new SceneManager(m_pContext);
 
 	ContentManager::GetInstance()->Initialize(L"./Data/");
-	
 
-	
 	return hr;
 
 	
@@ -56,11 +55,12 @@ void tyr::TeiwazEngine::Run()
 		{
 			m_pContext->pTime->fixedDeltaTime = fixedElapsed;
 			m_pSceneManager->FixedUpdate();
+
 			m_pSceneManager->Render(); // TODO: enable vsync, otherwise leave it here
 			fixedElapsed = 0;
 		}
 
-
+		
 
 		// timings for next frame
 		const auto thisTime = high_resolution_clock::now();

@@ -32,6 +32,9 @@ tyr::InputHandler::~InputHandler()
 
 	free(m_KeyboardStatePrevious);
 
+
+
+	
 	
 	std::for_each(m_Actions.begin(), m_Actions.end(), [](auto& mappedButton) {delete mappedButton.second; mappedButton.second = nullptr; });
 	m_Actions.clear();
@@ -89,6 +92,8 @@ void tyr::InputHandler::Update()
 				if (m_ControllerState->Gamepad.wButtons == static_cast<WORD>(b->button))
 				{
 					b->IsTriggered = true;
+
+					
 				}
 			}
 			//Keyboard
@@ -97,6 +102,7 @@ void tyr::InputHandler::Update()
 				if (m_KeyboardState[static_cast<unsigned int>(b->key)] & 0x80)
 				{
 					b->IsTriggered = true;
+					
 				}
 			}
 			break;

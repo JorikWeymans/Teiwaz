@@ -4,7 +4,7 @@
 #include "TransformComp.h"
 #include <algorithm>
 
-tyr::SceneObject::SceneObject(const transform& transform)
+tyr::SceneObject::SceneObject(const tyr::Transform& transform)
 	: m_pComponents(std::vector<BaseComponent*>())
 	, m_pTransform(new TransformComp(transform))
 	, m_IsDestroyed(false)
@@ -36,6 +36,16 @@ void tyr::SceneObject::FixedUpdate()
 		b->FixedUpdate();
 	});
 }
+#ifdef USE_IM_GUI
+void tyr::SceneObject::Debug()
+{
+	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+		{
+			if (!m_IsDestroyed)
+				b->Debug();
+		});
+}
+#endif
 
 void tyr::SceneObject::Render() const
 {
@@ -62,6 +72,12 @@ void tyr::SceneObject::AddComponent(BaseComponent* pComp)
 const tyr::TransformComp* tyr::SceneObject::GetTransform() const
 {
 	return m_pTransform;
+}
+
+tyr::Transform* tyr::SceneObject::Transform()
+{
+	return m_pTransform->GetTr();
+	
 }
 
 void tyr::SceneObject::Translate(float x, float y)

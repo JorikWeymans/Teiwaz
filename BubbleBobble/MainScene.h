@@ -16,6 +16,10 @@ namespace bub
 		void Initialize() override;
 		void Update() override;
 		void FixedUpdate() override;
+		void Render() const override;
+#ifdef USE_IM_GUI
+		void Debug() override;
+#endif
 	private:
 		void LoadBackground();
 		tyr::SceneObject* m_pPlayer = nullptr;

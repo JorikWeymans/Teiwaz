@@ -9,10 +9,17 @@
 
 // add headers that you want to pre-compile here
 #include "Windows.h"
+//#define USE_IM_GUI
+
+#if defined(_DEBUG) && defined(x86)
+#ifndef USE_IM_GUI
+#define USE_IM_GUI
+#endif
+#endif
+
 #include <SDXLLibrary.h>
 #pragma warning(disable : 4091)
 #include <SDXLStructs.h>
-
 
 #define SAFE_DELETE(pointer) {if(pointer) {delete pointer; pointer = nullptr;}}
 

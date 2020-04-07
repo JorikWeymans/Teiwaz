@@ -17,6 +17,9 @@ namespace tyr
 
 		virtual void Update();
 		virtual void FixedUpdate();
+#ifdef USE_IM_GUI
+		virtual void Debug();
+#endif
 		virtual void Render() const;
 		
 	protected:

@@ -14,9 +14,14 @@ namespace  tyr
 
 		void Update();
 		void FixedUpdate();
+
+
 		void Render() const;
 		
 	private:
+#ifdef USE_IM_GUI
+		void Debug() const;
+#endif
 		GameContext* m_pContext; //Weak ptr
 		std::vector<Scene*> m_pScenes;
 	};

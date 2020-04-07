@@ -7,7 +7,7 @@ namespace tyr
 	class TransformComp final : public BaseComponent
 	{
 	public:
-		explicit TransformComp(const transform& transform);
+		explicit TransformComp(const Transform& transform);
 		explicit TransformComp(const Vector2& position);
 		explicit TransformComp(const Vector2& position, const Vector2& scale, float rotation);
 		~TransformComp() override = default;
@@ -19,14 +19,14 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override;
 
-		const transform& GetTransform() const;
+		const Transform& GetTransform() const;
 		const Vector2& GetPosition() const;
 		const Vector2& GetScale() const;
 		float GetRotation() const;
 
-		
+		Transform* GetTr();
 	private:
-		transform m_Transform;
+		Transform* m_pTransform;
 
 	public:
 		TransformComp() = delete;

@@ -10,6 +10,9 @@ namespace tyr
 
 		virtual void Initialize() = 0;
 		virtual void Update() = 0;
+#ifdef USE_IM_GUI
+		virtual void Debug() {}
+#endif
 		virtual void FixedUpdate() = 0;
 		virtual void Render() const = 0;
 

@@ -7,6 +7,9 @@
 #pragma warning(disable : 4091)
 #include <SDXLStructs.h>
 
-
-
+#if defined(_DEBUG) && defined(x86)
+#ifndef USE_IM_GUI
+#define USE_IM_GUI
+#endif
+#endif
 #endif 
