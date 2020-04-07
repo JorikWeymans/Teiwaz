@@ -24,18 +24,18 @@ void bub::MainScene::Initialize()
 	try
 	{
 		LoadBackground();
-		//m_pPlayer = new tyr::SceneObject(tyr::Transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(1,1)));
-		//AddSceneObject(m_pPlayer);
+		m_pPlayer = new tyr::SceneObject(tyr::Transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(1,1)));
+		AddSceneObject(m_pPlayer);
 
-		//m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopCenter, tyr::Rect(0.f, 0.f, 48.f, 48.f));
+		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopCenter, tyr::Rect(0.f, 0.f, 48.f, 48.f));
 
-		//m_pPlayer->AddComponent(m_pTexture);
+		m_pPlayer->AddComponent(m_pTexture);
 
 		
 		
-		//m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
-		//m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
-		//m_pContext->pInput->AddAction("Abutton", tyr::ButtonState::Down, 'A');
+		m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
+		m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
+		m_pContext->pInput->AddAction("Abutton", tyr::ButtonState::Down, 'A');
 		//
 		////for (unsigned int i{ 0 }; i < 8; i++)
 		////{
@@ -45,23 +45,23 @@ void bub::MainScene::Initialize()
 		//
 		////TODO: Add component, animatorComp with datamember Animator given to paramater;
 		//
-		//m_Ani = new tyr::Animator();
-		//
-		//auto walkAni = new tyr::Animation(.25f, tyr::SpritePositions{   {0, tyr::Rect(0.f ,0.f,48,48)},
-		//																	{1, tyr::Rect(48.f,0.f,48,48)},
-		//																	{2, tyr::Rect(48.f * 2,0.f,48,48)} ,
-		//																	{3, tyr::Rect(48.f * 3,0.f,48,48)} });
-		//
-		//
-		//auto EatAni = new tyr::Animation(.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f + 4 * 48.f ,0.f,48,48)},
-		//																{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
-		//																{2, tyr::Rect(48.f * 2 + 4 * 48.f,0.f,48,48)} ,
-		//																{3, tyr::Rect(48.f * 3 + 4 * 48.f,0.f,48,48)} });
-		//
-		//
-		//m_Ani->AddAnimation("Walking", walkAni);
-		//m_Ani->AddAnimation("Eating", EatAni);
-		//m_Ani->SetAnimation("Walking");
+		m_Ani = new tyr::Animator();
+		
+		auto walkAni = new tyr::Animation(.25f, tyr::SpritePositions{   {0, tyr::Rect(0.f ,0.f,48,48)},
+																			{1, tyr::Rect(48.f,0.f,48,48)},
+																			{2, tyr::Rect(48.f * 2,0.f,48,48)} ,
+																			{3, tyr::Rect(48.f * 3,0.f,48,48)} });
+		
+		
+		auto EatAni = new tyr::Animation(.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f + 4 * 48.f ,0.f,48,48)},
+																		{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
+																		{2, tyr::Rect(48.f * 2 + 4 * 48.f,0.f,48,48)} ,
+																		{3, tyr::Rect(48.f * 3 + 4 * 48.f,0.f,48,48)} });
+		
+		
+		m_Ani->AddAnimation("Walking", walkAni);
+		m_Ani->AddAnimation("Eating", EatAni);
+		m_Ani->SetAnimation("Walking");
 
 		
 	}
@@ -75,8 +75,8 @@ void bub::MainScene::Initialize()
 void bub::MainScene::Update()
 {
 	tyr::Scene::Update();
-	//m_Ani->Update(m_pContext->pTime->deltaTime);
-	//m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
+	m_Ani->Update(m_pContext->pTime->deltaTime);
+	m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
 
 	
 }
@@ -117,6 +117,9 @@ void bub::MainScene::Debug()
 	SDXL_ImGui_Begin("test");
 	SDXL_ImGui_DragFloat2("floaty", &m_pPlayer->Transform()->position.x, 1, 0.f, 1260);
 
+	static float ok[2];
+	
+	//SDXL_ImGui_DragFloat2("floaty", ok, 1, 0.f, 1260);
 	SDXL_ImGui_End();
 }
 #endif

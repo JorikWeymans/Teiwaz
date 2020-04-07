@@ -1,5 +1,14 @@
 #pragma once
 #include <string>
+
+//When using IM Gui, reserve some extra space for it
+#ifdef USE_IM_GUI
+#define EXTRA_SCREEN_SIZE 400
+#else
+#define EXTRA_SCREEN_SIZE 0
+#endif
+
+
 namespace tyr
 {
 	class GameContext;

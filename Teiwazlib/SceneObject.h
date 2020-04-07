@@ -8,7 +8,7 @@ namespace tyr
 	class BaseComponent;
 	class TransformComp;
 	class GameContext;
-	class Transform;
+	struct Transform;
 	class SceneObject final
 	{
 	public:
