@@ -84,23 +84,23 @@ void bub::MainScene::Update()
 void bub::MainScene::FixedUpdate()
 {
 	tyr::Scene::FixedUpdate();
-	//if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
-	//{
-	//	const float elapsed = m_pContext->pTime->fixedDeltaTime;
-	//	
-	//	m_Ani->SetAnimation("Eating");
-	//	m_pPlayer->Translate(-150 * elapsed, 0);
-	//
-	//
-	//}
-	//if (m_pContext->pInput->IsActionTriggered("MoveRight"))
-	//	
-	//{
-	//	m_Ani->SetAnimation("Walking");
-	//	const float elapsed = m_pContext->pTime->fixedDeltaTime;
-	//
-	//	m_pPlayer->Translate(150 * elapsed, 0);
-	//}
+	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
+	{
+		const float elapsed = m_pContext->pTime->fixedDeltaTime;
+		
+		m_Ani->SetAnimation("Eating");
+		m_pPlayer->Translate(-150 * elapsed, 0);
+	
+	
+	}
+	if (m_pContext->pInput->IsActionTriggered("MoveRight"))
+		
+	{
+		m_Ani->SetAnimation("Walking");
+		const float elapsed = m_pContext->pTime->fixedDeltaTime;
+	
+		m_pPlayer->Translate(150 * elapsed, 0);
+	}
 
 }
 
@@ -113,14 +113,27 @@ void bub::MainScene::Render() const
 #ifdef USE_IM_GUI
 void bub::MainScene::Debug()
 {
-
 	SDXL_ImGui_Begin("test");
-	SDXL_ImGui_DragFloat2("floaty", &m_pPlayer->Transform()->position.x, 1, 0.f, 1260);
 
-	static float ok[2];
+
+	static bool thisIsABool;
 	
-	//SDXL_ImGui_DragFloat2("floaty", ok, 1, 0.f, 1260);
+	SDXL_ImGui_Checkbox("okd", &thisIsABool);
+	
+	static float progression;
+	SDXL_ImGui_DragFloat("progression", &progression, 0.01f, 0.f, 1.f);
+	
+
+	SDXL_ImGui_ProgressBar(progression);
+
+	static char buffer[255];
+
+	static bool hasSetBuffer = false;
+	
+	SDXL_ImGui_InputText("ok", buffer, 255);
 	SDXL_ImGui_End();
+
+	
 }
 #endif
 

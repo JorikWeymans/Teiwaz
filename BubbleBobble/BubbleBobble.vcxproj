@@ -108,7 +108,8 @@
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -130,7 +131,8 @@
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -156,7 +158,8 @@
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -182,7 +185,8 @@
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>

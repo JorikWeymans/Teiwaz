@@ -13,7 +13,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_	 int)
 {
 
-
 	bub::BubbleBobble game;
 
 	game.Initialize(hInstance);
