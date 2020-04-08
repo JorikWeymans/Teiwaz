@@ -9,7 +9,7 @@ namespace tyr
 	class ColliderComp final : public BaseComponent
 	{
 	public:
-		explicit ColliderComp(float width, float height, const PivotMode& pivotMode);
+		explicit ColliderComp(float width, float height, const PivotMode& pivotMode, bool isDynamic = false);
 		~ColliderComp() override = default;
 
 		void Initialize() override {};
@@ -25,6 +25,7 @@ namespace tyr
 	private:
 		float m_Width, m_Height;
 		PivotMode m_Pivot;
+		bool m_IsDynamic;
 	public:
 		//ColliderComp() = delete;
 		ColliderComp(const ColliderComp&) = delete;

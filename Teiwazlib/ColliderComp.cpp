@@ -4,13 +4,14 @@
 #include "SceneObject.h"
 #include "TransformComp.h"
 #include "TyrEnums.h"
-tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivotMode)
+tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivotMode, bool isDynamic)
 	: m_Width(width), m_Height(height)
 	, m_Pivot(pivotMode)
+	, m_IsDynamic(isDynamic)
 {
 }
 
-#ifdef USE_IM_GUI
+
 tyr::Rect tyr::ColliderComp::GetColliderRect() const
 {
 	const auto pos = m_pSceneObject->GetTransform()->GetPosition();
@@ -20,7 +21,7 @@ tyr::Rect tyr::ColliderComp::GetColliderRect() const
 	return rect;
 	
 }
-
+#ifdef USE_IM_GUI
 void tyr::ColliderComp::Debug()
 {
 	const auto pos = m_pSceneObject->GetTransform()->GetPosition();
@@ -28,6 +29,6 @@ void tyr::ColliderComp::Debug()
 	Rect drawRect{ pos.x, pos.y, m_Width, m_Height };
 	Rect::AdjustRectToPivot(drawRect, m_Pivot);
 	
-	SDXL_RenderDebugRect({ drawRect.pos.x, drawRect.pos.y }, drawRect.width, drawRect.height, static_cast<SDXL::SDXLVec4>(ColorGreen));
+	SDXL_RenderDebugRect({ drawRect.pos.x, drawRect.pos.y }, drawRect.width, drawRect.height, static_cast<SDXL::SDXLVec4>(m_IsDynamic ? ColorGreen : ColorRed));
 }
 #endif

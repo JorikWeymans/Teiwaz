@@ -25,6 +25,8 @@ namespace tyr
 		void AddComponent(BaseComponent* pComp);
 		const TransformComp* GetTransform() const;
 		Transform* Transform();
+
+		void SetPositionY(float y);
 		
 		void Translate(float x, float y);
 		template <typename T>

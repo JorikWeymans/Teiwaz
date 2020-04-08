@@ -1,11 +1,11 @@
 #pragma once
 #include "Scene.h"
-#include "CharacterControllerComp.h"
 #include "Vectors.h"
 
 namespace tyr
 {
 	class TextureComp;
+	class CharacterControllerComp;
 	class Animator;
 }
 namespace bub
@@ -25,7 +25,7 @@ namespace bub
 #endif
 	private:
 		void LoadBackground();
-		tyr::SceneObject* m_pPlayer = nullptr;
+		tyr::CharacterControllerComp* m_pController = nullptr;
 		tyr::TextureComp* m_pTexture = nullptr;
 		tyr::Animator* m_Ani = nullptr;
 		

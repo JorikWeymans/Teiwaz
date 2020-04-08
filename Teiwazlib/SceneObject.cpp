@@ -80,6 +80,12 @@ tyr::Transform* tyr::SceneObject::Transform()
 	
 }
 
+void tyr::SceneObject::SetPositionY(float y)
+{
+	m_pTransform->GetTr()->position.y = y;
+	
+}
+
 void tyr::SceneObject::Translate(float x, float y)
 {
 	m_pTransform->Translate(x, y);

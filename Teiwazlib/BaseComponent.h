@@ -1,4 +1,5 @@
 #pragma once
+#define GET_CONTEXT m_pSceneObject->GetGameContext()
 namespace tyr
 {
 	class SceneObject;

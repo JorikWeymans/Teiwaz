@@ -3,23 +3,26 @@
 
 namespace tyr
 {
+	class ColliderComp;
+	class TransformComp;
 	class Vector2;
 	class CharacterControllerComp final : public BaseComponent
 	{
 	public:
-		explicit CharacterControllerComp();
-		~CharacterControllerComp() override;
+		CharacterControllerComp();
+		~CharacterControllerComp() override = default;
 
 		void Initialize() override;
 
-		void Update() override;
-		void FixedUpdate() override;
-		void Render() const override;
+		void Update() override {};
+		void FixedUpdate() override {};
+		void Render() const override {};
 
 		void Move(float x, float y);
 		void Move(const Vector2& amount);
 	private:
-		
+		TransformComp const* m_pTransform;
+		ColliderComp* m_pCollider; //weak pointer
 	public:
 		//CharacterControllerComp() = delete;
 		CharacterControllerComp(const CharacterControllerComp&) = delete;

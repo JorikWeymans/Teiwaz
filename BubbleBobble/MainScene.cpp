@@ -23,16 +23,18 @@ void bub::MainScene::Initialize()
 {
 	try
 	{
-		//LoadBackground();
-		m_pPlayer = new tyr::SceneObject(tyr::Transform(tyr::Vector2(28.f, 624.f), tyr::Vector2(1,1)));
-		AddSceneObject(m_pPlayer);
+		LoadBackground();
+		auto obj = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1,1)));
+		AddSceneObject(obj);
 
-		auto pivotMode = tyr::PivotMode::Center;
+		const auto pivotMode = tyr::PivotMode::Center;
 		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", pivotMode, tyr::Rect(0.f, 0.f, 48.f, 48.f));
 
-		m_pPlayer->AddComponent(m_pTexture);
-		m_pPlayer->AddComponent(new tyr::ColliderComp(48,48, pivotMode));
+		obj->AddComponent(m_pTexture);
+		obj->AddComponent(new tyr::ColliderComp(48,48, pivotMode, true	));
 
+		m_pController = new tyr::CharacterControllerComp();
+		obj->AddComponent(m_pController);
 		
 		
 		m_pContext->pInput->AddAction("MoveUp", tyr::ButtonState::Down, 'W' );
@@ -71,14 +73,14 @@ void bub::MainScene::Initialize()
 		//auto pinkSquare = new tyr::SceneObject(tyr::Transform(tyr::Vector2{0,0}, tyr::Vector2(1, 1)));
 		//AddSceneObject(pinkSquare);
 		//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0, 0, 16, 16)));
-
-		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 650)));
+#ifdef USE_IM_GUI
+		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 670)));
 		AddSceneObject(pFPS);
 		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
 		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
 		pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::Update, 0));
 		pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::FixedUpdate, 1));
-		
+#endif	
 	}
 	catch(tyr::TyrException& e)
 	{
@@ -105,7 +107,7 @@ void bub::MainScene::FixedUpdate()
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 		
 		m_Ani->SetAnimation("Eating");
-		m_pPlayer->Translate(-150 * elapsed, 0);
+		m_pController->Move(-150 * elapsed, 0);
 	
 	
 	}
@@ -115,7 +117,7 @@ void bub::MainScene::FixedUpdate()
 		m_Ani->SetAnimation("Walking");
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 	
-		m_pPlayer->Translate(150 * elapsed, 0);
+		m_pController->Move(150 * elapsed, 0);
 	}
 
 	if (m_pContext->pInput->IsActionTriggered("MoveDown"))
@@ -123,7 +125,7 @@ void bub::MainScene::FixedUpdate()
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 
 		m_Ani->SetAnimation("Eating");
-		m_pPlayer->Translate(0, -150 * elapsed);
+		m_pController->Move(0, -150 * elapsed);
 
 
 	}
@@ -133,7 +135,7 @@ void bub::MainScene::FixedUpdate()
 		m_Ani->SetAnimation("Walking");
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 
-		m_pPlayer->Translate(0,150 * elapsed);
+		m_pController->Move(0,150 * elapsed);
 	}
 
 }
@@ -196,6 +198,7 @@ void bub::MainScene::LoadBackground()
 				AddSceneObject(pinkSquare);
 				//pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
 				pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft, tyr::Rect(48,0,24,24)));
+				pinkSquare->AddComponent(new tyr::ColliderComp(24, 24, tyr::PivotMode::TopLeft, false));
 			}
 		}
 	}
