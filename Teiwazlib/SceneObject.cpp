@@ -89,3 +89,9 @@ const tyr::GameContext* tyr::SceneObject::GetGameContext() const
 {
 	return m_pContext;
 }
+
+void tyr::SceneObject::Initialize()
+{
+	m_pTransform->m_pSceneObject = this;
+	m_pTransform->Initialize();
+}

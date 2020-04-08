@@ -11,7 +11,7 @@
 #include "TyrException.h"
 #include "Animation.h"
 #include "Animator.h"
-
+#include "Vectors.h"
 
 bub::MainScene::~MainScene()
 {
@@ -24,18 +24,20 @@ void bub::MainScene::Initialize()
 	try
 	{
 		LoadBackground();
-		m_pPlayer = new tyr::SceneObject(tyr::Transform(tyr::Vector2(28.f, 0.0f), tyr::Vector2(1,1)));
+		m_pPlayer = new tyr::SceneObject(tyr::Transform(tyr::Vector2(28.f, 624.f), tyr::Vector2(1,1)));
 		AddSceneObject(m_pPlayer);
 
-		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopCenter, tyr::Rect(0.f, 0.f, 48.f, 48.f));
+		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::BotCenter, tyr::Rect(0.f, 0.f, 48.f, 48.f));
 
 		m_pPlayer->AddComponent(m_pTexture);
 
 		
 		
-		m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, VK_LEFT);
-		m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, VK_RIGHT);
-		m_pContext->pInput->AddAction("Abutton", tyr::ButtonState::Down, 'A');
+		m_pContext->pInput->AddAction("MoveUp", tyr::ButtonState::Down, 'W' );
+		m_pContext->pInput->AddAction("MoveDown", tyr::ButtonState::Down, 'S');
+		
+		m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, 'A');
+		m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, 'D');
 		//
 		////for (unsigned int i{ 0 }; i < 8; i++)
 		////{
@@ -63,6 +65,17 @@ void bub::MainScene::Initialize()
 		m_Ani->AddAnimation("Eating", EatAni);
 		m_Ani->SetAnimation("Walking");
 
+
+		//auto pinkSquare = new tyr::SceneObject(tyr::Transform(tyr::Vector2{0,0}, tyr::Vector2(1, 1)));
+		//AddSceneObject(pinkSquare);
+		//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0, 0, 16, 16)));
+
+		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 650)));
+		AddSceneObject(pFPS);
+		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
+		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
+		pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::Update, 0));
+		pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::FixedUpdate, 1));
 		
 	}
 	catch(tyr::TyrException& e)
@@ -77,13 +90,13 @@ void bub::MainScene::Update()
 	tyr::Scene::Update();
 	m_Ani->Update(m_pContext->pTime->deltaTime);
 	m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
-
 	
 }
 
 void bub::MainScene::FixedUpdate()
 {
 	tyr::Scene::FixedUpdate();
+	return;
 	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
 	{
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
@@ -102,6 +115,24 @@ void bub::MainScene::FixedUpdate()
 		m_pPlayer->Translate(150 * elapsed, 0);
 	}
 
+	if (m_pContext->pInput->IsActionTriggered("MoveDown"))
+	{
+		const float elapsed = m_pContext->pTime->fixedDeltaTime;
+
+		m_Ani->SetAnimation("Eating");
+		m_pPlayer->Translate(0, -150 * elapsed);
+
+
+	}
+	if (m_pContext->pInput->IsActionTriggered("MoveUp"))
+
+	{
+		m_Ani->SetAnimation("Walking");
+		const float elapsed = m_pContext->pTime->fixedDeltaTime;
+
+		m_pPlayer->Translate(0,150 * elapsed);
+	}
+
 }
 
 void bub::MainScene::Render() const
@@ -115,32 +146,11 @@ void bub::MainScene::Render() const
 void bub::MainScene::Debug()
 {
 
-	SDXL_ImGui_Begin("test", nullptr, SDXL_ImGuiWindowFlags::MenuBar);
-
-
-
-	//SDXL_ImGui_BeginMainMenuBar();
-	//static bool clicked = false;
-	//SDXL_ImGui_MenuItem("Quit", nullptr, &clicked);
-	//
-	//if (SDXL_ImGui_BeginMenu("Edit"))
-	//{
-	//	if (SDXL_ImGui_MenuItem("Undo", "CTRL+Z")) {}
-	//	if (SDXL_ImGui_MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-	//	SDXL_ImGui_Separator();
-	//	if (SDXL_ImGui_MenuItem("Cut", "CTRL+X")) {}
-	//	if (SDXL_ImGui_MenuItem("Copy", "CTRL+C")) {}
-	//	if (SDXL_ImGui_MenuItem("Paste", "CTRL+V")) {}
-	//	SDXL_ImGui_EndMenu();
-	//
-	//}
-	//
-	//SDXL_ImGui_EndMainMenuBar();
-	//
-	//
-	//
-	//
-	//
+	SDXL_ImGui_Begin("Debug");
+	
+	
+	//SDXL_ImGui_SliderFloat2("position", &m_pPlayer->Transform()->position.x, 0.f, 100.f);
+	
 	SDXL_ImGui_End();
 
 
@@ -159,20 +169,19 @@ void bub::MainScene::LoadBackground()
 	std::vector<std::string> vec{};
 	float scale = 3.f * 8.f; //game scale from original scale;
 
-	tyr::Vector2 pos(0, 0);
+	tyr::Vector2 pos(0, m_pContext->pGameSpace->GetHeight());
 
 	vec.clear();
-	reader.moveBufferPosition(sizeof(int) * 25 * 2);
+	reader.moveBufferPosition(sizeof(int) * 25 * 1);
 
 	for (int i{ 0 }; i < 25; i++)
 	{
 		//           BIG to LITTLE
 		auto read = _byteswap_ulong(reader.Read<unsigned int>());
-		//auto str = tyr::ToBinaryString(read);
-		pos.y = (scale * 2) + i * scale;
-		auto k = sizeof(read);
-		
+		//auto read = reader.Read<unsigned int>();
+		pos.y = m_pContext->pGameSpace->GetHeight() - ((scale * 2) + i * scale);
 		pos.x = (sizeof(read) * 8U - 1) * scale;
+		
 		for (int j{ sizeof(read) * 8U - 1 }; j >= 0; --j)
 		{
 			pos.x = ((sizeof(read) * 8U - 1) * scale) - j * scale;
@@ -183,15 +192,11 @@ void bub::MainScene::LoadBackground()
 				auto pinkSquare = new tyr::SceneObject(tyr::Transform(pos, tyr::Vector2(scale, scale)));
 				AddSceneObject(pinkSquare);
 				pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
+				//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0,0,16,16)));
 			}
 		}
 	}
 
 
-	auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 10.0f)));
-	AddSceneObject(pFPS);
-	pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
-	pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
-	pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::Update, 0));
-	pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::FixedUpdate, 1));
+
 }

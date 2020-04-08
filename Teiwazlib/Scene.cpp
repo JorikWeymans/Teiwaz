@@ -17,6 +17,8 @@ tyr::Scene::~Scene()
 void tyr::Scene::AddSceneObject(SceneObject* pObj)
 {
 	pObj->m_pContext = m_pContext;
+	pObj->Initialize();
+	
 	m_pSceneObjects.emplace_back(pObj);
 }
 

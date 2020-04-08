@@ -4,6 +4,9 @@
 #include <algorithm>
 #include "Vectors.h"
 #include <sstream>
+#include "TeiwazEngine.h"
+#include "GameContext.h"
+#include "Color.h"
 tyr::SceneManager::SceneManager(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pScenes(std::vector<Scene*>())
@@ -36,24 +39,57 @@ void tyr::SceneManager::FixedUpdate()
 #ifdef USE_IM_GUI
 void tyr::SceneManager::Debug() const
 {
+	DebugGameOutline();
+	if(SDXL_ImGui_BeginMainMenuBar())
+	{
+		if(SDXL_ImGui_BeginMenu("File"))
+		{
+			if (SDXL_ImGui_MenuItem("Quit", "esc"))
+			{
+				TeiwazEngine::WantQuit = true;
+				
+			}
+			SDXL_ImGui_EndMenu();
+		}
+		SDXL_ImGui_EndMainMenuBar();
+	}
+	
+
+	
 	m_pScenes[0]->Debug();
+}
+
+void tyr::SceneManager::DebugGameOutline() const
+{
+
+	const auto width = m_pContext->pGameSpace->GetWidth();
+	const auto height = m_pContext->pGameSpace->GetHeight();
+
+	//LEFT LINE
+	SDXL_RenderDebugLine(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
+		SDXL::SDXLVec2{ ENGINE_SPACING_LEFT, height + ENGINE_SPACING_TOP }, static_cast<SDXL::SDXLVec4>(ColorBlue));
+
+	//RIGHT LINE
+	SDXL_RenderDebugLine(SDXL::SDXLVec2{ width + ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
+		SDXL::SDXLVec2{ width + ENGINE_SPACING_LEFT, height + ENGINE_SPACING_TOP }, static_cast<SDXL::SDXLVec4>(ColorBlue));
+
+
+	//TOP LINE
+	SDXL_RenderDebugLine(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
+		SDXL::SDXLVec2{ width + ENGINE_SPACING_LEFT, ENGINE_SPACING_TOP }, static_cast<SDXL::SDXLVec4>(ColorBlue));
+
+
 }
 #endif
 void tyr::SceneManager::Render() const
 {
 	SDXL_Clear();
-	
-	m_pScenes[0]->Render();
 
+	m_pScenes[0]->Render();
+	
 	SDXL_RenderAll();
 #ifdef USE_IM_GUI
 	Debug();
-	//static Vector2 test(0,0);
-	//
-	//SDXL_ImGui_Begin("test");
-	//SDXL_ImGui_DragFloat2("floaty", &test.x, 1, 0.f, 1260);
-	//
-	//SDXL_ImGui_End();
 #endif
 
 	

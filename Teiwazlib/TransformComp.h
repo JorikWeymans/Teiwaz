@@ -14,7 +14,7 @@ namespace tyr
 
 		void Translate(float x, float y);
 		
-		void Initialize() override {};
+		void Initialize() override;
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() const override;

@@ -45,7 +45,8 @@ namespace tyr
 		}
 		
 		const GameContext* GetGameContext() const;
-	protected:
+	private:
+		void Initialize();
 		std::vector<BaseComponent*> m_pComponents;
 		TransformComp* m_pTransform;
 		bool m_IsDestroyed;

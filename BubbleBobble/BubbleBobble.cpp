@@ -10,7 +10,7 @@ bub::BubbleBobble::BubbleBobble()
 
 void bub::BubbleBobble::Initialize(HINSTANCE hinstance)
 {
-	tyr::TeiwazEngine::Initialize(hinstance, "BubbleBobble", 768 + EXTRA_SCREEN_SIZE, 672);
+	tyr::TeiwazEngine::Initialize(hinstance, "BubbleBobble", 768, 672);
 
 }
 

@@ -21,7 +21,6 @@ namespace SDXL
 	struct SDXLVec2;
 	struct SDXLRect;
 
-
 	struct float2
 	{
 		float2(): x(0.f), y(0.f){}

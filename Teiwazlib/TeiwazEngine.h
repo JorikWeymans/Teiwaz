@@ -1,18 +1,24 @@
 #pragma once
 #include <string>
-
 //When using IM Gui, reserve some extra space for it
+
 #ifdef USE_IM_GUI
-#define EXTRA_SCREEN_SIZE 400
+#define ENGINE_SPACING_LEFT 400
+#define ENGINE_SPACING_RIGHT 400
+#define ENGINE_SPACING_TOP 20
 #else
-#define EXTRA_SCREEN_SIZE 0
+#define ENGINE_SPACING_LEFT 0
+#define ENGINE_SPACING_RIGHT 0
+#define ENGINE_SPACING_TOP 0
 #endif
+
 
 
 namespace tyr
 {
 	class GameContext;
 	class SceneManager;
+	class Vector2;
 	class TeiwazEngine
 	{
 	public:
@@ -20,10 +26,10 @@ namespace tyr
 		virtual ~TeiwazEngine() = default;
 		
 
-		
+		static void GameToEngineSpace(GameContext const* pContext, Vector2* pPos);
 		void Run();
 
-		
+		static bool WantQuit;
 	protected:
 		bool ProcessInput();
 		virtual void LoadGame() = 0;

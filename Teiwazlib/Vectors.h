@@ -35,6 +35,10 @@ namespace tyr
 		
 		
 		explicit operator bool() const;
+
+		const Vector2& GetPos()  const { return m_Pos; }
+		float GetWidth() const { return m_Width; }
+		float GetHeight() const { return m_Height; }
 	private:
 		Vector2 m_Pos;
 		float m_Width, m_Height;

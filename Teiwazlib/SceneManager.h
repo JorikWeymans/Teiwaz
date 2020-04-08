@@ -21,9 +21,14 @@ namespace  tyr
 	private:
 #ifdef USE_IM_GUI
 		void Debug() const;
+		void DebugGameOutline() const;
 #endif
 		GameContext* m_pContext; //Weak ptr
 		std::vector<Scene*> m_pScenes;
+
+
+
+
 	};
 
 

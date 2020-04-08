@@ -9,8 +9,9 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "ContentManager.h"
+#include "Vectors.h"
 
-
+bool tyr::TeiwazEngine::WantQuit = false;
 tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 	: m_pSceneManager(nullptr)
 	, m_pContext(nullptr)
@@ -18,15 +19,15 @@ tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 {
 }
 
-HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& name, int width, int height)
+HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& name, int gameWidth, int GameHeight)
 {
-	auto hr =  SDXL_Init(hInstance, name, width, height);
+	auto hr =  SDXL_Init(hInstance, name, gameWidth + ENGINE_SPACING_LEFT + ENGINE_SPACING_RIGHT, GameHeight + ENGINE_SPACING_TOP);
 	
 	hr = SDXL_InitRenderers(L"./Data/Effects/ImageRenderer.fx",
 		L"./Data/Effects/TextRenderer.fx",
 		L"./Data/Effects/DebugRenderer.fx");
 
-	m_pContext = new GameContext(new Time(), new InputHandler());
+	m_pContext = new GameContext(new Time(), new InputHandler(), new Rect(ENGINE_SPACING_RIGHT,0.f, static_cast<float>(gameWidth), static_cast<float>(GameHeight)));
 	m_pSceneManager = new SceneManager(m_pContext);
 
 	ContentManager::GetInstance()->Initialize(L"./Data/");
@@ -34,6 +35,14 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 	return hr;
 
 	
+}
+
+void tyr::TeiwazEngine::GameToEngineSpace(GameContext const* pContext, Vector2* pPos)
+{
+	auto space = pContext->pGameSpace;
+
+	pPos->x += ENGINE_SPACING_LEFT;
+	pPos->y = space->GetHeight() - pPos->y + ENGINE_SPACING_TOP;
 }
 
 void tyr::TeiwazEngine::Run()
@@ -87,6 +96,7 @@ bool tyr::TeiwazEngine::ProcessInput()
 		return false;
 	
 	m_pContext->pInput->Update();
-
+	if (WantQuit) return false;
+	
 	return !m_pContext->pInput->IsActionTriggered("QUIT");
 }

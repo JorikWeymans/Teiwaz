@@ -1,11 +1,12 @@
 #include "tyrpch.h"
 #include "TransformComp.h"
-
-
+#include "TeiwazEngine.h"
+#include "SceneObject.h"
 
 tyr::TransformComp::TransformComp(const Transform& transform)
 	: m_pTransform(new Transform(transform))
 {
+	
 }
 tyr::TransformComp::TransformComp(const Vector2& position)
 	: TransformComp(Transform(position))
@@ -25,6 +26,11 @@ void tyr::TransformComp::Translate(float x, float y)
 {
 	m_pTransform->position.x += x;
 	m_pTransform->position.y += y;
+}
+
+void tyr::TransformComp::Initialize()
+{
+	//TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &m_pTransform->position);
 }
 
 void tyr::TransformComp::Update()
