@@ -111,27 +111,39 @@ void bub::MainScene::Render() const
 
 }
 #ifdef USE_IM_GUI
+
 void bub::MainScene::Debug()
 {
-	SDXL_ImGui_Begin("test");
+
+	SDXL_ImGui_Begin("test", nullptr, SDXL_ImGuiWindowFlags::MenuBar);
 
 
-	static bool thisIsABool;
-	
-	SDXL_ImGui_Checkbox("okd", &thisIsABool);
-	
-	static float progression;
-	SDXL_ImGui_DragFloat("progression", &progression, 0.01f, 0.f, 1.f);
-	
 
-	SDXL_ImGui_ProgressBar(progression);
-
-	static char buffer[255];
-
-	static bool hasSetBuffer = false;
-	
-	SDXL_ImGui_InputText("ok", buffer, 255);
+	//SDXL_ImGui_BeginMainMenuBar();
+	//static bool clicked = false;
+	//SDXL_ImGui_MenuItem("Quit", nullptr, &clicked);
+	//
+	//if (SDXL_ImGui_BeginMenu("Edit"))
+	//{
+	//	if (SDXL_ImGui_MenuItem("Undo", "CTRL+Z")) {}
+	//	if (SDXL_ImGui_MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+	//	SDXL_ImGui_Separator();
+	//	if (SDXL_ImGui_MenuItem("Cut", "CTRL+X")) {}
+	//	if (SDXL_ImGui_MenuItem("Copy", "CTRL+C")) {}
+	//	if (SDXL_ImGui_MenuItem("Paste", "CTRL+V")) {}
+	//	SDXL_ImGui_EndMenu();
+	//
+	//}
+	//
+	//SDXL_ImGui_EndMainMenuBar();
+	//
+	//
+	//
+	//
+	//
 	SDXL_ImGui_End();
+
+
 
 	
 }
