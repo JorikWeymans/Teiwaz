@@ -73,6 +73,48 @@ void tyr::Rect::Set(float x, float y, float width, float height)
 	m_IsSet = true;
 }
 
+void tyr::Rect::AdjustRectToPivot(Rect& theRect, PivotMode pivot)
+{
+	Vector2 temp = theRect.pos;
+	switch (pivot)
+	{
+	case PivotMode::TopLeft:
+
+		break;
+	case PivotMode::TopCenter:
+		temp.x -= theRect.width / 2;
+		break;
+	case PivotMode::TopRight:
+		temp.x -= theRect.width;
+		break;
+	case PivotMode::CenterLeft:
+		temp.y -= theRect.height / 2;
+		break;
+	case PivotMode::Center:
+		temp.x -= theRect.width / 2;
+		temp.y -= theRect.height / 2;
+		break;
+	case PivotMode::CenterRight:
+		temp.x -= theRect.width;
+		temp.y -= theRect.height / 2;
+		break;
+	case PivotMode::BotLeft:
+		temp.y -= theRect.height;
+		break;
+	case PivotMode::BotCenter:
+		temp.x -= theRect.width / 2;
+		temp.y -= theRect.height;
+		break;
+	case PivotMode::BotRight:
+		temp.x -= theRect.width;
+		temp.y -= theRect.height;
+		break;
+	default:;
+	}
+
+	theRect.pos = temp;
+}
+
 tyr::Rect::operator bool() const
 {
 	return m_IsSet;

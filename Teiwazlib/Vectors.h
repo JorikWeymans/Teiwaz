@@ -1,4 +1,5 @@
 #pragma once
+#include "Proprties.h"
 namespace tyr
 {
 	enum class PivotMode;
@@ -22,7 +23,7 @@ namespace tyr
 	};
 
 
-	class Rect
+	class Rect final
 	{
 	public:
 		explicit Rect();
@@ -33,13 +34,18 @@ namespace tyr
 
 		void Set(float x, float y, float width, float height);
 		
-		
+
+		static void AdjustRectToPivot(Rect& theRect, PivotMode pivot);
 		explicit operator bool() const;
 
-		const Vector2& GetPos()  const { return m_Pos; }
-		float GetWidth() const { return m_Width; }
-		float GetHeight() const { return m_Height; }
+
+
+		
+		PROPERTY(Vector2, pos); GET(pos) { return m_Pos; }  SET(pos) { m_Pos = value;}
+		PROPERTY(float, width); GET(width) { return m_Width; }  SET(width) { m_Width = value; }
+		PROPERTY(float, height); GET(height) { return m_Height; }  SET(height) { m_Height = value; }
 	private:
+	
 		Vector2 m_Pos;
 		float m_Width, m_Height;
 		bool m_IsSet;

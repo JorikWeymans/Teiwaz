@@ -99,7 +99,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>tyrpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -122,7 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>tyrpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -147,7 +147,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>tyrpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -174,7 +174,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>tyrpch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -195,12 +195,15 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="CharacterControllerComp.h" />
+    <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Elapser.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Proprties.h" />
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureComp.h" />
@@ -224,6 +227,8 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="CharacterControllerComp.cpp" />
+    <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Elapser.cpp" />

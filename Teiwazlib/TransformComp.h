@@ -20,7 +20,7 @@ namespace tyr
 		void Render() const override;
 
 		const Transform& GetTransform() const;
-		const Vector2& GetPosition() const;
+		Vector2 GetPosition() const;
 		const Vector2& GetScale() const;
 		float GetRotation() const;
 

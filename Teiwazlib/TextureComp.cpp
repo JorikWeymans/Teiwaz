@@ -53,8 +53,6 @@ void tyr::TextureComp::Render() const
 	const auto scale = m_pTransform->GetScale();
 	const auto rot = m_pTransform->GetRotation();
 
-	TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &pos);
-
 	
 	SDXL_RenderImage(m_pTexture->SDXL(), { pos.x, pos.y }, { m_Pivot.x,m_Pivot.y },{ scale.x, scale.y },
 									static_cast<SDXL::SDXLRect>(m_SrcRect), rot);

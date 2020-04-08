@@ -4,3 +4,6 @@
 #include "TextureComp.h"
 #include "TextComp.h"
 #include "FPSComp.h"
+
+#include "ColliderComp.h"
+#include "CharacterControllerComp.h"

@@ -23,13 +23,15 @@ void bub::MainScene::Initialize()
 {
 	try
 	{
-		LoadBackground();
+		//LoadBackground();
 		m_pPlayer = new tyr::SceneObject(tyr::Transform(tyr::Vector2(28.f, 624.f), tyr::Vector2(1,1)));
 		AddSceneObject(m_pPlayer);
 
-		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::BotCenter, tyr::Rect(0.f, 0.f, 48.f, 48.f));
+		auto pivotMode = tyr::PivotMode::Center;
+		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", pivotMode, tyr::Rect(0.f, 0.f, 48.f, 48.f));
 
 		m_pPlayer->AddComponent(m_pTexture);
+		m_pPlayer->AddComponent(new tyr::ColliderComp(48,48, pivotMode));
 
 		
 		
@@ -82,6 +84,8 @@ void bub::MainScene::Initialize()
 	{
 		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
 	}
+
+
 	
 }
 
@@ -96,7 +100,6 @@ void bub::MainScene::Update()
 void bub::MainScene::FixedUpdate()
 {
 	tyr::Scene::FixedUpdate();
-	return;
 	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
 	{
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
@@ -145,7 +148,7 @@ void bub::MainScene::Render() const
 
 void bub::MainScene::Debug()
 {
-
+	tyr::Scene::Debug();
 	SDXL_ImGui_Begin("Debug");
 	
 	
@@ -169,7 +172,7 @@ void bub::MainScene::LoadBackground()
 	std::vector<std::string> vec{};
 	float scale = 3.f * 8.f; //game scale from original scale;
 
-	tyr::Vector2 pos(0, m_pContext->pGameSpace->GetHeight());
+	tyr::Vector2 pos(0, m_pContext->pGameSpace->height);
 
 	vec.clear();
 	reader.moveBufferPosition(sizeof(int) * 25 * 1);
@@ -179,7 +182,7 @@ void bub::MainScene::LoadBackground()
 		//           BIG to LITTLE
 		auto read = _byteswap_ulong(reader.Read<unsigned int>());
 		//auto read = reader.Read<unsigned int>();
-		pos.y = m_pContext->pGameSpace->GetHeight() - ((scale * 2) + i * scale);
+		pos.y = m_pContext->pGameSpace->height - ((scale * 2) + i * scale);
 		pos.x = (sizeof(read) * 8U - 1) * scale;
 		
 		for (int j{ sizeof(read) * 8U - 1 }; j >= 0; --j)
@@ -189,10 +192,10 @@ void bub::MainScene::LoadBackground()
 			if (read & (1u << j))
 			{
 				//1
-				auto pinkSquare = new tyr::SceneObject(tyr::Transform(pos, tyr::Vector2(scale, scale)));
+				auto pinkSquare = new tyr::SceneObject(tyr::Transform(pos, tyr::Vector2(1.f, 1.f)));
 				AddSceneObject(pinkSquare);
-				pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
-				//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0,0,16,16)));
+				//pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
+				pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft, tyr::Rect(48,0,24,24)));
 			}
 		}
 	}

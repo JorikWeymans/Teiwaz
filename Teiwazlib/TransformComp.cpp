@@ -48,9 +48,13 @@ const tyr::Transform& tyr::TransformComp::GetTransform() const
 	return *m_pTransform;
 }
 
-const tyr::Vector2& tyr::TransformComp::GetPosition() const
+tyr::Vector2 tyr::TransformComp::GetPosition() const
 {
-	return m_pTransform->position;
+
+	auto pos = m_pTransform->position;
+	TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &pos);
+
+	return pos;
 }
 
 const tyr::Vector2& tyr::TransformComp::GetScale() const

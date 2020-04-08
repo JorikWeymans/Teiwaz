@@ -62,8 +62,8 @@ void tyr::SceneManager::Debug() const
 void tyr::SceneManager::DebugGameOutline() const
 {
 
-	const auto width = m_pContext->pGameSpace->GetWidth();
-	const auto height = m_pContext->pGameSpace->GetHeight();
+	const auto width = m_pContext->pGameSpace->width;
+	const auto height = m_pContext->pGameSpace->height;
 
 	//LEFT LINE
 	SDXL_RenderDebugLine(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
@@ -83,10 +83,9 @@ void tyr::SceneManager::DebugGameOutline() const
 #endif
 void tyr::SceneManager::Render() const
 {
-	SDXL_Clear();
+	SDXL_Clear(static_cast<SDXL::SDXLVec4>(ColorBlack));
 
 	m_pScenes[0]->Render();
-	
 	SDXL_RenderAll();
 #ifdef USE_IM_GUI
 	Debug();

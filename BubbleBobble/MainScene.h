@@ -1,5 +1,8 @@
 #pragma once
 #include "Scene.h"
+#include "CharacterControllerComp.h"
+#include "Vectors.h"
+
 namespace tyr
 {
 	class TextureComp;

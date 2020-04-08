@@ -41,8 +41,7 @@ void tyr::TextComp::Render() const
 	auto pos = m_pTransform->GetPosition();
 	pos.x += m_Offset.x;
 	pos.y += m_Offset.y;
-
-	TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &pos);
+	 
 	SDXL_RenderText(m_pFont->SDXL(), m_Text, { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
 }
 

@@ -42,7 +42,7 @@ void tyr::TeiwazEngine::GameToEngineSpace(GameContext const* pContext, Vector2* 
 	auto space = pContext->pGameSpace;
 
 	pPos->x += ENGINE_SPACING_LEFT;
-	pPos->y = space->GetHeight() - pPos->y + ENGINE_SPACING_TOP;
+	pPos->y = space->height - pPos->y + ENGINE_SPACING_TOP;
 }
 
 void tyr::TeiwazEngine::Run()

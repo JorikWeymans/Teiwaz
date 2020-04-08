@@ -69,11 +69,14 @@ SDXLLibrary_API HRESULT SDXL_RemovePostProcessingEffect(SDXL::PostProcessingEffe
 ///*---------- RENDER FUNCTIONS -----------*
 ///**-------------------------------------**
 SDXLLibrary_API void SDXL_Clear();
-
+SDXLLibrary_API void SDXL_Clear(const SDXL::SDXLVec4& clearColor);
 SDXLLibrary_API void SDXL_RenderImage(SDXL::SDXLImage * pImage, const SDXL::SDXLVec2 & pos, const SDXL::SDXLVec2 & pivot, const SDXL::SDXLVec2 & scale, float rot = 0.f, float depth = 0.f);
 SDXLLibrary_API void SDXL_RenderImage(SDXL::SDXLImage * pImage, const SDXL::SDXLVec2 & pos, const SDXL::SDXLVec2 & pivot, const SDXL::SDXLVec2 & scale, const SDXL::SDXLRect& srcRect, float rot = 0.f, float depth = 0.f);
 SDXLLibrary_API void SDXL_RenderText(SDXL::SDXLFont * pFont, const std::wstring & text, const SDXL::SDXLVec2& pos, const SDXL::SDXLVec4& color);
 SDXLLibrary_API void SDXL_RenderDebugLine(const SDXL::SDXLVec2& start, const SDXL::SDXLVec2& end, const SDXL::SDXLVec4& color);
+SDXLLibrary_API void SDXL_RenderDebugRect(const SDXL::SDXLVec2& leftTop, const SDXL::SDXLVec2& rightBot, const SDXL::SDXLVec4& color);
+SDXLLibrary_API void SDXL_RenderDebugRect(const SDXL::SDXLVec2& leftTop, float width, float height, const SDXL::SDXLVec4& color);
+
 
 SDXLLibrary_API HRESULT SDXL_RenderAll();
 SDXLLibrary_API HRESULT SDXL_Present();
