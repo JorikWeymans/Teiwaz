@@ -172,37 +172,48 @@ void bub::MainScene::LoadBackground()
 	if (!reader.IsOpen()) return;
 
 	std::vector<std::string> vec{};
-	float scale = 3.f * 8.f; //game scale from original scale;
-
-	tyr::Vector2 pos(0, m_pContext->pGameSpace->height);
+	const float scale = 3.f * 8.f; //game scale from original scale;
 
 	vec.clear();
-	reader.moveBufferPosition(sizeof(int) * 25 * 1);
+	reader.moveBufferPosition(sizeof(int) * 25 * /*13*/ 2);
+	std::vector<tyr::SceneObject*> pObjects{};
+	bool filled[25][32];
 
 	for (int i{ 0 }; i < 25; i++)
 	{
 		//           BIG to LITTLE
 		auto read = _byteswap_ulong(reader.Read<unsigned int>());
-		//auto read = reader.Read<unsigned int>();
-		pos.y = m_pContext->pGameSpace->height - ((scale * 2) + i * scale);
-		pos.x = (sizeof(read) * 8U - 1) * scale;
 		
 		for (int j{ sizeof(read) * 8U - 1 }; j >= 0; --j)
 		{
-			pos.x = ((sizeof(read) * 8U - 1) * scale) - j * scale;
-
 			if (read & (1u << j))
 			{
-				//1
-				auto pinkSquare = new tyr::SceneObject(tyr::Transform(pos, tyr::Vector2(1.f, 1.f)));
-				AddSceneObject(pinkSquare);
-				//pinkSquare->AddComponent(new tyr::TextureComp(L"Textures/1x1Pink.png"));
-				pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft, tyr::Rect(48,0,24,24)));
-				pinkSquare->AddComponent(new tyr::ColliderComp(24, 24, tyr::PivotMode::TopLeft, false));
+				filled[i][31 - j] = true;
 			}
+			else
+				filled[i][31  -j] = false;
 		}
 	}
 
+
+	//bool foundTile = false;
+	//tyr::Vector2 tilePos{ 0.f,0.f };
+	for(int i {0}; i < 25 ; i++)
+	{
+		for(int j{0}; j < 32; j++)
+		{
+			OutputDebugStringA(std::to_string(filled[i][j] ? 1 : 0).c_str());
+			if(filled[i][j] == true)
+			{
+				tyr::Vector2 thePos{ j * scale,m_pContext->pGameSpace->height - (2 * scale) - i * scale };
+				auto pinkSquare = new tyr::SceneObject(tyr::Transform(thePos, tyr::Vector2(1.f, 1.f)));
+				AddSceneObject(pinkSquare);
+				pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft, tyr::Rect(48, 0, 24, 24)));
+				//pinkSquare->AddComponent(new tyr::ColliderComp(24, 24, tyr::PivotMode::TopLeft, false));
+			}
+		}
+		OutputDebugStringA("\n");
+	}
 
 
 }
