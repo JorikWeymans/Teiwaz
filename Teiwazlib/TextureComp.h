@@ -10,7 +10,8 @@ namespace tyr
 	class TextureComp final: public BaseComponent
 	{
 	public:
-		explicit TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode = PivotMode::TopLeft, const Rect& rect = Rect());
+		explicit TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode = PivotMode::TopLeft, 
+								const Rect& rect = Rect(), const Vector2& offset = Vector2(0.f,0.f));
 		~TextureComp() override;
 		
 		void Initialize() override;
@@ -28,6 +29,7 @@ namespace tyr
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Pivot;
 		Rect m_SrcRect;
+		Vector2 m_Offset;
 	public:
 		TextureComp() = delete;
 		TextureComp(const TextureComp&) = delete;

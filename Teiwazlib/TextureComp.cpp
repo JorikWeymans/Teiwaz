@@ -7,12 +7,14 @@
 #include <iostream>
 #include "TeiwazEngine.h"
 
-tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, const Rect& rect)
+tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, 
+								const Rect& rect, const Vector2& offset)
 	: m_TexturePath(texturePath)
 	, m_pTexture(nullptr)
 	, m_pTransform(nullptr)
 	, m_Pivot(Vector2(pivotMode))
 	, m_SrcRect(rect)
+	, m_Offset(offset)
 {
 	
 }
@@ -53,6 +55,7 @@ void tyr::TextureComp::Render() const
 	const auto scale = m_pTransform->GetScale();
 	const auto rot = m_pTransform->GetRotation();
 
+	pos += m_Offset;
 	
 	SDXL_RenderImage(m_pTexture->SDXL(), { pos.x, pos.y }, { m_Pivot.x,m_Pivot.y },{ scale.x, scale.y },
 									static_cast<SDXL::SDXLRect>(m_SrcRect), rot);
