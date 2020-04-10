@@ -204,9 +204,19 @@ void bub::MainScene::LoadBackground()
 				
 			}
 			else
-				filled[i][columns -1 -j].first = false;
+			{
+				if( j  < 2)
+				{
+					filled[i][columns - 1 - j].first = true;
+				}
+				else
+					filled[i][columns - 1 - j].first = false;
+			}
+				
 		}
 	}
+
+	
 	for(const auto v: filled)
 	{
 		for(const auto b : v)
@@ -215,77 +225,105 @@ void bub::MainScene::LoadBackground()
 		}
 		OutputDebugStringA("\n");
 	}
-
-	//bool foundTile = false;
-	//tyr::Vector2 tilePos{ 0.f,0.f };
+	
 	for(int i {0}; i < rows ; i++)
 	{
 		for(int j{0}; j < columns; j++)
 		{
-			OutputDebugStringA(std::to_string(filled[i][j].first ? 1 : 0).c_str());
-			if(filled[i][j].first == true)
+			
+			if(filled[i][j].first == true && !filled[i][j].second)
 			{
+				//filled[i][j].second = true;
 				tyr::Vector2 thePos{ j * scale,m_pContext->pGameSpace->height - (2 * scale) - i * scale };
-				auto pinkSquare = new tyr::SceneObject(tyr::Transform(thePos, tyr::Vector2(1.f, 1.f)));
-				AddSceneObject(pinkSquare);
-				
-				//pinkSquare->AddComponent(new tyr::ColliderComp(24, 24, tyr::PivotMode::TopLeft, false));
-				
+				auto pBlock = new tyr::SceneObject(tyr::Transform(thePos, tyr::Vector2(1.f, 1.f)));
+				AddSceneObject(pBlock);
+
 				
 				int index = j;
 				int amountFound = 1;
-				//int rowIndex = i;
-				int rowAmountfound = 1;
+				
 				//GO over each cell in a row, until you found one that is empty
 				while (true)
 				{
 					index++;
 					
-					if (index > (columns - 1))
-						break;
+					if (index > (columns - 1)) break;
 					
 					
-						if (filled[i][index].first == true && !filled[i][index].second)
-						{
-							//if (filled[i][j].second)
-							//{
-							//	break;
-							//}
-							amountFound++;
-							//while (!(rowIndex > rows - 1))
-							//{
-							//	if (filled[rowIndex][index - 1].first == true && filled[rowIndex][index].first == true)
-							//	{
-							//		filled[rowIndex][index - 1].second = true;
-							//		filled[rowIndex][index].second = true;
-							//		rowIndex++;
-							//		rowAmountfound++;
-							//	}
-							//	else
-							//		break;
-							//}
-					
-						}
-					
-					else
-						break;
-				
-				
+					if (filled[i][index].first == true && !filled[i][index].second) amountFound++;
+					else break;
 				}
-				for(int k{0}; k < amountFound; ++k)
+				
+				int secondIndex = j;
+				int y = i;
+				int rowAmount = 1;
+
+				//Go over each cell in a column, until one is found that is empty
+				while(true)
+				{
+					if (secondIndex >= index) break;
+
+					rowAmount = 1;
+					bool fullBreak = false;
+					while(true)
 					{
-					//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft,
-					//	tyr::Rect(48, 0, 24, 24), tyr::Vector2(scale * k - scale, 0.f)));
-					}					
-				pinkSquare->AddComponent(new tyr::ColliderComp(scale * amountFound, scale * rowAmountfound, tyr::PivotMode::TopLeft, false));
+						if (y + 1 > (rows - 1)) break;
+
+						if (filled[y + 1][secondIndex].first &&  !filled[y + 1][secondIndex].second) rowAmount++;
+						else
+						{
+							if(amountFound == 1)
+							{
+								fullBreak = true;
+								break;
+							}
+							rowAmount = 1;
+							fullBreak = true;
+							break;
+						}
+						y++;
+					}
+					if (fullBreak) break;
+					y = i;
+					secondIndex ++;
+				}
+
+
+				int m = 0;
+				int n = 0;
+				for (int k{ i }; k <  i + rowAmount ; k++)
+				{
+					for (int l{ j }; l < j  + amountFound ; l++)
+					{
+						filled[k][l].second = true;
+
+						pBlock->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft,
+								tyr::Rect(48, 0, 24, 24), tyr::Vector2(m * scale,n * scale)));
+
+						m++;
+					}
+					m = 0;
+					n++;
+				}
+				
+				pBlock->AddComponent(new tyr::ColliderComp(scale * amountFound, scale * rowAmount, tyr::PivotMode::TopLeft, false));
 				
 				j = index;
 				
 			
 			}
 		}
+	}
+	OutputDebugStringA("\n---------------------------------------------\n");
+	for (int i{ 0 }; i < rows; i++)
+	{
+		for (int j{ 0 }; j < columns; j++)
+		{
+
+			OutputDebugStringA(std::to_string(filled[i][j].second ? 1 : 0).c_str());
+		}
 		OutputDebugStringA("\n");
 	}
-
+	
 
 }
