@@ -10,6 +10,9 @@ tyr::CharacterControllerComp::CharacterControllerComp()
 	: m_pTransform(nullptr)
 	, m_pCollider(nullptr)
 {
+#ifdef USE_IM_GUI
+	SDXL_ImGui_ConsoleLog("CharacterController added");
+#endif
 }
 
 void tyr::CharacterControllerComp::Initialize()
@@ -36,13 +39,42 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 		canMoveX = true;
 	}
 
-	if(y < 0  && playerColl.pos.y > playSpace->pos.y + playSpace->height)
+	bool canMoveY = true;
+	if( y < 0  && 
+		playerColl.pos.y >  playSpace->height)
 	{
-		m_pSceneObject->SetPositionY(playSpace->pos.y + playSpace->height - ENGINE_SPACING_TOP);
+		m_pSceneObject->SetPositionY(playSpace->height - ENGINE_SPACING_TOP);
 	}
 
 	
 
-	m_pSceneObject->Translate(canMoveX ? x: 0.f, y);
+	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
 	
 }
+#ifdef USE_IM_GUI
+void tyr::CharacterControllerComp::RenderEditor()
+{
+	SDXL_ImGui_Begin("Components");
+
+	std::string name = "Collider Component##" + std::to_string(m_UniqueId);
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		SDXL_ImGui_PushItemWidth(100.f);
+
+		//POSITION
+		//SDXL_ImGui_Text("Width:  \t");
+		//SDXL_ImGui_SameLine();
+		//name = "##ColH" + std::to_string(m_UniqueId);
+		//SDXL_ImGui_DragFloat(name.c_str(), &m_Width, 1, 0, GET_CONTEXT->pGameSpace->width);
+		//
+		//SDXL_ImGui_Text("Height: \t");
+		//SDXL_ImGui_SameLine();
+		//name = "##ColW" + std::to_string(m_UniqueId);
+		//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
+
+
+		SDXL_ImGui_PopItemWidth();
+	}
+	SDXL_ImGui_End();
+}
+#endif

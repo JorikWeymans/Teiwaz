@@ -19,6 +19,9 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override;
 
+#ifdef USE_IM_GUI
+		void RenderEditor() override;
+#endif
 		const Transform& GetTransform() const;
 		Vector2 GetPosition() const;
 		const Vector2& GetScale() const;

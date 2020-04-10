@@ -12,13 +12,14 @@ namespace tyr
 	class SceneObject final
 	{
 	public:
-		explicit SceneObject(const Transform& transform);
+		explicit SceneObject(const Transform& transform, const std::string& name = "new GameObject" + std::to_string(counter));
 		~SceneObject();
 		
 		void Update();
 		void FixedUpdate();
 #ifdef USE_IM_GUI
 		void Debug();
+		void RenderEditor();
 #endif
 		void Render() const;
 
@@ -47,15 +48,16 @@ namespace tyr
 		}
 		
 		const GameContext* GetGameContext() const;
+		const std::string& GetName() const { return m_name; }
 	private:
 		void Initialize();
 		std::vector<BaseComponent*> m_pComponents;
 		TransformComp* m_pTransform;
 		bool m_IsDestroyed;
-
+		std::string m_name;
 		friend Scene;
 		GameContext const* m_pContext; // weak pointer
-		
+		static int counter;
 	public:
 		SceneObject(const SceneObject&) = delete;
 		SceneObject(SceneObject&&) = delete;

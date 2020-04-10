@@ -16,7 +16,9 @@ tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& 
 	, m_SrcRect(rect)
 	, m_Offset(offset)
 {
-	
+#ifdef USE_IM_GUI
+	SDXL_ImGui_ConsoleLog("Texture component added");
+#endif
 }
 
 tyr::TextureComp::~TextureComp()
@@ -73,3 +75,48 @@ void tyr::TextureComp::SetSourceRect(const Rect& rect)
 {
 	m_SrcRect = rect;
 }
+#ifdef USE_IM_GUI
+
+void tyr::TextureComp::RenderEditor()
+{
+	SDXL_ImGui_Begin("Components");
+
+	std::string name = "Texture Component##" + std::to_string(m_UniqueId);
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		SDXL_ImGui_PushItemWidth(100.f);
+		//POSITION
+		SDXL_ImGui_Text("Pivot:  \t");
+		SDXL_ImGui_SameLine();
+
+		name = "x##" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.x, 1, 0, 1);
+		SDXL_ImGui_SameLine();
+
+		name = "y##" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.y, 1, 0, 1);
+		
+		//POSITION
+		SDXL_ImGui_Text("Offset: \t");
+		SDXL_ImGui_SameLine();
+
+		name = "x##O" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.x, 1, 0, 100);
+		SDXL_ImGui_SameLine();
+
+		name = "y##O" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.y, 1, 0, 100);
+
+		SDXL_ImGui_PopItemWidth();
+	}
+
+
+
+
+
+
+	SDXL_ImGui_End();
+
+
+}
+#endif

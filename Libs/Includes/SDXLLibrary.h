@@ -116,7 +116,10 @@ SDXLLibrary_API HWND SDXL_GetWindowHandle();
 // ****** ------------------- *****
 //
 typedef unsigned int SDXL_ImGUiID;
-
+typedef int SDXL_ImGuiWindowFlags;
+typedef int SDXL_ImGuiTreeNodeFlags;
+typedef int SDXL_ImGuiCond;
+typedef int SDXL_ImGuiID;
 enum class SDXL_ImGuiDir : int
 {
 	ImGuiDir_None = -1,
@@ -137,42 +140,61 @@ enum class SDXL_ImGuiSelectableFlags : int
 	AllowItemOverlap = 1 << 4    // (WIP) Hit testing to allow subsequent widgets to overlap this one
 };
 
-enum class SDXL_ImGuiWindowFlags : int
+enum SDXL_ImGuiWindowFlags_ : int
 {
-	None = 0,
-	NoTitleBar = 1 << 0,   // Disable title-bar
-	NoResize = 1 << 1,   // Disable user resizing with the lower-right grip
-	NoMove = 1 << 2,   // Disable user moving the window
-	NoScrollbar = 1 << 3,   // Disable scrollbars (window can still scroll with mouse or programmatically)
-	NoScrollWithMouse = 1 << 4,   // Disable user vertically scrolling with mouse wheel. On child window, mouse wheel will be forwarded to the parent unless NoScrollbar is also set.
-	NoCollapse = 1 << 5,   // Disable user collapsing window by double-clicking on it
-	AlwaysAutoResize = 1 << 6,   // Resize every window to its content every frame
-	NoBackground = 1 << 7,   // Disable drawing background color (WindowBg, etc.) and outside border. Similar as using SetNextWindowBgAlpha(0.0f).
-	NoSavedSettings = 1 << 8,   // Never load/save settings in .ini file
-	NoMouseInputs = 1 << 9,   // Disable catching mouse, hovering test with pass through.
-	MenuBar = 1 << 10,  // Has a menu-bar
-	HorizontalScrollbar = 1 << 11,  // Allow horizontal scrollbar to appear (off by default). You may use SetNextWindowContentSize(ImVec2(width,0.0f)); prior to calling Begin() to specify width. Read code in imgui_demo in the "Horizontal Scrolling" section.
-	NoFocusOnAppearing = 1 << 12,  // Disable taking focus when transitioning from hidden to visible state
-	NoBringToFrontOnFocus = 1 << 13,  // Disable bringing window to front when taking focus (e.g. clicking on it or programmatically giving it focus)
-	AlwaysVerticalScrollbar = 1 << 14,  // Always show vertical scrollbar (even if ContentSize.y < Size.y)
-	AlwaysHorizontalScrollbar = 1 << 15,  // Always show horizontal scrollbar (even if ContentSize.x < Size.x)
-	AlwaysUseWindowPadding = 1 << 16,  // Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
-	NoNavInputs = 1 << 18,  // No gamepad/keyboard navigation within the window
-	NoNavFocus = 1 << 19,  // No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by CTRL+TAB)
-	UnsavedDocument = 1 << 20,  // Append '*' to title without affecting the ID, as a convenience to avoid using the ### operator. When used in a tab/docking context, tab is selected on closure and closure is deferred by one frame to allow code to cancel the closure (with a confirmation popup, etc.) without flicker.
-	NoNav = NoNavInputs | NoNavFocus,
-	NoDecoration = NoTitleBar | NoResize | NoScrollbar | NoCollapse,
-	NoInputs = NoMouseInputs | NoNavInputs | NoNavFocus,
+	SDXL_ImGuiWindowFlags_None = 0,
+	SDXL_ImGuiWindowFlags_NoTitleBar = 1 << 0,   // Disable title-bar
+	SDXL_ImGuiWindowFlags_NoResize = 1 << 1,   // Disable user resizing with the lower-right grip
+	SDXL_ImGuiWindowFlags_NoMove = 1 << 2,   // Disable user moving the window
+	SDXL_ImGuiWindowFlags_NoScrollbar = 1 << 3,   // Disable scrollbars (window can still scroll with mouse or programmatically)
+	SDXL_ImGuiWindowFlags_NoScrollWithMouse = 1 << 4,   // Disable user vertically scrolling with mouse wheel. On child window, mouse wheel will be forwarded to the parent unless NoScrollbar is also set.
+	SDXL_ImGuiWindowFlags_NoCollapse = 1 << 5,   // Disable user collapsing window by double-clicking on it
+	SDXL_ImGuiWindowFlags_AlwaysAutoResize = 1 << 6,   // Resize every window to its content every frame
+	SDXL_ImGuiWindowFlags_NoBackground = 1 << 7,   // Disable drawing background color (WindowBg, etc.) and outside border. Similar as using SetNextWindowBgAlpha(0.0f).
+	SDXL_ImGuiWindowFlags_NoSavedSettings = 1 << 8,   // Never load/save settings in .ini file
+	SDXL_ImGuiWindowFlags_NoMouseInputs = 1 << 9,   // Disable catching mouse, hovering test with pass through.
+	SDXL_ImGuiWindowFlags_MenuBar = 1 << 10,  // Has a menu-bar
+	SDXL_ImGuiWindowFlags_HorizontalScrollbar = 1 << 11,  // Allow horizontal scrollbar to appear (off by default). You may use SetNextWindowContentSize(ImVec2(width,0.0f)); prior to calling Begin() to specify width. Read code in imgui_demo in the "Horizontal Scrolling" section.
+	SDXL_ImGuiWindowFlags_NoFocusOnAppearing = 1 << 12,  // Disable taking focus when transitioning from hidden to visible state
+	SDXL_ImGuiWindowFlags_NoBringToFrontOnFocus = 1 << 13,  // Disable bringing window to front when taking focus (e.g. clicking on it or programmatically giving it focus)
+	SDXL_ImGuiWindowFlags_AlwaysVerticalScrollbar = 1 << 14,  // Always show vertical scrollbar (even if ContentSize.y < Size.y)
+	SDXL_ImGuiWindowFlags_AlwaysHorizontalScrollbar = 1 << 15,  // Always show horizontal scrollbar (even if ContentSize.x < Size.x)
+	SDXL_ImGuiWindowFlags_AlwaysUseWindowPadding = 1 << 16,  // Ensure child windows without border uses style.WindowPadding (ignored by default for non-bordered child windows, because more convenient)
+	SDXL_ImGuiWindowFlags_NoNavInputs = 1 << 18,  // No gamepad/keyboard navigation within the window
+	SDXL_ImGuiWindowFlags_NoNavFocus = 1 << 19,  // No focusing toward this window with gamepad/keyboard navigation (e.g. skipped by CTRL+TAB)
+	SDXL_ImGuiWindowFlags_UnsavedDocument = 1 << 20,  // Append '*' to title without affecting the ID, as a convenience to avoid using the ### operator. When used in a tab/docking context, tab is selected on closure and closure is deferred by one frame to allow code to cancel the closure (with a confirmation popup, etc.) without flicker.
+	SDXL_ImGuiWindowFlags_NoNav = SDXL_ImGuiWindowFlags_NoNavInputs | SDXL_ImGuiWindowFlags_NoNavFocus,
+	SDXL_ImGuiWindowFlags_NoDecoration = SDXL_ImGuiWindowFlags_NoTitleBar | SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoScrollbar | SDXL_ImGuiWindowFlags_NoCollapse,
+	SDXL_ImGuiWindowFlags_NoInputs = SDXL_ImGuiWindowFlags_NoMouseInputs | SDXL_ImGuiWindowFlags_NoNavInputs | SDXL_ImGuiWindowFlags_NoNavFocus,
 
 	// [Internal]
-	NavFlattened = 1 << 23,  // [BETA] Allow gamepad/keyboard navigation to cross over parent border to this child (only use on child that have no scrolling!)
-	ChildWindow = 1 << 24,  // Don't use! For internal use by BeginChild()
-	Tooltip = 1 << 25,  // Don't use! For internal use by BeginTooltip()
-	Popup = 1 << 26,  // Don't use! For internal use by BeginPopup()
-	Modal = 1 << 27,  // Don't use! For internal use by BeginPopupModal()
-	ChildMenu = 1 << 28   // Don't use! For internal use by BeginMenu()
+	SDXL_ImGuiWindowFlags_NavFlattened = 1 << 23,  // [BETA] Allow gamepad/keyboard navigation to cross over parent border to this child (only use on child that have no scrolling!)
+	SDXL_ImGuiWindowFlags_ChildWindow = 1 << 24,  // Don't use! For internal use by BeginChild()
+	SDXL_ImGuiWindowFlags_Tooltip = 1 << 25,  // Don't use! For internal use by BeginTooltip()
+	SDXL_ImGuiWindowFlags_Popup = 1 << 26,  // Don't use! For internal use by BeginPopup()
+	SDXL_ImGuiWindowFlags_Modal = 1 << 27,  // Don't use! For internal use by BeginPopupModal()
+	SDXL_ImGuiWindowFlags_ChildMenu = 1 << 28   // Don't use! For internal use by BeginMenu()
 };
-
+enum SDXL_ImGuiTreeNodeFlags_
+{
+	SDXL_ImGuiTreeNodeFlags_None = 0,
+	SDXL_ImGuiTreeNodeFlags_Selected = 1 << 0,   // Draw as selected
+	SDXL_ImGuiTreeNodeFlags_Framed = 1 << 1,   // Full colored frame (e.g. for CollapsingHeader)
+	SDXL_ImGuiTreeNodeFlags_AllowItemOverlap = 1 << 2,   // Hit testing to allow subsequent widgets to overlap this one
+	SDXL_ImGuiTreeNodeFlags_NoTreePushOnOpen = 1 << 3,   // Don't do a TreePush() when open (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack
+	SDXL_ImGuiTreeNodeFlags_NoAutoOpenOnLog = 1 << 4,   // Don't automatically and temporarily open node when Logging is active (by default logging will automatically open tree nodes)
+	SDXL_ImGuiTreeNodeFlags_DefaultOpen = 1 << 5,   // Default node to be open
+	SDXL_ImGuiTreeNodeFlags_OpenOnDoubleClick = 1 << 6,   // Need double-click to open node
+	SDXL_ImGuiTreeNodeFlags_OpenOnArrow = 1 << 7,   // Only open when clicking on the arrow part. If ImGuiTreeNodeFlags_OpenOnDoubleClick is also set, single-click arrow or double-click all box to open.
+	SDXL_ImGuiTreeNodeFlags_Leaf = 1 << 8,   // No collapsing, no arrow (use as a convenience for leaf nodes).
+	SDXL_ImGuiTreeNodeFlags_Bullet = 1 << 9,   // Display a bullet instead of arrow
+	SDXL_ImGuiTreeNodeFlags_FramePadding = 1 << 10,  // Use FramePadding (even for an unframed text node) to vertically align text baseline to regular widget height. Equivalent to calling AlignTextToFramePadding().
+	SDXL_ImGuiTreeNodeFlags_SpanAvailWidth = 1 << 11,  // Extend hit box to the right-most edge, even if not framed. This is not the default in order to allow adding other items on the same line. In the future we may refactor the hit system to be front-to-back, allowing natural overlaps and then this can become the default.
+	SDXL_ImGuiTreeNodeFlags_SpanFullWidth = 1 << 12,  // Extend hit box to the left-most and right-most edges (bypass the indented area).
+	SDXL_ImGuiTreeNodeFlags_NavLeftJumpsBackHere = 1 << 13,  // (WIP) Nav: left direction may move to this TreeNode() from any of its child (items submitted between TreeNode and TreePop)
+	//ImGuiTreeNodeFlags_NoScrollOnOpen     = 1 << 14,  // FIXME: TODO: Disable automatic scroll on TreePop() if node got just open and contents is not visible
+	SDXL_ImGuiTreeNodeFlags_CollapsingHeader = SDXL_ImGuiTreeNodeFlags_Framed | SDXL_ImGuiTreeNodeFlags_NoTreePushOnOpen | SDXL_ImGuiTreeNodeFlags_NoAutoOpenOnLog
+};
 enum class SDXL_ImGuiFocusedFlags
 {
 	None = 0,
@@ -182,12 +204,12 @@ enum class SDXL_ImGuiFocusedFlags
 	RootAndChildWindows = RootWindow | ChildWindows
 };
 
-enum class SDXL_ImGuiCond : int
+enum SDXL_ImGuiCond_ : int
 {
-	Always = 1 << 0,   // Set the variable
-	Once = 1 << 1,   // Set the variable once per runtime session (only the first call with succeed)
-	FirstUseEver = 1 << 2,   // Set the variable if the object/window has no persistently saved data (no entry in .ini file)
-	Appearing = 1 << 3    // Set the variable if the object/window is appearing after being hidden/inactive (or the first time)
+	SDXL_ImGuiCond_Always = 1 << 0,   // Set the variable
+	SDXL_ImGuiCond_Once = 1 << 1,   // Set the variable once per runtime session (only the first call with succeed)
+	SDXL_ImGuiCond_FirstUseEver = 1 << 2,   // Set the variable if the object/window has no persistently saved data (no entry in .ini file)
+	SDXL_ImGuiCond_Appearing = 1 << 3    // Set the variable if the object/window is appearing after being hidden/inactive (or the first time)
 };
 
 // ****** ------------------------------------ ******
@@ -209,14 +231,14 @@ enum class SDXL_ImGuiCond : int
 // * ----- Base ---- *
 // **---------------**
 SDXLLibrary_API void SDXL_ImGui_NewFrame();
-SDXLLibrary_API void SDXL_ImGui_Begin(const char* name, bool* p_open = nullptr, SDXL_ImGuiWindowFlags flags = SDXL_ImGuiWindowFlags::None);
+SDXLLibrary_API void SDXL_ImGui_Begin(const char* name, bool* p_open = nullptr, SDXL_ImGuiWindowFlags flags = 0);
 SDXLLibrary_API void SDXL_ImGui_End();
 
 // **---------------**
 // * ---- Childs --- *
 // **---------------**
-SDXLLibrary_API bool SDXL_ImGui_BeginChild(const char* str_id, const SDXL::float2& size = SDXL::float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = SDXL_ImGuiWindowFlags::None);
-SDXLLibrary_API bool SDXL_ImGui_BeginChild(SDXL_ImGUiID id, const SDXL::float2& size = SDXL::float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = SDXL_ImGuiWindowFlags::None);
+SDXLLibrary_API bool SDXL_ImGui_BeginChild(const char* str_id, const SDXL::float2& size = SDXL::float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API bool SDXL_ImGui_BeginChild(SDXL_ImGUiID id, const SDXL::float2& size = SDXL::float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = 0);
 SDXLLibrary_API void SDXL_ImGui_EndChild();
 
 // **---------------**
@@ -231,23 +253,26 @@ SDXLLibrary_API SDXL::float2 SDXL_ImGui_GetWindowSize();                        
 SDXLLibrary_API float SDXL_ImGui_GetWindowWidth();                                                            // get current window width (shortcut for GetWindowSize().x)
 SDXLLibrary_API float SDXL_ImGui_GetWindowHeight();                                                           // get current window height (shortcut for GetWindowSize().y)
 
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowPos(const SDXL::float2& pos, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always, const SDXL::float2& pivot = SDXL::float2(0.f, 0.f)); // set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowSize(const SDXL::float2& size, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);                  // set next window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis. call before Begin()
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowPos(const SDXL::float2& pos, SDXL_ImGuiCond cond = 0, const SDXL::float2& pivot = SDXL::float2(0.f, 0.f)); // set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowSize(const SDXL::float2& size, SDXL_ImGuiCond cond  = 0);                  // set next window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis. call before Begin()
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowSizeConstraints(const SDXL::float2& size_min, const SDXL::float2& size_max); // set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Sizes will be rounded down. Use callback to apply non-trivial programmatic constraints.
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowContentSize(const SDXL::float2& size);                               // set next window content size (~ scrollable client area, which enforce the range of scrollbars). Not including window decorations (title bar, menu bar, etc.) nor WindowPadding. set an axis to SDXL_ImGuiCond::Always.0f to leave it automatic. call before Begin()
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowCollapsed(bool collapsed, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);                 // set next window collapsed state. call before Begin()
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowCollapsed(bool collapsed, SDXL_ImGuiCond cond  = 0);                 // set next window collapsed state. call before Begin()
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowFocus();                                                       // set next window to be focused / top-most. call before Begin()
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowBgAlpha(float alpha);                                          // set next window background color alpha. helper to easily override the Alpha component of ImGuiCol_WindowBg/ChildBg/PopupBg. you may also use ImGuiWindowFlags_NoBackground.
-SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const SDXL::float2& pos, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);                        // (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
-SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const SDXL::float2& size, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);                      // (not recommended) set current window size - call within Begin()/End(). set to SDXL::float2(0,0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
-SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(bool collapsed, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);                     // (not recommended) set current window collapsed state. prefer using SetNextWindowCollapsed().
+SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const SDXL::float2& pos, SDXL_ImGuiCond cond  = 0);                        // (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
+SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const SDXL::float2& size, SDXL_ImGuiCond cond  = 0);                      // (not recommended) set current window size - call within Begin()/End(). set to SDXL::float2(0,0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
+SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(bool collapsed, SDXL_ImGuiCond cond  = 0);                     // (not recommended) set current window collapsed state. prefer using SetNextWindowCollapsed().
 SDXLLibrary_API void SDXL_ImGui_SetWindowFocus();                                                           // (not recommended) set current window to be focused / top-most. prefer using SetNextWindowFocus().
 SDXLLibrary_API void SDXL_ImGui_SetWindowFontScale(float scale);                                            // set font scale. Adjust IO.FontGlobalScale if you want to scale all windows. This is an old API! For correct scaling, prefer to reload font + rebuild ImFontAtlas + call style.ScaleAllSizes().
-SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const char* name, const SDXL::float2& pos, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);      // set named window position.
-SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const char* name, const SDXL::float2& size, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);    // set named window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis.
-SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(const char* name, bool collapsed, SDXL_ImGuiCond cond = SDXL_ImGuiCond::Always);   // set named window collapsed state
+SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const char* name, const SDXL::float2& pos, SDXL_ImGuiCond cond  = 0);      // set named window position.
+SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const char* name, const SDXL::float2& size, SDXL_ImGuiCond cond  = 0);    // set named window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis.
+SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(const char* name, bool collapsed, SDXL_ImGuiCond cond  = 0);   // set named window collapsed state
 SDXLLibrary_API void SDXL_ImGui_SetWindowFocus(const char* name);                                           // set named window to be focused / top-most. use NULL to remove focus.
 
+SDXLLibrary_API void SDXL_ImGui_PushItemWidth(float item_width);                                // push width of items for common large "item+label" widgets. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side). 0.0f = default to ~2/3 of windows width,
+SDXLLibrary_API void SDXL_ImGui_PopItemWidth();
+SDXLLibrary_API void SDXL_ImGui_SetNextItemWidth(float item_width);                             // set width of the _next_ common large "item+label" widget. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side)
 
 // *** ------------------------- ***
 // *  __        __   __   __   __  *   
@@ -365,10 +390,18 @@ SDXLLibrary_API bool  SDXL_ImGui_ColorPicker4(const char* label, float col[4], c
 //SDXLLibrary_API bool SetColorEditOptions(ImGuiColorEditFlags flags);                     // initialize current options (generally on application startup) if you want to select a default format, picker type, etc. User will be able to change many settings, unless you pass the _NoOptions flag to your calls.
 
 // **---------------**
+// * -- TreeNode --- *
+// **---------------**
+SDXLLibrary_API bool SDXL_ImGui_TreeNode(const char* label);
+SDXLLibrary_API void SDXL_ImGui_TreePop();
+SDXLLibrary_API bool SDXL_ImGui_CollapsingHeader(const char* label, SDXL_ImGuiTreeNodeFlags flags = 0);  // if returning 'true' the header is open. doesn't indent nor push on ID stack. user doesn't have to call TreePop().
+// 
+// **---------------**
 // * - Selectable -- *
 // **---------------**
 SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool selected = false, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::float2 & size = SDXL::float2(0, 0));  // "bool selected" carry the selection state (read-only). Selectable() is clicked is returns true so you can modify your selection state. size.x==0.0: use remaining width, size.x>0.0: specify width. size.y==0.0: use label height, size.y>0.0: specify height
 SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::float2& size = SDXL::float2(0, 0));       // "bool* p_selected" point to the selection state (read-write), as a convenient helper.
+
 
 
 // **---------------**
@@ -396,8 +429,46 @@ SDXLLibrary_API void SDXL_ImGui_EndMenu();                                      
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut = NULL, bool selected = false, bool enabled = true);  // return true when activated. shortcuts are displayed for convenience but not processed by ImGui at the moment
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut, bool* p_selected, bool enabled = true);              // return true when activated + toggle (*p_selected) if p_selected != NULL
 
+// **---------------**
+// * -- ID stack --- *
+// **---------------**
+ // ID stack/scopes
+	// - Read the FAQ for more details about how ID are handled in dear imgui. If you are creating widgets in a loop you most
+	//   likely want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
+	// - The resulting ID are hashes of the entire stack.
+	// - You can also use the "Label##foobar" syntax within widget label to distinguish them from each others.
+	// - In this header file we use the "label"/"name" terminology to denote a string that will be displayed and used as an ID,
+	//   whereas "str_id" denote a string that is only used as an ID and not normally displayed.
+SDXLLibrary_API void  SDXL_ImGui_PushID(const char* str_id);                                     // push string into the ID stack (will hash string).
+SDXLLibrary_API void  SDXL_ImGui_PushID(const char* str_id_begin, const char* str_id_end);       // push string into the ID stack (will hash string).
+SDXLLibrary_API void  SDXL_ImGui_PushID(const void* ptr_id);                                     // push pointer into the ID stack (will hash pointer).
+SDXLLibrary_API void  SDXL_ImGui_PushID(int int_id);                                             // push integer into the ID stack (will hash integer).
+SDXLLibrary_API void  SDXL_ImGui_PopID();                                                        // pop from the ID stack.
+SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const char* str_id);                               // calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
+SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const char* str_id_begin, const char* str_id_end);
+SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const void* ptr_id);
 
 
+
+// **---------------**
+// * ----- Text ---- *
+// **---------------**
+SDXLLibrary_API void SDXL_ImGui_TextUnformatted(const char* text, const char* text_end = nullptr);
+SDXLLibrary_API void SDXL_ImGui_Text(const char* fmt, ...);
+
+
+
+
+
+
+// **---------------**
+// * --- CONSOLE --- *
+// **---------------**
+SDXLLibrary_API void SDXL_ImGui_ConsoleDraw(const char* label, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API void SDXL_ImGui_ConsoleClear();
+SDXLLibrary_API void SDXL_ImGui_ConsoleLog(const char* what);
+SDXLLibrary_API void SDXL_ImGui_ConsoleLogError(const char* what);
+SDXLLibrary_API void SDXL_ImGui_ConsoleLogWarning(const char* what);
 
 
 

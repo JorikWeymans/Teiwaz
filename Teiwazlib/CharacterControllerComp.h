@@ -19,7 +19,10 @@ namespace tyr
 		void Render() const override {};
 
 		void Move(float x, float y);
-		void Move(const Vector2& amount);
+#ifdef USE_IM_GUI
+		void RenderEditor() override;
+#endif
+
 	private:
 		TransformComp const* m_pTransform;
 		ColliderComp* m_pCollider; //weak pointer

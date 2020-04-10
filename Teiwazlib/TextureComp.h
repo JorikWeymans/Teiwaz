@@ -23,6 +23,9 @@ namespace tyr
 		void Destroy();
 		void SetSourceRect(const Rect& rect);
 
+#ifdef USE_IM_GUI
+		void RenderEditor() override;
+#endif
 	private:
 		std::wstring m_TexturePath;
 		Texture* m_pTexture; //Weak pointer
@@ -30,6 +33,7 @@ namespace tyr
 		Vector2 m_Pivot;
 		Rect m_SrcRect;
 		Vector2 m_Offset;
+		
 	public:
 		TextureComp() = delete;
 		TextureComp(const TextureComp&) = delete;

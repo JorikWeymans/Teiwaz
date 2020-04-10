@@ -21,13 +21,18 @@ tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 
 HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& name, int gameWidth, int GameHeight)
 {
-	auto hr =  SDXL_Init(hInstance, name, gameWidth + ENGINE_SPACING_LEFT + ENGINE_SPACING_RIGHT, GameHeight + ENGINE_SPACING_TOP);
+	auto nameToUse = name;
+#ifdef USE_IM_GUI
+	nameToUse += " (Editor)";
+#endif
+
+	auto hr =  SDXL_Init(hInstance, nameToUse, gameWidth + ENGINE_SPACING_LEFT + ENGINE_SPACING_RIGHT, GameHeight + ENGINE_SPACING_TOP + ENGINE_SPACING_BOT);
 	
 	hr = SDXL_InitRenderers(L"./Data/Effects/ImageRenderer.fx",
 		L"./Data/Effects/TextRenderer.fx",
 		L"./Data/Effects/DebugRenderer.fx");
 
-	m_pContext = new GameContext(new Time(), new InputHandler(), new Rect(ENGINE_SPACING_RIGHT,0.f, static_cast<float>(gameWidth), static_cast<float>(GameHeight)));
+	m_pContext = new GameContext(new Time(), new InputHandler(), new Rect(ENGINE_SPACING_RIGHT, ENGINE_SPACING_BOT, static_cast<float>(gameWidth), static_cast<float>(GameHeight)));
 	m_pSceneManager = new SceneManager(m_pContext);
 
 	ContentManager::GetInstance()->Initialize(L"./Data/");

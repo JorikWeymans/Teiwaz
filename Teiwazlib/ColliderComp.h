@@ -21,6 +21,7 @@ namespace tyr
 		Rect GetColliderRect() const;
 #ifdef USE_IM_GUI
 		void Debug() override;
+		void RenderEditor() override;
 #endif
 	private:
 		float m_Width, m_Height;

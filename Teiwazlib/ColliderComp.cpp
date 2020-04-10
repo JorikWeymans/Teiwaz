@@ -31,4 +31,33 @@ void tyr::ColliderComp::Debug()
 	
 	SDXL_RenderDebugRect({ drawRect.pos.x, drawRect.pos.y }, drawRect.width, drawRect.height, static_cast<SDXL::SDXLVec4>(m_IsDynamic ? ColorGreen : ColorRed));
 }
+
+void tyr::ColliderComp::RenderEditor()
+{
+	SDXL_ImGui_Begin("Components");
+
+	std::string name = "Collider Component##" + std::to_string(m_UniqueId);
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		SDXL_ImGui_PushItemWidth(100.f);
+
+		//POSITION
+		SDXL_ImGui_Text("Width:  \t");
+		SDXL_ImGui_SameLine();
+		name = "##ColH" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Width, 1, 0, GET_CONTEXT->pGameSpace->width);
+
+		SDXL_ImGui_Text("Height: \t");
+		SDXL_ImGui_SameLine();
+		name = "##ColW" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
+
+
+		SDXL_ImGui_PopItemWidth();
+	}
+	SDXL_ImGui_End();
+
+
+}
 #endif
+

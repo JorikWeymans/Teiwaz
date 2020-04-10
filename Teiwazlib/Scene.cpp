@@ -36,6 +36,21 @@ void tyr::Scene::FixedUpdate()
 void tyr::Scene::Debug()
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Debug(); });
+
+	SDXL_ImGui_Begin("GameObjects", nullptr);
+	
+	static int selected = -1;
+	
+	for(int i{0}; i < static_cast<int>(m_pSceneObjects.size()); i++)
+	{
+		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetName().c_str(), selected == i))
+			selected = i;
+	}
+
+	if(selected != -1)
+		m_pSceneObjects.at(selected)->RenderEditor();
+	
+	SDXL_ImGui_End();
 }
 #endif
 void tyr::Scene::Render() const

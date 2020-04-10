@@ -39,7 +39,10 @@ void tyr::SceneManager::FixedUpdate()
 #ifdef USE_IM_GUI
 void tyr::SceneManager::Debug() const
 {
-	DebugGameOutline();
+	SDXL_RenderDebugRect(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP }, m_pContext->pGameSpace->width, m_pContext->pGameSpace->height, static_cast<SDXL::SDXLVec4>(ColorBlue));
+
+
+	//Main Menu
 	if(SDXL_ImGui_BeginMainMenuBar())
 	{
 		if(SDXL_ImGui_BeginMenu("File"))
@@ -53,33 +56,40 @@ void tyr::SceneManager::Debug() const
 		}
 		SDXL_ImGui_EndMainMenuBar();
 	}
-	
 
+	//LEFT
+	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ 0.f,ENGINE_SPACING_TOP });
+	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ ENGINE_SPACING_LEFT,m_pContext->pGameSpace->height  + ENGINE_SPACING_BOT });
+	SDXL_ImGui_Begin("GameObjects", nullptr,SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
+
+
+
+	SDXL_ImGui_End();
+
+
+	//RIGHT
+	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ ENGINE_SPACING_LEFT + m_pContext->pGameSpace->width,ENGINE_SPACING_TOP });
+	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ ENGINE_SPACING_RIGHT,m_pContext->pGameSpace->height + ENGINE_SPACING_BOT });
+	SDXL_ImGui_Begin("Components", nullptr, SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
+
+
+
+	SDXL_ImGui_End();
+
+	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
+	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ m_pContext->pGameSpace->width, ENGINE_SPACING_BOT + ENGINE_SPACING_TOP });
 	
+		
+	SDXL_ImGui_ConsoleDraw("Console", SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
+
+
+
+	//SDXL_ImGUI_ConsoleLog("[error] this is a real error");
+	//SDXL_ImGUI_ConsoleClear();
 	m_pScenes[0]->Debug();
 }
 
-void tyr::SceneManager::DebugGameOutline() const
-{
 
-	const auto width = m_pContext->pGameSpace->width;
-	const auto height = m_pContext->pGameSpace->height;
-
-	//LEFT LINE
-	SDXL_RenderDebugLine(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
-		SDXL::SDXLVec2{ ENGINE_SPACING_LEFT, height + ENGINE_SPACING_TOP }, static_cast<SDXL::SDXLVec4>(ColorBlue));
-
-	//RIGHT LINE
-	SDXL_RenderDebugLine(SDXL::SDXLVec2{ width + ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
-		SDXL::SDXLVec2{ width + ENGINE_SPACING_LEFT, height + ENGINE_SPACING_TOP }, static_cast<SDXL::SDXLVec4>(ColorBlue));
-
-
-	//TOP LINE
-	SDXL_RenderDebugLine(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP },
-		SDXL::SDXLVec2{ width + ENGINE_SPACING_LEFT, ENGINE_SPACING_TOP }, static_cast<SDXL::SDXLVec4>(ColorBlue));
-
-
-}
 #endif
 void tyr::SceneManager::Render() const
 {
@@ -87,6 +97,7 @@ void tyr::SceneManager::Render() const
 
 	m_pScenes[0]->Render();
 	SDXL_RenderAll();
+	
 #ifdef USE_IM_GUI
 	Debug();
 #endif

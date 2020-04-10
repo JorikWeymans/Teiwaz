@@ -6,13 +6,16 @@ namespace tyr
 	class BaseComponent
 	{
 	public:
-		BaseComponent() = default;
+		BaseComponent();
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
 		virtual void Update() = 0;
+		SceneObject* GetSceneObject() const { return m_pSceneObject; }
+		
 #ifdef USE_IM_GUI
 		virtual void Debug() {}
+		virtual void RenderEditor() {}; //should be overridden in 90% of the time
 #endif
 		virtual void FixedUpdate() = 0;
 		virtual void Render() const = 0;
@@ -20,7 +23,9 @@ namespace tyr
 	protected:
 		friend SceneObject;
 		SceneObject* m_pSceneObject = nullptr;
-
+#ifdef USE_IM_GUI
+		size_t m_UniqueId;
+#endif
 	public:
 		BaseComponent(const BaseComponent&) = delete;
 		BaseComponent(BaseComponent&&) = delete;

@@ -23,8 +23,8 @@ void bub::MainScene::Initialize()
 {
 	try
 	{
-		LoadBackground();
-		auto obj = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1,1)));
+		
+		auto obj = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1,1)), "Player");
 		AddSceneObject(obj);
 
 		const auto pivotMode = tyr::PivotMode::Center;
@@ -73,6 +73,7 @@ void bub::MainScene::Initialize()
 		//auto pinkSquare = new tyr::SceneObject(tyr::Transform(tyr::Vector2{0,0}, tyr::Vector2(1, 1)));
 		//AddSceneObject(pinkSquare);
 		//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0, 0, 16, 16)));
+		LoadBackground();
 #ifdef USE_IM_GUI
 		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 670)));
 		AddSceneObject(pFPS);
@@ -151,12 +152,12 @@ void bub::MainScene::Render() const
 void bub::MainScene::Debug()
 {
 	tyr::Scene::Debug();
-	SDXL_ImGui_Begin("Debug");
-	
-	
-	//SDXL_ImGui_SliderFloat2("position", &m_pPlayer->Transform()->position.x, 0.f, 100.f);
-	
-	SDXL_ImGui_End();
+	//SDXL_ImGui_Begin("Debug");
+	//
+	//
+	//SDXL_ImGui_SliderFloat2("position", &m_pController->GetSceneObject()->Transform()->position.x, 0.f, 100.f);
+	//
+	//SDXL_ImGui_End();
 
 
 
@@ -175,7 +176,7 @@ void bub::MainScene::LoadBackground()
 	const float scale = 3.f * 8.f; //game scale from original scale;
 
 	vec.clear();
-	reader.moveBufferPosition(sizeof(int) * 25 * /*13*/ 2);
+	reader.moveBufferPosition(sizeof(int) * 25 * 2 /*13*/ /*2*/);
 	std::vector<tyr::SceneObject*> pObjects{};
 
 
