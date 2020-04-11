@@ -10,7 +10,7 @@ namespace tyr
 }
 namespace bub
 {
-	
+	class BubPrefab;
 	class MainScene final : public tyr::Scene
 	{
 	public:
@@ -25,10 +25,9 @@ namespace bub
 #endif
 	private:
 		void LoadBackground();
-		tyr::CharacterControllerComp* m_pController = nullptr;
-		tyr::TextureComp* m_pTexture = nullptr;
-		tyr::Animator* m_Ani = nullptr;
 		
+		tyr::Animator* m_Ani = nullptr;
+		BubPrefab* m_pPlayer = nullptr;
 	public:
 		MainScene(const MainScene&) = delete;
 		MainScene(MainScene&&) = delete;

@@ -12,11 +12,14 @@
 #include "Animation.h"
 #include "Animator.h"
 #include "Vectors.h"
-
+#include "BubPrefab.h"
 bub::MainScene::~MainScene()
 {
 	delete m_Ani;
 	m_Ani = nullptr;
+
+	delete m_pPlayer;
+	m_pPlayer = nullptr;
 }
 
 void bub::MainScene::Initialize()
@@ -24,22 +27,11 @@ void bub::MainScene::Initialize()
 	try
 	{
 		LoadBackground();
+
+		m_pPlayer = new BubPrefab();
+		m_pPlayer->Generate(this);
 		
-		auto obj = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1,1)), "Player");
-		AddSceneObject(obj);
-
-		const auto pivotMode = tyr::PivotMode::Center;
-		m_pTexture = new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", pivotMode, tyr::Rect(0.f, 0.f, 48.f, 48.f));
-
-		obj->AddComponent(m_pTexture);
-		obj->AddComponent(new tyr::ColliderComp(48,48, pivotMode, true	));
-
-		m_pController = new tyr::CharacterControllerComp();
-		obj->AddComponent(m_pController);
-		obj->AddComponent(new tyr::RigidBodyComp(-150));
-		
-		m_pContext->pInput->AddAction("MoveUp", tyr::ButtonState::Down, 'W' );
-		m_pContext->pInput->AddAction("MoveDown", tyr::ButtonState::Down, 'S');
+		m_pContext->pInput->AddAction("Jump", tyr::ButtonState::Pressed, 'W' );
 		
 		m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, 'A');
 		m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, 'D');
@@ -52,7 +44,7 @@ void bub::MainScene::Initialize()
 		//
 		////TODO: Add component, animatorComp with datamember Animator given to paramater;
 		//
-		m_Ani = new tyr::Animator();
+		/*m_Ani = new tyr::Animator();
 		
 		auto walkAni = new tyr::Animation(.25f, tyr::SpritePositions{   {0, tyr::Rect(0.f ,0.f,48,48)},
 																			{1, tyr::Rect(48.f,0.f,48,48)},
@@ -68,7 +60,7 @@ void bub::MainScene::Initialize()
 		
 		m_Ani->AddAnimation("Walking", walkAni);
 		m_Ani->AddAnimation("Eating", EatAni);
-		m_Ani->SetAnimation("Walking");
+		m_Ani->SetAnimation("Walking");*/
 
 
 		//auto pinkSquare = new tyr::SceneObject(tyr::Transform(tyr::Vector2{0,0}, tyr::Vector2(1, 1)));
@@ -96,50 +88,55 @@ void bub::MainScene::Initialize()
 void bub::MainScene::Update()
 {
 	tyr::Scene::Update();
-	m_Ani->Update(m_pContext->pTime->deltaTime);
-	m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
-	
+	//m_Ani->Update(m_pContext->pTime->deltaTime);
+	//m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
+	if (m_pContext->pInput->IsActionTriggered("Jump"))
+	{
+		m_pPlayer->GetController()->Move(0, 10);
+	}
 }
 
 void bub::MainScene::FixedUpdate()
 {
 	static bool isGoingLeft = false;
-	
+
 	tyr::Scene::FixedUpdate();
 	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
 	{
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-		
-	
 
-	
-		m_pController->Move(-150 * elapsed, 0);
-		if(!isGoingLeft)
+
+
+
+		m_pPlayer->GetController()->Move(-150 * elapsed, 0);
+		if (!isGoingLeft)
 		{
 			isGoingLeft = true;
-			m_pController->GetSceneObject()->GetTransform()->Scale(-1, 1);
+			m_pPlayer->GetController()->GetSceneObject()->GetTransform()->Scale(-1, 1);
 		}
-		
-	
-	
+
+
+
 	}
 	if (m_pContext->pInput->IsActionTriggered("MoveRight"))
-		
-	{
-		m_Ani->SetAnimation("Walking");
-		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-	
-		m_pController->Move(150 * elapsed, 0);
 
-		if(isGoingLeft)
+	{
+		//m_Ani->SetAnimation("Walking");
+		const float elapsed = m_pContext->pTime->fixedDeltaTime;
+
+		m_pPlayer->GetController()->Move(150 * elapsed, 0);
+
+		if (isGoingLeft)
 		{
 			isGoingLeft = false;
-			const auto scale = abs(m_pController->GetSceneObject()->GetTransform()->GetScale());
-			m_pController->GetSceneObject()->GetTransform()->SetScale(scale.x, scale.y);
+			const auto scale = abs(m_pPlayer->GetController()->GetSceneObject()->GetTransform()->GetScale());
+			m_pPlayer->GetController()->GetSceneObject()->GetTransform()->SetScale(scale.x, scale.y);
 
 		}
 
 	}
+
+
 }
 
 void bub::MainScene::Render() const

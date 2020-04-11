@@ -192,6 +192,7 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BubbleBobble.cpp" />
+    <ClCompile Include="BubPrefab.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MiniginScene.cpp" />
@@ -199,6 +200,7 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BubbleBobble.h" />
+    <ClInclude Include="BubPrefab.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MiniginScene.h" />
     <ClInclude Include="stdafx.h" />

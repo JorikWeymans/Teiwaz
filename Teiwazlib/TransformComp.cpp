@@ -113,9 +113,6 @@ tyr::Vector2 tyr::TransformComp::GetPosition() const
 {
 
 	auto pos = m_pTransform->position;
-	
-
-	
 	const auto pParent = m_pSceneObject->GetParent();
 	
 	if(pParent)

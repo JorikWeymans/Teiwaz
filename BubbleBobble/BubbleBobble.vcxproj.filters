@@ -11,6 +11,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{7828d0be-d01b-4515-9ca9-74178ceb060e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Prefab">
+      <UniqueIdentifier>{92c9965e-e1b6-40ec-ab57-09ed0e0b0569}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BubbleBobble.cpp">
@@ -28,6 +31,9 @@
     <ClCompile Include="MainScene.cpp">
       <Filter>GameScenes</Filter>
     </ClCompile>
+    <ClCompile Include="BubPrefab.cpp">
+      <Filter>Prefab</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniginScene.h">
@@ -41,6 +47,9 @@
     </ClInclude>
     <ClInclude Include="MainScene.h">
       <Filter>GameScenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BubPrefab.h">
+      <Filter>Prefab</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -54,15 +54,19 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	
 	RaycastPos1 = m_pTransform->GetPosition() - Vector2(m_RayCastOffset, y);
 	RaycastPos2 = m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), y);
-	
-	if (GET_CONTEXT->pPhysics->Raycast(RaycastPos1, Vector2(0, 1), m_pCollider->GetColliderRect().width / 2) ||
-		
-		GET_CONTEXT->pPhysics->Raycast(RaycastPos2, Vector2(0, 1), m_pCollider->GetColliderRect().width / 2)
-		)
+
+	if(y < 0)
 	{
-		canMoveY = false;
-		SDXL_ImGui_ConsoleLog("They are intersecting");
+		if (GET_CONTEXT->pPhysics->Raycast(RaycastPos1, Vector2(0, 1), m_pCollider->GetColliderRect().width / 2) ||
+
+			GET_CONTEXT->pPhysics->Raycast(RaycastPos2, Vector2(0, 1), m_pCollider->GetColliderRect().width / 2)
+			)
+		{
+			canMoveY = false;
+			SDXL_ImGui_ConsoleLog("They are intersecting");
+		}
 	}
+	
 
 	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
 	
