@@ -113,7 +113,12 @@ namespace tyr
 	
 	
 
-
+	inline Vector2 abs(const Vector2& v)
+	{
+		return  Vector2((v.x < 0) ? -v.x : v.x,
+							(v.y < 0) ? -v.y : v.y);
+		
+	}
 
 
 

@@ -31,6 +31,18 @@ void tyr::TransformComp::Translate(float x, float y)
 	
 }
 
+void tyr::TransformComp::Scale(float x, float y)
+{
+	m_pTransform->scale.x *= x;
+	m_pTransform->scale.y *= y;
+}
+
+void tyr::TransformComp::SetScale(float x, float y)
+{
+	m_pTransform->scale.x = x;
+	m_pTransform->scale.y = y;
+}
+
 void tyr::TransformComp::Initialize()
 {
 	//TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &m_pTransform->position);

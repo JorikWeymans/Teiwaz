@@ -7,3 +7,4 @@
 
 #include "ColliderComp.h"
 #include "CharacterControllerComp.h"
+#include "RigidBodyComp.h"

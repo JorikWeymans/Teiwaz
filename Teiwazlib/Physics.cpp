@@ -7,42 +7,25 @@
 bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float length)
 {
 	// Vec1
-	auto A = pos;
-	auto B = A + (direction * length);
-
-	// Vec2
-	//const float yPos = 450;
-	//auto C = Vector2(300, yPos); TeiwazEngine::GameToEngineSpace(pContext, &C);
-	//auto D = Vector2(400, yPos); TeiwazEngine::GameToEngineSpace(pContext, &D);
-	//SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(C), static_cast<SDXL::SDXLVec2>(D), static_cast<SDXL::SDXLVec4>(ColorWhite));
-
+	const auto A = pos;
+	const auto B = A + (direction * length);
 	
 	for(auto pC : m_pColliders)
 	{
-		auto thisCollider = pC->GetColliderRect();
+		 auto tC = pC->GetColliderRect();
 
-		auto C = Vector2{ thisCollider.pos.x, thisCollider.pos.y };
-		auto D = Vector2{ thisCollider.pos.x + thisCollider.width, thisCollider.pos.y };
-		auto ab = B - A;
-		auto cd = D - C;
-
-		auto rsCross = ab.Cross(cd);
-
-		auto e = (C - A).Cross(cd) / rsCross;
-		auto f = (C - A).Cross(ab) / rsCross;
-
-		if (f >= 0 && f <= 1 && e >= 0 && e <= 1)
+		
+		if (LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }) || //Top
+			LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }) || //Bot
+			LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }) || //Left
+			LineInterSection(A, B, Vector2{ tC.pos.x + tC.width, tC.pos.y}, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height })) // Right
 		{
-
 			return true;
 		}
 	}
 
 	
 	return false;
-	
-
-
 
 	
 }
@@ -55,4 +38,23 @@ void tyr::Physics::AddCollider(ColliderComp* pCollider)
 	{
 		m_pColliders.emplace_back(pCollider);
 	}
+}
+
+bool tyr::Physics::LineInterSection(const Vector2& pos1A, const Vector2& pos1B, const Vector2& pos2A, const Vector2& pos2B)
+{
+	auto ab = pos1B - pos1A;
+	auto cd = pos2B - pos2A;
+
+	auto rsCross = ab.Cross(cd);
+
+	auto e = (pos2A - pos1A).Cross(cd) / rsCross;
+	auto f = (pos2A - pos1A).Cross(ab) / rsCross;
+
+	if (f >= 0 && f <= 1 && e >= 0 && e <= 1)
+	{
+
+		return true;
+	}
+
+	return false;
 }

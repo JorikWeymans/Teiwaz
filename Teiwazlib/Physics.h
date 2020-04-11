@@ -15,7 +15,7 @@ namespace tyr
 		void AddCollider(ColliderComp* pCollider);
 	private:
 		std::vector<ColliderComp*> m_pColliders;
-		
+		static bool LineInterSection(const Vector2& pos1A, const Vector2& pos1B, const Vector2& pos2A, const Vector2& pos2B);
 	public:
 		Physics(const Physics&) = delete;
 		Physics(Physics&&) = delete;

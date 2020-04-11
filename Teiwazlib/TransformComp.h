@@ -13,6 +13,8 @@ namespace tyr
 		~TransformComp() override;
 
 		void Translate(float x, float y);
+		void Scale(float x, float y);
+		void SetScale(float x, float y);
 		
 		void Initialize() override;
 		void Update() override;

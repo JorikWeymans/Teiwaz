@@ -1,0 +1,56 @@
+#include "tyrpch.h"
+#include "RigidBodyComp.h"
+#include "SceneObject.h"
+#include "TyrException.h"
+#include "TyrComps.h"
+#include "Time.h"
+tyr::RigidBodyComp::RigidBodyComp(float gravity)
+	: m_pController(nullptr)
+	, m_Gravity(gravity)
+{
+}
+
+void tyr::RigidBodyComp::Initialize()
+{
+	m_pController = m_pSceneObject->GetComponent<CharacterControllerComp>();
+	if (!m_pController) THROW_ERROR(L"RigidBodyComp needs a CharacterController to work!");
+	
+}
+
+void tyr::RigidBodyComp::FixedUpdate()
+{
+	m_pController->Move(0.f, m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime);
+}
+
+#ifdef USE_IM_GUI
+void tyr::RigidBodyComp::Debug()
+{
+}
+
+void tyr::RigidBodyComp::RenderEditor()
+{
+	SDXL_ImGui_Begin("Inspector");
+
+	std::string name = "RigidBody Component##" + std::to_string(m_UniqueId);
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		SDXL_ImGui_PushItemWidth(100.f);
+
+		//Gravity
+		SDXL_ImGui_Text("Gravity: \t");
+		SDXL_ImGui_SameLine();
+		name = "##Grav" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_Gravity, 1, 10, 10);
+		//
+		//SDXL_ImGui_Text("Height: \t");
+		//SDXL_ImGui_SameLine();
+		//name = "##ColW" + std::to_string(m_UniqueId);
+		//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
+
+
+		SDXL_ImGui_PopItemWidth();
+	}
+	SDXL_ImGui_End();
+}
+#endif
+

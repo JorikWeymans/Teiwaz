@@ -28,6 +28,7 @@ namespace tyr
 	private:
 		TransformComp* m_pTransform;
 		ColliderComp* m_pCollider; //weak pointer
+		float m_RayCastOffset;
 	public:
 		//CharacterControllerComp() = delete;
 		CharacterControllerComp(const CharacterControllerComp&) = delete;

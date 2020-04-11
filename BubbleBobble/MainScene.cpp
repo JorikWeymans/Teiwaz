@@ -36,7 +36,7 @@ void bub::MainScene::Initialize()
 
 		m_pController = new tyr::CharacterControllerComp();
 		obj->AddComponent(m_pController);
-		
+		obj->AddComponent(new tyr::RigidBodyComp(-150));
 		
 		m_pContext->pInput->AddAction("MoveUp", tyr::ButtonState::Down, 'W' );
 		m_pContext->pInput->AddAction("MoveDown", tyr::ButtonState::Down, 'S');
@@ -103,13 +103,23 @@ void bub::MainScene::Update()
 
 void bub::MainScene::FixedUpdate()
 {
+	static bool isGoingLeft = false;
+	
 	tyr::Scene::FixedUpdate();
 	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
 	{
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 		
-		m_Ani->SetAnimation("Eating");
+	
+
+	
 		m_pController->Move(-150 * elapsed, 0);
+		if(!isGoingLeft)
+		{
+			isGoingLeft = true;
+			m_pController->GetSceneObject()->GetTransform()->Scale(-1, 1);
+		}
+		
 	
 	
 	}
@@ -120,8 +130,16 @@ void bub::MainScene::FixedUpdate()
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 	
 		m_pController->Move(150 * elapsed, 0);
-	}
 
+		if(isGoingLeft)
+		{
+			isGoingLeft = false;
+			const auto scale = abs(m_pController->GetSceneObject()->GetTransform()->GetScale());
+			m_pController->GetSceneObject()->GetTransform()->SetScale(scale.x, scale.y);
+
+		}
+
+	}
 }
 
 void bub::MainScene::Render() const
