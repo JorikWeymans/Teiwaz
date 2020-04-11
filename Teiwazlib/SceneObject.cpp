@@ -13,6 +13,10 @@ tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string
 	, m_IsDestroyed(false)
 	, m_name(name)
 	, m_pContext(nullptr)
+#ifdef USE_IM_GUI
+	, m_SelectedItem(-1)
+#endif
+
 {
 	counter++;
 }
@@ -74,21 +78,41 @@ void tyr::SceneObject::Debug()
 
 void tyr::SceneObject::RenderEditor()
 {
-
-	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
-		{
-			if (!m_IsDestroyed)
-				s->RenderEditor();
-		});
-
-
 	
-	m_pTransform->RenderEditor();
-	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+	if(!m_pChilds.empty())
+	{
+		SDXL_ImGui_Indent();
+
+
+		for (int i{ 0 }; i < static_cast<int>(m_pChilds.size()); i++)
 		{
-			if (!m_IsDestroyed)
-				b->RenderEditor();
-		});
+			if (SDXL_ImGui_Selectable(m_pChilds[i]->GetName().c_str(), m_SelectedItem == i))
+			{
+				m_SelectedItem = i;
+
+			}
+
+		}
+
+		if (m_SelectedItem != -1)
+		{
+			m_pChilds.at(m_SelectedItem)->RenderEditor();
+		}
+
+		SDXL_ImGui_Unindent();
+	}
+
+	if(m_SelectedItem == -1)
+	{
+		m_pTransform->RenderEditor();
+		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+			{
+				if (!m_IsDestroyed)
+					b->RenderEditor();
+			});
+	}
+
+
 }
 #endif
 

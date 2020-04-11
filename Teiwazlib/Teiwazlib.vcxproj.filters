@@ -121,6 +121,9 @@
     <ClInclude Include="Proprties.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>GameContext</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="CharacterControllerComp.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>GameContext</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

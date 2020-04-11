@@ -23,6 +23,7 @@ void bub::MainScene::Initialize()
 {
 	try
 	{
+		LoadBackground();
 		
 		auto obj = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1,1)), "Player");
 		AddSceneObject(obj);
@@ -73,9 +74,9 @@ void bub::MainScene::Initialize()
 		//auto pinkSquare = new tyr::SceneObject(tyr::Transform(tyr::Vector2{0,0}, tyr::Vector2(1, 1)));
 		//AddSceneObject(pinkSquare);
 		//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0, 0, 16, 16)));
-		LoadBackground();
+	
 #ifdef USE_IM_GUI
-		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 670)));
+		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 670)), "FPS");
 		AddSceneObject(pFPS);
 		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
 		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
@@ -119,24 +120,6 @@ void bub::MainScene::FixedUpdate()
 		const float elapsed = m_pContext->pTime->fixedDeltaTime;
 	
 		m_pController->Move(150 * elapsed, 0);
-	}
-
-	if (m_pContext->pInput->IsActionTriggered("MoveDown"))
-	{
-		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-
-		m_Ani->SetAnimation("Eating");
-		m_pController->Move(0, -150 * elapsed);
-
-
-	}
-	if (m_pContext->pInput->IsActionTriggered("MoveUp"))
-
-	{
-		m_Ani->SetAnimation("Walking");
-		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-
-		m_pController->Move(0,150 * elapsed);
 	}
 
 }

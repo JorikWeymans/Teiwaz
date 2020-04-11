@@ -58,9 +58,10 @@ void tyr::SceneManager::Debug() const
 	}
 
 	//LEFT
+	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
 	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ 0.f,ENGINE_SPACING_TOP });
 	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ ENGINE_SPACING_LEFT,m_pContext->pGameSpace->height  + ENGINE_SPACING_BOT });
-	SDXL_ImGui_Begin("GameObjects", nullptr,SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
+	SDXL_ImGui_Begin("Scene viewer", nullptr,SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
 
 
 
@@ -68,14 +69,18 @@ void tyr::SceneManager::Debug() const
 
 
 	//RIGHT
+	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
 	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ ENGINE_SPACING_LEFT + m_pContext->pGameSpace->width,ENGINE_SPACING_TOP });
 	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ ENGINE_SPACING_RIGHT,m_pContext->pGameSpace->height + ENGINE_SPACING_BOT });
-	SDXL_ImGui_Begin("Components", nullptr, SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
+	SDXL_ImGui_Begin("Inspector", nullptr, SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove);
 
 
 
 	SDXL_ImGui_End();
 
+
+	//Console
+	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
 	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
 	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ m_pContext->pGameSpace->width, ENGINE_SPACING_BOT + ENGINE_SPACING_TOP });
 	

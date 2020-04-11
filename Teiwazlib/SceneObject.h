@@ -60,6 +60,10 @@ namespace tyr
 		std::string m_name;
 		GameContext const* m_pContext; // weak pointer
 		static int counter;
+
+#ifdef USE_IM_GUI
+		int m_SelectedItem;
+#endif
 	public:
 		SceneObject(const SceneObject&) = delete;
 		SceneObject(SceneObject&&) = delete;

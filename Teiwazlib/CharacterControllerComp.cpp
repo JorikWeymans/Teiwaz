@@ -5,7 +5,7 @@
 #include "TyrComps.h"
 #include "Vectors.h"
 #include "TeiwazEngine.h"
-
+#include "Physics.h"
 tyr::CharacterControllerComp::CharacterControllerComp()
 	: m_pTransform(nullptr)
 	, m_pCollider(nullptr)
@@ -46,15 +46,27 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 		m_pTransform->SetPositionY(playSpace->height - ENGINE_SPACING_TOP);
 	}
 
-	
+	if (GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(0, y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2))
+	{
+		canMoveY = false;
+		SDXL_ImGui_ConsoleLog("They are intersecting");
+	}
 
 	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
 	
 }
 #ifdef USE_IM_GUI
+void tyr::CharacterControllerComp::Debug()
+{
+	
+	SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(m_pTransform->GetPosition()), 
+							static_cast<SDXL::SDXLVec2>(m_pTransform->GetPosition() + ( Vector2(0,1) * (m_pCollider->GetColliderRect().width / 2))), static_cast<SDXL::SDXLVec4>(ColorWhite));
+	
+}
+
 void tyr::CharacterControllerComp::RenderEditor()
 {
-	SDXL_ImGui_Begin("Components");
+	SDXL_ImGui_Begin("Inspector");
 
 	std::string name = "CharacterController Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))

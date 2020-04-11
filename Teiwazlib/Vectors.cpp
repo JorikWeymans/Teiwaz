@@ -29,6 +29,16 @@ tyr::Vector2::Vector2(const PivotMode& pMode)
 	
 }
 
+tyr::Vector2::operator SDXL::SDXLVec2() const
+{
+	return SDXL::SDXLVec2{ x,y };
+}
+
+float tyr::Vector2::Cross(const Vector2& rhs) const
+{
+	return (x * rhs.y) - (y * rhs.x);
+}
+
 tyr::Vector3::Vector3(float x, float y, float z)
 	:x(x), y(y), z(z)
 {

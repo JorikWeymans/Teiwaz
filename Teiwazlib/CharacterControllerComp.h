@@ -20,7 +20,9 @@ namespace tyr
 
 		void Move(float x, float y);
 #ifdef USE_IM_GUI
+		void Debug() override;
 		void RenderEditor() override;
+	
 #endif
 
 	private:

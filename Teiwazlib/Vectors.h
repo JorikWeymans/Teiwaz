@@ -8,20 +8,42 @@ namespace tyr
 	public:
 		explicit Vector2(float x, float y);
 		explicit Vector2(const PivotMode& pMode);
-		
+		explicit operator SDXL::SDXLVec2() const;
+
 		float x, y;
 
+		float Cross(const Vector2& rhs) const;
+
+
+		//Override operators
 		Vector2& operator+=(const Vector2& rhs)
 		{
 			this->x += rhs.x;
 			this->y += rhs.y;
 			return *this;
 		}
-
+		Vector2& operator-=(const Vector2& rhs)
+		{
+			this->x -= rhs.x;
+			this->y -= rhs.y;
+			return *this;
+		}
 		Vector2& operator*=(const Vector2& rhs)
 		{
 			this->x *= rhs.x;
 			this->y *= rhs.y;
+			return *this;
+		}
+		Vector2& operator*=(const float& rhs)
+		{
+			this->x *= rhs;
+			this->y *= rhs;
+			return *this;
+		}
+		Vector2& operator*=(const int& rhs)
+		{
+			this->x *= rhs;
+			this->y *= rhs;
 			return *this;
 		}
 		// friends defined inside class body are inline and are hidden from non-ADL lookup (cppreference)
@@ -30,13 +52,27 @@ namespace tyr
 			lhs += rhs;
 			return lhs;
 		}
+		friend Vector2 operator-(Vector2 lhs, const Vector2& rhs)
+		{
+			lhs -= rhs;
+			return lhs;
+		}
 		friend Vector2 operator*(Vector2 lhs, const Vector2& rhs)
 		{
 			lhs *= rhs;
 			return lhs;
 		}
+		friend Vector2 operator*(Vector2 lhs, const float& rhs)
+		{
+			lhs *= rhs;
+			return lhs;
+		}
+		friend Vector2 operator*(Vector2 lhs, const int& rhs)
+		{
+			lhs *= rhs;
+			return lhs;
+		}
 	};
-
 	class Vector3
 	{
 	public:

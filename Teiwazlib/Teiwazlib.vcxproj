@@ -203,6 +203,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureComp.cpp" />

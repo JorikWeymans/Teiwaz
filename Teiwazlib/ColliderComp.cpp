@@ -4,11 +4,18 @@
 #include "SceneObject.h"
 #include "TransformComp.h"
 #include "TyrEnums.h"
+#include "Physics.h"
 tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivotMode, bool isDynamic)
 	: m_Width(width), m_Height(height)
 	, m_Pivot(pivotMode)
 	, m_IsDynamic(isDynamic)
 {
+}
+
+void tyr::ColliderComp::Initialize()
+{
+	if(!m_IsDynamic)
+		GET_CONTEXT->pPhysics->AddCollider(this);
 }
 
 
@@ -34,7 +41,7 @@ void tyr::ColliderComp::Debug()
 
 void tyr::ColliderComp::RenderEditor()
 {
-	SDXL_ImGui_Begin("Components");
+	SDXL_ImGui_Begin("Inspector");
 
 	std::string name = "Collider Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
