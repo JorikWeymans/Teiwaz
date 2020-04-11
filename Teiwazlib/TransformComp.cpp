@@ -28,6 +28,7 @@ void tyr::TransformComp::Translate(float x, float y)
 {
 	m_pTransform->position.x += x;
 	m_pTransform->position.y += y;
+	
 }
 
 void tyr::TransformComp::Initialize()
@@ -45,33 +46,43 @@ void tyr::TransformComp::Render() const
 {
 }
 
+void tyr::TransformComp::SetPositionY(float y)
+{
+	m_pTransform->position.y = y;
+}
+
 
 #ifdef USE_IM_GUI
 void tyr::TransformComp::RenderEditor()
 {
 	SDXL_ImGui_Begin("Components");
 
-	if (SDXL_ImGui_CollapsingHeader("Transform", SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	const std::string strUniqueId = std::to_string(m_UniqueId);
+	std::string name = "Tansform##" + strUniqueId;
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		SDXL_ImGui_PushItemWidth(100.f);
-
 		//POSITION
 		SDXL_ImGui_Text("Position:\t");
 		SDXL_ImGui_SameLine();
 
-		SDXL_ImGui_DragFloat("x", &m_pTransform->position.x, 1, 0, GET_CONTEXT->pGameSpace->width);
+		name = "x##P" + strUniqueId;
+		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.x, 1, 0, GET_CONTEXT->pGameSpace->width);
 		SDXL_ImGui_SameLine();
-		SDXL_ImGui_DragFloat("y", &m_pTransform->position.y, 1,0, GET_CONTEXT->pGameSpace->height);
+		name = "y##P" + strUniqueId;
+		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.y, 1,0, GET_CONTEXT->pGameSpace->height);
 		
 		
 		//SCALE
-		SDXL_ImGui_Text("Scale:   \t");
+		name = "Scale:   \t";
+		SDXL_ImGui_Text(name.c_str());
 		SDXL_ImGui_SameLine();
 
-		// \n to prevent having the same label as position;
-		SDXL_ImGui_DragFloat("x\n", &m_pTransform->scale.x, 1, 0.1f, 10.f);
+		name = "x##S" + strUniqueId;
+		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->scale.x, 1, 0.1f, 10.f);
 		SDXL_ImGui_SameLine();
-		SDXL_ImGui_DragFloat("y\n", &m_pTransform->scale.y, 1, 0.1f, 10.f);
+		name = "y##S" + strUniqueId;
+		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->scale.y, 1, 0.1f, 10.f);
 
 		
 		SDXL_ImGui_PopItemWidth();
@@ -90,14 +101,36 @@ tyr::Vector2 tyr::TransformComp::GetPosition() const
 {
 
 	auto pos = m_pTransform->position;
-	TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &pos);
+	
 
+	
+	const auto pParent = m_pSceneObject->GetParent();
+	
+	if(pParent)
+	{
+		const auto parentPos = pParent->GetTransform()->m_pTransform->position;
+		
+		pos += parentPos;
+		
+	}
+	TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &pos);
+	
 	return pos;
 }
 
-const tyr::Vector2& tyr::TransformComp::GetScale() const
+tyr::Vector2 tyr::TransformComp::GetScale() const
 {
-	return m_pTransform->scale;
+	auto thisScale = m_pTransform->scale;
+
+	const auto pParent = m_pSceneObject->GetParent();
+
+	if (pParent)
+	{
+
+		thisScale *= pParent->GetTransform()->m_pTransform->scale;
+
+	}
+	return thisScale;
 }
 
 float tyr::TransformComp::GetRotation() const

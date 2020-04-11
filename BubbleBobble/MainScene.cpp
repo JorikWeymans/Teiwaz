@@ -226,7 +226,10 @@ void bub::MainScene::LoadBackground()
 		}
 		OutputDebugStringA("\n");
 	}
-	
+
+
+	auto pBackground = new tyr::SceneObject(tyr::Transform(tyr::Vector2(0.f, 0.f), tyr::Vector2(1.f, 1.f)), "Background");
+	AddSceneObject(pBackground);
 	for(int i {0}; i < rows ; i++)
 	{
 		for(int j{0}; j < columns; j++)
@@ -237,7 +240,7 @@ void bub::MainScene::LoadBackground()
 				//filled[i][j].second = true;
 				tyr::Vector2 thePos{ j * scale,m_pContext->pGameSpace->height - (2 * scale) - i * scale };
 				auto pBlock = new tyr::SceneObject(tyr::Transform(thePos, tyr::Vector2(1.f, 1.f)));
-				AddSceneObject(pBlock);
+				pBackground->AddChild(pBlock);
 
 				
 				int index = j;

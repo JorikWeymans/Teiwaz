@@ -86,7 +86,7 @@ void tyr::TextureComp::RenderEditor()
 	{
 		SDXL_ImGui_PushItemWidth(100.f);
 		//POSITION
-		SDXL_ImGui_Text("Pivot:  \t");
+		SDXL_ImGui_Text("Pivot:   \t");
 		SDXL_ImGui_SameLine();
 
 		name = "x##" + std::to_string(m_UniqueId);
@@ -97,7 +97,7 @@ void tyr::TextureComp::RenderEditor()
 		SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.y, 1, 0, 1);
 		
 		//POSITION
-		SDXL_ImGui_Text("Offset: \t");
+		SDXL_ImGui_Text("Offset:  \t");
 		SDXL_ImGui_SameLine();
 
 		name = "x##O" + std::to_string(m_UniqueId);

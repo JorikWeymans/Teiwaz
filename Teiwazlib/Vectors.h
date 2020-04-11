@@ -18,10 +18,21 @@ namespace tyr
 			return *this;
 		}
 
+		Vector2& operator*=(const Vector2& rhs)
+		{
+			this->x *= rhs.x;
+			this->y *= rhs.y;
+			return *this;
+		}
 		// friends defined inside class body are inline and are hidden from non-ADL lookup (cppreference)
 		friend Vector2 operator+(Vector2 lhs, const Vector2& rhs)
 		{
 			lhs += rhs;
+			return lhs;
+		}
+		friend Vector2 operator*(Vector2 lhs, const Vector2& rhs)
+		{
+			lhs *= rhs;
 			return lhs;
 		}
 	};

@@ -24,7 +24,7 @@ namespace tyr
 #endif
 
 	private:
-		TransformComp const* m_pTransform;
+		TransformComp* m_pTransform;
 		ColliderComp* m_pCollider; //weak pointer
 	public:
 		//CharacterControllerComp() = delete;

@@ -43,7 +43,7 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	if( y < 0  && 
 		playerColl.pos.y >  playSpace->height)
 	{
-		m_pSceneObject->SetPositionY(playSpace->height - ENGINE_SPACING_TOP);
+		m_pTransform->SetPositionY(playSpace->height - ENGINE_SPACING_TOP);
 	}
 
 	
@@ -56,7 +56,7 @@ void tyr::CharacterControllerComp::RenderEditor()
 {
 	SDXL_ImGui_Begin("Components");
 
-	std::string name = "Collider Component##" + std::to_string(m_UniqueId);
+	std::string name = "CharacterController Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		SDXL_ImGui_PushItemWidth(100.f);

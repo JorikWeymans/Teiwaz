@@ -24,11 +24,9 @@ namespace tyr
 		void Render() const;
 
 		void AddComponent(BaseComponent* pComp);
-		const TransformComp* GetTransform() const;
-		Transform* Transform();
+		void AddChild(SceneObject* pChild);
+		TransformComp* GetTransform() const;
 
-		void SetPositionY(float y);
-		
 		void Translate(float x, float y);
 		template <typename T>
 		T* GetComponent(unsigned int index = 0) //index used when there are more than one component of the same type on the object.
@@ -49,13 +47,17 @@ namespace tyr
 		
 		const GameContext* GetGameContext() const;
 		const std::string& GetName() const { return m_name; }
+		const SceneObject* GetParent() const { return m_pParent; }
 	private:
+		friend Scene;
 		void Initialize();
+		
 		std::vector<BaseComponent*> m_pComponents;
+		std::vector<SceneObject*> m_pChilds;
+		SceneObject* m_pParent;
 		TransformComp* m_pTransform;
 		bool m_IsDestroyed;
 		std::string m_name;
-		friend Scene;
 		GameContext const* m_pContext; // weak pointer
 		static int counter;
 	public:

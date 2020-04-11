@@ -7,10 +7,12 @@
 int tyr::SceneObject::counter = 0;
 tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name)
 	: m_pComponents(std::vector<BaseComponent*>())
+	, m_pChilds(std::vector<SceneObject*>())
+	, m_pParent(nullptr)
 	, m_pTransform(new TransformComp(transform))
 	, m_IsDestroyed(false)
-	, m_pContext(nullptr)
 	, m_name(name)
+	, m_pContext(nullptr)
 {
 	counter++;
 }
@@ -19,11 +21,18 @@ tyr::SceneObject::~SceneObject()
 {
 	SAFE_DELETE(m_pTransform);
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [](BaseComponent* b) {SAFE_DELETE(b)});
-	
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [](SceneObject* s) {SAFE_DELETE(s)});
 }
 
 void tyr::SceneObject::Update()
 {
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+		{
+			if (!m_IsDestroyed)
+				s->Update();
+		});
+
+	
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 	{
 		if(!m_IsDestroyed)
@@ -33,6 +42,13 @@ void tyr::SceneObject::Update()
 
 void tyr::SceneObject::FixedUpdate()
 {
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+		{
+			if (!m_IsDestroyed)
+				s->FixedUpdate();
+		});
+
+	
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 	{
 		if(!m_IsDestroyed)
@@ -42,6 +58,13 @@ void tyr::SceneObject::FixedUpdate()
 #ifdef USE_IM_GUI
 void tyr::SceneObject::Debug()
 {
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+		{
+			if (!m_IsDestroyed)
+				s->Debug();
+		});
+
+	
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 		{
 			if (!m_IsDestroyed)
@@ -51,6 +74,15 @@ void tyr::SceneObject::Debug()
 
 void tyr::SceneObject::RenderEditor()
 {
+
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+		{
+			if (!m_IsDestroyed)
+				s->RenderEditor();
+		});
+
+
+	
 	m_pTransform->RenderEditor();
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 		{
@@ -62,6 +94,12 @@ void tyr::SceneObject::RenderEditor()
 
 void tyr::SceneObject::Render() const
 {
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+		{
+		if (!m_IsDestroyed)
+			s->Render();
+		});
+	
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 	{if
 		(!m_IsDestroyed)
@@ -82,21 +120,23 @@ void tyr::SceneObject::AddComponent(BaseComponent* pComp)
 	}
 }
 
-const tyr::TransformComp* tyr::SceneObject::GetTransform() const
+void tyr::SceneObject::AddChild(SceneObject* pChild)
+{
+	auto found = std::find(m_pChilds.begin(), m_pChilds.end(), pChild);
+	if (found == m_pChilds.end())
+	{
+		pChild->m_pContext = m_pContext;
+		pChild->Initialize();
+		pChild->m_pParent = this;
+		m_pChilds.emplace_back(pChild);
+
+	}
+	
+}
+
+tyr::TransformComp* tyr::SceneObject::GetTransform() const
 {
 	return m_pTransform;
-}
-
-tyr::Transform* tyr::SceneObject::Transform()
-{
-	return m_pTransform->GetTr();
-	
-}
-
-void tyr::SceneObject::SetPositionY(float y)
-{
-	m_pTransform->GetTr()->position.y = y;
-	
 }
 
 void tyr::SceneObject::Translate(float x, float y)
