@@ -15,9 +15,9 @@ namespace tyr
 		void Initialize() override;
 
 		void Update() override {};
-		void FixedUpdate() override {};
+		void FixedUpdate() override;
 		void Render() const override {};
-
+		bool IsGrounded() const { return m_IsOnGround; }
 		void Move(float x, float y);
 #ifdef USE_IM_GUI
 		void Debug() override;
@@ -29,6 +29,7 @@ namespace tyr
 		TransformComp* m_pTransform;
 		ColliderComp* m_pCollider; //weak pointer
 		float m_RayCastOffset;
+		bool m_IsOnGround;
 	public:
 		//CharacterControllerComp() = delete;
 		CharacterControllerComp(const CharacterControllerComp&) = delete;

@@ -21,7 +21,8 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override;
 
-		void SetPositionY(float y);
+		void SetPositionX(float x, bool convert = false);
+		void SetPositionY(float y, bool convert = false);
 		
 #ifdef USE_IM_GUI
 		void RenderEditor() override;

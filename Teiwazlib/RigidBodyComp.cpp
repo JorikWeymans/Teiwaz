@@ -7,6 +7,8 @@
 tyr::RigidBodyComp::RigidBodyComp(float gravity)
 	: m_pController(nullptr)
 	, m_Gravity(gravity)
+	, m_Vel(0.f,0.f)
+	, m_AddedForce(0.f)
 {
 }
 
@@ -17,9 +19,27 @@ void tyr::RigidBodyComp::Initialize()
 	
 }
 
+void tyr::RigidBodyComp::AddForce(float x, float y)
+{
+	UNREFERENCED_PARAMETER(x);
+	UNREFERENCED_PARAMETER(y);
+	m_Vel.y += y;
+}
+
+
+
 void tyr::RigidBodyComp::FixedUpdate()
 {
-	m_pController->Move(0.f, m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime);
+
+	m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
+
+
+	//snapping
+	if(m_Vel.y < m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime)
+	{
+		m_Vel.y = m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
+	}
+	m_pController->Move(0.f, m_Vel.y);
 }
 
 #ifdef USE_IM_GUI

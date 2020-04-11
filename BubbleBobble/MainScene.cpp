@@ -81,7 +81,6 @@ void bub::MainScene::Initialize()
 		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
 	}
 
-
 	
 }
 
@@ -92,7 +91,8 @@ void bub::MainScene::Update()
 	//m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
 	if (m_pContext->pInput->IsActionTriggered("Jump"))
 	{
-		m_pPlayer->GetController()->Move(0, 10);
+		if(m_pPlayer->GetController()->IsGrounded())
+			m_pPlayer->GetBody()->AddForce(0, 30.f);
 	}
 }
 

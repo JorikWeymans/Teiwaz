@@ -58,9 +58,26 @@ void tyr::TransformComp::Render() const
 {
 }
 
-void tyr::TransformComp::SetPositionY(float y)
+void tyr::TransformComp::SetPositionX(float x, bool convert)
 {
-	m_pTransform->position.y = y;
+	if (convert)
+	{
+		m_pTransform->position.x = x - ENGINE_SPACING_LEFT;
+	}
+	else
+		m_pTransform->position.x = x;
+}
+
+void tyr::TransformComp::SetPositionY(float y, bool convert)
+{
+	if (convert)
+	{
+		Vector2 newPos(0.f, y);
+		TeiwazEngine::GameToEngineSpace(GET_CONTEXT, &newPos);
+		m_pTransform->position.y = newPos.y;
+	}
+	else
+		m_pTransform->position.y = y;
 }
 
 

@@ -6,6 +6,7 @@ namespace tyr
 	class Vector2
 	{
 	public:
+		Vector2() : Vector2(0.f,0.f) {}
 		explicit Vector2(float x, float y);
 		explicit Vector2(const PivotMode& pMode);
 		explicit operator SDXL::SDXLVec2() const;

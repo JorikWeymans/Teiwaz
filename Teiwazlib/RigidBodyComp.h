@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Vectors.h"
 
 namespace tyr
 {
@@ -12,7 +13,8 @@ namespace tyr
 
 		void Initialize() override;
 
-		void Update() override {};
+		void AddForce(float x, float y);
+		void Update() override {}
 		void FixedUpdate() override;
 		void Render() const override {};
 
@@ -25,6 +27,8 @@ namespace tyr
 	private:
 		CharacterControllerComp* m_pController; // weak pointer;
 		float m_Gravity;
+		float m_AddedForce;
+		Vector2 m_Vel;
 	public:
 		//RigidBodyComp() = delete;
 		RigidBodyComp(const RigidBodyComp&) = delete;
