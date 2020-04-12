@@ -29,6 +29,11 @@ tyr::Vector2::Vector2(const PivotMode& pMode)
 	
 }
 
+tyr::Vector2::Vector2(const Vector2_POD& pod)
+	: Vector2(pod.x, pod.y)
+{
+}
+
 tyr::Vector2::operator SDXL::SDXLVec2() const
 {
 	return SDXL::SDXLVec2{ x,y };
@@ -37,6 +42,11 @@ tyr::Vector2::operator SDXL::SDXLVec2() const
 float tyr::Vector2::Cross(const Vector2& rhs) const
 {
 	return (x * rhs.y) - (y * rhs.x);
+}
+
+tyr::Vector2_POD tyr::Vector2::ToPOD() const
+{
+	return Vector2_POD{ x, y };
 }
 
 tyr::Vector3::Vector3(float x, float y, float z)
@@ -68,6 +78,12 @@ tyr::Rect::Rect(const Vector2& pos, const Vector2& dimension)
 	: Rect(pos.x, pos.y, dimension.x, dimension.y)
 {
 }
+
+tyr::Rect::Rect(const Rect_POD& pod)
+	: Rect(pod.v.x, pod.v.y, pod.width, pod.height)
+{
+}
+
 tyr::Rect::operator SDXL::SDXLRect() const
 {
 	return SDXL::SDXLRect{ m_Pos.x, m_Pos.y,m_Width, m_Height };

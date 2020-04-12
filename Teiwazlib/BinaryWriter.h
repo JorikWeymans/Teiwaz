@@ -30,7 +30,7 @@ namespace tyr
 		bool m_IsOpen;
 
 
-		void CreateFolders(const std::string& path);
+		static void CreateFolders(const std::string& path);
 	public:
 		
 		BinaryWriter(BinaryWriter&) = delete;

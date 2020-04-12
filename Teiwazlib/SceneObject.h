@@ -3,6 +3,7 @@
 #include <typeinfo>
 namespace tyr
 {
+	class BinaryWriter;
 	class Scene;
 	struct Transform;
 	class BaseComponent;
@@ -13,6 +14,7 @@ namespace tyr
 	{
 	public:
 		explicit SceneObject(const Transform& transform, const std::string& name = "new GameObject" + std::to_string(counter));
+		explicit SceneObject(TransformComp* pTransform, const std::string& name = "new GameObject" + std::to_string(counter));
 		~SceneObject();
 		
 		void Update();
@@ -20,6 +22,7 @@ namespace tyr
 #ifdef USE_IM_GUI
 		void Debug();
 		void RenderEditor();
+		void Save(BinaryWriter& writer);
 #endif
 		void Render() const;
 

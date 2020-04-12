@@ -5,8 +5,11 @@
 #include "TransformComp.h"
 #include "TyrEnums.h"
 #include "Physics.h"
+#include "BinaryWriter.h"
+#include "BinaryReader.h"
 tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivotMode, bool isDynamic)
-	: m_Width(width), m_Height(height)
+	: tyr::BaseComponent(ComponentType::Collider)
+	, m_Width(width), m_Height(height)
 	, m_Pivot(pivotMode)
 	, m_IsDynamic(isDynamic)
 {
@@ -65,6 +68,27 @@ void tyr::ColliderComp::RenderEditor()
 	SDXL_ImGui_End();
 
 
+}
+
+void tyr::ColliderComp::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Type);
+	
+	writer.Write(m_Width);
+	writer.Write(m_Height);
+	
+	writer.Write(m_Pivot);
+	writer.Write(m_IsDynamic);
+}
+
+tyr::ColliderComp* tyr::ColliderComp::CreateComponent(BinaryReader& reader)
+{
+	const float width    = reader.Read<float>();
+	const float height   = reader.Read<float>();
+	const PivotMode mode = reader.Read<PivotMode>();
+	const bool isDynamic = reader.Read<bool>();
+
+	return new ColliderComp(width, height, mode, isDynamic);
 }
 #endif
 

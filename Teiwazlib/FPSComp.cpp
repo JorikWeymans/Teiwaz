@@ -9,7 +9,8 @@
 #include <iomanip>
 
 tyr::FPSComp::FPSComp(const FPSCompType& type, unsigned int textIndex)
-	: m_Type(type)
+	: tyr::BaseComponent(ComponentType::FPS)
+	, m_Type(type)
 	, m_pTextComp(nullptr)
 	, m_TextIndex(textIndex)
 {

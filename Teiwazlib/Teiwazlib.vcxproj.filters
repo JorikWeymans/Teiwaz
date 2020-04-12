@@ -130,6 +130,9 @@
     <ClInclude Include="BinaryWriter.h">
       <Filter>Helpers\Binary</Filter>
     </ClInclude>
+    <ClInclude Include="BinStructureHelpers.h">
+      <Filter>Helpers\Binary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -215,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="BinaryWriter.cpp">
       <Filter>Helpers\Binary</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

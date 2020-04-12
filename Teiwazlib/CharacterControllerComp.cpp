@@ -6,8 +6,10 @@
 #include "Vectors.h"
 #include "TeiwazEngine.h"
 #include "Physics.h"
+#include "BinaryWriter.h"
 tyr::CharacterControllerComp::CharacterControllerComp()
-	: m_pTransform(nullptr)
+	: tyr::BaseComponent(ComponentType::CharacterController)
+	, m_pTransform(nullptr)
 	, m_pCollider(nullptr)
 	, m_RayCastOffset(0.f)
 	, m_IsOnGround(false)
@@ -158,5 +160,18 @@ void tyr::CharacterControllerComp::RenderEditor()
 	SDXL_ImGui_End();
 
 
+}
+
+void tyr::CharacterControllerComp::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Type);
+	
+	
+}
+
+tyr::CharacterControllerComp* tyr::CharacterControllerComp::CreateComponent(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new CharacterControllerComp();
 }
 #endif

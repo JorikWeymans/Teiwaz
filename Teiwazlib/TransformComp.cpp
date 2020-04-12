@@ -3,8 +3,10 @@
 #include "TeiwazEngine.h"
 #include "SceneObject.h"
 #include "GameContext.h"
+#include "BinaryWriter.h"
 tyr::TransformComp::TransformComp(const Transform& transform)
-	: m_pTransform(new Transform(transform))
+	: tyr::BaseComponent(ComponentType::Transform)
+	, m_pTransform(new Transform(transform))
 {
 #ifdef USE_IM_GUI
 	SDXL_ImGui_ConsoleLog("Transform added");
@@ -120,7 +122,20 @@ void tyr::TransformComp::RenderEditor()
 	
 	
 }
+
+void tyr::TransformComp::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Type);
+	writer.Write(m_pTransform->ToPOD());
+	
+}
 #endif
+tyr::TransformComp* tyr::TransformComp::CreateComponent(BinaryReader& reader)
+{
+	return new TransformComp(Transform(reader.Read<Transform_POD>()));
+
+}
+
 const tyr::Transform& tyr::TransformComp::GetTransform() const
 {
 	return *m_pTransform;
@@ -168,3 +183,4 @@ tyr::Transform* tyr::TransformComp::GetTr()
 {
 	return m_pTransform;
 }
+

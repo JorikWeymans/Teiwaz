@@ -26,8 +26,11 @@ void tyr::BinaryReader::Close()
 
 int tyr::BinaryReader::GetBufferPosition()
 {
+
+	
 	if (!m_IsOpen) return -1;
 	return static_cast<int>(m_Reader.tellg());
+	
 }
 
 void tyr::BinaryReader::SetBufferPosition(int pos)

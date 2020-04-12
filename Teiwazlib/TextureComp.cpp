@@ -9,7 +9,8 @@
 
 tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, 
 								const Rect& rect, const Vector2& offset)
-	: m_TexturePath(texturePath)
+	: tyr::BaseComponent(ComponentType::Texture)
+	, m_TexturePath(texturePath)
 	, m_pTexture(nullptr)
 	, m_pTransform(nullptr)
 	, m_Pivot(Vector2(pivotMode))

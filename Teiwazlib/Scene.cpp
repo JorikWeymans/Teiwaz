@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "SceneObject.h"
 #include <algorithm>
+#include "BinaryWriter.h"
+#include "BinStructureHelpers.h"
 
 tyr::Scene::Scene(const std::string& name)
 	: m_pContext(nullptr)
@@ -65,6 +67,13 @@ void tyr::Scene::Debug()
 void tyr::Scene::Save(BinaryWriter& writer)
 {
 	UNREFERENCED_PARAMETER(writer);
+
+	//Save name
+	//Save Objects
+	writer.WriteString(m_Name);
+	
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [&writer](SceneObject* s) {s->Save(writer); });
+	
 	
 }
 #endif

@@ -26,13 +26,17 @@ namespace tyr
 		
 #ifdef USE_IM_GUI
 		void RenderEditor() override;
+		void Save(BinaryWriter& writer) override;
 #endif
+		static TransformComp* CreateComponent(BinaryReader& reader);
+		
 		const Transform& GetTransform() const;
 		Vector2 GetPosition() const;
 		Vector2 GetScale() const;
 		float GetRotation() const;
 
 		Transform* GetTr();
+		
 	private:
 		Transform* m_pTransform;
 

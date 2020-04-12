@@ -12,6 +12,7 @@ namespace tyr
 		void Close();
 		bool IsOpen() const { return m_IsOpen; }
 
+		int Peek() { return m_Reader.peek(); }
 		int GetBufferPosition();
 		void SetBufferPosition(int pos);
 		void moveBufferPosition(int amount);

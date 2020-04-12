@@ -17,3 +17,18 @@ font name: CyberSmall
 	X(X&&) = delete;
 	X& operator=(const X&) = delete;
 	X& operator=(X&&) = delete;
+
+
+//scene binary sctructure
+//
+ULONG64 header (this is to identify the file as a .scene should be 0x4A6F72696B576579)
+  std::string sceneName
+//
+//
+  BYTE OjbectType ( sceneOjbect, component, EOF (end of file flag meaning everything is read)
+ObjectType::SceneObject
+    UINT amountOfComponents
+    BYTE ComponentType (The differnt types of components)
+      //switch case as long as 
+          //Every comp reads/write the amount it needs for itself
+        UINT amountOfParents if zero read ObjectType for next object or eof

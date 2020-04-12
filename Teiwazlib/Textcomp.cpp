@@ -9,7 +9,8 @@
 #include "TeiwazEngine.h"
 
 tyr::TextComp::TextComp(const std::wstring& textPath, const std::wstring& text, const Color& color, const Vector2& offset)
-	: m_TextPath(textPath)
+	: tyr::BaseComponent(ComponentType::Text)
+	, m_TextPath(textPath)
 	, m_Text(text)
 	, m_Color(color)
 	, m_pFont(nullptr)
@@ -24,7 +25,6 @@ tyr::TextComp::~TextComp()
 void tyr::TextComp::Initialize()
 {
 	m_pTransform = m_pSceneObject->GetTransform();
-
 	m_pFont = CONTENT_MANAGER->LoadFont(m_TextPath);
 }
 

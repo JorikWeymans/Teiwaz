@@ -3,19 +3,24 @@
 namespace tyr
 {
 	enum class PivotMode;
+	struct Vector2_POD
+	{
+		float x, y;
+	};
 	class Vector2
 	{
 	public:
 		Vector2() : Vector2(0.f,0.f) {}
 		explicit Vector2(float x, float y);
 		explicit Vector2(const PivotMode& pMode);
+		explicit Vector2(const Vector2_POD& pod);
 		explicit operator SDXL::SDXLVec2() const;
 
 		float x, y;
 
 		float Cross(const Vector2& rhs) const;
 
-
+		Vector2_POD ToPOD() const;
 		//Override operators
 		Vector2& operator+=(const Vector2& rhs)
 		{
@@ -83,7 +88,11 @@ namespace tyr
 		float x, y, z;
 	};
 
-
+	struct Rect_POD
+	{
+		Vector2_POD v;
+		float width, height;
+	};
 	class Rect final
 	{
 	public:
@@ -91,6 +100,8 @@ namespace tyr
 		explicit Rect(float x, float y, float width, float height);
 		explicit Rect(const Vector2& pos, float width, float height);
 		explicit Rect(const Vector2& pos, const Vector2& dimension);
+		explicit Rect(const Rect_POD& pod);
+		
 		explicit operator SDXL::SDXLRect() const;
 
 		void Set(float x, float y, float width, float height);

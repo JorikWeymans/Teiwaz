@@ -10,7 +10,10 @@
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
 #include "ContentManager.h"
-
+#include "Transform.h"
+#include "BinStructureHelpers.h"
+#include "SceneObject.h"
+#include "TyrComps.h"
 tyr::SceneManager::SceneManager(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pScenes(std::vector<Scene*>())
@@ -129,34 +132,93 @@ void tyr::SceneManager::SaveScene()
 {
 	std::stringstream ss;
 	ss << ContentManager::GetInstance()->GetDataFolder();
-	ss << "Scenes/";
-	ss << "Test";
-	ss << ".tyrScene";
-	BinaryWriter writer(ss.str());
-	// Header
-	// Long double (binary rep of JorikWey
-	ULONG64 header = 0x4A6F72696B576579;
-	writer.Write(header);
+	ss << "Scenes/" << "Test" << ".tyrScene";
 	
-	m_pScenes[0]->Save(writer);
-
-
-
-
-
-	
-	writer.Close();
-
-
-	BinaryReader reader(ss.str());
-	ULONG64 k = reader.Read<ULONG64>();
-	if(k == header)
 	{
-		SDXL_ImGui_ConsoleLog("This is a tyrScene");
+		BinaryWriter writer(ss.str());
+		// Header
+		// Long double (binary rep of JorikWey
+		ULONG64 header = 0x4A6F72696B576579;
+		writer.Write(header);
+
+		m_pScenes[0]->Save(writer);
+		writer.Write(ObjectType::End);
+
+
+		writer.Close();
 	}
 
+
+
+
+
+	{
+		BinaryReader reader(ss.str());
+		// rn
+		// header
+		ULONG64 header = reader.Read<ULONG64>();
+		if (header != 0x4A6F72696B576579)
+		{
+			SDXL_ImGui_ConsoleLogError("This is no a scene");
+		}
+			// sceneName
+		std::string sceneName = reader.ReadString();
+		UNREFERENCED_PARAMETER(sceneName);
+
+		std::vector<SceneObject*> objects;
+		
+		while(reader.Read<ObjectType>() == ObjectType::SceneObject)
+		{
+			UINT size = reader.Read<UINT>();
+			for(UINT i{0}; i < size; i++)
+			{
+				ComponentType type = reader.Read<ComponentType>();
+				SceneObject* newObject = nullptr;
+				switch (type)
+				{
+				case ComponentType::Transform: //should always be the first
+				{
+					newObject =  new SceneObject(TransformComp::CreateComponent(reader));
+					objects.emplace_back(newObject);
+
+				}
+				break;
+				case ComponentType::CharacterController:
+					newObject->AddComponent(CharacterControllerComp::CreateComponent(reader));
+					break;
+				case ComponentType::Collider: 
+					newObject->AddComponent(ColliderComp::CreateComponent(reader));
+					break;
+				case ComponentType::FPS: break;
+				case ComponentType::RigidBody: 
+					newObject->AddComponent(RigidBodyComp::CreateComponent(reader));
+					break;
+				case ComponentType::Text: break;
+				case ComponentType::Texture: break;
+
+				default:;
+				}
+				// Object
+				//   transformCOm
+				// Object
+				//   TransformComp
+				// Object
+				//   TransformComp
+				// End
+				
+			}
+			
+		}
+			
+	}
+
+
+
 	
 
+
+
+	
 }
 
 

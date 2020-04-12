@@ -4,11 +4,14 @@
 #include "TyrException.h"
 #include "TyrComps.h"
 #include "Time.h"
+#include "BinaryWriter.h"
+#include "BinaryReader.h"
 tyr::RigidBodyComp::RigidBodyComp(float gravity)
-	: m_pController(nullptr)
+	: tyr::BaseComponent(ComponentType::RigidBody)
+	, m_pController(nullptr)
 	, m_Gravity(gravity)
-	, m_Vel(0.f,0.f)
 	, m_AddedForce(0.f)
+	, m_Vel(0.f,0.f)
 {
 }
 
@@ -72,5 +75,18 @@ void tyr::RigidBodyComp::RenderEditor()
 	}
 	SDXL_ImGui_End();
 }
+
+void tyr::RigidBodyComp::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Type);
+
+	writer.Write(m_Gravity);
+}
 #endif
+
+tyr::RigidBodyComp* tyr::RigidBodyComp::CreateComponent(BinaryReader& reader)
+{
+	return new RigidBodyComp(reader.Read<float>());
+}
+
 

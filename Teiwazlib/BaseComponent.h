@@ -1,12 +1,16 @@
 #pragma once
 #define GET_CONTEXT m_pSceneObject->GetGameContext()
+#include "BinStructureHelpers.h"
+#include "BinaryReader.h"
+
 namespace tyr
 {
+	class BinaryWriter;
 	class SceneObject;
 	class BaseComponent
 	{
 	public:
-		BaseComponent();
+		BaseComponent(ComponentType type);
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
@@ -16,6 +20,7 @@ namespace tyr
 #ifdef USE_IM_GUI
 		virtual void Debug() {}
 		virtual void RenderEditor() {}; //should be overridden in 90% of the time
+		virtual void Save(BinaryWriter& writer) { UNREFERENCED_PARAMETER(writer); };
 #endif
 		virtual void FixedUpdate() = 0;
 		virtual void Render() const = 0;
@@ -23,6 +28,7 @@ namespace tyr
 	protected:
 		friend SceneObject;
 		SceneObject* m_pSceneObject = nullptr;
+		ComponentType m_Type;
 #ifdef USE_IM_GUI
 		size_t m_UniqueId;
 #endif
@@ -32,6 +38,5 @@ namespace tyr
 		BaseComponent& operator=(const BaseComponent&) = delete;
 		BaseComponent& operator=(BaseComponent&&) = delete;
 	};
-
 
 }
