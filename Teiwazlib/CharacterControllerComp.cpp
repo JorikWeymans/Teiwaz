@@ -156,5 +156,7 @@ void tyr::CharacterControllerComp::RenderEditor()
 		SDXL_ImGui_PopItemWidth();
 	}
 	SDXL_ImGui_End();
+
+
 }
 #endif

@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include <functional>
 tyr::ContentManager* tyr::ContentManager::m_pInstance = nullptr;
+
+
 tyr::ContentManager::ContentManager()
 	: m_IsInitialized(false)
 	, m_DataFolder(L"")
@@ -36,6 +38,11 @@ void tyr::ContentManager::Initialize(const std::wstring& dataFolder)
 		m_DataFolder = dataFolder;
 		m_IsInitialized = true;
 	}
+}
+std::string tyr::ContentManager::GetDataFolder() const
+{
+#pragma warning (suppress : 4244)
+	return std::string(m_DataFolder.begin(), m_DataFolder.end());
 }
 
 void tyr::ContentManager::Destroy()

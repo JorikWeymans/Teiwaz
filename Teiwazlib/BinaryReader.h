@@ -5,18 +5,21 @@ namespace tyr
 	class BinaryReader final
 	{
 	public:
-		explicit BinaryReader(const std::wstring& filePath, bool autoOpen = true);
+		explicit BinaryReader(const std::string& filePath, bool autoOpen = true);
 		~BinaryReader() = default;
 
 		void Open();
 		void Close();
-		bool IsOpen() { return m_IsOpen; }
+		bool IsOpen() const { return m_IsOpen; }
 
 		int GetBufferPosition();
 		void SetBufferPosition(int pos);
 		void moveBufferPosition(int amount);
+
+		std::string ReadString();
+		
 	private:
-		std::wstring m_FilePath;
+		std::string m_FilePath;
 		std::ifstream m_Reader;
 		bool m_IsOpen;
 

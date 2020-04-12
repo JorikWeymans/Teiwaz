@@ -1,7 +1,7 @@
 #include "tyrpch.h"
 #include "BinaryReader.h"
-
-tyr::BinaryReader::BinaryReader(const std::wstring& filePath, bool autoOpen)
+#include <sstream>
+tyr::BinaryReader::BinaryReader(const std::string& filePath, bool autoOpen)
 	: m_FilePath(filePath)
 	, m_IsOpen(false)
 {
@@ -42,3 +42,18 @@ void tyr::BinaryReader::moveBufferPosition(int amount)
 	int bPos = GetBufferPosition();
 	SetBufferPosition(bPos + amount);
 }
+
+std::string tyr::BinaryReader::ReadString()
+{
+	auto tempChar{ '0' };
+	std::stringstream ss;
+
+	while (tempChar != '\0')
+	{
+		m_Reader.read(static_cast<char*>(&tempChar), 1);
+		if (tempChar != '\0')  ss << tempChar;
+
+	}
+	return ss.str();
+}
+

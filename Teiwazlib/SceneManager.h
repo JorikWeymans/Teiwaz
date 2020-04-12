@@ -15,12 +15,15 @@ namespace  tyr
 		void Update();
 		void FixedUpdate();
 
-
+#ifdef USE_IM_GUI
+		void Render();
+#else
 		void Render() const;
-		
+#endif
 	private:
 #ifdef USE_IM_GUI
-		void Debug() const;
+		void RenderEditor();
+		void SaveScene();
 #endif
 		GameContext* m_pContext; //Weak ptr
 		std::vector<Scene*> m_pScenes;

@@ -14,7 +14,7 @@ namespace bub
 	class MainScene final : public tyr::Scene
 	{
 	public:
-		MainScene() = default;
+		MainScene();
 		~MainScene();
 		void Initialize() override;
 		void Update() override;

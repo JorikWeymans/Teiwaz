@@ -13,6 +13,12 @@
 #include "Animator.h"
 #include "Vectors.h"
 #include "BubPrefab.h"
+
+bub::MainScene::MainScene()
+	:tyr::Scene("MainScene")
+{
+}
+
 bub::MainScene::~MainScene()
 {
 	delete m_Ani;
@@ -150,12 +156,7 @@ void bub::MainScene::Render() const
 void bub::MainScene::Debug()
 {
 	tyr::Scene::Debug();
-	//SDXL_ImGui_Begin("Debug");
-	//
-	//
-	//SDXL_ImGui_SliderFloat2("position", &m_pController->GetSceneObject()->Transform()->position.x, 0.f, 100.f);
-	//
-	//SDXL_ImGui_End();
+
 
 
 
@@ -165,7 +166,7 @@ void bub::MainScene::Debug()
 
 void bub::MainScene::LoadBackground()
 {
-	tyr::BinaryReader reader{ L"./Data/BBSprites/leveldata.dat" };
+	tyr::BinaryReader reader{ "./Data/BBSprites/leveldata.dat" };
 	//tyr::BinaryReader reader{ L"./Data/BBSprites/Level/FixedLevelData.dat" };
 
 	if (!reader.IsOpen()) return;
@@ -300,7 +301,7 @@ void bub::MainScene::LoadBackground()
 						filled[k][l].second = true;
 
 						pBlock->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft,
-								tyr::Rect(48, 0, 24, 24), tyr::Vector2(m * scale,n * scale)));
+								tyr::Rect(24, 0, 24, 24), tyr::Vector2(m * scale,n * scale)));
 
 						m++;
 					}

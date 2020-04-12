@@ -3,8 +3,9 @@
 #include "SceneObject.h"
 #include <algorithm>
 
-tyr::Scene::Scene()
+tyr::Scene::Scene(const std::string& name)
 	: m_pContext(nullptr)
+	, m_Name(name)
 	, m_pSceneObjects(std::vector<SceneObject*>())
 {
 }
@@ -37,7 +38,7 @@ void tyr::Scene::Debug()
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Debug(); });
 
-	SDXL_ImGui_Begin("Scene viewer", nullptr);
+	SDXL_ImGui_Begin(m_Name.c_str(), nullptr);
 	
 	static int selected = -1;
 	
@@ -59,6 +60,12 @@ void tyr::Scene::Debug()
 		
 	
 	SDXL_ImGui_End();
+}
+
+void tyr::Scene::Save(BinaryWriter& writer)
+{
+	UNREFERENCED_PARAMETER(writer);
+	
 }
 #endif
 void tyr::Scene::Render() const

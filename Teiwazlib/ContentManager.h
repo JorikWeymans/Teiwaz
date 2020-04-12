@@ -16,6 +16,8 @@ namespace tyr
 
 		Texture* LoadTexture(const std::wstring& path);
 		Font const* LoadFont(const std::wstring& path);
+		const std::wstring& GetDataFolderW() const { return m_DataFolder; }
+		std::string GetDataFolder() const;
 	private:
 		ContentManager();
 		~ContentManager();

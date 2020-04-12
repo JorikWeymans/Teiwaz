@@ -195,6 +195,7 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BinaryReader.h" />
+    <ClInclude Include="BinaryWriter.h" />
     <ClInclude Include="CharacterControllerComp.h" />
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BinaryReader.cpp" />
+    <ClCompile Include="BinaryWriter.cpp" />
     <ClCompile Include="CharacterControllerComp.cpp" />
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />

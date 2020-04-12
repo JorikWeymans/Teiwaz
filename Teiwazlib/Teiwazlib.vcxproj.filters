@@ -127,6 +127,9 @@
     <ClInclude Include="RigidBodyComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryWriter.h">
+      <Filter>Helpers\Binary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -209,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="RigidBodyComp.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryWriter.cpp">
+      <Filter>Helpers\Binary</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

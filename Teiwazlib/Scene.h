@@ -3,6 +3,7 @@
 
 namespace tyr
 {
+	class BinaryWriter;
 	class SceneManager;
 	class GameContext;
 	class SceneObject;
@@ -10,7 +11,7 @@ namespace tyr
 	class Scene
 	{
 	public:
-		Scene();
+		Scene(const std::string& name);
 		virtual ~Scene();
 		virtual void Initialize() = 0;
 		void AddSceneObject(SceneObject* pObj);
@@ -19,14 +20,18 @@ namespace tyr
 		virtual void FixedUpdate();
 #ifdef USE_IM_GUI
 		virtual void Debug();
+		void Save(BinaryWriter& writer);
+		
 #endif
 		virtual void Render() const;
-		
+
+		const std::string& GetName() const { return m_Name; }
 	protected:
 		friend SceneManager;
 		GameContext const* m_pContext; //Weak pointer
+		
 	private:
-
+		std::string m_Name;
 		std::vector<SceneObject*> m_pSceneObjects;
 	};
 

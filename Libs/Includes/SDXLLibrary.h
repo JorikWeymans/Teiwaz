@@ -120,6 +120,8 @@ typedef int SDXL_ImGuiWindowFlags;
 typedef int SDXL_ImGuiTreeNodeFlags;
 typedef int SDXL_ImGuiCond;
 typedef int SDXL_ImGuiID;
+typedef int SDXL_ImGuiTabBarFlags;
+
 enum class SDXL_ImGuiDir : int
 {
 	ImGuiDir_None = -1,
@@ -210,6 +212,21 @@ enum SDXL_ImGuiCond_ : int
 	SDXL_ImGuiCond_Once = 1 << 1,   // Set the variable once per runtime session (only the first call with succeed)
 	SDXL_ImGuiCond_FirstUseEver = 1 << 2,   // Set the variable if the object/window has no persistently saved data (no entry in .ini file)
 	SDXL_ImGuiCond_Appearing = 1 << 3    // Set the variable if the object/window is appearing after being hidden/inactive (or the first time)
+};
+
+enum SDXL_ImGuiTabBarFlags_
+{
+	SDXL_ImGuiTabBarFlags_None = 0,
+	SDXL_ImGuiTabBarFlags_Reorderable = 1 << 0,   // Allow manually dragging tabs to re-order them + New tabs are appended at the end of list
+	SDXL_ImGuiTabBarFlags_AutoSelectNewTabs = 1 << 1,   // Automatically select new tabs when they appear
+	SDXL_ImGuiTabBarFlags_TabListPopupButton = 1 << 2,   // Disable buttons to open the tab list popup
+	SDXL_ImGuiTabBarFlags_NoCloseWithMiddleMouseButton = 1 << 3,   // Disable behavior of closing tabs (that are submitted with p_open != NULL) with middle mouse button. You can still repro this behavior on user's side with if (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
+	SDXL_ImGuiTabBarFlags_NoTabListScrollingButtons = 1 << 4,   // Disable scrolling buttons (apply when fitting policy is ImGuiTabBarFlags_FittingPolicyScroll)
+	SDXL_ImGuiTabBarFlags_NoTooltip = 1 << 5,   // Disable tooltips when hovering a tab
+	SDXL_ImGuiTabBarFlags_FittingPolicyResizeDown = 1 << 6,   // Resize tabs when they don't fit
+	SDXL_ImGuiTabBarFlags_FittingPolicyScroll = 1 << 7,   // Add scroll buttons when tabs don't fit
+	SDXL_ImGuiTabBarFlags_FittingPolicyMask_ = SDXL_ImGuiTabBarFlags_FittingPolicyResizeDown | SDXL_ImGuiTabBarFlags_FittingPolicyScroll,
+	SDXL_ImGuiTabBarFlags_FittingPolicyDefault_ = SDXL_ImGuiTabBarFlags_FittingPolicyResizeDown
 };
 
 // ****** ------------------------------------ ******
@@ -310,6 +327,25 @@ SDXLLibrary_API float  SDXL_ImGui_GetTextLineHeight();                          
 SDXLLibrary_API float  SDXL_ImGui_GetTextLineHeightWithSpacing();                                 // ~ FontSize + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of text)
 SDXLLibrary_API float  SDXL_ImGui_GetFrameHeight();                                               // ~ FontSize + style.FramePadding.y * 2
 SDXLLibrary_API float  SDXL_ImGui_GetFrameHeightWithSpacing();                                    // ~ FontSize + style.FramePadding.y * 2 + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of framed widgets)
+
+// **---------------**
+// * -- ID stack --- *
+// **---------------**
+ // ID stack/scopes
+	// - Read the FAQ for more details about how ID are handled in dear imgui. If you are creating widgets in a loop you most
+	//   likely want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
+	// - The resulting ID are hashes of the entire stack.
+	// - You can also use the "Label##foobar" syntax within widget label to distinguish them from each others.
+	// - In this header file we use the "label"/"name" terminology to denote a string that will be displayed and used as an ID,
+	//   whereas "str_id" denote a string that is only used as an ID and not normally displayed.
+SDXLLibrary_API void  SDXL_ImGui_PushID(const char* str_id);                                     // push string into the ID stack (will hash string).
+SDXLLibrary_API void  SDXL_ImGui_PushID(const char* str_id_begin, const char* str_id_end);       // push string into the ID stack (will hash string).
+SDXLLibrary_API void  SDXL_ImGui_PushID(const void* ptr_id);                                     // push pointer into the ID stack (will hash pointer).
+SDXLLibrary_API void  SDXL_ImGui_PushID(int int_id);                                             // push integer into the ID stack (will hash integer).
+SDXLLibrary_API void  SDXL_ImGui_PopID();                                                        // pop from the ID stack.
+SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const char* str_id);                               // calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
+SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const char* str_id_begin, const char* str_id_end);
+SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const void* ptr_id);
 
 // *** ---------------------- ***
 // * _ _ _ _ ___  ____ ____ ___ *
@@ -429,26 +465,6 @@ SDXLLibrary_API void SDXL_ImGui_EndMenu();                                      
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut = NULL, bool selected = false, bool enabled = true);  // return true when activated. shortcuts are displayed for convenience but not processed by ImGui at the moment
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut, bool* p_selected, bool enabled = true);              // return true when activated + toggle (*p_selected) if p_selected != NULL
 
-// **---------------**
-// * -- ID stack --- *
-// **---------------**
- // ID stack/scopes
-	// - Read the FAQ for more details about how ID are handled in dear imgui. If you are creating widgets in a loop you most
-	//   likely want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
-	// - The resulting ID are hashes of the entire stack.
-	// - You can also use the "Label##foobar" syntax within widget label to distinguish them from each others.
-	// - In this header file we use the "label"/"name" terminology to denote a string that will be displayed and used as an ID,
-	//   whereas "str_id" denote a string that is only used as an ID and not normally displayed.
-SDXLLibrary_API void  SDXL_ImGui_PushID(const char* str_id);                                     // push string into the ID stack (will hash string).
-SDXLLibrary_API void  SDXL_ImGui_PushID(const char* str_id_begin, const char* str_id_end);       // push string into the ID stack (will hash string).
-SDXLLibrary_API void  SDXL_ImGui_PushID(const void* ptr_id);                                     // push pointer into the ID stack (will hash pointer).
-SDXLLibrary_API void  SDXL_ImGui_PushID(int int_id);                                             // push integer into the ID stack (will hash integer).
-SDXLLibrary_API void  SDXL_ImGui_PopID();                                                        // pop from the ID stack.
-SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const char* str_id);                               // calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
-SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const char* str_id_begin, const char* str_id_end);
-SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const void* ptr_id);
-
-
 
 // **---------------**
 // * ----- Text ---- *
@@ -456,15 +472,25 @@ SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const void* ptr_id);
 SDXLLibrary_API void SDXL_ImGui_TextUnformatted(const char* text, const char* text_end = nullptr);
 SDXLLibrary_API void SDXL_ImGui_Text(const char* fmt, ...);
 
-
-
-
-
+// *** --------------------------- ***
+// * ___ ____ ___     ___  ____ ____ *
+// *  |  |__| |__]    |__] |__| |__/ *
+// *  |  |  | |__]    |__] |  | |  \ *
+// *                               	 *
+// *** --------------------------- ***
+SDXLLibrary_API bool SDXL_ImGui_BeginTabBar(const char* str_id, SDXL_ImGuiTabBarFlags flags = 0);        // create and append into a TabBar
+SDXLLibrary_API void SDXL_ImGui_EndTabBar();                                                        // only call EndTabBar() if BeginTabBar() returns true!
+SDXLLibrary_API bool SDXL_ImGui_BeginTabItem(const char* label, bool* p_open = nullptr, SDXL_ImGuiTabBarFlags flags = 0);// create a Tab. Returns true if the Tab is selected.
+SDXLLibrary_API void SDXL_ImGui_EndTabItem();                                                       // only call EndTabItem() if BeginTabItem() returns true!
+SDXLLibrary_API void SDXL_ImGui_SetTabItemClosed(const char* tab_or_docked_window_label);           // notify TabBar or Docking system of a closed tab/window ahead (useful to reduce visual flicker on reorderable tab bars). For tab-bar: call after BeginTabBar() and before Tab submissions. Otherwise call with a window name.
 
 // **---------------**
 // * --- CONSOLE --- *
 // **---------------**
-SDXLLibrary_API void SDXL_ImGui_ConsoleDraw(const char* label, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API bool SDXL_ImGui_ConsoleBegin(const char* label, SDXL_ImGuiTabBarFlags flags = 0);
+SDXLLibrary_API void SDXL_ImGui_ConsoleDraw();
+SDXLLibrary_API void SDXL_ImGui_ConsoleEnd();
+
 SDXLLibrary_API void SDXL_ImGui_ConsoleClear();
 SDXLLibrary_API void SDXL_ImGui_ConsoleLog(const char* what);
 SDXLLibrary_API void SDXL_ImGui_ConsoleLogError(const char* what);
