@@ -133,6 +133,9 @@
     <ClInclude Include="BinStructureHelpers.h">
       <Filter>Helpers\Binary</Filter>
     </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Factory.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

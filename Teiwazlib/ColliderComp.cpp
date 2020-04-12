@@ -81,14 +81,5 @@ void tyr::ColliderComp::Save(BinaryWriter& writer)
 	writer.Write(m_IsDynamic);
 }
 
-tyr::ColliderComp* tyr::ColliderComp::CreateComponent(BinaryReader& reader)
-{
-	const float width    = reader.Read<float>();
-	const float height   = reader.Read<float>();
-	const PivotMode mode = reader.Read<PivotMode>();
-	const bool isDynamic = reader.Read<bool>();
-
-	return new ColliderComp(width, height, mode, isDynamic);
-}
 #endif
 

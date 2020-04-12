@@ -14,6 +14,7 @@
 #include "BinStructureHelpers.h"
 #include "SceneObject.h"
 #include "TyrComps.h"
+#include "Factory.h"
 tyr::SceneManager::SceneManager(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pScenes(std::vector<Scene*>())
@@ -178,20 +179,22 @@ void tyr::SceneManager::SaveScene()
 				{
 				case ComponentType::Transform: //should always be the first
 				{
-					newObject =  new SceneObject(TransformComp::CreateComponent(reader));
+
+					newObject =  new SceneObject(Factory::CreateComponent<TransformComp>(reader));
+					//newObject = new SceneObject(Factory::CreateTransformComp(reader));
 					objects.emplace_back(newObject);
 
 				}
 				break;
 				case ComponentType::CharacterController:
-					newObject->AddComponent(CharacterControllerComp::CreateComponent(reader));
+					newObject->AddComponent(Factory::CreateComponent<CharacterControllerComp>(reader));
 					break;
 				case ComponentType::Collider: 
-					newObject->AddComponent(ColliderComp::CreateComponent(reader));
+					newObject->AddComponent(Factory::CreateComponent<ColliderComp>(reader));
 					break;
 				case ComponentType::FPS: break;
 				case ComponentType::RigidBody: 
-					newObject->AddComponent(RigidBodyComp::CreateComponent(reader));
+					newObject->AddComponent(Factory::CreateComponent<RigidBodyComp>(reader));
 					break;
 				case ComponentType::Text: break;
 				case ComponentType::Texture: break;

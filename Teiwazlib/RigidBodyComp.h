@@ -23,7 +23,6 @@ namespace tyr
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif
-		static RigidBodyComp* CreateComponent(BinaryReader& reader);
 	private:
 		CharacterControllerComp* m_pController; // weak pointer;
 		float m_Gravity;

@@ -24,7 +24,6 @@ namespace tyr
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif
-		static CharacterControllerComp* CreateComponent(BinaryReader& reader);
 	private:
 		TransformComp* m_pTransform;
 		ColliderComp* m_pCollider; //weak pointer

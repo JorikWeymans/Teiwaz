@@ -169,9 +169,4 @@ void tyr::CharacterControllerComp::Save(BinaryWriter& writer)
 	
 }
 
-tyr::CharacterControllerComp* tyr::CharacterControllerComp::CreateComponent(BinaryReader& reader)
-{
-	UNREFERENCED_PARAMETER(reader);
-	return new CharacterControllerComp();
-}
 #endif

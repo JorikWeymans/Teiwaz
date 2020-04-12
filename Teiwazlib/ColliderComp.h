@@ -24,7 +24,7 @@ namespace tyr
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif
-		static ColliderComp* CreateComponent(BinaryReader& reader);
+
 	private:
 		float m_Width, m_Height;
 		PivotMode m_Pivot;

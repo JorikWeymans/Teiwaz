@@ -83,10 +83,3 @@ void tyr::RigidBodyComp::Save(BinaryWriter& writer)
 	writer.Write(m_Gravity);
 }
 #endif
-
-tyr::RigidBodyComp* tyr::RigidBodyComp::CreateComponent(BinaryReader& reader)
-{
-	return new RigidBodyComp(reader.Read<float>());
-}
-
-
