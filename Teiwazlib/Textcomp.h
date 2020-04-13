@@ -23,6 +23,9 @@ namespace tyr
 		void Destroy();
 
 		void SetText(const std::wstring& newText);
+#ifdef USE_IM_GUI
+		void Save(BinaryWriter& writer) override;
+#endif
 
 	private:
 		std::wstring m_TextPath;

@@ -7,7 +7,7 @@
 #include "ContentManager.h"
 #include "Font.h"
 #include "TeiwazEngine.h"
-
+#include "BinaryWriter.h"
 tyr::TextComp::TextComp(const std::wstring& textPath, const std::wstring& text, const Color& color, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Text)
 	, m_TextPath(textPath)
@@ -53,3 +53,10 @@ void tyr::TextComp::SetText(const std::wstring& newText)
 {
 	m_Text = newText;
 }
+#ifdef USE_IM_GUI
+void tyr::TextComp::Save(BinaryWriter& writer)
+{
+	UNREFERENCED_PARAMETER(writer);
+	writer.Write(m_Type);
+}
+#endif

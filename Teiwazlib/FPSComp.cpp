@@ -7,10 +7,10 @@
 #include "GameContext.h"
 #include "Time.h"
 #include <iomanip>
-
+#include "BinaryWriter.h"
 tyr::FPSComp::FPSComp(const FPSCompType& type, unsigned int textIndex)
 	: tyr::BaseComponent(ComponentType::FPS)
-	, m_Type(type)
+	, m_FPSType(type)
 	, m_pTextComp(nullptr)
 	, m_TextIndex(textIndex)
 {
@@ -29,7 +29,7 @@ void tyr::FPSComp::Initialize()
 
 void tyr::FPSComp::Update()
 {
-	if (m_Type != FPSCompType::Update) return;
+	if (m_FPSType != FPSCompType::Update) return;
 	const auto fps = 1 / m_pSceneObject->GetGameContext()->pTime->deltaTime;
 	std::wstringstream ss;
 	ss << L"FPS: " << std::fixed<< std::setprecision(2) << fps;
@@ -40,7 +40,7 @@ void tyr::FPSComp::Update()
 
 void tyr::FPSComp::FixedUpdate()
 {
-	if (m_Type != FPSCompType::FixedUpdate) return;
+	if (m_FPSType != FPSCompType::FixedUpdate) return;
 	const auto fps = 1 / m_pSceneObject->GetGameContext()->pTime->fixedDeltaTime;
 	std::wstringstream ss;
 	ss << L"FPS: " << std::fixed << std::setprecision(2) << fps;
@@ -51,3 +51,14 @@ void tyr::FPSComp::FixedUpdate()
 void tyr::FPSComp::Render() const
 {
 }
+#ifdef USE_IM_GUI
+void tyr::FPSComp::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Type);
+	
+	writer.Write(m_FPSType);
+	writer.Write(m_TextIndex);
+	
+}
+#endif
+

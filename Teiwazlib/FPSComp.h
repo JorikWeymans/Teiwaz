@@ -16,9 +16,11 @@ namespace tyr
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() const override;
-
+#ifdef USE_IM_GUI
+		void Save(BinaryWriter& writer) override;
+#endif
 	private:
-		FPSCompType m_Type;
+		FPSCompType m_FPSType;
 		TextComp* m_pTextComp;
 		unsigned int m_TextIndex;
 	public:

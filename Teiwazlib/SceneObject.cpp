@@ -6,20 +6,7 @@
 #include "BinaryWriter.h"
 int tyr::SceneObject::counter = 0;
 tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name)
-	: m_pComponents(std::vector<BaseComponent*>())
-	, m_pChilds(std::vector<SceneObject*>())
-	, m_pParent(nullptr)
-	, m_pTransform(new TransformComp(transform))
-	, m_IsDestroyed(false)
-	, m_name(name)
-	, m_pContext(nullptr)
-#ifdef USE_IM_GUI
-	, m_SelectedItem(-1)
-#endif
-
-{
-	counter++;
-}
+	: SceneObject(new TransformComp(transform), name) {}
 
 tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name)
 	: m_pComponents(std::vector<BaseComponent*>())

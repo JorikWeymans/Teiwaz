@@ -29,3 +29,11 @@ tyr::RigidBodyComp* tyr::Factory::CreateRigidBodyComp(BinaryReader& reader)
 {
 	return new RigidBodyComp(reader.Read<float>());
 }
+
+tyr::FPSComp* tyr::Factory::CreateFPSComp(BinaryReader& reader)
+{
+	const FPSCompType type = reader.Read<FPSCompType>();
+	const UINT textIndex = reader.Read<UINT>();
+
+	return new FPSComp(type, textIndex);
+}
