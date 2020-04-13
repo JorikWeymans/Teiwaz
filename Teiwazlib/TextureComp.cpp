@@ -7,7 +7,7 @@
 #include <iostream>
 #include "TeiwazEngine.h"
 
-tyr::TextureComp::TextureComp(const std::wstring& texturePath, const PivotMode& pivotMode, 
+tyr::TextureComp::TextureComp(const std::string& texturePath, const PivotMode& pivotMode, 
 								const Rect& rect, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Texture)
 	, m_TexturePath(texturePath)
@@ -30,8 +30,8 @@ void tyr::TextureComp::Initialize()
 {
 
 	m_pTransform = m_pSceneObject->GetTransform();
-	
-	m_pTexture = CONTENT_MANAGER->LoadTexture(m_TexturePath);
+
+	m_pTexture = CONTENT_MANAGER->LoadTexture(std::wstring(m_TexturePath.begin(), m_TexturePath.end()));
 
 	if(!m_SrcRect)
 	{
@@ -69,7 +69,7 @@ void tyr::TextureComp::Render() const
 void tyr::TextureComp::Destroy()
 {
 	m_pTransform = nullptr;
-	m_TexturePath = L"";
+	m_TexturePath = "";
 }
 
 void tyr::TextureComp::SetSourceRect(const Rect& rect)

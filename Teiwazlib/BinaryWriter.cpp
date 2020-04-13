@@ -68,8 +68,8 @@ bool tyr::BinaryWriter::IsOpen() const
 
 void tyr::BinaryWriter::WriteString(const std::string& string)
 {
-	const size_t offset = 1;
-	m_Writer.write(static_cast<const char*>(string.c_str()), string.size() + offset);
+	const streamsize size = static_cast<streamsize>(string.size() + 1U);
+	m_Writer.write(static_cast<const char*>(string.c_str()), size);
 }
 
 void tyr::BinaryWriter::CreateFolders(const std::string& path)

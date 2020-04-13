@@ -31,8 +31,8 @@ void tyr::FPSComp::Update()
 {
 	if (m_FPSType != FPSCompType::Update) return;
 	const auto fps = 1 / m_pSceneObject->GetGameContext()->pTime->deltaTime;
-	std::wstringstream ss;
-	ss << L"FPS: " << std::fixed<< std::setprecision(2) << fps;
+	std::stringstream ss;
+	ss << "FPS: " << std::fixed<< std::setprecision(2) << fps;
 	
 	m_pTextComp->SetText(ss.str());
 
@@ -42,8 +42,8 @@ void tyr::FPSComp::FixedUpdate()
 {
 	if (m_FPSType != FPSCompType::FixedUpdate) return;
 	const auto fps = 1 / m_pSceneObject->GetGameContext()->pTime->fixedDeltaTime;
-	std::wstringstream ss;
-	ss << L"FPS: " << std::fixed << std::setprecision(2) << fps;
+	std::stringstream ss;
+	ss << "FPS: " << std::fixed << std::setprecision(2) << fps;
 
 	m_pTextComp->SetText(ss.str());
 }

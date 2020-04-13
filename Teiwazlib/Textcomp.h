@@ -11,7 +11,7 @@ namespace tyr
 	class TextComp final : public BaseComponent
 	{
 	public:
-		explicit TextComp(const std::wstring& textPath, const std::wstring& text, const Color& color,  const Vector2& offset = Vector2(0.f,0.f));
+		explicit TextComp(const std::string& textPath, const std::string& text, const Color& color,  const Vector2& offset = Vector2(0.f,0.f));
 		~TextComp() override;
 
 		void Initialize() override;
@@ -22,14 +22,14 @@ namespace tyr
 
 		void Destroy();
 
-		void SetText(const std::wstring& newText);
+		void SetText(const std::string& newText);
 #ifdef USE_IM_GUI
 		void Save(BinaryWriter& writer) override;
 #endif
 
 	private:
-		std::wstring m_TextPath;
-		std::wstring m_Text;
+		std::string m_TextPath;
+		std::string m_Text;
 		Color m_Color;
 		
 		Font const* m_pFont; //Weak pointer

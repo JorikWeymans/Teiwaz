@@ -76,8 +76,8 @@ void bub::MainScene::Initialize()
 #ifdef USE_IM_GUI
 		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 670)), "FPS");
 		AddSceneObject(pFPS);
-		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text", ColorYellow));
-		pFPS->AddComponent(new tyr::TextComp(L"Fonts/Arcade_20.fnt", L"Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
+		pFPS->AddComponent(new tyr::TextComp("Fonts/Arcade_20.fnt", "Text", ColorYellow));
+		pFPS->AddComponent(new tyr::TextComp("Fonts/Arcade_20.fnt", "Text 1234.00", ColorRed, tyr::Vector2(0, 20)));
 		pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::Update, 0));
 		pFPS->AddComponent(new tyr::FPSComp(tyr::FPSCompType::FixedUpdate, 1));
 #endif	
@@ -300,7 +300,7 @@ void bub::MainScene::LoadBackground()
 					{
 						filled[k][l].second = true;
 
-						pBlock->AddComponent(new tyr::TextureComp(L"BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft,
+						pBlock->AddComponent(new tyr::TextureComp("BBSprites/blocksScaled.png", tyr::PivotMode::TopLeft,
 								tyr::Rect(24, 0, 24, 24), tyr::Vector2(m * scale,n * scale)));
 
 						m++;

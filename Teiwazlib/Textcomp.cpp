@@ -8,7 +8,7 @@
 #include "Font.h"
 #include "TeiwazEngine.h"
 #include "BinaryWriter.h"
-tyr::TextComp::TextComp(const std::wstring& textPath, const std::wstring& text, const Color& color, const Vector2& offset)
+tyr::TextComp::TextComp(const std::string& textPath, const std::string& text, const Color& color, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Text)
 	, m_TextPath(textPath)
 	, m_Text(text)
@@ -25,7 +25,7 @@ tyr::TextComp::~TextComp()
 void tyr::TextComp::Initialize()
 {
 	m_pTransform = m_pSceneObject->GetTransform();
-	m_pFont = CONTENT_MANAGER->LoadFont(m_TextPath);
+	m_pFont = CONTENT_MANAGER->LoadFont(std::wstring(m_TextPath.begin(), m_TextPath.end()));
 }
 
 void tyr::TextComp::Update()
@@ -42,14 +42,14 @@ void tyr::TextComp::Render() const
 	pos.x += m_Offset.x;
 	pos.y += m_Offset.y;
 	 
-	SDXL_RenderText(m_pFont->SDXL(), m_Text, { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
+	SDXL_RenderText(m_pFont->SDXL(), std::wstring(m_Text.begin(), m_Text.end()), { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
 }
 
 void tyr::TextComp::Destroy()
 {
 }
 
-void tyr::TextComp::SetText(const std::wstring& newText)
+void tyr::TextComp::SetText(const std::string& newText)
 {
 	m_Text = newText;
 }
