@@ -58,5 +58,17 @@ void tyr::TextComp::Save(BinaryWriter& writer)
 {
 	UNREFERENCED_PARAMETER(writer);
 	writer.Write(m_Type);
+
+	writer.WriteString(m_TextPath);
+	writer.WriteString(m_Text);
+
+	writer.Write(m_Color.r);
+	writer.Write(m_Color.g);
+	writer.Write(m_Color.b);
+	writer.Write(m_Color.a);
+
+	writer.Write(m_Offset.ToPOD());
+	
+	
 }
 #endif

@@ -132,98 +132,66 @@ void tyr::SceneManager::RenderEditor()
 void tyr::SceneManager::SaveScene()
 {
 
-	//std::stringstream ss;
-	//ss << ContentManager::GetInstance()->GetDataFolder();
-	//ss << "Scenes/" << "Test" << ".tyrScene";
-	//
-	//{
-	//	BinaryWriter writer(ss.str());
-	//	// Header
-	//	// Long double (binary rep of JorikWey
-	//	ULONG64 header = 0x4A6F72696B576579;
-	//	writer.Write(header);
-	//
-	//	m_pScenes[0]->Save(writer);
-	//	writer.Write(ObjectType::End);
-	//
-	//
-	//	writer.Close();
-	//}
+	std::stringstream ss;
+	ss << ContentManager::GetInstance()->GetDataFolder();
+	ss << "Scenes/" << "Test" << ".tyrScene";
+	
+	{
+		BinaryWriter writer(ss.str());
+		// Header
+		// Long double (binary rep of JorikWey
+		ULONG64 header = 0x4A6F72696B576579;
+		writer.Write(header);
+	
+		m_pScenes[0]->Save(writer);
+		writer.Write(ObjectType::End);
+	
+	
+		writer.Close();
+
+		//m_pScenes[0]->Flush();
+	}
 
 
 
 
 
-	//{
-	//	BinaryReader reader(ss.str());
-	//	// rn
-	//	// header
-	//	ULONG64 header = reader.Read<ULONG64>();
-	//	if (header != 0x4A6F72696B576579)
-	//	{
-	//		SDXL_ImGui_ConsoleLogError("This is no a scene");
-	//	}
-	//		// sceneName
-	//	std::string sceneName = reader.ReadString();
-	//	UNREFERENCED_PARAMETER(sceneName);
-	//
-	//	std::vector<SceneObject*> objects;
-	//
-	//	try
-	//	{
-	//		while (reader.Read<ObjectType>() == ObjectType::SceneObject)
-	//		{
-	//			UINT size = reader.Read<UINT>();
-	//			for (UINT i{ 0 }; i < size; i++)
-	//			{
-	//				ComponentType type = reader.Read<ComponentType>();
-	//				SceneObject* newObject = nullptr;
-	//				switch (type)
-	//				{
-	//				case ComponentType::Transform: //should always be the first
-	//				{
-	//					newObject = new SceneObject(Factory::CreateComponent<TransformComp>(reader));
-	//					//newObject = new SceneObject(Factory::CreateTransformComp(reader));
-	//					objects.emplace_back(newObject);
-	//
-	//				}
-	//				break;
-	//				case ComponentType::CharacterController:
-	//					newObject->AddComponent(Factory::CreateComponent<CharacterControllerComp>(reader));
-	//					break;
-	//				case ComponentType::Collider:
-	//					newObject->AddComponent(Factory::CreateComponent<ColliderComp>(reader));
-	//					break;
-	//				case ComponentType::FPS: 
-	//					newObject->AddComponent(Factory::CreateComponent<FPSComp>(reader));
-	//					break;
-	//				case ComponentType::RigidBody:
-	//					newObject->AddComponent(Factory::CreateComponent<RigidBodyComp>(reader));
-	//					break;
-	//				case ComponentType::Text: break;
-	//				case ComponentType::Texture: break;
-	//
-	//				default:;
-	//				}
-	//				// Object
-	//				//   transformCOm
-	//				// Object
-	//				//   TransformComp
-	//				// Object
-	//				//   TransformComp
-	//				// End
-	//
-	//			}
-	//
-	//		}
-	//	}
-	//	catch(TyrException& e)
-	//	{
-	//		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
-	//	}
-	//
-	//		
-	//}
+	{
+		BinaryReader reader(ss.str());
+		// rn
+		// header
+		ULONG64 header = reader.Read<ULONG64>();
+		if (header != 0x4A6F72696B576579)
+		{
+			SDXL_ImGui_ConsoleLogError("This is no a scene");
+		}
+			// sceneName
+		std::string sceneName = reader.ReadString();
+		UNREFERENCED_PARAMETER(sceneName);
+
+		
+		try
+		{
+			while (reader.Read<ObjectType>() == ObjectType::SceneObject)
+			{
+				auto parent = LoadSceneObject(reader, nullptr);
+
+				const size_t childs = reader.Read<size_t>();
+				for(size_t i{0}; i < childs; ++i  )
+				{
+					reader.Read<ObjectType>(); //no need to check, this is always an SeneObject.
+					LoadSceneObject(reader, parent);
+					reader.Read<size_t>(); //no need to save, only 1 depth child relation allowed
+				}
+			}
+		}
+		catch(TyrException& e)
+		{
+			MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
+		}
+	
+			
+	}
 
 
 
@@ -232,6 +200,58 @@ void tyr::SceneManager::SaveScene()
 
 
 	
+}
+
+tyr::SceneObject* tyr::SceneManager::LoadSceneObject(BinaryReader& reader, SceneObject* parent)
+{
+	UNREFERENCED_PARAMETER(parent);
+	SceneObject* newObject = nullptr;
+	const std::string newObjectName = reader.ReadString();
+	UINT size = reader.Read<UINT>();
+	for (UINT i{ 0 }; i < size; i++)
+	{
+		const ComponentType type = reader.Read<ComponentType>();
+
+		switch (type)
+		{
+		case ComponentType::Transform: //should always be the first
+			newObject = new SceneObject(Factory::CreateComponent<TransformComp>(reader), newObjectName);
+
+			if (parent) parent->AddChild(newObject);
+			else
+				m_pScenes[0]->AddSceneObject(newObject);
+			break;
+		case ComponentType::CharacterController:
+			newObject->AddComponent(Factory::CreateComponent<CharacterControllerComp>(reader));
+			break;
+		case ComponentType::Collider:
+			newObject->AddComponent(Factory::CreateComponent<ColliderComp>(reader));
+			break;
+		case ComponentType::FPS:
+			newObject->AddComponent(Factory::CreateComponent<FPSComp>(reader));
+			break;
+		case ComponentType::RigidBody:
+			newObject->AddComponent(Factory::CreateComponent<RigidBodyComp>(reader));
+			break;
+		case ComponentType::Text:
+			newObject->AddComponent(Factory::CreateComponent<TextComp>(reader));
+			break;
+		case ComponentType::Texture:
+			newObject->AddComponent(Factory::CreateComponent<TextureComp>(reader));
+			break;
+
+		default:;
+		}
+		// Object
+		//   transformCOm
+		// Object
+		//   TransformComp
+		// Object
+		//   TransformComp
+		// End
+
+	}
+	return newObject;
 }
 
 

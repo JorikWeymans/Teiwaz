@@ -32,7 +32,7 @@ void bub::MainScene::Initialize()
 {
 	try
 	{
-		//LoadBackground();
+		LoadBackground();
 
 		m_pPlayer = new BubPrefab();
 		m_pPlayer->Generate(this);

@@ -6,20 +6,21 @@
 #include "Texture.h"
 #include <iostream>
 #include "TeiwazEngine.h"
-
+#include "BinaryWriter.h"
 tyr::TextureComp::TextureComp(const std::string& texturePath, const PivotMode& pivotMode, 
 								const Rect& rect, const Vector2& offset)
+	: TextureComp(texturePath, Vector2(pivotMode), rect, offset)
+{}
+
+tyr::TextureComp::TextureComp(const std::string& texturePath, const Vector2& pivot, const Rect& rect, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Texture)
 	, m_TexturePath(texturePath)
 	, m_pTexture(nullptr)
 	, m_pTransform(nullptr)
-	, m_Pivot(Vector2(pivotMode))
+	, m_Pivot(pivot)
 	, m_SrcRect(rect)
 	, m_Offset(offset)
 {
-#ifdef USE_IM_GUI
-	SDXL_ImGui_ConsoleLog("Texture component added");
-#endif
 }
 
 tyr::TextureComp::~TextureComp()
@@ -119,5 +120,15 @@ void tyr::TextureComp::RenderEditor()
 	SDXL_ImGui_End();
 
 
+}
+
+void tyr::TextureComp::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Type);
+	
+	writer.WriteString(m_TexturePath);
+	writer.Write(m_Pivot.ToPOD());
+	writer.Write(m_SrcRect.ToPOD());
+	writer.Write(m_Offset.ToPOD());
 }
 #endif

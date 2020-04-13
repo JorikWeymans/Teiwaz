@@ -10,8 +10,8 @@ namespace tyr
 	class ColliderComp;
 	class RigidBodyComp;
 	class FPSComp;
-	
-	
+	class TextureComp;
+	class TextComp;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
 	class Factory final
 	{
@@ -27,15 +27,16 @@ namespace tyr
 		template<> static  ColliderComp*            CreateComponent(BinaryReader& reader) { return CreateColliderComp(reader); }
 		template<> static  RigidBodyComp*           CreateComponent(BinaryReader& reader) { return CreateRigidBodyComp(reader); }
 		template<> static  FPSComp*					CreateComponent(BinaryReader& reader) { return CreateFPSComp(reader); }
-
-
+		template<> static TextureComp*              CreateComponent(BinaryReader& reader) { return CreateTextureComp(reader); }
+		template<> static TextComp*                 CreateComponent(BinaryReader& reader) { return CreateTextComp(reader); }
 	private:
 		static TransformComp*           CreateTransformComp(BinaryReader& reader);
 		static CharacterControllerComp* CreateCharacterControllerComp(BinaryReader& reader);
 		static ColliderComp*            CreateColliderComp(BinaryReader& reader);
 		static RigidBodyComp*           CreateRigidBodyComp(BinaryReader& reader);
 		static FPSComp*					CreateFPSComp(BinaryReader& reader);
-		
+		static TextureComp*             CreateTextureComp(BinaryReader& reader);
+		static TextComp*                CreateTextComp(BinaryReader& reader);
 	public:
 		Factory() = delete;
 		~Factory() = delete;

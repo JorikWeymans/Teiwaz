@@ -145,3 +145,9 @@ tyr::Rect::operator bool() const
 {
 	return m_IsSet;
 }
+
+tyr::Rect_POD tyr::Rect::ToPOD() const
+{
+
+	return Rect_POD{ {m_Pos.x, m_Pos.y}, m_Width, m_Height };
+}

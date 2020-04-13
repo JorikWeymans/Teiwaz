@@ -7,6 +7,9 @@ void bub::BubPrefab::Generate(tyr::Scene* pScene)
 {
 	auto obj = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1, 1)), "Player");
 	pScene->AddSceneObject(obj);
+	auto objs = new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1, 1)), "PlayerChild1");
+	obj->AddChild(objs);
+	obj->AddChild(new tyr::SceneObject(tyr::Transform(tyr::Vector2(378.f, 560), tyr::Vector2(1, 1)), "PlayerChild2"));
 
 	const auto pivotMode = tyr::PivotMode::Center;
 	obj->AddComponent(new tyr::ColliderComp(48, 48, pivotMode, true));

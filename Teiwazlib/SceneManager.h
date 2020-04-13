@@ -2,6 +2,8 @@
 #include <vector>
 namespace  tyr
 {
+	class BinaryReader;
+	class SceneObject;
 	class GameContext;
 	class Scene;
 	class SceneManager final
@@ -24,6 +26,7 @@ namespace  tyr
 #ifdef USE_IM_GUI
 		void RenderEditor();
 		void SaveScene();
+		SceneObject* LoadSceneObject(BinaryReader& reader, SceneObject* parent = nullptr);
 #endif
 		GameContext* m_pContext; //Weak ptr
 		std::vector<Scene*> m_pScenes;

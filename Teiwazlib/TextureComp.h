@@ -10,8 +10,10 @@ namespace tyr
 	class TextureComp final: public BaseComponent
 	{
 	public:
-		explicit TextureComp(const std::string& texturePath, const PivotMode& pivotMode = PivotMode::TopLeft, 
-								const Rect& rect = Rect(), const Vector2& offset = Vector2(0.f,0.f));
+		explicit TextureComp(const std::string& texturePath, const PivotMode& pivotMode = PivotMode::TopLeft,
+							const Rect& rect = Rect(), const Vector2& offset = Vector2(0.f, 0.f));
+			explicit TextureComp(const std::string& texturePath, const Vector2& pivot ,
+				const Rect& rect, const Vector2& offset);
 		~TextureComp() override;
 		
 		void Initialize() override;
@@ -25,6 +27,7 @@ namespace tyr
 
 #ifdef USE_IM_GUI
 		void RenderEditor() override;
+		void Save(BinaryWriter& writer) override;
 #endif
 	private:
 		std::string m_TexturePath;

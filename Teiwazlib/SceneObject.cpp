@@ -121,16 +121,20 @@ void tyr::SceneObject::RenderEditor()
 void tyr::SceneObject::Save(BinaryWriter& writer)
 {
 	writer.Write(ObjectType::SceneObject);
-	UINT size = /*m_pComponents.size()*/ + 1; //+1 is for the transform comp not saved in vec
+	writer.WriteString(m_name);
+	
+	UINT size = m_pComponents.size() + 1; //+1 is for the transform comp not saved in vec
 	writer.Write(size);
 	m_pTransform->Save(writer);
 	//Save transform
 	
 	
 	
-	//std::for_each(m_pComponents.begin(), m_pComponents.end(), [&writer](BaseComponent* b) { b->Save(writer); });
+	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&writer](BaseComponent* b) { b->Save(writer); });
+	
 	//Save Childs
-	//std::for_each(m_pChilds.begin(), m_pChilds.end(), [&writer](SceneObject* s) { s->Save(writer); });
+	writer.Write(m_pChilds.size());
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&writer](SceneObject* s) { s->Save(writer); });
 	//Save components
 	
 }

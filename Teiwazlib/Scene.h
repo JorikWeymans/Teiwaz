@@ -21,7 +21,7 @@ namespace tyr
 #ifdef USE_IM_GUI
 		virtual void Debug();
 		void Save(BinaryWriter& writer);
-		
+		void Flush();
 #endif
 		virtual void Render() const;
 

@@ -109,7 +109,7 @@ namespace tyr
 
 		static void AdjustRectToPivot(Rect& theRect, PivotMode pivot);
 		explicit operator bool() const;
-
+		Rect_POD ToPOD() const;
 
 
 		
