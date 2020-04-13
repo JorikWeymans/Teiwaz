@@ -8,3 +8,4 @@
 #include "ColliderComp.h"
 #include "CharacterControllerComp.h"
 #include "RigidBodyComp.h"
+#include "Player1Controller.h"

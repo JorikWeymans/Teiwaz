@@ -66,3 +66,9 @@ tyr::TextComp*                tyr::Factory::CreateTextComp(BinaryReader& reader)
 
 	
 }
+
+tyr::Player1Controller* tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new Player1Controller();
+}

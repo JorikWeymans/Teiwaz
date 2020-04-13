@@ -207,6 +207,7 @@
     <ClInclude Include="FPSComp.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="Player1Controller.h" />
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
     <ClInclude Include="Textcomp.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="FPSComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Player1Controller.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />

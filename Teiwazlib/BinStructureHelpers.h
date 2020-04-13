@@ -17,7 +17,8 @@ namespace tyr
 		RigidBody,
 		Text,
 		Texture,
-		Transform
+		Transform,
+		Player1Controller,
 
 
 	};

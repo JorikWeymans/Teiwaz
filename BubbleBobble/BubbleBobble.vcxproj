@@ -196,6 +196,7 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MiniginScene.cpp" />
+    <ClCompile Include="ReadScene.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +204,7 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
     <ClInclude Include="BubPrefab.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MiniginScene.h" />
+    <ClInclude Include="ReadScene.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

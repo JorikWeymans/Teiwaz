@@ -37,10 +37,7 @@ void bub::MainScene::Initialize()
 		m_pPlayer = new BubPrefab();
 		m_pPlayer->Generate(this);
 		
-		m_pContext->pInput->AddAction("Jump", tyr::ButtonState::Pressed, 'W' );
-		
-		m_pContext->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, 'A');
-		m_pContext->pInput->AddAction("MoveRight", tyr::ButtonState::Down, 'D');
+
 		//
 		////for (unsigned int i{ 0 }; i < 8; i++)
 		////{
@@ -95,52 +92,13 @@ void bub::MainScene::Update()
 	tyr::Scene::Update();
 	//m_Ani->Update(m_pContext->pTime->deltaTime);
 	//m_pTexture->SetSourceRect(m_Ani->GetCurrentAnimation());
-	if (m_pContext->pInput->IsActionTriggered("Jump"))
-	{
-		if(m_pPlayer->GetController()->IsGrounded())
-			m_pPlayer->GetBody()->AddForce(0, 30.f);
-	}
+
 }
 
 void bub::MainScene::FixedUpdate()
 {
-	static bool isGoingLeft = false;
 
 	tyr::Scene::FixedUpdate();
-	if (m_pContext->pInput->IsActionTriggered("MoveLeft"))
-	{
-		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-
-
-
-
-		m_pPlayer->GetController()->Move(-150 * elapsed, 0);
-		if (!isGoingLeft)
-		{
-			isGoingLeft = true;
-			m_pPlayer->GetController()->GetSceneObject()->GetTransform()->Scale(-1, 1);
-		}
-
-
-
-	}
-	if (m_pContext->pInput->IsActionTriggered("MoveRight"))
-
-	{
-		//m_Ani->SetAnimation("Walking");
-		const float elapsed = m_pContext->pTime->fixedDeltaTime;
-
-		m_pPlayer->GetController()->Move(150 * elapsed, 0);
-
-		if (isGoingLeft)
-		{
-			isGoingLeft = false;
-			const auto scale = abs(m_pPlayer->GetController()->GetSceneObject()->GetTransform()->GetScale());
-			m_pPlayer->GetController()->GetSceneObject()->GetTransform()->SetScale(scale.x, scale.y);
-
-		}
-
-	}
 
 
 }
