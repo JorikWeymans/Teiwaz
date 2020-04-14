@@ -6,9 +6,11 @@
 #include "ContentManager.h"
 #include "Texture.h"
 #include "Color.h"
+#include "SceneManager.h"
 
-tyr::ESceneHolder::ESceneHolder(const std::string& dataFolder)
+tyr::ESceneHolder::ESceneHolder(const std::string& dataFolder, SceneManager* pContentManager)
 	: m_SceneFolder(dataFolder + "Scenes/")
+	, m_pContentManager(pContentManager)
 {
 
 	for(auto& entry : std::filesystem::directory_iterator(m_SceneFolder))
@@ -44,6 +46,7 @@ void tyr::ESceneHolder::RenderEditor()
 		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
 		{
 			SDXL_ImGui_ConsoleLog("count or something");
+			m_pContentManager->Flush();
 		}
 
 		SDXL_ImGui_SameLine();

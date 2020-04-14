@@ -3,7 +3,6 @@
 namespace  tyr
 {
 	class BinaryReader;
-	class SceneObject;
 	class GameContext;
 	class Scene;
 	class SceneManager final
@@ -15,8 +14,8 @@ namespace  tyr
 		void AddScene(Scene* pScene);
 
 		void Update();
-		void FixedUpdate();
-
+		void FixedUpdate();void FlushCurrentScene();
+		void Flush() { m_WantFlush = true; }
 #ifdef USE_IM_GUI
 		void Render();
 #else
@@ -25,13 +24,14 @@ namespace  tyr
 	private:
 #ifdef USE_IM_GUI
 		void RenderEditor();
-		void SaveScene();
-		SceneObject* LoadSceneObject(BinaryReader& reader, SceneObject* parent = nullptr);
+		void SaveCurrentScene();
+
+
 #endif
 		GameContext* m_pContext; //Weak ptr
 		std::vector<Scene*> m_pScenes;
 
-
+		bool m_WantFlush;
 
 
 	};

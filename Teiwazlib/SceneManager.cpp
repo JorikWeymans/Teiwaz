@@ -19,6 +19,7 @@
 tyr::SceneManager::SceneManager(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pScenes(std::vector<Scene*>())
+	, m_WantFlush(false)
 {
 }
 
@@ -45,6 +46,12 @@ void tyr::SceneManager::FixedUpdate()
 {
 	m_pScenes[0]->FixedUpdate();
 }
+
+void tyr::SceneManager::FlushCurrentScene()
+{
+	m_pScenes[0]->Flush();
+	
+}
 #ifdef USE_IM_GUI
 void tyr::SceneManager::RenderEditor()
 {
@@ -63,7 +70,7 @@ void tyr::SceneManager::RenderEditor()
 			}
 			if(SDXL_ImGui_MenuItem("SaveScene", "s"))
 			{
-				SaveScene();
+				SaveCurrentScene();
 			}
 			SDXL_ImGui_EndMenu();
 		}
@@ -111,7 +118,7 @@ void tyr::SceneManager::RenderEditor()
 			SDXL_ImGui_ConsoleEnd();
 		}
 		
-		static ESceneHolder holder(ContentManager::GetInstance()->GetDataFolder());
+		static ESceneHolder holder(ContentManager::GetInstance()->GetDataFolder(), this);
 		
 		if (SDXL_ImGui_BeginTabItem("SceneHolder"))
 {
@@ -129,9 +136,14 @@ void tyr::SceneManager::RenderEditor()
 	//SDXL_ImGUI_ConsoleLog("[error] this is a real error");
 	//SDXL_ImGUI_ConsoleClear();
 	m_pScenes[0]->Debug();
+
+	if(m_WantFlush)
+	{
+		FlushCurrentScene();
+	}
 }
 
-void tyr::SceneManager::SaveScene()
+void tyr::SceneManager::SaveCurrentScene()
 {
 
 	std::stringstream ss;
@@ -203,61 +215,6 @@ void tyr::SceneManager::SaveScene()
 
 
 	
-}
-
-tyr::SceneObject* tyr::SceneManager::LoadSceneObject(BinaryReader& reader, SceneObject* parent)
-{
-	UNREFERENCED_PARAMETER(parent);
-	SceneObject* newObject = nullptr;
-	const std::string newObjectName = reader.ReadString();
-	UINT size = reader.Read<UINT>();
-	for (UINT i{ 0 }; i < size; i++)
-	{
-		const ComponentType type = reader.Read<ComponentType>();
-
-		switch (type)
-		{
-		case ComponentType::Transform: //should always be the first
-			newObject = new SceneObject(Factory::CreateComponent<TransformComp>(reader), newObjectName);
-
-			if (parent) parent->AddChild(newObject);
-			else
-				m_pScenes[0]->AddSceneObject(newObject);
-			break;
-		case ComponentType::CharacterController:
-			newObject->AddComponent(Factory::CreateComponent<CharacterControllerComp>(reader));
-			break;
-		case ComponentType::Collider:
-			newObject->AddComponent(Factory::CreateComponent<ColliderComp>(reader));
-			break;
-		case ComponentType::FPS:
-			newObject->AddComponent(Factory::CreateComponent<FPSComp>(reader));
-			break;
-		case ComponentType::RigidBody:
-			newObject->AddComponent(Factory::CreateComponent<RigidBodyComp>(reader));
-			break;
-		case ComponentType::Text:
-			newObject->AddComponent(Factory::CreateComponent<TextComp>(reader));
-			break;
-		case ComponentType::Texture:
-			newObject->AddComponent(Factory::CreateComponent<TextureComp>(reader));
-			break;
-		case ComponentType::Player1Controller:
-			newObject->AddComponent(Factory::CreateComponent<Player1Controller>(reader));
-			break;
-
-		default:;
-		}
-		// Object
-		//   transformCOm
-		// Object
-		//   TransformComp
-		// Object
-		//   TransformComp
-		// End
-
-	}
-	return newObject;
 }
 
 

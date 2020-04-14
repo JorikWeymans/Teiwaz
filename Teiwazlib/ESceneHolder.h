@@ -7,6 +7,7 @@ namespace tyr
 {
 
 	class Texture;
+	class SceneManager;
 	class ESceneHolder final
 	{
 		struct SceneItem
@@ -19,7 +20,7 @@ namespace tyr
 		};
 		
 	public:
-		explicit ESceneHolder(const std::string& dataFolder);
+		explicit ESceneHolder(const std::string& dataFolder, SceneManager* pContentManager);
 		~ESceneHolder() = default;
 		void RenderEditor();
 
@@ -27,6 +28,7 @@ namespace tyr
 		std::string m_SceneFolder;
 		std::vector<SceneItem> m_Files;
 		Texture* m_pTexture;
+		SceneManager* m_pContentManager; //weak ptr
 	public:
 
 		ESceneHolder(const ESceneHolder&) = delete;
