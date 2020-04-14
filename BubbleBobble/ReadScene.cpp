@@ -17,34 +17,40 @@ bub::ReadScene::ReadScene()
 void bub::ReadScene::Initialize()
 {
 	using namespace  tyr;
+	bool istrue = true;
+	if (!istrue) return;
 	std::stringstream ss;
 	ss << tyr::ContentManager::GetInstance()->GetDataFolder();
 	ss << "Scenes/" << "Test" << ".tyrScene";
-	
+	try
+	{
 	BinaryReader reader(ss.str());
 	// rn
 	// header
-	ULONG64 header = reader.Read<ULONG64>();
-	if (header != 0x4A6F72696B576579)
-	{
+		ULONG64 header = reader.Read<ULONG64>();
+		if (header != 0x4A6F72696B576579)
+		{
+#ifdef USE_IM_GUI
 		SDXL_ImGui_ConsoleLogError("This is no a scene");
-	}
-	// sceneName
-	std::string sceneName = reader.ReadString();
-	UNREFERENCED_PARAMETER(sceneName);
+#else
+			THROW_ERROR(L"This is not a scene");
+#endif
+		}
+		// sceneName
+		std::string sceneName = reader.ReadString();
+		UNREFERENCED_PARAMETER(sceneName);
 
-	try
-	{
+	
 		while (reader.Read<ObjectType>() == ObjectType::SceneObject)
 		{
 			auto parent = LoadSceneObject(reader, nullptr);
 
-			const size_t childs = reader.Read<size_t>();
-			for (size_t i{ 0 }; i < childs; ++i)
+			const UINT childs = reader.Read<UINT>();
+			for (UINT i{ 0 }; i < childs; ++i)
 			{
 				reader.Read<ObjectType>(); //no need to check, this is always an SeneObject.
 				LoadSceneObject(reader, parent);
-				reader.Read<size_t>(); //no need to save, only 1 depth child relation allowed
+				reader.Read<unsigned int>(); //no need to save, only 1 depth child relation allowed
 			}
 		}
 	}

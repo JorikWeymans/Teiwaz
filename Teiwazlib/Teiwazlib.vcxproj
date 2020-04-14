@@ -101,6 +101,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,6 +125,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +151,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +179,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Libs\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -184,7 +188,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>ImLib.lib;SDXL.lib; xinput.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDXL.lib; xinput.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;C:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -202,6 +206,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Elapser.h" />
+    <ClInclude Include="ESceneHolder.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
@@ -210,6 +215,7 @@
     <ClInclude Include="Player1Controller.h" />
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
+    <ClInclude Include="StringManipulation.h" />
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureComp.h" />
@@ -239,6 +245,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Elapser.cpp" />
+    <ClCompile Include="ESceneHolder.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />

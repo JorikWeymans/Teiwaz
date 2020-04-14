@@ -11,7 +11,7 @@ tyr::Texture::Texture(const std::wstring& dataFolder, const std::wstring& path)
 	SDXL_CreateImage(&m_pImage, completePath);
 	
 	const auto di = SDXL_GetImageDimensions(m_pImage);
-
+	
 	m_Dimension.x = di.x;
 	m_Dimension.y = di.y;
 }

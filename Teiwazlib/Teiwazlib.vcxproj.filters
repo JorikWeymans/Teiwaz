@@ -29,6 +29,9 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{e540bb35-8f72-4ac1-b793-3248fac4bc97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{45f93416-70e6-4069-bb94-9f134fbadd34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TeiwazEngine.h">
@@ -137,6 +140,10 @@
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Player1Controller.h" />
+    <ClInclude Include="ESceneHolder.h" />
+    <ClInclude Include="StringManipulation.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -230,5 +237,6 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Player1Controller.cpp" />
+    <ClCompile Include="ESceneHolder.cpp" />
   </ItemGroup>
 </Project>

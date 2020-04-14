@@ -68,23 +68,23 @@ bool tyr::BinaryWriter::IsOpen() const
 
 void tyr::BinaryWriter::WriteString(const std::string& string)
 {
-	const streamsize size = static_cast<streamsize>(string.size() + 1U);
+	const streamsize size =  1 + static_cast<streamsize>(string.size());
 	m_Writer.write(static_cast<const char*>(string.c_str()), size);
 }
 
 void tyr::BinaryWriter::CreateFolders(const std::string& path)
 {
-	int index = 2;
+	UINT index = 2;
 
-	size_t found = path.find('/', index);
+	UINT found = static_cast<UINT>(path.find('/', index));
 	while (found < path.size())
 	{
 
 		std::string subbed = path.substr(0, found + 1);
 #pragma warning (suppress : 6031)
 		 _mkdir(subbed.c_str());
-		index = subbed.size();
-		found = path.find('/', index);
+		index = static_cast<UINT>(subbed.size());
+		found = static_cast<UINT>(path.find('/', index));
 	}
 }
 
@@ -140,7 +140,7 @@ void tyr::BinaryWriter::CreateFolders(const std::string& path)
 //{
 //	int index = 2;
 //
-//	size_t found = path.find('/', index);
+//	UINT found = path.find('/', index);
 //	while (found < path.size())
 //	{
 //

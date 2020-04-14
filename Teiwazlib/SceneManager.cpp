@@ -15,6 +15,7 @@
 #include "SceneObject.h"
 #include "TyrComps.h"
 #include "Factory.h"
+#include "ESceneHolder.h"
 tyr::SceneManager::SceneManager(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pScenes(std::vector<Scene*>())
@@ -73,8 +74,8 @@ void tyr::SceneManager::RenderEditor()
 	SDXL_ImGuiWindowFlags windowFlags = SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove;
 	//LEFT
 	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
-	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ 0.f,ENGINE_SPACING_TOP });
-	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ ENGINE_SPACING_LEFT,m_pContext->pGameSpace->height  + ENGINE_SPACING_BOT });
+	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 0.f,ENGINE_SPACING_TOP });
+	SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ ENGINE_SPACING_LEFT,m_pContext->pGameSpace->height  + ENGINE_SPACING_BOT });
 
 	SDXL_ImGui_Begin(m_pScenes[0]->GetName().c_str(), nullptr, windowFlags);
 
@@ -85,8 +86,8 @@ void tyr::SceneManager::RenderEditor()
 
 	//RIGHT
 	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
-	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ ENGINE_SPACING_LEFT + m_pContext->pGameSpace->width,ENGINE_SPACING_TOP });
-	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ ENGINE_SPACING_RIGHT,m_pContext->pGameSpace->height + ENGINE_SPACING_BOT });
+	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ ENGINE_SPACING_LEFT + m_pContext->pGameSpace->width,ENGINE_SPACING_TOP });
+	SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ ENGINE_SPACING_RIGHT,m_pContext->pGameSpace->height + ENGINE_SPACING_BOT });
 	SDXL_ImGui_Begin("Inspector", nullptr, windowFlags);
 
 
@@ -96,30 +97,31 @@ void tyr::SceneManager::RenderEditor()
 
 	//Bottom
 	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
-	SDXL_ImGui_SetNextWindowPos(SDXL::float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
-	SDXL_ImGui_SetNextWindowSize(SDXL::float2{ m_pContext->pGameSpace->width, ENGINE_SPACING_BOT + ENGINE_SPACING_TOP });
+	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
+	SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ m_pContext->pGameSpace->width, ENGINE_SPACING_BOT + ENGINE_SPACING_TOP });
 
 	SDXL_ImGui_Begin("Bottom" ,nullptr, windowFlags | SDXL_ImGuiWindowFlags_NoDecoration);
 	if(SDXL_ImGui_BeginTabBar("Console##Bottom"))
 	{
-		//if (SDXL_ImGui_BeginTabItem("Other"))
-		//{
-		//	if(SDXL_ImGui_Button("Save Scene"))
-		//	{
-		//		SaveScene();
-		//	}
-		//	SDXL_ImGui_EndTabItem();
-		//}
+
 
 		if (SDXL_ImGui_ConsoleBegin("Console", SDXL_ImGuiTabBarFlags_None))
 		{
 			SDXL_ImGui_ConsoleDraw();
 			SDXL_ImGui_ConsoleEnd();
 		}
+		
+		static ESceneHolder holder(ContentManager::GetInstance()->GetDataFolder());
+		
+		if (SDXL_ImGui_BeginTabItem("SceneHolder"))
+{
+			holder.RenderEditor();
+			SDXL_ImGui_EndTabItem();
+		}
+
 		SDXL_ImGui_EndTabBar();
 	}
 
-	
 
 	SDXL_ImGui_End();
 

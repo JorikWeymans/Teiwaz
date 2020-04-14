@@ -6,7 +6,7 @@ namespace tyr
 	public:
 		explicit Color(float r, float g, float b, float a = 1.f);
 		explicit operator SDXL::SDXLVec4() const;
-
+		explicit operator SDXL::Float4() const;
 
 		
 		float r, g, b, a;
@@ -14,6 +14,7 @@ namespace tyr
 
 
 #define ColorBlack	 tyr::Color(0.0f,0.0f,0.0f,1.0f)
+#define ColorGray    tyr::Color(0.5f,0.5f,0.5f,1.f)
 #define ColorWhite	 tyr::Color(1.0f,1.0f,1.0f,1.0f)
 #define ColorRed	 tyr::Color(.95f,0.0f,0.0f,1.0f)
 #define ColorGreen	 tyr::Color(0.0f,.95f,0.0f,1.0f)

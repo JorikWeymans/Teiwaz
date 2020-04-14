@@ -10,7 +10,8 @@
 
 // -- Header files includes to expose them
 struct ImVec2;
-
+struct ImVec4;
+struct ID3D11ShaderResourceView;
 namespace SDXL
 {
 	struct SDXLVec4;
@@ -21,14 +22,21 @@ namespace SDXL
 	struct SDXLVec2;
 	struct SDXLRect;
 
-	struct float2
+	struct Float2
 	{
-		float2(): x(0.f), y(0.f){}
-		explicit float2(float _x, float _y) : x(_x), y(_y) {}
+		Float2(): x(0.f), y(0.f){}
+		explicit Float2(float _x, float _y) : x(_x), y(_y) {}
 		float x, y;
 		explicit operator ImVec2() const;
 	};
 	
+	struct Float4
+	{
+		Float4() : x(0.f), y(0.f), z(0.f), w(0.f) {}
+		explicit Float4(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
+		float x, y, z, w;
+		explicit operator ImVec4() const;
+	};
 }
 
 struct ID3D11Device;
@@ -83,6 +91,7 @@ SDXLLibrary_API HRESULT SDXL_Present();
 
 
 SDXLLibrary_API SDXL::SDXLVec2 SDXL_GetImageDimensions(SDXL::SDXLImage* pImage);
+//SDXLLibrary_API ID3D11ShaderResourceView* SDXL_GetShaderRecourseView(SDXL::SDXLImage* pImage);
 SDXLLibrary_API ID3D11Device* SDXL_GetID3D11Device();
 SDXLLibrary_API ID3D11DeviceContext* SDXL_GetID3D11DeviceContext();
 SDXLLibrary_API HWND SDXL_GetWindowHandle();
@@ -121,6 +130,8 @@ typedef int SDXL_ImGuiTreeNodeFlags;
 typedef int SDXL_ImGuiCond;
 typedef int SDXL_ImGuiID;
 typedef int SDXL_ImGuiTabBarFlags;
+typedef int SDXL_ImGuiHoveredFlags;
+typedef int SDXL_ImGuiMouseButton;
 
 enum class SDXL_ImGuiDir : int
 {
@@ -229,6 +240,32 @@ enum SDXL_ImGuiTabBarFlags_
 	SDXL_ImGuiTabBarFlags_FittingPolicyDefault_ = SDXL_ImGuiTabBarFlags_FittingPolicyResizeDown
 };
 
+// Flags for ImGui::IsItemHovered(), ImGui::IsWindowHovered()
+// Note: if you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that. Please read the FAQ!
+// Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHovered() calls.
+enum SDXL_ImGuiHoveredFlags_
+{
+	SDXL_ImGuiHoveredFlags_None = 0,        // Return true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+	SDXL_ImGuiHoveredFlags_ChildWindows = 1 << 0,   // IsWindowHovered() only: Return true if any children of the window is hovered
+	SDXL_ImGuiHoveredFlags_RootWindow = 1 << 1,   // IsWindowHovered() only: Test from root window (top most parent of the current hierarchy)
+	SDXL_ImGuiHoveredFlags_AnyWindow = 1 << 2,   // IsWindowHovered() only: Return true if any window is hovered
+	SDXL_ImGuiHoveredFlags_AllowWhenBlockedByPopup = 1 << 3,   // Return true even if a popup window is normally blocking access to this item/window
+	//SDXL_ImGuiHoveredFlags_AllowWhenBlockedByModal     = 1 << 4,   // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
+	SDXL_ImGuiHoveredFlags_AllowWhenBlockedByActiveItem = 1 << 5,   // Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
+	SDXL_ImGuiHoveredFlags_AllowWhenOverlapped = 1 << 6,   // Return true even if the position is obstructed or overlapped by another window
+	SDXL_ImGuiHoveredFlags_AllowWhenDisabled = 1 << 7,   // Return true even if the item is disabled
+	SDXL_ImGuiHoveredFlags_RectOnly = SDXL_ImGuiHoveredFlags_AllowWhenBlockedByPopup | SDXL_ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | SDXL_ImGuiHoveredFlags_AllowWhenOverlapped,
+	SDXL_ImGuiHoveredFlags_RootAndChildWindows = SDXL_ImGuiHoveredFlags_RootWindow | SDXL_ImGuiHoveredFlags_ChildWindows
+};
+
+enum SDXL_ImGuiMouseButton_
+{
+	SDXL_ImGuiMouseButton_Left = 0,
+	SDXL_ImGuiMouseButton_Right = 1,
+	SDXL_ImGuiMouseButton_Middle = 2,
+	SDXL_ImGuiMouseButton_COUNT = 5
+};
+
 // ****** ------------------------------------ ******
 // *  ___ _   _ _  _  ___ _____ ___ ___  _  _ ___ 	*
 // * | __| | | | \| |/ __|_   _|_ _/ _ \| \| / __|	*
@@ -254,8 +291,8 @@ SDXLLibrary_API void SDXL_ImGui_End();
 // **---------------**
 // * ---- Childs --- *
 // **---------------**
-SDXLLibrary_API bool SDXL_ImGui_BeginChild(const char* str_id, const SDXL::float2& size = SDXL::float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = 0);
-SDXLLibrary_API bool SDXL_ImGui_BeginChild(SDXL_ImGUiID id, const SDXL::float2& size = SDXL::float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API bool SDXL_ImGui_BeginChild(const char* str_id, const SDXL::Float2& size = SDXL::Float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API bool SDXL_ImGui_BeginChild(SDXL_ImGUiID id, const SDXL::Float2& size = SDXL::Float2(0, 0), bool border = false, SDXL_ImGuiWindowFlags flags = 0);
 SDXLLibrary_API void SDXL_ImGui_EndChild();
 
 // **---------------**
@@ -265,25 +302,25 @@ SDXLLibrary_API bool SDXL_ImGui_IsWindowAppearing();
 SDXLLibrary_API bool SDXL_ImGui_IsWindowCollapsed();
 SDXLLibrary_API bool SDXL_ImGui_IsWindowFocused(SDXL_ImGuiFocusedFlags flags = SDXL_ImGuiFocusedFlags::None); // is current window focused? or its root/child, depending on flags. see flags for options.
 SDXLLibrary_API bool SDXL_ImGui_IsWindowHovered(SDXL_ImGuiFocusedFlags flags = SDXL_ImGuiFocusedFlags::None); // is current window hovered (and typically: not blocked by a popup/modal)? see flags for options. NB: If you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that! Please read the FAQ!
-SDXLLibrary_API SDXL::float2 SDXL_ImGui_GetWindowPos();                                                       // get current window position in screen space (useful if you want to do your own drawing via the DrawList API)
-SDXLLibrary_API SDXL::float2 SDXL_ImGui_GetWindowSize();                                                      // get current window size
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetWindowPos();                                                       // get current window position in screen space (useful if you want to do your own drawing via the DrawList API)
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetWindowSize();                                                      // get current window size
 SDXLLibrary_API float SDXL_ImGui_GetWindowWidth();                                                            // get current window width (shortcut for GetWindowSize().x)
 SDXLLibrary_API float SDXL_ImGui_GetWindowHeight();                                                           // get current window height (shortcut for GetWindowSize().y)
 
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowPos(const SDXL::float2& pos, SDXL_ImGuiCond cond = 0, const SDXL::float2& pivot = SDXL::float2(0.f, 0.f)); // set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowSize(const SDXL::float2& size, SDXL_ImGuiCond cond  = 0);                  // set next window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis. call before Begin()
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowSizeConstraints(const SDXL::float2& size_min, const SDXL::float2& size_max); // set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Sizes will be rounded down. Use callback to apply non-trivial programmatic constraints.
-SDXLLibrary_API void SDXL_ImGui_SetNextWindowContentSize(const SDXL::float2& size);                               // set next window content size (~ scrollable client area, which enforce the range of scrollbars). Not including window decorations (title bar, menu bar, etc.) nor WindowPadding. set an axis to SDXL_ImGuiCond::Always.0f to leave it automatic. call before Begin()
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowPos(const SDXL::Float2& pos, SDXL_ImGuiCond cond = 0, const SDXL::Float2& pivot = SDXL::Float2(0.f, 0.f)); // set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowSize(const SDXL::Float2& size, SDXL_ImGuiCond cond  = 0);                  // set next window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis. call before Begin()
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowSizeConstraints(const SDXL::Float2& size_min, const SDXL::Float2& size_max); // set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Sizes will be rounded down. Use callback to apply non-trivial programmatic constraints.
+SDXLLibrary_API void SDXL_ImGui_SetNextWindowContentSize(const SDXL::Float2& size);                               // set next window content size (~ scrollable client area, which enforce the range of scrollbars). Not including window decorations (title bar, menu bar, etc.) nor WindowPadding. set an axis to SDXL_ImGuiCond::Always.0f to leave it automatic. call before Begin()
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowCollapsed(bool collapsed, SDXL_ImGuiCond cond  = 0);                 // set next window collapsed state. call before Begin()
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowFocus();                                                       // set next window to be focused / top-most. call before Begin()
 SDXLLibrary_API void SDXL_ImGui_SetNextWindowBgAlpha(float alpha);                                          // set next window background color alpha. helper to easily override the Alpha component of ImGuiCol_WindowBg/ChildBg/PopupBg. you may also use ImGuiWindowFlags_NoBackground.
-SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const SDXL::float2& pos, SDXL_ImGuiCond cond  = 0);                        // (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
-SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const SDXL::float2& size, SDXL_ImGuiCond cond  = 0);                      // (not recommended) set current window size - call within Begin()/End(). set to SDXL::float2(0,0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
+SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const SDXL::Float2& pos, SDXL_ImGuiCond cond  = 0);                        // (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
+SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const SDXL::Float2& size, SDXL_ImGuiCond cond  = 0);                      // (not recommended) set current window size - call within Begin()/End(). set to SDXL::Float2(0,0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
 SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(bool collapsed, SDXL_ImGuiCond cond  = 0);                     // (not recommended) set current window collapsed state. prefer using SetNextWindowCollapsed().
 SDXLLibrary_API void SDXL_ImGui_SetWindowFocus();                                                           // (not recommended) set current window to be focused / top-most. prefer using SetNextWindowFocus().
 SDXLLibrary_API void SDXL_ImGui_SetWindowFontScale(float scale);                                            // set font scale. Adjust IO.FontGlobalScale if you want to scale all windows. This is an old API! For correct scaling, prefer to reload font + rebuild ImFontAtlas + call style.ScaleAllSizes().
-SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const char* name, const SDXL::float2& pos, SDXL_ImGuiCond cond  = 0);      // set named window position.
-SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const char* name, const SDXL::float2& size, SDXL_ImGuiCond cond  = 0);    // set named window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis.
+SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const char* name, const SDXL::Float2& pos, SDXL_ImGuiCond cond  = 0);      // set named window position.
+SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const char* name, const SDXL::Float2& size, SDXL_ImGuiCond cond  = 0);    // set named window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis.
 SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(const char* name, bool collapsed, SDXL_ImGuiCond cond  = 0);   // set named window collapsed state
 SDXLLibrary_API void SDXL_ImGui_SetWindowFocus(const char* name);                                           // set named window to be focused / top-most. use NULL to remove focus.
 
@@ -308,20 +345,20 @@ SDXLLibrary_API void   SDXL_ImGui_Separator();                                  
 SDXLLibrary_API void   SDXL_ImGui_SameLine(float offset_from_start_x = 0.0f, float spacing = -1.0f);  // call between widgets or groups to layout them horizontally. X position given in window coordinates.
 SDXLLibrary_API void   SDXL_ImGui_NewLine();                                                      // undo a SameLine() or force a new line when in an horizontal-layout context.
 SDXLLibrary_API void   SDXL_ImGui_Spacing();                                                      // add vertical spacing.
-SDXLLibrary_API void   SDXL_ImGui_Dummy(const SDXL::float2& size);                                // add a dummy item of given size. unlike InvisibleButton(), Dummy() won't take the mouse click or be navigable into.
+SDXLLibrary_API void   SDXL_ImGui_Dummy(const SDXL::Float2& size);                                // add a dummy item of given size. unlike InvisibleButton(), Dummy() won't take the mouse click or be navigable into.
 SDXLLibrary_API void   SDXL_ImGui_Indent(float indent_w = 0.0f);                                  // move content position toward the right, by style.IndentSpacing or indent_w if != 0
 SDXLLibrary_API void   SDXL_ImGui_Unindent(float indent_w = 0.0f);                                // move content position back to the left, by style.IndentSpacing or indent_w if != 0
 SDXLLibrary_API void   SDXL_ImGui_BeginGroup();                                                   // lock horizontal starting position
 SDXLLibrary_API void   SDXL_ImGui_EndGroup();                                                     // unlock horizontal starting position + capture the whole group bounding box into one "item" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)
-SDXLLibrary_API SDXL::float2 SDXL_ImGui_GetCursorPos();                                           // cursor position in window coordinates (relative to window position)
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetCursorPos();                                           // cursor position in window coordinates (relative to window position)
 SDXLLibrary_API float  SDXL_ImGui_GetCursorPosX();                                                //   (some functions are using window-relative coordinates, such as: GetCursorPos, GetCursorStartPos, GetContentRegionMax, GetWindowContentRegion* etc.
 SDXLLibrary_API float  SDXL_ImGui_GetCursorPosY();                                                //    other functions such as GetCursorScreenPos or everything in ImDrawList::
-SDXLLibrary_API void   SDXL_ImGui_SetCursorPos(const SDXL::float2& local_pos);                    //    are using the main, absolute coordinate system.
+SDXLLibrary_API void   SDXL_ImGui_SetCursorPos(const SDXL::Float2& local_pos);                    //    are using the main, absolute coordinate system.
 SDXLLibrary_API void   SDXL_ImGui_SetCursorPosX(float local_x);                                   //    GetWindowPos() + GetCursorPos() == GetCursorScreenPos() etc.)
 SDXLLibrary_API void   SDXL_ImGui_SetCursorPosY(float local_y);                                   //
-SDXLLibrary_API SDXL::float2 SDXL_ImGui_GetCursorStartPos();                                      // initial cursor position in window coordinates
-SDXLLibrary_API SDXL::float2 SDXL_ImGui_GetCursorScreenPos();                                     // cursor position in absolute screen coordinates [0..io.DisplaySize] (useful to work with ImDrawList API)
-SDXLLibrary_API void   SDXL_ImGui_SetCursorScreenPos(const SDXL::float2& pos);                    // cursor position in absolute screen coordinates [0..io.DisplaySize]
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetCursorStartPos();                                      // initial cursor position in window coordinates
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetCursorScreenPos();                                     // cursor position in absolute screen coordinates [0..io.DisplaySize] (useful to work with ImDrawList API)
+SDXLLibrary_API void   SDXL_ImGui_SetCursorScreenPos(const SDXL::Float2& pos);                    // cursor position in absolute screen coordinates [0..io.DisplaySize]
 SDXLLibrary_API void   SDXL_ImGui_AlignTextToFramePadding();                                      // vertically align upcoming text baseline to FramePadding.y so that it will align properly to regularly framed items (call if you have text on a line before a framed item)
 SDXLLibrary_API float  SDXL_ImGui_GetTextLineHeight();                                            // ~ FontSize
 SDXLLibrary_API float  SDXL_ImGui_GetTextLineHeightWithSpacing();                                 // ~ FontSize + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of text)
@@ -359,16 +396,21 @@ SDXLLibrary_API SDXL_ImGuiID SDXL_ImGui_GetID(const void* ptr_id);
 // **---------------**
 // - Most widgets return true when the value has been changed or when pressed/selected
 // - You may also use one of the many IsItemXXX functions (e.g. IsItemActive, IsItemHovered, etc.) to query widget state.
-SDXLLibrary_API bool SDXL_ImGui_Button(const char* label, const SDXL::float2& size = SDXL::float2(0.f, 0.f));    // button
+SDXLLibrary_API bool SDXL_ImGui_Button(const char* label, const SDXL::Float2& size = SDXL::Float2(0.f, 0.f));    // button
 SDXLLibrary_API bool SDXL_ImGui_SmallButton(const char* label);															// button with FramePadding=(0,0) to easily embed within text
-SDXLLibrary_API bool SDXL_ImGui_InvisibleButton(const char* str_id, const SDXL::float2& size);        // button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)
+SDXLLibrary_API bool SDXL_ImGui_InvisibleButton(const char* str_id, const SDXL::Float2& size);        // button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)
 SDXLLibrary_API bool SDXL_ImGui_ArrowButton(const char* str_id, SDXL_ImGuiDir dir);                  // square button with an arrow shape
+SDXLLibrary_API void SDXL_ImGui_Image(SDXL::SDXLImage* pImage);
+SDXLLibrary_API void SDXL_ImGui_Image(SDXL::SDXLImage* pImage, const SDXL::SDXLVec2& size, const SDXL::Float2& uv0 = SDXL::Float2(0, 0), const SDXL::Float2& uv1 = SDXL::Float2(1, 1), const SDXL::Float4& tint_col = SDXL::Float4{ 1.f, 1.f, 1.f, 1.f }, const SDXL::Float4& border_col = SDXL::Float4{ 0.f, 0.f, 0.f, 0.f });
+SDXLLibrary_API bool SDXL_ImGui_ImageButton(SDXL::SDXLImage* pImage, const SDXL::SDXLVec2& size, const SDXL::Float2& uv0 = SDXL::Float2(0, 0), const SDXL::Float2& uv1 = SDXL::Float2(1, 1), int frame_padding = -1, const SDXL::Float4& bg_col = SDXL::Float4{ 0.f, 0.f, 0.f, 0.f }, const SDXL::Float4& tint_col = SDXL::Float4{ 1.f, 1.f, 1.f, 1.f });    // <0 frame_padding uses default frame padding settings. 0 for no padding
 SDXLLibrary_API bool SDXL_ImGui_Checkbox(const char* label, bool* v);
 SDXLLibrary_API bool SDXL_ImGui_CheckboxFlags(const char* label, unsigned int* flags, unsigned int flags_value);
 SDXLLibrary_API bool SDXL_ImGui_RadioButton(const char* label, bool active);                    // use with e.g. if (RadioButton("one", my_value==1)) { my_value = 1; }
 SDXLLibrary_API bool SDXL_ImGui_RadioButton(const char* label, int* v, int v_button);           // shortcut to handle the above pattern when value is an integer
-SDXLLibrary_API void SDXL_ImGui_ProgressBar(float fraction, const SDXL::float2& size_arg = SDXL::float2(-1, 0), const char* overlay = nullptr);
+SDXLLibrary_API void SDXL_ImGui_ProgressBar(float fraction, const SDXL::Float2& size_arg = SDXL::Float2(-1, 0), const char* overlay = nullptr);
 SDXLLibrary_API void SDXL_ImGui_Bullet();                                                       // draw a small circle and keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses
+
+
 
 // **---------------**
 // * ----- Drag ---- *
@@ -409,7 +451,7 @@ SDXLLibrary_API bool SDXL_ImGui_SliderInt4(const char* label, int v[4], int v_mi
 // * ---- Input ---- *
 // **---------------**
 SDXLLibrary_API bool SDXL_ImGui_InputText(const char* label, char* buf, size_t buf_size,void* user_data = nullptr);
-SDXLLibrary_API bool SDXL_ImGui_InputTextMultiline(const char* label, char* buf, size_t buf_size, const SDXL::float2& size = SDXL::float2(0.f,0.f) , void* user_data = nullptr);
+SDXLLibrary_API bool SDXL_ImGui_InputTextMultiline(const char* label, char* buf, size_t buf_size, const SDXL::Float2& size = SDXL::Float2(0.f,0.f) , void* user_data = nullptr);
 
 
 // **---------------**
@@ -435,8 +477,8 @@ SDXLLibrary_API bool SDXL_ImGui_CollapsingHeader(const char* label, SDXL_ImGuiTr
 // **---------------**
 // * - Selectable -- *
 // **---------------**
-SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool selected = false, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::float2 & size = SDXL::float2(0, 0));  // "bool selected" carry the selection state (read-only). Selectable() is clicked is returns true so you can modify your selection state. size.x==0.0: use remaining width, size.x>0.0: specify width. size.y==0.0: use label height, size.y>0.0: specify height
-SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::float2& size = SDXL::float2(0, 0));       // "bool* p_selected" point to the selection state (read-write), as a convenient helper.
+SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool selected = false, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::Float2 & size = SDXL::Float2(0, 0));  // "bool selected" carry the selection state (read-only). Selectable() is clicked is returns true so you can modify your selection state. size.x==0.0: use remaining width, size.x>0.0: specify width. size.y==0.0: use label height, size.y>0.0: specify height
+SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::Float2& size = SDXL::Float2(0, 0));       // "bool* p_selected" point to the selection state (read-write), as a convenient helper.
 
 
 
@@ -446,7 +488,7 @@ SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, 
 SDXLLibrary_API bool SDXL_ImGui_ListBox(const char* label, int* current_item, const char* const items[], int items_count, int height_in_items = -1);
 SDXLLibrary_API bool SDXL_ImGui_ListBox(const char* label, int* current_item, bool (*items_getter)(void* data, int idx, const char** out_text), void* data, int items_count, int height_in_items = -1);
 // EXAMPLE const char* listbox_items[] = { "Apple", "Banana", "Cherry", "Kiwi", "Mango", "Orange", "Pineapple", "Strawberry", "Watermelon" }; static int listbox_item_current = 1; SDXL_ImGui_ListBox("listbox\n(single select)", &listbox_item_current, listbox_items, 9, 4);
-SDXLLibrary_API bool SDXL_ImGui_BeginListBox(const char* label, const SDXL::float2& size = SDXL::float2(0, 0)); // use if you want to reimplement ListBox() will custom data or interactions. if the function return true, you can output elements then call ListBoxFooter() afterwards.
+SDXLLibrary_API bool SDXL_ImGui_BeginListBox(const char* label, const SDXL::Float2& size = SDXL::Float2(0, 0)); // use if you want to reimplement ListBox() will custom data or interactions. if the function return true, you can output elements then call ListBoxFooter() afterwards.
 SDXLLibrary_API bool SDXL_ImGui_BeginListBox(const char* label, int items_count, int height_in_items = -1); // "
 SDXLLibrary_API void SDXL_ImGui_EndListBox();
 
@@ -483,6 +525,49 @@ SDXLLibrary_API void SDXL_ImGui_EndTabBar();                                    
 SDXLLibrary_API bool SDXL_ImGui_BeginTabItem(const char* label, bool* p_open = nullptr, SDXL_ImGuiTabBarFlags flags = 0);// create a Tab. Returns true if the Tab is selected.
 SDXLLibrary_API void SDXL_ImGui_EndTabItem();                                                       // only call EndTabItem() if BeginTabItem() returns true!
 SDXLLibrary_API void SDXL_ImGui_SetTabItemClosed(const char* tab_or_docked_window_label);           // notify TabBar or Docking system of a closed tab/window ahead (useful to reduce visual flicker on reorderable tab bars). For tab-bar: call after BeginTabBar() and before Tab submissions. Otherwise call with a window name.
+
+// *** ----------------------------- ***
+// * _  _ ___ _ _    _ ___ _ ____ ____ *
+// * |  |  |  | |    |  |  | |___ [__  *
+// * |__|  |  | |___ |  |  | |___ ___] *
+// *                                   *
+// *** ----------------------------- ***
+
+// **---------------**
+// * --- Widgets --- *
+// **---------------**
+SDXLLibrary_API bool          SDXL_ImGui_IsItemHovered(SDXL_ImGuiHoveredFlags flags = 0);                         // is the last item hovered? (and usable, aka not blocked by a popup, etc.). See ImGuiHoveredFlags for more options.
+SDXLLibrary_API bool          SDXL_ImGui_IsItemActive();                                                     // is the last item active? (e.g. button being held, text field being edited. This will continuously return true while holding mouse button on an item. Items that don't interact will always return false)
+SDXLLibrary_API bool          SDXL_ImGui_IsItemFocused();                                                    // is the last item focused for keyboard/gamepad navigation?
+SDXLLibrary_API bool          SDXL_ImGui_IsItemClicked(SDXL_ImGuiMouseButton mouse_button = 0);                   // is the last item clicked? (e.g. button/node just clicked on) == IsMouseClicked(mouse_button) && IsItemHovered()
+SDXLLibrary_API bool          SDXL_ImGui_IsItemVisible();                                                    // is the last item visible? (items may be out of sight because of clipping/scrolling)
+SDXLLibrary_API bool          SDXL_ImGui_IsItemEdited();                                                     // did the last item modify its underlying value this frame? or was pressed? This is generally the same as the "bool" return value of many widgets.
+SDXLLibrary_API bool          SDXL_ImGui_IsItemActivated();                                                  // was the last item just made active (item was previously inactive).
+SDXLLibrary_API bool          SDXL_ImGui_IsItemDeactivated();                                                // was the last item just made inactive (item was previously active). Useful for Undo/Redo patterns with widgets that requires continuous editing.
+SDXLLibrary_API bool          SDXL_ImGui_IsItemDeactivatedAfterEdit();                                       // was the last item just made inactive and made a value change when it was active? (e.g. Slider/Drag moved). Useful for Undo/Redo patterns with widgets that requires continuous editing. Note that you may get false positives (some widgets such as Combo()/ListBox()/Selectable() will return true even when clicking an already selected item).
+SDXLLibrary_API bool          SDXL_ImGui_IsItemToggledOpen();                                                // was the last item open state toggled? set by TreeNode().
+SDXLLibrary_API bool          SDXL_ImGui_IsAnyItemHovered();                                                 // is any item hovered?
+SDXLLibrary_API bool          SDXL_ImGui_IsAnyItemActive();                                                  // is any item active?
+SDXLLibrary_API bool          SDXL_ImGui_IsAnyItemFocused();                                                 // is any item focused?
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetItemRectMin();                                                   // get upper-left bounding rectangle of the last item (screen space)
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetItemRectMax();                                                   // get lower-right bounding rectangle of the last item (screen space)
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetItemRectSize();                                                  // get size of last item
+SDXLLibrary_API void          SDXL_ImGui_SetItemAllowOverlap();                                              // allow last item to be overlapped by a subsequent item. sometimes useful with invisible buttons, selectables, etc. to catch unused area.
+
+// **---------------**
+// * ---- Mouse ---- *
+// **---------------**
+// Inputs Utilities: Mouse
+	// - To refer to a mouse button, you may use named enums in your code e.g. ImGuiMouseButton_Left, ImGuiMouseButton_Right.
+	// - You can also use regular integer: it is forever guaranteed that 0=Left, 1=Right, 2=Middle.
+	// - Dragging operations are only reported after mouse has moved a certain distance away from the initial clicking position (see 'lock_threshold' and 'io.MouseDraggingThreshold')
+SDXLLibrary_API bool  SDXL_ImGui_IsMouseDown(SDXL_ImGuiMouseButton button);                               // is mouse button held?
+SDXLLibrary_API bool  SDXL_ImGui_IsMouseClicked(SDXL_ImGuiMouseButton button, bool repeat = false);       // did mouse button clicked? (went from !Down to Down)
+SDXLLibrary_API bool  SDXL_ImGui_IsMouseReleased(SDXL_ImGuiMouseButton button);                           // did mouse button released? (went from Down to !Down)
+SDXLLibrary_API bool  SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton button);                      // did mouse button double-clicked? a double-click returns false in IsMouseClicked(). uses io.MouseDoubleClickTime.
+
+
+
 
 // **---------------**
 // * --- CONSOLE --- *
