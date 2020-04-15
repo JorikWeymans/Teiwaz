@@ -17,7 +17,8 @@ namespace tyr
 		void Update() override;
 		void FixedUpdate() override {};
 		void Render() const override {};
-
+		
+		void SetFloat(const std::string& variable, float amount);
 #ifdef USE_IM_GUI
 		void Debug() override;
 		void RenderEditor() override;

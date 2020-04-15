@@ -11,17 +11,23 @@ namespace tyr
 	class Animation final
 	{
 	public:
-		explicit Animation(float tpf, SpritePositions&& sp);
+		explicit Animation(const std::string& animationName, float tpf, SpritePositions&& sp);
 		~Animation() = default;
 		void Update(float elapsed);
 		const Rect& GetCurrentAnimation() const;
 		void Reset();
-	private:
+		bool IsAtEnd() const { return m_CurrentAnimation == m_AniSprites.size() - 1; }
 
+		const std::string& GetName() const { return m_AnimationName; }
+		
+		
+	private:
+		std::string m_AnimationName;
+		
 		Elapser m_AniElapser;
 		unsigned int m_CurrentAnimation;
 		SpritePositions m_AniSprites;
-		
+	
 	public:
 		Animation(const Animation&) = delete;
 		Animation(Animation&&) = delete;

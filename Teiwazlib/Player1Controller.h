@@ -4,6 +4,7 @@ namespace tyr
 {
 	class CharacterControllerComp;
 	class RigidBodyComp;
+	class AnimatorComp;
 	
 	class Player1Controller final : public BaseComponent
 	{
@@ -16,12 +17,14 @@ namespace tyr
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() const override {};
+		
 #ifdef USE_IM_GUI
 		void Save(BinaryWriter& writer) override;
 #endif
 	private:
 		CharacterControllerComp* m_pCont;
 		RigidBodyComp* m_pBody;
+		AnimatorComp* m_pAni;
 		bool m_IsGoningLeft;
 	public:
 		Player1Controller(const Player1Controller&) = delete;

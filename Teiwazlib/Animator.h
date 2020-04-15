@@ -1,8 +1,42 @@
 #pragma once
 #include <map>
+#include <functional>
+#include <set>
 
 namespace tyr
 {
+
+	template <typename T>
+	struct Var
+	{
+		T data;
+	};
+
+	struct Varfloat : Var<float>
+	{
+		
+	};
+
+	struct ValBool : Var<bool>
+	{
+		
+	};
+	
+	struct Connection
+	{
+		std::string A, B;
+		std::string VariableName;
+		
+		//float condition;
+
+		std::function<bool(float)> floatTest;
+		std::function<bool(bool)> boolTest;
+	
+
+		
+	};
+
+	
 	class Animation;
 	class Rect;
 	class Animator final
@@ -11,12 +45,23 @@ namespace tyr
 		Animator();
 		~Animator();
 
-		void AddAnimation(const std::string& name, Animation* ani);
+		void AddAnimation(Animation* pAni);
 		void SetAnimation(const std::string& name);
 		void Update(float elapsed);
-		
-		std::map<std::string, Animation*> m_pAnimations;
+
+		void SetFloat(const std::string& variable, float value);
+		void SetBool(const std::string& variable, bool value);
+
+		bool IsAtEnd() const;
 		const Rect& GetCurrentAnimation() const;
+
+	private:
+
+		std::map<std::string, Animation* > m_pAnimations;
+		std::map<std::string, std::function<bool(float)>> m_Conditions;
+		std::vector<Connection*> m_pConnections;;
+		
+
 		Animation* m_pCurrent; //weak pointer
 		
 	public:

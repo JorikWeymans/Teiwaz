@@ -1,5 +1,7 @@
 #pragma once
 #define GET_CONTEXT m_pSceneObject->GetGameContext()
+#define INPUT m_pSceneObject->GetGameContext()->pInput
+#define GET_COMPONENT m_pSceneObject->GetComponent
 #include "BinStructureHelpers.h"
 #include "BinaryReader.h"
 

@@ -77,12 +77,13 @@ void tyr::Scene::Save(BinaryWriter& writer)
 	
 }
 
+
+#endif
 void tyr::Scene::Flush()
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {SAFE_DELETE(s)});
 	m_pSceneObjects.clear();
 }
-#endif
 void tyr::Scene::Render() const
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Render(); });

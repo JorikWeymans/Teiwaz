@@ -10,6 +10,7 @@ tyr::Player1Controller::Player1Controller()
 	: tyr::BaseComponent(ComponentType::Player1Controller)
 	, m_pCont(nullptr)
 	, m_pBody(nullptr)
+	, m_pAni(nullptr)
 	, m_IsGoningLeft(false)
 {
 }
@@ -21,8 +22,10 @@ void tyr::Player1Controller::Initialize()
 	GET_CONTEXT->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, 'A');
 	GET_CONTEXT->pInput->AddAction("MoveRight", tyr::ButtonState::Down, 'D');
 
-	m_pBody = m_pSceneObject->GetComponent<RigidBodyComp>();
-	m_pCont = m_pSceneObject->GetComponent<CharacterControllerComp>();
+	m_pBody = GET_COMPONENT<RigidBodyComp>();
+	m_pCont = GET_COMPONENT<CharacterControllerComp>();
+	m_pAni  = GET_COMPONENT<AnimatorComp>();
+	
 }
 
 void tyr::Player1Controller::Update()
@@ -44,23 +47,23 @@ void tyr::Player1Controller::FixedUpdate()
 
 
 		m_pCont->Move(-150 * elapsed, 0);
+		m_pAni->SetFloat("Speed", 150 * elapsed);
 		if (!m_IsGoningLeft)
 		{
 			m_IsGoningLeft = true;
 			m_pSceneObject->GetTransform()->Scale(-1, 1);
 		}
 
-
-
 	}
-	if (GET_CONTEXT->pInput->IsActionTriggered("MoveRight"))
+	else if (GET_CONTEXT->pInput->IsActionTriggered("MoveRight"))
 
 	{
 		//m_Ani->SetAnimation("Walking");
 		const float elapsed = GET_CONTEXT->pTime->fixedDeltaTime;
 
 		m_pCont->Move(150 * elapsed, 0);
-
+		m_pAni->SetFloat("Speed", 150 * elapsed);
+		
 		if (m_IsGoningLeft)
 		{
 			m_IsGoningLeft = false;
@@ -70,8 +73,13 @@ void tyr::Player1Controller::FixedUpdate()
 		}
 
 	}
+	else
+	{
+		m_pAni->SetFloat("Speed", 0.f);
+	}
 }
 #ifdef USE_IM_GUI
+
 void tyr::Player1Controller::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);

@@ -17,6 +17,7 @@ void bub::BubPrefab::Generate(tyr::Scene* pScene)
 	obj->AddComponent(new tyr::CharacterControllerComp());
 
 	obj->AddComponent(new tyr::RigidBodyComp(0.f/*-150*/));
-	obj->AddComponent(new tyr::Player1Controller());
 	obj->AddComponent(new tyr::AnimatorComp());
+	obj->AddComponent(new tyr::Player1Controller());
+
 }
