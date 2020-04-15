@@ -19,6 +19,7 @@ namespace tyr
 		Texture,
 		Transform,
 		Player1Controller,
+		Animator,
 
 
 	};

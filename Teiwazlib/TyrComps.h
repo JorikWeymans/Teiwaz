@@ -9,3 +9,4 @@
 #include "CharacterControllerComp.h"
 #include "RigidBodyComp.h"
 #include "Player1Controller.h"
+#include "AnimatorComp.h"

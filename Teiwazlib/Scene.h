@@ -21,8 +21,9 @@ namespace tyr
 #ifdef USE_IM_GUI
 		virtual void Debug();
 		void Save(BinaryWriter& writer);
-		void Flush();
+	
 #endif
+		void Flush();
 		virtual void Render() const;
 
 		const std::string& GetName() const { return m_Name; }

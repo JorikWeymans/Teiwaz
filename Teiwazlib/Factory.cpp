@@ -72,3 +72,9 @@ tyr::Player1Controller* tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
 	UNREFERENCED_PARAMETER(reader);
 	return new Player1Controller();
 }
+
+tyr::AnimatorComp* tyr::Factory::CreateAnimatorComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new AnimatorComp();
+}

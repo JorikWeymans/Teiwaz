@@ -27,7 +27,6 @@ namespace bub
 		void LoadBackground();
 		
 		tyr::Animator* m_Ani = nullptr;
-		BubPrefab* m_pPlayer = nullptr;
 	public:
 		MainScene(const MainScene&) = delete;
 		MainScene(MainScene&&) = delete;

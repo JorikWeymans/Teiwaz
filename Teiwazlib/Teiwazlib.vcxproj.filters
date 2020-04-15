@@ -148,6 +148,9 @@
     <ClInclude Include="Player1Controller.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="AnimatorComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -244,6 +247,9 @@
       <Filter>Editor</Filter>
     </ClCompile>
     <ClCompile Include="Player1Controller.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatorComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

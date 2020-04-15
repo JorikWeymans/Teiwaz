@@ -13,6 +13,7 @@ namespace tyr
 	class TextureComp;
 	class TextComp;
 	class Player1Controller;
+	class AnimatorComp;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
 	class Factory final
 	{
@@ -31,6 +32,7 @@ namespace tyr
 		template<> static TextureComp*              CreateComponent(BinaryReader& reader) { return CreateTextureComp(reader); }
 		template<> static TextComp*                 CreateComponent(BinaryReader& reader) { return CreateTextComp(reader); }
 		template<> static Player1Controller*		CreateComponent(BinaryReader& reader) { return CreatePlayer1Comp(reader); }
+		template<> static AnimatorComp*				CreateComponent(BinaryReader& reader) { return CreateAnimatorComp(reader); }
 	private:
 		static TransformComp*           CreateTransformComp(BinaryReader& reader);
 		static CharacterControllerComp* CreateCharacterControllerComp(BinaryReader& reader);
@@ -40,6 +42,7 @@ namespace tyr
 		static TextureComp*             CreateTextureComp(BinaryReader& reader);
 		static TextComp*                CreateTextComp(BinaryReader& reader);
 		static Player1Controller*       CreatePlayer1Comp(BinaryReader& reader);
+		static AnimatorComp*            CreateAnimatorComp(BinaryReader& reader);
 	public:
 		Factory() = delete;
 		~Factory() = delete;

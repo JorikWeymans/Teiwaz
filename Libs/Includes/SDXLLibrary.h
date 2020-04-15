@@ -324,9 +324,17 @@ SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const char* name, const SDXL::Floa
 SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(const char* name, bool collapsed, SDXL_ImGuiCond cond  = 0);   // set named window collapsed state
 SDXLLibrary_API void SDXL_ImGui_SetWindowFocus(const char* name);                                           // set named window to be focused / top-most. use NULL to remove focus.
 
+ // Parameters stacks (current window)
 SDXLLibrary_API void SDXL_ImGui_PushItemWidth(float item_width);                                // push width of items for common large "item+label" widgets. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side). 0.0f = default to ~2/3 of windows width,
 SDXLLibrary_API void SDXL_ImGui_PopItemWidth();
 SDXLLibrary_API void SDXL_ImGui_SetNextItemWidth(float item_width);                             // set width of the _next_ common large "item+label" widget. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side)
+SDXLLibrary_API float SDXL_ImGui_CalcItemWidth();                                                // width of item given pushed settings and current cursor position. NOT necessarily the width of last item unlike most 'Item' functions.
+SDXLLibrary_API void SDXL_ImGui_PushTextWrapPos(float wrap_local_pos_x = 0.0f);                 // word-wrapping for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column); > 0.0f: wrap at 'wrap_pos_x' position in window local space
+SDXLLibrary_API void SDXL_ImGui_PopTextWrapPos();
+SDXLLibrary_API void SDXL_ImGui_PushAllowKeyboardFocus(bool allow_keyboard_focus);              // allow focusing using TAB/Shift-TAB, enabled by default but you can disable it for certain widgets
+SDXLLibrary_API void SDXL_ImGui_PopAllowKeyboardFocus();
+SDXLLibrary_API void SDXL_ImGui_PushButtonRepeat(bool repeat);                                  // in 'repeat' mode, Button*() functions return repeated true in a typematic manner (using io.KeyRepeatDelay/io.KeyRepeatRate setting). Note that you can call IsItemActive() after any Button() to tell if the button is held in the current frame.
+SDXLLibrary_API void SDXL_ImGui_PopButtonRepeat();
 
 // *** ------------------------- ***
 // *  __        __   __   __   __  *   
@@ -507,13 +515,37 @@ SDXLLibrary_API void SDXL_ImGui_EndMenu();                                      
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut = NULL, bool selected = false, bool enabled = true);  // return true when activated. shortcuts are displayed for convenience but not processed by ImGui at the moment
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut, bool* p_selected, bool enabled = true);              // return true when activated + toggle (*p_selected) if p_selected != NULL
 
+// **---------------**
+// * ---- Popups --- *
+// **---------------**
+	// The properties of popups windows are:
+	// - They block normal mouse hovering detection outside them. (*)
+	// - Unless modal, they can be closed by clicking anywhere outside them, or by pressing ESCAPE.
+	// - Their visibility state (~bool) is held internally by imgui instead of being held by the programmer as we are used to with regular Begin() calls.
+	//   User can manipulate the visibility state by calling OpenPopup().
+	// - We default to use the right mouse (ImGuiMouseButton_Right=1) for the Popup Context functions.
+	// (*) You can use IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup) to bypass it and detect hovering even when normally blocked by a popup.
+	// Those three properties are connected. The library needs to hold their visibility state because it can close popups at any time.
+SDXLLibrary_API void SDXL_ImGui_OpenPopup(const char* str_id);                                      // call to mark popup as open (don't call every frame!). popups are closed when user click outside, or if CloseCurrentPopup() is called within a BeginPopup()/EndPopup() block. By default, Selectable()/MenuItem() are calling CloseCurrentPopup(). Popup identifiers are relative to the current ID-stack (so OpenPopup and BeginPopup needs to be at the same level).
+SDXLLibrary_API bool SDXL_ImGui_BeginPopup(const char* str_id, SDXL_ImGuiWindowFlags flags = 0);                                             // return true if the popup is open, and you can start outputting to it. only call EndPopup() if BeginPopup() returns true!
+SDXLLibrary_API bool SDXL_ImGui_BeginPopupContextItem(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1);                    // helper to open and begin popup when clicked on last item. if you can pass a NULL str_id only if the previous item had an id. If you want to use that on a non-interactive item such as Text() you need to pass in an explicit ID here. read comments in .cpp!
+SDXLLibrary_API bool SDXL_ImGui_BeginPopupContextWindow(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1, bool also_over_items = true);  // helper to open and begin popup when clicked on current window.
+SDXLLibrary_API bool SDXL_ImGui_BeginPopupContextVoid(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1);                    // helper to open and begin popup when clicked in void (where there are no imgui windows).
+SDXLLibrary_API bool SDXL_ImGui_BeginPopupModal(const char* name, bool* p_open = NULL, SDXL_ImGuiMouseButton flags = 0);                     // modal dialog (regular window with title bar, block interactions behind the modal window, can't close the modal window by clicking outside)
+SDXLLibrary_API void SDXL_ImGui_EndPopup();                                                                                             // only call EndPopup() if BeginPopupXXX() returns true!
+SDXLLibrary_API bool SDXL_ImGui_OpenPopupOnItemClick(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1);                     // helper to open popup when clicked on last item (note: actually triggers on the mouse _released_ event to be consistent with popup behaviors). return true when just opened.
+SDXLLibrary_API bool SDXL_ImGui_IsPopupOpen(const char* str_id);                                    // return true if the popup is open at the current begin-ed level of the popup stack.
+SDXLLibrary_API void SDXL_ImGui_CloseCurrentPopup();                                                // close the popup we have begin-ed into. clicking on a MenuItem or Selectable automatically close the current popup.
+
+
 
 // **---------------**
 // * ----- Text ---- *
 // **---------------**
-SDXLLibrary_API void SDXL_ImGui_TextUnformatted(const char* text, const char* text_end = nullptr);
-SDXLLibrary_API void SDXL_ImGui_Text(const char* fmt, ...);
-
+SDXLLibrary_API void SDXL_ImGui_TextUnformatted(const char* text, const char* text_end = nullptr); 
+SDXLLibrary_API void SDXL_ImGui_Text(const char* fmt, ...); // formatted text
+SDXLLibrary_API void SDXL_ImGui_TextColored(const SDXL::Float4& col, const char* fmt, ...); // shortcut for PushStyleColor(ImGuiCol_Text, col); Text(fmt, ...); PopStyleColor();
+SDXLLibrary_API void SDXL_ImGui_TextWrapped(const char* fmt, ...); // shortcut for PushTextWrapPos(0.0f); Text(fmt, ...); PopTextWrapPos(); .Note that this won't work on an auto-resizing window if there's no other widgets to extend the window width, yoy may need to set a size using SetNextWindowSize().
 // *** --------------------------- ***
 // * ___ ____ ___     ___  ____ ____ *
 // *  |  |__| |__]    |__] |__| |__/ *

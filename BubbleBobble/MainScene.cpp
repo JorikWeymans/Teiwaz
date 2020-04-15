@@ -24,8 +24,6 @@ bub::MainScene::~MainScene()
 	delete m_Ani;
 	m_Ani = nullptr;
 
-	delete m_pPlayer;
-	m_pPlayer = nullptr;
 }
 
 void bub::MainScene::Initialize()
@@ -34,8 +32,7 @@ void bub::MainScene::Initialize()
 	{
 		LoadBackground();
 
-		m_pPlayer = new BubPrefab();
-		m_pPlayer->Generate(this);
+		BubPrefab::Generate(this);
 		
 
 		//

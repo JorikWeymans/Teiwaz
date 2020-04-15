@@ -21,7 +21,7 @@ void bub::ReadScene::Initialize()
 	if (!istrue) return;
 	std::stringstream ss;
 	ss << tyr::ContentManager::GetInstance()->GetDataFolder();
-	ss << "Scenes/" << "Test" << ".tyrScene";
+	ss << "Scenes/" << "Read from file" << ".tyrScene";
 	try
 	{
 	BinaryReader reader(ss.str());
@@ -101,6 +101,8 @@ tyr::SceneObject* bub::ReadScene::LoadSceneObject(tyr::BinaryReader& reader, tyr
 		case ComponentType::Player1Controller:
 			newObject->AddComponent(Factory::CreateComponent<Player1Controller>(reader));
 			break;
+		case ComponentType::Animator:
+			newObject->AddComponent(Factory::CreateComponent<AnimatorComp>(reader));
 
 		default:;
 		}
