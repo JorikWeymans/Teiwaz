@@ -1,10 +1,10 @@
-#include "tyrpch.h"
+#include "../tyrpch.h"
 
 #ifdef USE_IM_GUI
 #include "EMenuBar.h"
-#include "TeiwazEngine.h"
-#include "GameContext.h"
-#include "SceneManager.h"
+#include "../TeiwazEngine.h"
+#include "../GameContext.h"
+#include "../SceneManager.h"
 tyr::EMenuBar::EMenuBar(GameContext* pContext)
 	: m_pContext(pContext)
 {

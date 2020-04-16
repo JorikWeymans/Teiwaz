@@ -154,25 +154,25 @@
     <ClInclude Include="AnimatorComp.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="ESceneHolder.h">
+    <ClInclude Include="Editor\EUI.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\EWindow.h">
+      <Filter>Editor\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\EWindowInspector.h">
+      <Filter>Editor\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\EWindowSceneView.h">
+      <Filter>Editor\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\EWindowSouth.h">
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClInclude>
-    <ClInclude Include="EUI.h">
+    <ClInclude Include="Editor\EMenuBar.h">
       <Filter>Editor</Filter>
     </ClInclude>
-    <ClInclude Include="EMenuBar.h">
-      <Filter>Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="EWindow.h">
-      <Filter>Editor\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="EWindowSceneView.h">
-      <Filter>Editor\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="EWindowInspector.h">
-      <Filter>Editor\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="EWindowSouth.h">
+    <ClInclude Include="Editor\ESceneHolder.h">
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClInclude>
   </ItemGroup>
@@ -273,25 +273,25 @@
     <ClCompile Include="AnimatorComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="ESceneHolder.cpp">
+    <ClCompile Include="Editor\EUI.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EWindow.cpp">
+      <Filter>Editor\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EWindowInspector.cpp">
+      <Filter>Editor\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EWindowSceneView.cpp">
+      <Filter>Editor\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EWindowSouth.cpp">
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClCompile>
-    <ClCompile Include="EUI.cpp">
+    <ClCompile Include="Editor\EMenuBar.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
-    <ClCompile Include="EMenuBar.cpp">
-      <Filter>Editor</Filter>
-    </ClCompile>
-    <ClCompile Include="EWindow.cpp">
-      <Filter>Editor\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="EWindowSceneView.cpp">
-      <Filter>Editor\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="EWindowInspector.cpp">
-      <Filter>Editor\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="EWindowSouth.cpp">
+    <ClCompile Include="Editor\ESceneHolder.cpp">
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClCompile>
   </ItemGroup>

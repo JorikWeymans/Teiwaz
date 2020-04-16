@@ -1,14 +1,14 @@
-#include "tyrpch.h"
+#include "../tyrpch.h"
 
 #ifdef USE_IM_GUI
 #include "ESceneHolder.h"
 #include "direct.h"
 #include <filesystem>
-#include "StringManipulation.h"
-#include "ContentManager.h"
-#include "Texture.h"
-#include "Color.h"
-#include "SceneManager.h"
+#include "../StringManipulation.h"
+#include "../ContentManager.h"
+#include "../Texture.h"
+#include "../Color.h"
+#include "../SceneManager.h"
 
 tyr::ESceneHolder::ESceneHolder(const std::string& dataFolder, SceneManager* pContentManager)
 	: m_SceneFolder(dataFolder + "Scenes/")

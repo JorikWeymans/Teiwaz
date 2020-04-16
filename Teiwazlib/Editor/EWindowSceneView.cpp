@@ -1,11 +1,11 @@
-#include "tyrpch.h"
+#include "../tyrpch.h"
 
 #ifdef USE_IM_GUI
 #include "EWindowSceneView.h"
-#include "TeiwazEngine.h"
-#include "GameContext.h"
-#include "Vectors.h"
-#include "SceneManager.h"
+#include "../TeiwazEngine.h"
+#include "../GameContext.h"
+#include "../Vectors.h"
+#include "../SceneManager.h"
 tyr::EWindowSceneView::EWindowSceneView(GameContext* pContext)
 	: tyr::EWindow("Inspector", pContext)
 {

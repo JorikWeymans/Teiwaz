@@ -1,10 +1,10 @@
-#include "tyrpch.h"
+#include "../tyrpch.h"
 
 #ifdef USE_IM_GUI
 #include "EWindowSouth.h"
-#include "TeiwazEngine.h"
-#include "GameContext.h"
-#include "Vectors.h"
+#include "../TeiwazEngine.h"
+#include "../GameContext.h"
+#include "../Vectors.h"
 
 tyr::EWindowSouth::EWindowSouth(GameContext* pContext)
 	: tyr::EWindow("SoutWindow", pContext)

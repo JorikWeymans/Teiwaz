@@ -1,4 +1,4 @@
-#include "tyrpch.h"
+#include "../tyrpch.h"
 
 #ifdef USE_IM_GUI
 #include "EWindow.h"

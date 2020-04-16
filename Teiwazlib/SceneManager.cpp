@@ -15,8 +15,7 @@
 #include "SceneObject.h"
 #include "TyrComps.h"
 #include "Factory.h"
-#include "ESceneHolder.h"
-#include "EUI.h"
+#include "./Editor/EUI.h"
 
 tyr::SceneManager::SceneManager()
 	: m_pContext(nullptr)

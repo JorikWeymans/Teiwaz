@@ -1,10 +1,10 @@
-#include "tyrpch.h"
+#include "../tyrpch.h"
 
 #ifdef USE_IM_GUI
 #include "EUI.h"
-#include "SceneManager.h"
-#include "GameContext.h"
-#include "TeiwazEngine.h"
+#include "../SceneManager.h"
+#include "../GameContext.h"
+#include "../TeiwazEngine.h"
 #include "EMenuBar.h"
 #include "EWindow.h"
 #include <algorithm>
