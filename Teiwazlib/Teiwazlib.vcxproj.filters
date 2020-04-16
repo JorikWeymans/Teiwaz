@@ -178,6 +178,9 @@
     <ClInclude Include="Editor\ETabScenes.h">
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClInclude>
+    <ClInclude Include="Editor\EAnimation.h">
+      <Filter>Editor\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -299,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="Editor\ETabScenes.cpp">
       <Filter>Editor\Windows\WindowSouth</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EAnimation.cpp">
+      <Filter>Editor\Windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

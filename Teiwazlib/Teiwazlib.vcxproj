@@ -206,6 +206,7 @@
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
+    <ClInclude Include="Editor\EAnimation.h" />
     <ClInclude Include="Editor\EUI.h" />
     <ClInclude Include="Elapser.h" />
     <ClInclude Include="Editor\EMenuBar.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
+    <ClCompile Include="Editor\EAnimation.cpp" />
     <ClCompile Include="Editor\EUI.cpp" />
     <ClCompile Include="Elapser.cpp" />
     <ClCompile Include="Editor\EMenuBar.cpp" />

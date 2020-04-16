@@ -132,6 +132,7 @@ typedef int SDXL_ImGuiID;
 typedef int SDXL_ImGuiTabBarFlags;
 typedef int SDXL_ImGuiHoveredFlags;
 typedef int SDXL_ImGuiMouseButton;
+typedef int SDXL_ImGuiMouseCursor;
 
 enum class SDXL_ImGuiDir : int
 {
@@ -266,6 +267,22 @@ enum SDXL_ImGuiMouseButton_
 	SDXL_ImGuiMouseButton_COUNT = 5
 };
 
+enum SDXL_ImGuiMouseCursor_
+{
+	SDXL_ImGuiMouseCursor_None = -1,
+	SDXL_ImGuiMouseCursor_Arrow = 0,
+	SDXL_ImGuiMouseCursor_TextInput,         // When hovering over InputText, etc.
+	SDXL_ImGuiMouseCursor_ResizeAll,         // (Unused by Dear ImGui functions)
+	SDXL_ImGuiMouseCursor_ResizeNS,          // When hovering over an horizontal border
+	SDXL_ImGuiMouseCursor_ResizeEW,          // When hovering over a vertical border or a column
+	SDXL_ImGuiMouseCursor_ResizeNESW,        // When hovering over the bottom-left corner of a window
+	SDXL_ImGuiMouseCursor_ResizeNWSE,        // When hovering over the bottom-right corner of a window
+	SDXL_ImGuiMouseCursor_Hand,              // (Unused by Dear ImGui functions. Use for e.g. hyperlinks)
+	SDXL_ImGuiMouseCursor_NotAllowed,        // When hovering something with disallowed interaction. Usually a crossed circle.
+	SDXL_ImGuiMouseCursor_COUNT
+
+};
+
 // ****** ------------------------------------ ******
 // *  ___ _   _ _  _  ___ _____ ___ ___  _  _ ___ 	*
 // * | __| | | | \| |/ __|_   _|_ _/ _ \| \| / __|	*
@@ -323,6 +340,16 @@ SDXLLibrary_API void SDXL_ImGui_SetWindowPos(const char* name, const SDXL::Float
 SDXLLibrary_API void SDXL_ImGui_SetWindowSize(const char* name, const SDXL::Float2& size, SDXL_ImGuiCond cond  = 0);    // set named window size. set axis to SDXL_ImGuiCond::Always.0f to force an auto-fit on this axis.
 SDXLLibrary_API void SDXL_ImGui_SetWindowCollapsed(const char* name, bool collapsed, SDXL_ImGuiCond cond  = 0);   // set named window collapsed state
 SDXLLibrary_API void SDXL_ImGui_SetWindowFocus(const char* name);                                           // set named window to be focused / top-most. use NULL to remove focus.
+
+// Content region
+// - Those functions are bound to be redesigned soon (they are confusing, incomplete and return values in local window coordinates which increases confusion)
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetContentRegionMax();                                          // current content boundaries (typically window boundaries including scrolling, or current column boundaries), in windows coordinates
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetContentRegionAvail();                                        // == GetContentRegionMax() - GetCursorPos()
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetWindowContentRegionMin();                                    // content boundaries min (roughly (0,0)-Scroll), in window coordinates
+SDXLLibrary_API SDXL::Float2  SDXL_ImGui_GetWindowContentRegionMax();                                    // content boundaries max (roughly (0,0)+Size-Scroll) where Size can be override with SetNextWindowContentSize(), in window coordinates
+SDXLLibrary_API float         SDXL_ImGui_GetWindowContentRegionWidth();                                  //
+
+
 
  // Parameters stacks (current window)
 SDXLLibrary_API void SDXL_ImGui_PushItemWidth(float item_width);                                // push width of items for common large "item+label" widgets. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side). 0.0f = default to ~2/3 of windows width,
@@ -531,7 +558,7 @@ SDXLLibrary_API bool SDXL_ImGui_BeginPopup(const char* str_id, SDXL_ImGuiWindowF
 SDXLLibrary_API bool SDXL_ImGui_BeginPopupContextItem(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1);                    // helper to open and begin popup when clicked on last item. if you can pass a NULL str_id only if the previous item had an id. If you want to use that on a non-interactive item such as Text() you need to pass in an explicit ID here. read comments in .cpp!
 SDXLLibrary_API bool SDXL_ImGui_BeginPopupContextWindow(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1, bool also_over_items = true);  // helper to open and begin popup when clicked on current window.
 SDXLLibrary_API bool SDXL_ImGui_BeginPopupContextVoid(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1);                    // helper to open and begin popup when clicked in void (where there are no imgui windows).
-SDXLLibrary_API bool SDXL_ImGui_BeginPopupModal(const char* name, bool* p_open = NULL, SDXL_ImGuiMouseButton flags = 0);                     // modal dialog (regular window with title bar, block interactions behind the modal window, can't close the modal window by clicking outside)
+SDXLLibrary_API bool SDXL_ImGui_BeginPopupModal(const char* name, bool* p_open = NULL, SDXL_ImGuiWindowFlags flags = 0);                     // modal dialog (regular window with title bar, block interactions behind the modal window, can't close the modal window by clicking outside)
 SDXLLibrary_API void SDXL_ImGui_EndPopup();                                                                                             // only call EndPopup() if BeginPopupXXX() returns true!
 SDXLLibrary_API bool SDXL_ImGui_OpenPopupOnItemClick(const char* str_id = NULL, SDXL_ImGuiMouseButton mouse_button = 1);                     // helper to open popup when clicked on last item (note: actually triggers on the mouse _released_ event to be consistent with popup behaviors). return true when just opened.
 SDXLLibrary_API bool SDXL_ImGui_IsPopupOpen(const char* str_id);                                    // return true if the popup is open at the current begin-ed level of the popup stack.
@@ -593,12 +620,42 @@ SDXLLibrary_API void          SDXL_ImGui_SetItemAllowOverlap();                 
 	// - To refer to a mouse button, you may use named enums in your code e.g. ImGuiMouseButton_Left, ImGuiMouseButton_Right.
 	// - You can also use regular integer: it is forever guaranteed that 0=Left, 1=Right, 2=Middle.
 	// - Dragging operations are only reported after mouse has moved a certain distance away from the initial clicking position (see 'lock_threshold' and 'io.MouseDraggingThreshold')
-SDXLLibrary_API bool  SDXL_ImGui_IsMouseDown(SDXL_ImGuiMouseButton button);                               // is mouse button held?
-SDXLLibrary_API bool  SDXL_ImGui_IsMouseClicked(SDXL_ImGuiMouseButton button, bool repeat = false);       // did mouse button clicked? (went from !Down to Down)
-SDXLLibrary_API bool  SDXL_ImGui_IsMouseReleased(SDXL_ImGuiMouseButton button);                           // did mouse button released? (went from Down to !Down)
-SDXLLibrary_API bool  SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton button);                      // did mouse button double-clicked? a double-click returns false in IsMouseClicked(). uses io.MouseDoubleClickTime.
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseDown(SDXL_ImGuiMouseButton button);                               // is mouse button held?
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseClicked(SDXL_ImGuiMouseButton button, bool repeat = false);       // did mouse button clicked? (went from !Down to Down)
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseReleased(SDXL_ImGuiMouseButton button);                           // did mouse button released? (went from Down to !Down)
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton button);                      // did mouse button double-clicked? a double-click returns false in IsMouseClicked(). uses io.MouseDoubleClickTime.
+							 
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseHoveringRect(const SDXL::Float2& r_min, const SDXL::Float2& r_max, bool clip = true);// is mouse hovering given bounding rect (in screen space). clipped by current clipping settings, but disregarding of other consideration of focus/window ordering/popup-block.
+SDXLLibrary_API bool         SDXL_ImGui_IsMousePosValid(const SDXL::Float2& mouse_pos);                    // by convention we use (-FLT_MAX,-FLT_MAX) to denote that there is no mouse available
+SDXLLibrary_API bool         SDXL_ImGui_IsMousePosValid();
+SDXLLibrary_API bool         SDXL_ImGui_IsAnyMouseDown();                                                   // is any mouse button held?
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetMousePos();                                                      // shortcut to ImGui::GetIO().MousePos provided by user, to be consistent with other calls
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetMousePosOnOpeningCurrentPopup();                                 // retrieve mouse position at the time of opening popup we have BeginPopup() into (helper to avoid user backing that value themselves)
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseDragging(SDXL_ImGuiMouseButton button, float lock_threshold = -1.0f);         // is mouse dragging? (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)
+SDXLLibrary_API SDXL::Float2 SDXL_ImGui_GetMouseDragDelta(SDXL_ImGuiMouseButton button = 0, float lock_threshold = -1.0f);   // return the delta from the initial clicking position while the mouse button is pressed or was just released. This is locked and return 0.0f until the mouse moves past a distance threshold at least once (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)
+SDXLLibrary_API void         SDXL_ImGui_ResetMouseDragDelta(SDXL_ImGuiMouseButton button = 0);                   //
+SDXLLibrary_API SDXL_ImGuiMouseCursor SDXL_ImGui_GetMouseCursor();                                                // get desired cursor type, reset in ImGui::NewFrame(), this is updated during the frame. valid before Render(). If you use software rendering by setting io.MouseDrawCursor ImGui will render those for you
+SDXLLibrary_API void         SDXL_ImGui_SetMouseCursor(SDXL_ImGuiMouseButton cursor_type);                       // set desired cursor type
+SDXLLibrary_API void         SDXL_ImGui_CaptureMouseFromApp(bool want_capture_mouse_value = true);          // attention: misleading name! manually override io.WantCaptureMouse flag next frame (said flag is entirely left for your application to handle). This is equivalent to setting "io.WantCaptureMouse = want_capture_mouse_value;" after the next NewFrame() call.
+
+// Clipboard Utilities (also see the LogToClipboard() function to capture or output text data to the clipboard)
+SDXLLibrary_API const char* SDXL_GetClipboardText();
+SDXLLibrary_API void SDXL_SetClipboardText(const char* text);
 
 
+
+
+
+// *** ----------------------------------------------------------- ***
+// * ___  ____ ____ _ _ _    ___  ____ _ _  _ _ ___ _ _  _ ____ ____ *
+// * |  \ |__/ |__| | | |    |__] |__/ | |\/| |  |  | |  | |___ [__  *
+// * |__/ |  \ |  | |_|_|    |    |  \ | |  | |  |  |  \/  |___ ___] *
+// *                                                                 *
+// *** ----------------------------------------------------------- ***
+
+SDXLLibrary_API void SDXL_ImGui_DrawRectInWindow(const SDXL::Float2& min, const SDXL::Float2& max);
+SDXLLibrary_API bool SDXL_ImGui_AddRect(const SDXL::Float2& min, const SDXL::Float2& max);
+SDXLLibrary_API bool SDXL_ImGui_AddRect2(const SDXL::Float2& min, const SDXL::Float2& max);
 
 
 // **---------------**

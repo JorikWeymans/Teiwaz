@@ -12,10 +12,11 @@ tyr::EWindow::EWindow(const char* name, GameContext* pContext)
 
 void tyr::EWindow::RenderEditor()
 {
-	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
+	//SDXL_ImGui_SetNextWindowBgAlpha(1.f);
 	PreRender();
 	
 	SDXL_ImGui_Begin(m_Name, nullptr, m_Flags);
+
 	InternalRenderEditor();
 	SDXL_ImGui_End();
 }
