@@ -5,11 +5,15 @@ namespace  tyr
 	class BinaryReader;
 	class GameContext;
 	class Scene;
+#ifdef USE_IM_GUI
+	class EUI;
+#endif
 	class SceneManager final
 	{
 	public:
-		explicit SceneManager(GameContext* pContext);
+		 SceneManager();
 		~SceneManager();
+		void Initialize(GameContext* pContext);
 		
 		void AddScene(Scene* pScene);
 		void SetCurrentScene(const std::string& SceneName);
@@ -19,6 +23,9 @@ namespace  tyr
 		
 		void Flush() { m_WantFlush = true; }
 #ifdef USE_IM_GUI
+		void SaveCurrentScene();
+		void SetCurrentSceneName(const std::string& name);
+		const std::string& GetCurrentSceneName() const;
 		void Render();
 #else
 		void Render() const;
@@ -26,12 +33,9 @@ namespace  tyr
 	private:
 #ifdef USE_IM_GUI
 		void RenderEditor();
-		void MainMenu();
-		void SceneView(SDXL_ImGuiWindowFlags flags);
-		void Inspector(SDXL_ImGuiWindowFlags flags);
-		void Bottom(SDXL_ImGuiWindowFlags flags);
-		
-		void SaveCurrentScene();
+
+
+		EUI* m_pEditorUI;
 #endif
 		void FlushCurrentScene();
 		

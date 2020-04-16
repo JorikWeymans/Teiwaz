@@ -206,8 +206,13 @@
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
+    <ClInclude Include="EUI.h" />
     <ClInclude Include="Elapser.h" />
+    <ClInclude Include="EMenuBar.h" />
     <ClInclude Include="ESceneHolder.h" />
+    <ClInclude Include="EWindow.h" />
+    <ClInclude Include="EWindowInspector.h" />
+    <ClInclude Include="EWindowSceneView.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
@@ -216,6 +221,7 @@
     <ClInclude Include="Player1Controller.h" />
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
+    <ClInclude Include="EWindowSouth.h" />
     <ClInclude Include="StringManipulation.h" />
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
@@ -246,8 +252,13 @@
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
+    <ClCompile Include="EUI.cpp" />
     <ClCompile Include="Elapser.cpp" />
+    <ClCompile Include="EMenuBar.cpp" />
     <ClCompile Include="ESceneHolder.cpp" />
+    <ClCompile Include="EWindow.cpp" />
+    <ClCompile Include="EWindowInspector.cpp" />
+    <ClCompile Include="EWindowSceneView.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />
@@ -255,6 +266,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player1Controller.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />
+    <ClCompile Include="EWindowSouth.cpp" />
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureComp.cpp" />

@@ -1,8 +1,8 @@
 #pragma once
+
+#ifdef USE_IM_GUI
 #include <string>
 #include <vector>
-
-//E Prefix to indicate that this is only a script for the editor
 namespace tyr
 {
 
@@ -38,3 +38,4 @@ namespace tyr
 	};
 }
 
+#endif

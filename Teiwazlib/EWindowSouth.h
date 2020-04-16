@@ -1,0 +1,29 @@
+#pragma once
+#ifdef USE_IM_GUI
+#include "EWindow.h"
+namespace tyr
+{
+	class GameContext;
+
+	class EWindowSouth final : public EWindow
+	{
+	public:
+		explicit EWindowSouth(GameContext* pContext);
+		~EWindowSouth() = default;
+		
+	protected:
+		void PreRender() override;
+		void InternalRenderEditor() override;
+		
+	public:
+		EWindowSouth(const EWindowSouth&) = delete;
+		EWindowSouth(EWindowSouth&&) = delete;
+		EWindowSouth& operator=(const EWindowSouth&) = delete;
+		EWindowSouth& operator=(EWindowSouth&&) = delete;
+
+	};
+
+
+}
+
+#endif

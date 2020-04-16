@@ -1,6 +1,7 @@
 #pragma once
 namespace tyr
 {
+	class SceneManager;
 	class Time;
 	class InputHandler;
 	class Rect;
@@ -8,13 +9,14 @@ namespace tyr
 	class GameContext final
 	{
 	public:
-		explicit GameContext(Time* pTime, InputHandler* pInput, Rect* pGameSpace, Physics* pPhysics);
+		explicit GameContext(Time* pTime, InputHandler* pInput, Rect* pGameSpace, Physics* pPhysics, SceneManager* pSceneManager);
 		~GameContext();
 		
 		Time* pTime;
 		InputHandler* pInput;
 		Rect* pGameSpace;
 		Physics* pPhysics;
+		SceneManager* const pSceneManager; //weak ptr
 	public:
 		GameContext(const GameContext&) = delete;
 		GameContext(GameContext&&) = delete;

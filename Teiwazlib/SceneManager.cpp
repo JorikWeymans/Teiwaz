@@ -16,17 +16,34 @@
 #include "TyrComps.h"
 #include "Factory.h"
 #include "ESceneHolder.h"
-tyr::SceneManager::SceneManager(GameContext* pContext)
-	: m_pContext(pContext)
+#include "EUI.h"
+
+tyr::SceneManager::SceneManager()
+	: m_pContext(nullptr)
 	, m_pScenes(std::vector<Scene*>())
 	, m_pCurrentScene(nullptr)
 	, m_WantFlush(false)
+#ifdef USE_IM_GUI
+	, m_pEditorUI(nullptr)
+#endif
 {
+	
 }
 
 tyr::SceneManager::~SceneManager()
 {
 	std::for_each(m_pScenes.begin(), m_pScenes.end(), [](Scene* s) {SAFE_DELETE(s)});
+#ifdef USE_IM_GUI
+	SAFE_DELETE(m_pEditorUI);
+#endif
+}
+
+void tyr::SceneManager::Initialize(GameContext* pContext)
+{
+	m_pContext = pContext;
+#ifdef USE_IM_GUI
+	m_pEditorUI = new EUI(pContext);
+#endif
 }
 
 void tyr::SceneManager::AddScene(Scene* pScene)
@@ -70,10 +87,7 @@ void tyr::SceneManager::RenderEditor()
 
 	const SDXL_ImGuiWindowFlags windowFlags = SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove;
 
-	MainMenu();
-	SceneView(windowFlags);
-	Inspector(windowFlags);
-	Bottom(windowFlags);
+	m_pEditorUI->RenderEditor();
 
 	
 	m_pCurrentScene->Debug();
@@ -84,101 +98,6 @@ void tyr::SceneManager::RenderEditor()
 	}
 }
 
-void tyr::SceneManager::MainMenu()
-{
-	if (SDXL_ImGui_BeginMainMenuBar())
-	{
-		if (SDXL_ImGui_BeginMenu("File"))
-		{
-			if (SDXL_ImGui_MenuItem("Quit", "esc"))
-			{
-				TeiwazEngine::WantQuit = true;
-
-			}
-			if (SDXL_ImGui_MenuItem("SaveScene", "s"))
-			{
-				SaveCurrentScene();
-			}
-			SDXL_ImGui_EndMenu();
-		}
-		SDXL_ImGui_EndMainMenuBar();
-	}
-}
-void tyr::SceneManager::SceneView(SDXL_ImGuiWindowFlags flags)
-{
-	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
-	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 0.f,ENGINE_SPACING_TOP });
-	SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ ENGINE_SPACING_LEFT,m_pContext->pGameSpace->height + ENGINE_SPACING_BOT });
-
-	SDXL_ImGui_Begin(m_pCurrentScene->GetName().c_str(), nullptr, flags);
-
-
-	if(SDXL_ImGui_BeginPopupContextWindow("SceneOptions"))
-	{
-		static char sceneName[25];
-		
-		SDXL_ImGui_InputText("##SceneName", sceneName, 25, nullptr);
-		SDXL_ImGui_SameLine();
-		if(SDXL_ImGui_Button("Save SceneName"))
-		{
-			m_pCurrentScene->m_Name = std::string(sceneName);
-			
-		}
-		
-		SDXL_ImGui_EndPopup();
-	}
-
-	
-
-	SDXL_ImGui_End();
-}
-
-void tyr::SceneManager::Inspector(SDXL_ImGuiWindowFlags flags)
-{
-
-	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
-	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ ENGINE_SPACING_LEFT + m_pContext->pGameSpace->width,ENGINE_SPACING_TOP });
-	SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ ENGINE_SPACING_RIGHT,m_pContext->pGameSpace->height + ENGINE_SPACING_BOT });
-	SDXL_ImGui_Begin("Inspector", nullptr, flags);
-
-
-
-	SDXL_ImGui_End();
-}
-
-void tyr::SceneManager::Bottom(SDXL_ImGuiWindowFlags flags)
-{
-
-	//Bottom
-	SDXL_ImGui_SetNextWindowBgAlpha(1.f);
-	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
-	SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ m_pContext->pGameSpace->width, ENGINE_SPACING_BOT + ENGINE_SPACING_TOP });
-
-	SDXL_ImGui_Begin("Bottom", nullptr, flags | SDXL_ImGuiWindowFlags_NoDecoration);
-	if (SDXL_ImGui_BeginTabBar("Console##Bottom"))
-	{
-
-
-		if (SDXL_ImGui_ConsoleBegin("Console", SDXL_ImGuiTabBarFlags_None))
-		{
-			SDXL_ImGui_ConsoleDraw();
-			SDXL_ImGui_ConsoleEnd();
-		}
-
-		static ESceneHolder holder(ContentManager::GetInstance()->GetDataFolder(), this);
-
-		if (SDXL_ImGui_BeginTabItem("SceneHolder"))
-		{
-			holder.RenderEditor();
-			SDXL_ImGui_EndTabItem();
-		}
-
-		SDXL_ImGui_EndTabBar();
-	}
-
-
-	SDXL_ImGui_End();
-}
 
 void tyr::SceneManager::SaveCurrentScene()
 {
@@ -252,6 +171,16 @@ void tyr::SceneManager::SaveCurrentScene()
 
 
 	
+}
+
+void tyr::SceneManager::SetCurrentSceneName(const std::string& name)
+{
+	m_pCurrentScene->m_Name = name;
+}
+
+const std::string& tyr::SceneManager::GetCurrentSceneName() const
+{
+	return m_pCurrentScene->GetName();
 }
 
 

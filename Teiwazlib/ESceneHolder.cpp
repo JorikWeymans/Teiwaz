@@ -1,4 +1,6 @@
 #include "tyrpch.h"
+
+#ifdef USE_IM_GUI
 #include "ESceneHolder.h"
 #include "direct.h"
 #include <filesystem>
@@ -30,27 +32,34 @@ tyr::ESceneHolder::ESceneHolder(const std::string& dataFolder, SceneManager* pCo
 
 void tyr::ESceneHolder::RenderEditor()
 {
-#ifdef USE_IM_GUI
-	for( auto& s : m_Files)
-	{
-	
-		SDXL_ImGui_BeginGroup();
-		SDXL_ImGui_Image(m_pTexture->SDXL(), { 50.f, 50.f }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f },
-			static_cast<SDXL::Float4>(s.isHovered ? ColorGray : ColorWhite));
-		SDXL_ImGui_PushTextWrapPos(SDXL_ImGui_GetCursorPos().x + 50.f);
-		SDXL_ImGui_TextWrapped(s.name.c_str());
-		SDXL_ImGui_PopTextWrapPos();
-		SDXL_ImGui_EndGroup();
 
-		s.isHovered = SDXL_ImGui_IsItemHovered();
-		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
+
+	if (SDXL_ImGui_BeginTabItem("Scenes"))
+	{
+		for( auto& s : m_Files)
 		{
-			SDXL_ImGui_ConsoleLog("count or something");
-			m_pContentManager->Flush();
+		
+			SDXL_ImGui_BeginGroup();
+			SDXL_ImGui_Image(m_pTexture->SDXL(), { 50.f, 50.f }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f },
+				static_cast<SDXL::Float4>(s.isHovered ? ColorGray : ColorWhite));
+			SDXL_ImGui_PushTextWrapPos(SDXL_ImGui_GetCursorPos().x + 50.f);
+			SDXL_ImGui_TextWrapped(s.name.c_str());
+			SDXL_ImGui_PopTextWrapPos();
+			SDXL_ImGui_EndGroup();
+
+			s.isHovered = SDXL_ImGui_IsItemHovered();
+			if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
+			{
+				SDXL_ImGui_ConsoleLog("count or something");
+				m_pContentManager->Flush();
+			}
+
+			SDXL_ImGui_SameLine();
 		}
 
-		SDXL_ImGui_SameLine();
+		
+	SDXL_ImGui_EndTabItem();
 	}
 
-#endif
 }
+#endif
