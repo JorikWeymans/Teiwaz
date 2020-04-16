@@ -209,10 +209,11 @@
     <ClInclude Include="Editor\EUI.h" />
     <ClInclude Include="Elapser.h" />
     <ClInclude Include="Editor\EMenuBar.h" />
-    <ClInclude Include="Editor\ESceneHolder.h" />
     <ClInclude Include="Editor\EWindow.h" />
     <ClInclude Include="Editor\EWindowInspector.h" />
     <ClInclude Include="Editor\EWindowSceneView.h" />
+    <ClInclude Include="Editor\ETabItem.h" />
+    <ClInclude Include="Editor\ETabScenes.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
@@ -255,10 +256,11 @@
     <ClCompile Include="Editor\EUI.cpp" />
     <ClCompile Include="Elapser.cpp" />
     <ClCompile Include="Editor\EMenuBar.cpp" />
-    <ClCompile Include="Editor\ESceneHolder.cpp" />
     <ClCompile Include="Editor\EWindow.cpp" />
     <ClCompile Include="Editor\EWindowInspector.cpp" />
     <ClCompile Include="Editor\EWindowSceneView.cpp" />
+    <ClCompile Include="Editor\ETabItem.cpp" />
+    <ClCompile Include="Editor\ETabScenes.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />

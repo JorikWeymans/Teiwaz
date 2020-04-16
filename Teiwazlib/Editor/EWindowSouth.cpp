@@ -1,16 +1,23 @@
 #include "../tyrpch.h"
+#include <algorithm>
 
 #ifdef USE_IM_GUI
 #include "EWindowSouth.h"
 #include "../TeiwazEngine.h"
 #include "../GameContext.h"
 #include "../Vectors.h"
-
+#include "ETabItem.h"
+#include "ETabScenes.h"
 tyr::EWindowSouth::EWindowSouth(GameContext* pContext)
-	: tyr::EWindow("SoutWindow", pContext)
+	: tyr::EWindow("SouthWindow", pContext)
 {
 	m_Flags |= SDXL_ImGuiWindowFlags_NoDecoration;
-	
+	m_pTabItems.emplace_back(new ETabScenes(pContext));
+}
+
+tyr::EWindowSouth::~EWindowSouth()
+{
+	std::for_each(m_pTabItems.begin(), m_pTabItems.end(), [](ETabItem* t) { SAFE_DELETE(t); });
 }
 
 
@@ -31,6 +38,7 @@ void tyr::EWindowSouth::InternalRenderEditor()
 			SDXL_ImGui_ConsoleEnd();
 		}
 
+		std::for_each(m_pTabItems.begin(), m_pTabItems.end(), [](ETabItem* t) { t->RenderEditor(); });
 
 
 

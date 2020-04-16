@@ -32,16 +32,20 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 		L"./Data/Effects/TextRenderer.fx",
 		L"./Data/Effects/DebugRenderer.fx");
 
+
+
+
+	
 	m_pSceneManager = new SceneManager();
 	m_pContext = new GameContext(new Time(), 
 								new InputHandler(), 
 								new Rect(ENGINE_SPACING_RIGHT, ENGINE_SPACING_BOT, static_cast<float>(gameWidth), static_cast<float>(GameHeight)),
 								new Physics(),
 								m_pSceneManager);
-	m_pSceneManager->Initialize(m_pContext);
 	
-
+	
 	ContentManager::GetInstance()->Initialize(L"./Data/");
+	m_pSceneManager->Initialize(m_pContext);
 
 	return hr;
 

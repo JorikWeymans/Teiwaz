@@ -1,20 +1,23 @@
 #pragma once
+#include <vector>
 #ifdef USE_IM_GUI
 #include "EWindow.h"
 namespace tyr
 {
 	class GameContext;
-
-	class EWindowSouth final : public EWindow
+	class ETabItem;
+	class EWindowSouth final: public EWindow
 	{
 	public:
 		explicit EWindowSouth(GameContext* pContext);
-		~EWindowSouth() = default;
+		~EWindowSouth();
 		
 	protected:
 		void PreRender() override;
 		void InternalRenderEditor() override;
-		
+
+	private:
+		std::vector<ETabItem*> m_pTabItems;
 	public:
 		EWindowSouth(const EWindowSouth&) = delete;
 		EWindowSouth(EWindowSouth&&) = delete;
