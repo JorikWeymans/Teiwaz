@@ -14,8 +14,12 @@ namespace tyr
 		void Initialize(const std::wstring& dataFolder);
 		static void Destroy();
 
-		Texture* LoadTexture(const std::wstring& path);
-		Font const* LoadFont(const std::wstring& path);
+		TextureID LoadTexture(const std::wstring& path);
+		FontID LoadFont(const std::wstring& path);
+
+		Font const* GetFont(FontID id);
+		Texture* GetTexture(TextureID id);
+		
 		const std::wstring& GetDataFolderW() const { return m_DataFolder; }
 		std::string GetDataFolder() const;
 	private:

@@ -15,7 +15,7 @@ tyr::TextureComp::TextureComp(const std::string& texturePath, const PivotMode& p
 tyr::TextureComp::TextureComp(const std::string& texturePath, const Vector2& pivot, const Rect& rect, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Texture)
 	, m_TexturePath(texturePath)
-	, m_pTexture(nullptr)
+	, m_Texture(0)
 	, m_pTransform(nullptr)
 	, m_Pivot(pivot)
 	, m_SrcRect(rect)
@@ -32,11 +32,11 @@ void tyr::TextureComp::Initialize()
 
 	m_pTransform = m_pSceneObject->GetTransform();
 
-	m_pTexture = CONTENT_MANAGER->LoadTexture(std::wstring(m_TexturePath.begin(), m_TexturePath.end()));
+	m_Texture = CONTENT_MANAGER->LoadTexture(std::wstring(m_TexturePath.begin(), m_TexturePath.end()));
 
 	if(!m_SrcRect)
 	{
-		const auto di = m_pTexture->GetDimension();
+		const auto di = CONTENT_MANAGER->GetTexture(m_Texture)->GetDimension();
 		m_SrcRect.Set(0.f, 0.f, di.x, di.y);
 	}
 
@@ -61,7 +61,7 @@ void tyr::TextureComp::Render() const
 
 	pos += m_Offset;
 	
-	SDXL_RenderImage(m_pTexture->SDXL(), { pos.x, pos.y }, { m_Pivot.x,m_Pivot.y },{ scale.x, scale.y },
+	SDXL_RenderImage(CONTENT_MANAGER->GetTexture(m_Texture)->SDXL(), { pos.x, pos.y }, { m_Pivot.x,m_Pivot.y },{ scale.x, scale.y },
 									static_cast<SDXL::SDXLRect>(m_SrcRect), rot);
 
 	

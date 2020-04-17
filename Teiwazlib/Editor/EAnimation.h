@@ -4,7 +4,6 @@
 namespace tyr
 {
 	class GameContext;
-	class Texture;
 	class Rect;
 	class EAnimation final
 	{
@@ -15,7 +14,7 @@ namespace tyr
 		void RenderEditor();
 	private:
 		GameContext* m_pContext;
-		Texture* m_pTexture;
+		TextureID m_Texture;
 
 		std::vector<Rect> m_Rects;
 		int m_i = 0, m_j = 0;

@@ -31,7 +31,7 @@ namespace tyr
 #endif
 	private:
 		std::string m_TexturePath;
-		Texture* m_pTexture; //Weak pointer
+		TextureID m_Texture;
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Pivot;
 		Rect m_SrcRect;

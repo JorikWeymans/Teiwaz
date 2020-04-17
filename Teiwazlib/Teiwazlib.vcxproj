@@ -241,6 +241,7 @@
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="TeiwazEngine.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="TyrTypedefs.h" />
     <ClInclude Include="Vectors.h" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
 #include <SDXLLibrary.h>
 #pragma warning(disable : 4091)
 #include <SDXLStructs.h>
-
+#include <TyrTypedefs.h>
 #if defined(_DEBUG) && defined(x86)
 #ifndef USE_IM_GUI
 #define USE_IM_GUI

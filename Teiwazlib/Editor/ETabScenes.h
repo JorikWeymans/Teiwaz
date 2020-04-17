@@ -5,7 +5,6 @@
 namespace  tyr
 {
 	class GameContext;
-	class Texture;
 	class ETabScenes final : public ETabItem
 	{
 	private:
@@ -29,7 +28,7 @@ namespace  tyr
 	private:
 		std::string m_SceneFolder;
 		std::vector<SceneItem> m_Files;
-		Texture* m_pTexture;
+		TextureID m_Texture;
 	public:
 		ETabScenes(const ETabScenes&) = delete;
 		ETabScenes(ETabScenes&&) = delete;

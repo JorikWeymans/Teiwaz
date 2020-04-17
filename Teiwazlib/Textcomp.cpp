@@ -13,7 +13,7 @@ tyr::TextComp::TextComp(const std::string& textPath, const std::string& text, co
 	, m_TextPath(textPath)
 	, m_Text(text)
 	, m_Color(color)
-	, m_pFont(nullptr)
+	, m_Font(0)
 	, m_pTransform(nullptr)
 	, m_Offset(offset)
 {}
@@ -25,7 +25,7 @@ tyr::TextComp::~TextComp()
 void tyr::TextComp::Initialize()
 {
 	m_pTransform = m_pSceneObject->GetTransform();
-	m_pFont = CONTENT_MANAGER->LoadFont(std::wstring(m_TextPath.begin(), m_TextPath.end()));
+	m_Font = CONTENT_MANAGER->LoadFont(std::wstring(m_TextPath.begin(), m_TextPath.end()));
 }
 
 void tyr::TextComp::Update()
@@ -42,7 +42,7 @@ void tyr::TextComp::Render() const
 	pos.x += m_Offset.x;
 	pos.y += m_Offset.y;
 	 
-	SDXL_RenderText(m_pFont->SDXL(), std::wstring(m_Text.begin(), m_Text.end()), { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
+	SDXL_RenderText(CONTENT_MANAGER->GetFont(m_Font)->SDXL(), std::wstring(m_Text.begin(), m_Text.end()), { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
 }
 
 void tyr::TextComp::Destroy()

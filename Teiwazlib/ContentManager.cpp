@@ -51,31 +51,43 @@ void tyr::ContentManager::Destroy()
 	m_pInstance = nullptr;
 }
 
-tyr::Texture* tyr::ContentManager::LoadTexture(const std::wstring& path)
+TextureID tyr::ContentManager::LoadTexture(const std::wstring& path)
 {
 	auto found = std::find(m_pTextures.begin(), m_pTextures.end(), path);
 
 	if(found != m_pTextures.end())
 	{
-		return *found;
+		return static_cast<TextureID>(std::distance(m_pTextures.begin(), found));
 	}
 	
 	auto pTemp = new Texture(m_DataFolder, path);
 	m_pTextures.emplace_back(pTemp);
-	return pTemp;
+	return static_cast<TextureID>(m_pTextures.size() - 1);
 }
-tyr::Font const* tyr::ContentManager::LoadFont(const std::wstring& path)
+FontID tyr::ContentManager::LoadFont(const std::wstring& path)
 {
 	auto found = std::find(m_pFonts.begin(), m_pFonts.end(), path);
 
 	if (found != m_pFonts.end())
 	{
-		return *found;
+		//return 0;
+		return static_cast<FontID>(std::distance(m_pFonts.begin(), found));
+		
 	}
 
 	auto pTemp = new Font(m_DataFolder, path);
 	m_pFonts.emplace_back(pTemp);
-	return pTemp;
+	return static_cast<FontID>(m_pFonts.size() - 1);
+}
+
+tyr::Font const* tyr::ContentManager::GetFont(FontID id)
+{
+	return m_pFonts[id];
+}
+
+tyr::Texture* tyr::ContentManager::GetTexture(TextureID id)
+{
+	return m_pTextures[id];
 }
 
 

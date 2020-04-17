@@ -6,7 +6,7 @@
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 {
-	m_pTexture = CONTENT_MANAGER->LoadTexture(L"BBSprites/Sprites_Sliced_Combined_Scaled.png");
+	m_Texture = CONTENT_MANAGER->LoadTexture(L"BBSprites/Sprites_Sliced_Combined_Scaled.png");
 
 	for(int i{0}; i < 4; ++i)
 	{
@@ -32,7 +32,7 @@ void tyr::EAnimation::RenderEditor()
 		{
 			auto contentRegion = SDXL_ImGui_GetWindowContentRegionMin();
 
-			SDXL_ImGui_Image(m_pTexture->SDXL());
+			SDXL_ImGui_Image(CONTENT_MANAGER->GetTexture(m_Texture)->SDXL());
 
 			auto WindowPos = SDXL_ImGui_GetWindowPos();
 			WindowPos.x += contentRegion.x;
