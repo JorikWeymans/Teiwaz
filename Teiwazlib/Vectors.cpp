@@ -1,6 +1,7 @@
 #include "tyrpch.h"
 #include "Vectors.h"
 #include "TyrEnums.h"
+#include "sstream"
 tyr::Vector2::Vector2(float x, float y)
 	:x(x), y(y)
 {
@@ -150,4 +151,12 @@ tyr::Rect_POD tyr::Rect::ToPOD() const
 {
 
 	return Rect_POD{ {m_Pos.x, m_Pos.y}, m_Width, m_Height };
+}
+
+std::string tyr::Rect::ToString() const
+{
+	std::stringstream ss;
+	ss << "[" << m_Pos.x << ", " << m_Pos.y << ", " << m_Width << ", " << m_Height << "]";
+	return ss.str();
+	
 }

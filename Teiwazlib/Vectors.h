@@ -110,7 +110,8 @@ namespace tyr
 		static void AdjustRectToPivot(Rect& theRect, PivotMode pivot);
 		explicit operator bool() const;
 		Rect_POD ToPOD() const;
-
+		std::string ToString() const;
+		
 
 		
 		PROPERTY(Vector2, pos); GET(pos) { return m_Pos; }  SET(pos) { m_Pos = value;}

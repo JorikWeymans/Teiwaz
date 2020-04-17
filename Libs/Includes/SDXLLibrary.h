@@ -626,6 +626,7 @@ SDXLLibrary_API bool         SDXL_ImGui_IsMouseReleased(SDXL_ImGuiMouseButton bu
 SDXLLibrary_API bool         SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton button);                      // did mouse button double-clicked? a double-click returns false in IsMouseClicked(). uses io.MouseDoubleClickTime.
 							 
 SDXLLibrary_API bool         SDXL_ImGui_IsMouseHoveringRect(const SDXL::Float2& r_min, const SDXL::Float2& r_max, bool clip = true);// is mouse hovering given bounding rect (in screen space). clipped by current clipping settings, but disregarding of other consideration of focus/window ordering/popup-block.
+SDXLLibrary_API bool         SDXL_ImGui_IsMouseHoveringRectSize(const SDXL::Float2& r_min, const SDXL::Float2& size, bool clip = true);// is mouse hovering given bounding rect (in screen space). clipped by current clipping settings, but disregarding of other consideration of focus/window ordering/popup-block.
 SDXLLibrary_API bool         SDXL_ImGui_IsMousePosValid(const SDXL::Float2& mouse_pos);                    // by convention we use (-FLT_MAX,-FLT_MAX) to denote that there is no mouse available
 SDXLLibrary_API bool         SDXL_ImGui_IsMousePosValid();
 SDXLLibrary_API bool         SDXL_ImGui_IsAnyMouseDown();                                                   // is any mouse button held?

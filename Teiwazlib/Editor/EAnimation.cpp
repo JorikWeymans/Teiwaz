@@ -7,6 +7,12 @@ tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 {
 	m_pTexture = CONTENT_MANAGER->LoadTexture(L"BBSprites/Sprites_Sliced_Combined_Scaled.png");
+
+	for(int i{0}; i < 4; ++i)
+	{
+		m_Rects.push_back(Rect(48.f * i, 0, 48, 48));
+	}
+	
 }
 
 void tyr::EAnimation::RenderEditor()
@@ -28,21 +34,14 @@ void tyr::EAnimation::RenderEditor()
 
 			SDXL_ImGui_Image(m_pTexture->SDXL());
 
-			float size = 48;
 			auto WindowPos = SDXL_ImGui_GetWindowPos();
 			WindowPos.x += contentRegion.x;
 			WindowPos.y += contentRegion.y;
 
 
-			static int i = 0;
-			static int j = 0;
 
-			static int y = 1;
-			static int z = 1;
-
-
-			SDXL_ImGui_DrawRectInWindow(SDXL::Float2(WindowPos.x + i * size, WindowPos.y + j * size),
-				SDXL::Float2(WindowPos.x + y * size + i * size, WindowPos.y + z * size + j * size));
+			SDXL_ImGui_DrawRectInWindow(SDXL::Float2(WindowPos.x + m_i * m_GridSize, WindowPos.y + m_j * m_GridSize),
+				SDXL::Float2(WindowPos.x + m_y * m_GridSize + m_i * m_GridSize, WindowPos.y + m_z * m_GridSize + m_j * m_GridSize));
 
 
 
@@ -54,33 +53,119 @@ void tyr::EAnimation::RenderEditor()
 
 
 
-			SDXL_ImGui_SameLine();
+		
 
-			SDXL_ImGui_EndChild();
+			static bool mouseIsDown = false; //makes down to pressed
+			
 
 
 			if (SDXL_ImGui_IsMouseDown(SDXL_ImGuiMouseButton_Left))
 			{
-				if (SDXL_ImGui_IsMouseDragging(SDXL_ImGuiMouseButton_Left))
+				
+				if(SDXL_ImGui_IsMouseHoveringRectSize(SDXL_ImGui_GetWindowPos(), SDXL_ImGui_GetWindowSize()) && mouseIsDown == false)
 				{
-					y = static_cast<int>(mousePos.x / 48) + 1 - i;
-					z = static_cast<int>(mousePos.y / 48) + 1 - j;
+					if (SDXL_ImGui_IsMouseDragging(SDXL_ImGuiMouseButton_Left))
+					{
+						m_y = static_cast<int>(mousePos.x / m_GridSize) + 1 - m_i;
+						m_z = static_cast<int>(mousePos.y / m_GridSize) + 1 - m_j;
+					}
+					else
+					{
+						m_i = static_cast<int>(mousePos.x / m_GridSize);
+						m_j = static_cast<int>(mousePos.y / m_GridSize);
+						m_y = 1;
+						m_z = 1;
+					}
 				}
 				else
 				{
-					i = static_cast<int>(mousePos.x / 48);
-					j = static_cast<int>(mousePos.y / 48);
-					y = 1;
-					z = 1;
+					mouseIsDown = true;
 				}
+				
+			
 
 			}
-		}
+			else
+			{
+				mouseIsDown = false;
+			}
+		
 
+			
+			
+			SDXL_ImGui_EndChild();
+		}
+		SDXL_ImGui_SameLine();
+
+		SDXL_ImGui_BeginGroup();
+
+		
 		mousePos.x /= 48;
 		mousePos.y /= 48;
+		static char name[25];
+		SDXL_ImGui_InputText( "Animation name", name, 25);
 
-		SDXL_ImGui_DragFloat2("Width##AniTest", &mousePos.x, 16, 0, 16 * 5);
+		static bool thisIsSelected = false;
+
+
+
+
+		
+		
+		
+		
+		
+		static int selectedItem = -1;
+
+		for(auto i{0}; i < static_cast<int>(m_Rects.size()); ++i)
+		{
+			std::string theString = "Frame " + std::to_string(i) + " " + m_Rects[i].ToString();
+			
+			if(SDXL_ImGui_Selectable(theString.c_str(), selectedItem == i, SDXL_ImGuiSelectableFlags::DontClosePopups))
+			{
+				if (selectedItem == i) selectedItem = -1;
+				else
+				{
+					selectedItem = i;
+					m_i = static_cast<int>(m_Rects[i].pos.x / m_GridSize);
+					m_j = static_cast<int>(m_Rects[i].pos.y / m_GridSize);
+
+					m_y = static_cast<int>(m_Rects[i].width / m_GridSize);
+					m_z = static_cast<int>(m_Rects[i].height / m_GridSize);
+				}
+			
+			}
+		}
+		
+
+
+
+		if(SDXL_ImGui_Button("Update##EAnimation"))
+		{
+			if (selectedItem != -1)
+			{
+				m_Rects[selectedItem].pos = Vector2(m_i * m_GridSize, m_j * m_GridSize);
+				
+				m_Rects[selectedItem].width = m_y * m_GridSize;
+				m_Rects[selectedItem].height = m_z * m_GridSize;
+			}
+			
+			
+		}
+		SDXL_ImGui_SameLine();
+		if(SDXL_ImGui_Button("Add Frame")) 
+		{
+			
+			m_Rects.emplace_back(Rect(m_i* m_GridSize, m_j* m_GridSize, m_y* m_GridSize, m_z* m_GridSize));
+			
+		} 
+
+		SDXL_ImGui_SameLine();
+		if (SDXL_ImGui_Button("Delete Frame"))
+		{
+
+		}
+		
 		//SDXL_ImGui_SameLine();
 
 		//auto winPos = SDXL_ImGui_GetWindowPos();
@@ -93,7 +178,7 @@ void tyr::EAnimation::RenderEditor()
 
 		//
 		//SDXL_ImGui_Text("test");
-
+		SDXL_ImGui_EndGroup();
 
 
 
