@@ -1,7 +1,7 @@
 # Teiwaz
 Game engine made to make Bubble bobble, but it should also be able to run games simular to this
  
-
+Want to know what I'm working on? https://trello.com/b/G3iIxhFO/teiwaz-engine
 
 
 
