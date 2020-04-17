@@ -24,20 +24,36 @@ void tyr::AnimatorComp::Initialize()
 
 	m_pAnimator = new Animator();
 
-	auto idleAni = new tyr::Animation("Idle", 1.f, tyr::SpritePositions{ {0, tyr::Rect(0.f ,0.f,48,48)} });
+
+
+	//When the animation files get corrupt
+	//auto idleAni = new tyr::Animation("Idle", 1.f, tyr::SpritePositions{ {0, tyr::Rect(0.f ,0.f,48,48)} });
+	//
+	//
+	//auto walkAni = new tyr::Animation("Walking",.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f ,0.f,48,48)},
+	//																		{1, tyr::Rect(48.f,0.f,48,48)},
+	//																		{2, tyr::Rect(48.f * 2,0.f,48,48)} ,
+	//																		{3, tyr::Rect(48.f * 3,0.f,48,48)} });
+	//auto eatAni = new tyr::Animation("Eating",.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f + 4 * 48.f ,0.f,48,48)},
+	//																	{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
+	//																	{2, tyr::Rect(48.f * 2 + 4 * 48.f,0.f,48,48)} ,
+	//																	{3, tyr::Rect(48.f * 3 + 4 * 48.f,0.f,48,48)} });
+	//
+	//
+	//EatAni->Save();
+	//idleAni->Save();
+	//walkAni->Save();
+	//
+	
+	auto idleAni = new tyr::Animation("./Data/Animations/Idle.tyrAnimation");
+	auto walkAni = new tyr::Animation("./Data/Animations/Walking.tyrAnimation");
+	auto eatAni  = new tyr::Animation("./Data/Animations/Eating.tyrAnimation");
+	
 
 	
-	auto walkAni = new tyr::Animation("Walking",.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f ,0.f,48,48)},
-																			{1, tyr::Rect(48.f,0.f,48,48)},
-																			{2, tyr::Rect(48.f * 2,0.f,48,48)} ,
-																			{3, tyr::Rect(48.f * 3,0.f,48,48)} });
-	auto EatAni = new tyr::Animation("Eating",.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f + 4 * 48.f ,0.f,48,48)},
-																		{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
-																		{2, tyr::Rect(48.f * 2 + 4 * 48.f,0.f,48,48)} ,
-																		{3, tyr::Rect(48.f * 3 + 4 * 48.f,0.f,48,48)} });
 	m_pAnimator->AddAnimation(idleAni);
 	m_pAnimator->AddAnimation(walkAni);
-	m_pAnimator->AddAnimation(EatAni);
+	m_pAnimator->AddAnimation(eatAni);
 
 
 

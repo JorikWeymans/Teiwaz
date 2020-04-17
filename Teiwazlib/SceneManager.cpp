@@ -108,8 +108,8 @@ void tyr::SceneManager::SaveCurrentScene()
 	{
 		BinaryWriter writer(ss.str());
 		// Header
-		// Long double (binary rep of JorikWey
-		ULONG64 header = 0x4A6F72696B576579;
+		// Long double (JorikWeymansTyrScene hashed via Adler32 to this value)
+		ULONG64 header = 0x545e0811;
 		writer.Write(header);
 	
 		m_pCurrentScene->Save(writer);

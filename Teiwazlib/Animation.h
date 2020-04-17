@@ -6,12 +6,14 @@
 
 namespace tyr
 {
+	class BinaryWriter;
 	typedef std::map<unsigned int, Rect> SpritePositions;
 	
 	class Animation final
 	{
 	public:
 		explicit Animation(const std::string& animationName, float tpf, SpritePositions&& sp);
+		explicit Animation(const std::string& path);
 		~Animation() = default;
 		void Update(float elapsed);
 		const Rect& GetCurrentAnimation() const;
@@ -20,7 +22,7 @@ namespace tyr
 
 		const std::string& GetName() const { return m_AnimationName; }
 		
-		
+		void Save();
 	private:
 		std::string m_AnimationName;
 		

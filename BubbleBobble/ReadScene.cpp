@@ -28,7 +28,7 @@ void bub::ReadScene::Initialize()
 	// rn
 	// header
 		ULONG64 header = reader.Read<ULONG64>();
-		if (header != 0x4A6F72696B576579)
+		if (header != 0x545e0811)
 		{
 #ifdef USE_IM_GUI
 		SDXL_ImGui_ConsoleLogError("This is no a scene");

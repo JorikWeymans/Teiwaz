@@ -2,7 +2,7 @@
 #include "EAnimation.h"
 #include "../Texture.h"
 #include "../ContentManager.h"
-
+#include <algorithm>
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 {
@@ -106,14 +106,6 @@ void tyr::EAnimation::RenderEditor()
 		SDXL_ImGui_InputText( "Animation name", name, 25);
 
 		static bool thisIsSelected = false;
-
-
-
-
-		
-		
-		
-		
 		
 		static int selectedItem = -1;
 
@@ -163,7 +155,9 @@ void tyr::EAnimation::RenderEditor()
 		SDXL_ImGui_SameLine();
 		if (SDXL_ImGui_Button("Delete Frame"))
 		{
-
+			if(selectedItem )
+			m_Rects.erase(m_Rects.begin() /*+ selectedItem*/);
+			
 		}
 		
 		//SDXL_ImGui_SameLine();
