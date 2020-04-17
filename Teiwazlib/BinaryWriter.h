@@ -28,6 +28,14 @@ namespace tyr
 			}
 			return false;
 		}
+
+		template <>
+		bool Write(std::string toWrite)
+		{
+			WriteString(toWrite);
+			return true;
+		}
+		
 		void WriteString(const std::string& string);
 	private:
 		std::string m_FilePath;

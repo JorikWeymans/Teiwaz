@@ -66,6 +66,7 @@ bool tyr::BinaryWriter::IsOpen() const
 	return m_IsOpen;
 }
 
+
 void tyr::BinaryWriter::WriteString(const std::string& string)
 {
 	const streamsize size =  1 + static_cast<streamsize>(string.size());

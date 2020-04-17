@@ -24,14 +24,6 @@ namespace tyr
 		void moveBufferPosition(int amount);
 
 		std::string ReadString();
-
-	private:
-		std::string m_FilePath;
-		std::ifstream m_Reader;
-		bool m_IsOpen;
-
-
-	public:
 		template<typename T>
 		T Read()
 		{
@@ -40,6 +32,20 @@ namespace tyr
 			m_Reader.read(reinterpret_cast<char*>(&data), sizeof(T));
 			return data;
 		}
+
+		template<>
+		std::string Read()
+		{
+			return ReadString();
+		}
+	private:
+		std::string m_FilePath;
+		std::ifstream m_Reader;
+		bool m_IsOpen;
+
+
+	public:
+
 
 		BinaryReader(BinaryReader&) = delete;
 		BinaryReader(BinaryReader&&) = delete;
