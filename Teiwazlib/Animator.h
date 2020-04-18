@@ -12,15 +12,9 @@ namespace tyr
 		T data;
 	};
 
-	struct Varfloat : Var<float>
-	{
-		
-	};
+	struct Varfloat : Var<float> {};
 
-	struct ValBool : Var<bool>
-	{
-		
-	};
+	struct ValBool : Var<bool> {};
 	
 	struct Connection
 	{
@@ -45,6 +39,7 @@ namespace tyr
 		Animator();
 		~Animator();
 
+		void AddAnimation(AnimationID id);
 		void AddAnimation(Animation* pAni);
 		void SetAnimation(const std::string& name);
 		void Update(float elapsed);
@@ -57,7 +52,7 @@ namespace tyr
 
 	private:
 
-		std::map<std::string, Animation* > m_pAnimations;
+		std::map<std::string, Animation* > m_pAnimations; //weak pointers
 		std::map<std::string, std::function<bool(float)>> m_Conditions;
 		std::vector<Connection*> m_pConnections;;
 		

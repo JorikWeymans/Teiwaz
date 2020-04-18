@@ -3,8 +3,13 @@
 #include <algorithm>
 #include "Font.h"
 #include "Texture.h"
+#include "Animation.h"
 #include <functional>
-tyr::ContentManager* tyr::ContentManager::m_pInstance = nullptr;
+#include <sstream>
+#include "BinaryReader.h"
+
+#define ANIMATION_SUFFIX ".tyrAnimation"
+tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 
 
 tyr::ContentManager::ContentManager()
@@ -17,18 +22,18 @@ tyr::ContentManager::ContentManager()
 
 tyr::ContentManager::~ContentManager()
 {
-	std::for_each(m_pTextures.begin(), m_pTextures.end(), [](auto* p) {delete p; p = nullptr; });
-	std::for_each(m_pFonts.begin(), m_pFonts.end(), [](auto* p) {delete p; p = nullptr; });
-
+	std::for_each(m_pTextures.begin(), m_pTextures.end(),		[](auto* p) {SAFE_DELETE(p)});
+	std::for_each(m_pFonts.begin(), m_pFonts.end(),			[](auto* p) {SAFE_DELETE(p)});
+	std::for_each(m_pAnimations.begin(), m_pAnimations.end(),	[](auto* p) {SAFE_DELETE(p) });
 }
 
 tyr::ContentManager* tyr::ContentManager::GetInstance()
 {
-	if(!m_pInstance)
+	if(!pInstance)
 	{
-		m_pInstance = new ContentManager();
+		pInstance = new ContentManager();
 	}
-	return m_pInstance;
+	return pInstance;
 }
 
 void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder, const std::string& animationFolder)
@@ -38,6 +43,9 @@ void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::s
 	if(!m_IsInitialized)
 	{
 		m_DataFolder = dataFolder;
+		m_SceneFolder = sceneFolder;
+		m_AnimationFolder = animationFolder;
+		
 		m_IsInitialized = true;
 	}
 }
@@ -49,8 +57,8 @@ std::string tyr::ContentManager::GetDataFolder() const
 
 void tyr::ContentManager::Destroy()
 {
-	delete m_pInstance;
-	m_pInstance = nullptr;
+	delete pInstance;
+	pInstance = nullptr;
 }
 
 TextureID tyr::ContentManager::LoadTexture(const std::string& path)
@@ -81,15 +89,67 @@ FontID tyr::ContentManager::LoadFont(const std::string& path)
 	m_pFonts.emplace_back(pTemp);
 	return static_cast<FontID>(m_pFonts.size() - 1);
 }
-
-tyr::Font const* tyr::ContentManager::GetFont(FontID id)
+AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 {
-	return m_pFonts[id];
+	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
+
+	if (found != m_pAnimations.end())
+	{
+		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
+	}
+
+
+	//Loading animation if it does not already exist
+	std::stringstream ss;
+	ss << m_DataFolder << m_AnimationFolder << fileName << ANIMATION_SUFFIX;
+
+	BinaryReader reader{ ss.str() };
+
+	ULONG64 header = reader.Read<ULONG64>();
+	if (header != 0x78b109c3)
+	{
+#ifdef USE_IM_GUI
+		SDXL_ImGui_ConsoleLogError("This is not an tyrAnimation");
+#else
+		THROW_ERROR(L"This is not an animation");
+#endif
+	}
+
+	const std::string animationName = reader.Read<std::string>();
+	const float tpf = reader.Read<float>();
+	const UINT elements = reader.Read<UINT>();
+
+	SpritePositions positions;
+
+	for (UINT i{ 0 }; i < elements; ++i)
+	{
+		positions.insert({ i, Rect(reader.Read<Rect_POD>()) });
+	}
+	m_pAnimations.emplace_back(new Animation(animationName, tpf, std::move(positions)));
+
+
+
+
+	return static_cast<AnimationID>(m_pAnimations.size() - 1);
 }
+
 
 tyr::Texture* tyr::ContentManager::GetTexture(TextureID id)
 {
+	if (id >= m_pTextures.size()) return nullptr;
+	
 	return m_pTextures[id];
 }
+tyr::Font const* tyr::ContentManager::GetFont(FontID id)
+{
+	if (id >= m_pFonts.size()) return nullptr;
 
+	return m_pFonts[id];
+}
+tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id)
+{
+	if (id >= m_pAnimations.size()) return nullptr;
+
+	return m_pAnimations[id];
+}
 

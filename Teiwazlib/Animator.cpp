@@ -2,6 +2,8 @@
 #include "Animator.h"
 #include <algorithm>
 #include "Animation.h"
+#include "ContentManager.h"
+
 tyr::Animator::Animator()
 	: m_pCurrent(nullptr)
 {
@@ -11,23 +13,29 @@ tyr::Animator::Animator()
 	const auto isTrue = [](const bool b) -> bool { return b; };
 	const auto isFalse = [](const bool b) -> bool { return !b; };
 
-	m_pConnections.emplace_back(new Connection{ "Idle","Walking", "Speed",  moreThan0 });
-	m_pConnections.emplace_back(new Connection{ "Walking", "Idle", "Speed", equalTo0 });
+	m_pConnections.emplace_back(new Connection{ "Bub_Idle","Bub_Walking", "Speed",  moreThan0 });
+	m_pConnections.emplace_back(new Connection{ "Bub_Walking", "Bub_Idle", "Speed", equalTo0 });
 	
-	m_pConnections.emplace_back(new Connection{ "Idle","Eating", "IsEating",equalTo0,  isTrue });
-	m_pConnections.emplace_back(new Connection{ "Walking", "Eating", "IsEating", equalTo0, isTrue});
+	m_pConnections.emplace_back(new Connection{ "Bub_Idle","Bub_Eating", "IsEating",equalTo0,  isTrue });
+	m_pConnections.emplace_back(new Connection{ "Bub_Walking", "Bub_Eating", "IsEating", equalTo0, isTrue});
 
-	m_pConnections.emplace_back(new Connection{ "Eating","Idle", "IsEating", equalTo0, isFalse });
-	m_pConnections.emplace_back(new Connection{ "Eating", "Walking", "IsEating", equalTo0, isFalse });
+	m_pConnections.emplace_back(new Connection{ "Bub_Eating","Bub_Idle", "IsEating", equalTo0, isFalse });
+	m_pConnections.emplace_back(new Connection{ "Bub_Eating", "Bub_Walking", "IsEating", equalTo0, isFalse });
 	
 }
 
 tyr::Animator::~Animator()
 {
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](auto& a) {delete a.second; a.second = nullptr; });
+	//std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](auto& a) {delete a.second; a.second = nullptr; });
 	std::for_each(m_pConnections.begin(), m_pConnections.end(), [](auto& a) {delete a; a = nullptr; });
 	m_pAnimations.clear();
 	
+}
+
+void tyr::Animator::AddAnimation(AnimationID id)
+{
+	Animation* pTHeAnimation = CONTENT_MANAGER->GetAnimation(id);
+	AddAnimation(pTHeAnimation);
 }
 
 void tyr::Animator::AddAnimation(Animation* pAni)
@@ -38,15 +46,6 @@ void tyr::Animator::AddAnimation(Animation* pAni)
 	{
 		m_pAnimations.insert({ name, pAni });
 	}
-
-	//if(m_Conditions["IsEating"](5.f))
-	//{
-	//	SDXL_ImGui_ConsoleLog("IsEating");
-	//}
-	//else
-	//{
-	//	SDXL_ImGui_ConsoleLog("Is Not Eating");
-	//}
 	
 }
 

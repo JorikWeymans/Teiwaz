@@ -97,3 +97,8 @@ void tyr::Animation::Save()
 
 	
 }
+
+bool tyr::operator==(Animation* lhs, const std::string& rhs)
+{
+	return lhs->m_AnimationName == rhs;
+}

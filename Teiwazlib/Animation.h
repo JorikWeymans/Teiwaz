@@ -24,6 +24,9 @@ namespace tyr
 		
 		void Save();
 	private:
+		friend bool operator==(Animation* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
+
+
 		std::string m_AnimationName;
 		
 		Elapser m_AniElapser;

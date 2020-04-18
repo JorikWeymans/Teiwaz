@@ -6,6 +6,7 @@ namespace tyr
 {
 	class Font;
 	class Texture;
+	class Animation;
 	class ContentManager final
 	{
 	public:
@@ -15,12 +16,12 @@ namespace tyr
 		static void Destroy();
 
 		TextureID LoadTexture(const std::string& path);
-		Texture* GetTexture(TextureID id);
-		
 		FontID LoadFont(const std::string& path);
-		Font const* GetFont(FontID id);
+		AnimationID LoadAnimation(const std::string& fileName);
 
-		AnimationID LoadAnimation(const std::string& AnimationName);
+		Texture* GetTexture(TextureID id);
+		Font const* GetFont(FontID id);
+		Animation* GetAnimation(AnimationID id);
 		
 	
 		std::string GetDataFolder() const;
@@ -28,13 +29,17 @@ namespace tyr
 		ContentManager();
 		~ContentManager();
 		
-		static ContentManager* m_pInstance;
+		static ContentManager* pInstance;
 		bool m_IsInitialized;
-		std::string m_DataFolder;
+		std::string m_DataFolder, m_SceneFolder, m_AnimationFolder;
 		
 		std::vector<Texture*> m_pTextures;
 		std::vector<Font*>    m_pFonts;
+		std::vector<Animation*> m_pAnimations;
+		
 
+		
+		
 	public:
 		ContentManager(const ContentManager&) = delete;
 		ContentManager(ContentManager&&) = delete;
