@@ -13,10 +13,10 @@ namespace tyr
 	private:
 		friend ContentManager;
 
-		explicit Texture(const std::wstring& dataFolder, const std::wstring& path);
+		explicit Texture(const std::string& dataFolder, const std::string& path);
 		~Texture();
 
-		friend bool operator==(Texture* lhs, const std::wstring& rhs); //rhs == dataPath that gets hashed on creation
+		friend bool operator==(Texture* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 
 		
 		SDXL::SDXLImage* m_pImage;

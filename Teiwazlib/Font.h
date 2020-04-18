@@ -11,10 +11,10 @@ namespace tyr
 	private:
 		friend ContentManager;
 
-		explicit Font(const std::wstring& dataFolder, const std::wstring& path);
+		explicit Font(const std::string& dataFolder, const std::string& path);
 		~Font();
 		
-		friend bool operator==(Font* lhs, const std::wstring& rhs); //rhs == dataPath that gets hashed on creation
+		friend bool operator==(Font* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 		
 
 		SDXL::SDXLFont* m_pFont;

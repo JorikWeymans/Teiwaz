@@ -11,16 +11,18 @@ namespace tyr
 	public:
 		static ContentManager* GetInstance();
 
-		void Initialize(const std::wstring& dataFolder);
+		void Initialize(const std::string& dataFolder, const std::string& sceneFolder = "Scenes/", const std::string& animationFolder = "Animations/");
 		static void Destroy();
 
-		TextureID LoadTexture(const std::wstring& path);
-		FontID LoadFont(const std::wstring& path);
-
-		Font const* GetFont(FontID id);
+		TextureID LoadTexture(const std::string& path);
 		Texture* GetTexture(TextureID id);
 		
-		const std::wstring& GetDataFolderW() const { return m_DataFolder; }
+		FontID LoadFont(const std::string& path);
+		Font const* GetFont(FontID id);
+
+		AnimationID LoadAnimation(const std::string& AnimationName);
+		
+	
 		std::string GetDataFolder() const;
 	private:
 		ContentManager();
@@ -28,7 +30,7 @@ namespace tyr
 		
 		static ContentManager* m_pInstance;
 		bool m_IsInitialized;
-		std::wstring m_DataFolder;
+		std::string m_DataFolder;
 		
 		std::vector<Texture*> m_pTextures;
 		std::vector<Font*>    m_pFonts;

@@ -32,7 +32,7 @@ void tyr::TextureComp::Initialize()
 
 	m_pTransform = m_pSceneObject->GetTransform();
 
-	m_Texture = CONTENT_MANAGER->LoadTexture(std::wstring(m_TexturePath.begin(), m_TexturePath.end()));
+	m_Texture = CONTENT_MANAGER->LoadTexture(m_TexturePath);
 
 	if(!m_SrcRect)
 	{

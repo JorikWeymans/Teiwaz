@@ -1,12 +1,12 @@
 #include "tyrpch.h"
 #include "Font.h"
 
-tyr::Font::Font(const std::wstring& dataFolder, const std::wstring& path)
+tyr::Font::Font(const std::string& dataFolder, const std::string& path)
 	: m_pFont(nullptr)
-	, m_Hash(std::hash<std::wstring>{}(path))
+	, m_Hash(std::hash<std::string>{}(path))
 {
-	const std::wstring completePath = dataFolder + path;
-	SDXL_CreateFont(&m_pFont, completePath);
+	const std::string completePath = dataFolder + path;
+	SDXL_CreateFont(&m_pFont, std::wstring(completePath.begin(), completePath.end()));
 
 }
 
@@ -20,8 +20,8 @@ SDXL::SDXLFont* tyr::Font::SDXL() const
 	return m_pFont;
 }
 
-bool tyr::operator==(Font* lhs, const std::wstring& rhs)
+bool tyr::operator==(Font* lhs, const std::string& rhs)
 {
-	const size_t rhsHash = std::hash<std::wstring>{}(rhs);
+	const size_t rhsHash = std::hash<std::string>{}(rhs);
 	return (lhs->m_Hash == rhsHash);
 }

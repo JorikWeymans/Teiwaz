@@ -9,7 +9,7 @@ tyr::ContentManager* tyr::ContentManager::m_pInstance = nullptr;
 
 tyr::ContentManager::ContentManager()
 	: m_IsInitialized(false)
-	, m_DataFolder(L"")
+	, m_DataFolder("")
 	, m_pTextures(std::vector<Texture*>())
 	, m_pFonts(std::vector<Font*>())
 {
@@ -31,8 +31,10 @@ tyr::ContentManager* tyr::ContentManager::GetInstance()
 	return m_pInstance;
 }
 
-void tyr::ContentManager::Initialize(const std::wstring& dataFolder)
+void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder, const std::string& animationFolder)
 {
+	UNREFERENCED_PARAMETER(sceneFolder);
+	UNREFERENCED_PARAMETER(animationFolder);
 	if(!m_IsInitialized)
 	{
 		m_DataFolder = dataFolder;
@@ -51,7 +53,7 @@ void tyr::ContentManager::Destroy()
 	m_pInstance = nullptr;
 }
 
-TextureID tyr::ContentManager::LoadTexture(const std::wstring& path)
+TextureID tyr::ContentManager::LoadTexture(const std::string& path)
 {
 	auto found = std::find(m_pTextures.begin(), m_pTextures.end(), path);
 
@@ -64,7 +66,7 @@ TextureID tyr::ContentManager::LoadTexture(const std::wstring& path)
 	m_pTextures.emplace_back(pTemp);
 	return static_cast<TextureID>(m_pTextures.size() - 1);
 }
-FontID tyr::ContentManager::LoadFont(const std::wstring& path)
+FontID tyr::ContentManager::LoadFont(const std::string& path)
 {
 	auto found = std::find(m_pFonts.begin(), m_pFonts.end(), path);
 

@@ -44,7 +44,7 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 								m_pSceneManager);
 	
 	
-	ContentManager::GetInstance()->Initialize(L"./Data/");
+	ContentManager::GetInstance()->Initialize("./Data/");
 	m_pSceneManager->Initialize(m_pContext);
 
 	return hr;

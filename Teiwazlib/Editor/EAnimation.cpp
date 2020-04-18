@@ -6,7 +6,7 @@
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 {
-	m_Texture = CONTENT_MANAGER->LoadTexture(L"BBSprites/Sprites_Sliced_Combined_Scaled.png");
+	m_Texture = CONTENT_MANAGER->LoadTexture("BBSprites/Sprites_Sliced_Combined_Scaled.png");
 
 	for(int i{0}; i < 4; ++i)
 	{

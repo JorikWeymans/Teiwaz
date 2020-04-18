@@ -25,7 +25,7 @@ tyr::TextComp::~TextComp()
 void tyr::TextComp::Initialize()
 {
 	m_pTransform = m_pSceneObject->GetTransform();
-	m_Font = CONTENT_MANAGER->LoadFont(std::wstring(m_TextPath.begin(), m_TextPath.end()));
+	m_Font = CONTENT_MANAGER->LoadFont(m_TextPath);
 }
 
 void tyr::TextComp::Update()
