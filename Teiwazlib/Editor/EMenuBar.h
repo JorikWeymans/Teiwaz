@@ -15,7 +15,6 @@ namespace tyr
 	private:
 		GameContext* const m_pContext;
 		Texture* m_pTexture;
-		EAnimation* m_pEditorAni;
 	public:
 		EMenuBar(const EMenuBar&) = delete;
 		EMenuBar(EMenuBar&&) = delete;

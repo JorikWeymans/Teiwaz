@@ -4,6 +4,7 @@
 #define CONTENT_MANAGER ContentManager::GetInstance()
 namespace tyr
 {
+	struct TabItem;
 	class Font;
 	class Texture;
 	class Animation;
@@ -22,8 +23,11 @@ namespace tyr
 		Texture* GetTexture(TextureID id);
 		Font const* GetFont(FontID id);
 		Animation* GetAnimation(AnimationID id);
+		Animation* GetAnimation(std::string& name); //this does not load the animation, returns pointer to an existing animation (or nullptr)
 		
-	
+		std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code
+		
+		
 		std::string GetDataFolder() const;
 	private:
 		ContentManager();

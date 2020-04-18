@@ -12,6 +12,7 @@ tyr::GameContext::GameContext(Time* pTime, InputHandler* pInput, Rect* pGameSpac
 	, pGameSpace(pGameSpace)
 	, pPhysics(pPhysics)
 	, pSceneManager(pSceneManager)
+	, paused(false)
 {
 }
 

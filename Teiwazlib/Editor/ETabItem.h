@@ -4,6 +4,17 @@
 namespace  tyr
 {
 	class GameContext;
+
+	struct TabItem
+	{
+		explicit TabItem(const std::string& _path, const std::string& _name)
+			: path(_path), name(_name), isHovered(false) {}
+		std::string path;
+		std::string name;
+		bool isHovered;
+	};
+
+	
 	class ETabItem
 	{
 	public:

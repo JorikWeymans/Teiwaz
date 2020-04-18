@@ -7,6 +7,10 @@
 #include <functional>
 #include <sstream>
 #include "BinaryReader.h"
+#include <filesystem>
+#include <direct.h>
+#include "StringManipulation.h"
+#include "./Editor/ETabItem.h"
 
 #define ANIMATION_SUFFIX ".tyrAnimation"
 tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
@@ -151,5 +155,38 @@ tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id)
 	if (id >= m_pAnimations.size()) return nullptr;
 
 	return m_pAnimations[id];
+}
+
+tyr::Animation* tyr::ContentManager::GetAnimation(std::string& name)
+{
+	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), name);
+	if (found != m_pAnimations.end())
+		return *found;
+
+	return nullptr;
+	
+}
+
+std::vector<tyr::TabItem> tyr::ContentManager::GetAnimationsInFolder() const
+{
+	std::vector<tyr::TabItem> files;
+
+	std::string folder = m_DataFolder + m_AnimationFolder;
+#pragma warning (suppress : 6031)
+	_mkdir(folder.c_str()); //making dir if dir does not exist
+	for (auto& entry : std::filesystem::directory_iterator(folder))
+	{
+
+		std::string filename{ GetFileFromPath(entry.path().string()) };
+
+		if (DoesExtensionMatch(filename, ANIMATION_SUFFIX, false))
+		{
+			RemoveExtension(filename);
+			files.emplace_back(TabItem(entry.path().string(), filename));
+		}
+	}
+
+	return files;
+	
 }
 

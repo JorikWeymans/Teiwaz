@@ -2,21 +2,28 @@
 #include "EAnimation.h"
 #include "../Texture.h"
 #include "../ContentManager.h"
+#include "../Animation.h"
 #include <algorithm>
+#include <sstream>
+
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
+	, m_pAnimation(nullptr)
 {
 	m_Texture = CONTENT_MANAGER->LoadTexture("BBSprites/Sprites_Sliced_Combined_Scaled.png");
 
-	for(int i{0}; i < 4; ++i)
-	{
-		m_Rects.push_back(Rect(48.f * i, 0, 48, 48));
-	}
 	
+}
+
+void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
+{
+	m_pAnimation = pAnimation;
 }
 
 void tyr::EAnimation::RenderEditor()
 {
+	if (!m_pAnimation) return;
+
 	if (SDXL_ImGui_BeginPopupModal("AniEditor", nullptr, SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_HorizontalScrollbar | SDXL_ImGuiWindowFlags_AlwaysAutoResize))
 	{
 
@@ -103,15 +110,18 @@ void tyr::EAnimation::RenderEditor()
 		mousePos.x /= 48;
 		mousePos.y /= 48;
 		static char name[25];
-		SDXL_ImGui_InputText( "Animation name", name, 25);
+		SDXL_ImGui_Text(m_pAnimation->m_AnimationName.c_str());;
+		
+	
 
+		
 		static bool thisIsSelected = false;
 		
 		static int selectedItem = -1;
 
-		for(auto i{0}; i < static_cast<int>(m_Rects.size()); ++i)
+		for(auto i{0}; i < static_cast<int>(m_pAnimation->m_AniSprites.size()); ++i)
 		{
-			std::string theString = "Frame " + std::to_string(i) + " " + m_Rects[i].ToString();
+			std::string theString = "Frame " + std::to_string(i) + " " + m_pAnimation->m_AniSprites[i].ToString();
 			
 			if(SDXL_ImGui_Selectable(theString.c_str(), selectedItem == i, SDXL_ImGuiSelectableFlags::DontClosePopups))
 			{
@@ -119,11 +129,11 @@ void tyr::EAnimation::RenderEditor()
 				else
 				{
 					selectedItem = i;
-					m_i = static_cast<int>(m_Rects[i].pos.x / m_GridSize);
-					m_j = static_cast<int>(m_Rects[i].pos.y / m_GridSize);
+					m_i = static_cast<int>(m_pAnimation->m_AniSprites[i].pos.x / m_GridSize);
+					m_j = static_cast<int>(m_pAnimation->m_AniSprites[i].pos.y / m_GridSize);
 
-					m_y = static_cast<int>(m_Rects[i].width / m_GridSize);
-					m_z = static_cast<int>(m_Rects[i].height / m_GridSize);
+					m_y = static_cast<int>(m_pAnimation->m_AniSprites[i].width / m_GridSize);
+					m_z = static_cast<int>(m_pAnimation->m_AniSprites[i].height / m_GridSize);
 				}
 			
 			}
@@ -136,10 +146,10 @@ void tyr::EAnimation::RenderEditor()
 		{
 			if (selectedItem != -1)
 			{
-				m_Rects[selectedItem].pos = Vector2(m_i * m_GridSize, m_j * m_GridSize);
+				m_pAnimation->m_AniSprites[selectedItem].pos = Vector2(m_i * m_GridSize, m_j * m_GridSize);
 				
-				m_Rects[selectedItem].width = m_y * m_GridSize;
-				m_Rects[selectedItem].height = m_z * m_GridSize;
+				m_pAnimation->m_AniSprites[selectedItem].width = m_y * m_GridSize;
+				m_pAnimation->m_AniSprites[selectedItem].height = m_z * m_GridSize;
 			}
 			
 			
@@ -148,7 +158,7 @@ void tyr::EAnimation::RenderEditor()
 		if(SDXL_ImGui_Button("Add Frame")) 
 		{
 			
-			m_Rects.emplace_back(Rect(m_i* m_GridSize, m_j* m_GridSize, m_y* m_GridSize, m_z* m_GridSize));
+			//m_Rects.emplace_back(Rect(m_i* m_GridSize, m_j* m_GridSize, m_y* m_GridSize, m_z* m_GridSize));
 			
 		} 
 
@@ -156,7 +166,10 @@ void tyr::EAnimation::RenderEditor()
 		if (SDXL_ImGui_Button("Delete Frame"))
 		{
 			if(selectedItem )
-			m_Rects.erase(m_Rects.begin() /*+ selectedItem*/);
+			{
+				
+			}
+			//m_Rects.erase(m_Rects.begin() /*+ selectedItem*/);
 			
 		}
 		

@@ -13,16 +13,15 @@ tyr::EMenuBar::EMenuBar(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pTexture(nullptr)
 {
-	m_pEditorAni = new EAnimation(pContext);
 }
 
 tyr::EMenuBar::~EMenuBar()
 {
-	SAFE_DELETE(m_pEditorAni);
 }
 
 void tyr::EMenuBar::RenderEditor()
 {
+	
 	if (SDXL_ImGui_BeginMainMenuBar())
 	{
 		if (SDXL_ImGui_BeginMenu("File"))
@@ -40,18 +39,46 @@ void tyr::EMenuBar::RenderEditor()
 			SDXL_ImGui_EndMenu();
 		}
 
-		if(SDXL_ImGui_BeginMenu("Animation##MainMenu"))
+
+		//if(SDXL_ImGui_BeginMenu("Animation##MainMenu"))
+		//{
+		//	
+		//	if(SDXL_ImGui_Button("Open Ani Editor"))
+		//	{
+		//		SDXL_ImGui_OpenPopup("AniEditor");
+		//	}
+		//	m_pEditorAni->RenderEditor();
+		//	
+		//
+		//	SDXL_ImGui_EndMenu();
+		//}
+		//
+
+	
+
+		
+		if(m_pContext->paused)
 		{
-			
-			if(SDXL_ImGui_Button("Open Ani Editor"))
+			if (SDXL_ImGui_Selectable("PLAY"))
 			{
-				SDXL_ImGui_OpenPopup("AniEditor");
+				m_pContext->paused = !m_pContext->paused;
 			}
-
-			m_pEditorAni->RenderEditor();
-
-			SDXL_ImGui_EndMenu();
 		}
+		else
+		{
+			if (SDXL_ImGui_Selectable("PAUSE"))
+			{
+				m_pContext->paused = !m_pContext->paused;
+			}
+		}
+
+		
+		
+
+
+		//if(SDXL_ImGui_IsItemClicked())
+		
+		
 		SDXL_ImGui_EndMainMenuBar();
 	}
 }

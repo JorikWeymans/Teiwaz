@@ -4,20 +4,13 @@
 namespace  tyr
 {
 	class GameContext;
+	class EAnimation;
 	class ETabAnimations final : public ETabItem
 	{
-	private:
-		struct AnimationItem
-		{
-			explicit AnimationItem(const std::string& _path, const std::string& _name)
-				: path(_path), name(_name), isHovered(false) {}
-			std::string path;
-			std::string name;
-			bool isHovered;
-		};
+
 	public:
 		explicit ETabAnimations(GameContext* pContext);
-		virtual ~ETabAnimations() = default;
+		virtual ~ETabAnimations();
 
 	protected:
 
@@ -26,8 +19,10 @@ namespace  tyr
 
 	private:
 		std::string m_SceneFolder;
-		std::vector<AnimationItem> m_Files;
+		std::vector<TabItem> m_Files;
 		TextureID m_Texture;
+
+		EAnimation* m_pEditorAni;
 	public:
 		ETabAnimations(const ETabAnimations&) = delete;
 		ETabAnimations(ETabAnimations&&) = delete;

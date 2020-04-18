@@ -9,28 +9,22 @@
 #include "../Texture.h"
 #include "../SceneManager.h"
 #include "../GameContext.h"
-
+#include "EAnimation.h"
 #include "ETabAnimations.h"
 
 tyr::ETabAnimations::ETabAnimations(GameContext* pContext)
 	: tyr::ETabItem("Animations", pContext)
 	, m_SceneFolder(ContentManager::GetInstance()->GetDataFolder() + "Animations/")
 {
-
-#pragma warning (suppress : 6031)
-	_mkdir(m_SceneFolder.c_str()); //making dir if dir does not exist
-	for (auto& entry : std::filesystem::directory_iterator(m_SceneFolder))
-	{
-
-		std::string filename{ GetFileFromPath(entry.path().string()) };
-
-		if (DoesExtensionMatch(filename, "tyrAnimation"))
-		{
-			RemoveExtension(filename);
-			m_Files.emplace_back(AnimationItem(entry.path().string(), filename));
-		}
-	}
+	m_Files = CONTENT_MANAGER->GetAnimationsInFolder();
 	m_Texture = CONTENT_MANAGER->LoadTexture("Editor/AnimationIcon.png");
+
+	m_pEditorAni = new EAnimation(pContext);
+}
+
+tyr::ETabAnimations::~ETabAnimations()
+{
+	SAFE_DELETE(m_pEditorAni);
 }
 
 void tyr::ETabAnimations::PreRender()
@@ -39,6 +33,7 @@ void tyr::ETabAnimations::PreRender()
 
 void tyr::ETabAnimations::InternalRenderEditor()
 {
+
 	for (auto& s : m_Files)
 	{
 
@@ -54,11 +49,21 @@ void tyr::ETabAnimations::InternalRenderEditor()
 		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
 		{
 			SDXL_ImGui_ConsoleLog("count or something");
-			m_pContext->pSceneManager->Flush();
+
+
+			m_pEditorAni->SetCurrentAnimation(CONTENT_MANAGER->GetAnimation(s.name));
+			
+			SDXL_ImGui_OpenPopup("AniEditor");
+
+			
+
+			
 		}
 
 		SDXL_ImGui_SameLine();
 	}
+
+	m_pEditorAni->RenderEditor();
 }
 
 #endif

@@ -7,15 +7,6 @@ namespace  tyr
 	class GameContext;
 	class ETabScenes final : public ETabItem
 	{
-	private:
-		struct SceneItem
-		{
-			explicit SceneItem(const std::string& _path, const std::string& _name)
-				: path(_path), name(_name), isHovered(false) {}
-			std::string path;
-			std::string name;
-			bool isHovered;
-		};
 	public:
 		explicit ETabScenes(GameContext* pContext);
 		virtual ~ETabScenes() = default;
@@ -27,7 +18,7 @@ namespace  tyr
 
 	private:
 		std::string m_SceneFolder;
-		std::vector<SceneItem> m_Files;
+		std::vector<TabItem> m_Files;
 		TextureID m_Texture;
 	public:
 		ETabScenes(const ETabScenes&) = delete;

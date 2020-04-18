@@ -65,13 +65,14 @@ void tyr::SceneManager::SetCurrentScene(const std::string& SceneName)
 
 void tyr::SceneManager::Update()
 {
-	
-	m_pCurrentScene->Update();
+	if(!m_pContext->paused)
+		m_pCurrentScene->Update();
 }
 
 void tyr::SceneManager::FixedUpdate()
 {
-	m_pCurrentScene->FixedUpdate();
+	if (!m_pContext->paused)
+		m_pCurrentScene->FixedUpdate();
 }
 
 void tyr::SceneManager::FlushCurrentScene()

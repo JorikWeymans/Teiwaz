@@ -7,6 +7,7 @@
 namespace tyr
 {
 	class BinaryWriter;
+	class EAnimation;
 	typedef std::map<unsigned int, Rect> SpritePositions;
 	
 	class Animation final
@@ -26,6 +27,7 @@ namespace tyr
 	private:
 		friend bool operator==(Animation* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 
+		friend EAnimation; //TODO: try to remove friend
 
 		std::string m_AnimationName;
 		

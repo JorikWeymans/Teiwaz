@@ -17,6 +17,7 @@ namespace tyr
 		Rect* pGameSpace;
 		Physics* pPhysics;
 		SceneManager* const pSceneManager; //weak ptr
+		bool paused;
 	public:
 		GameContext(const GameContext&) = delete;
 		GameContext(GameContext&&) = delete;

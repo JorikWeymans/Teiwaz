@@ -27,7 +27,7 @@ tyr::ETabScenes::ETabScenes(GameContext* pContext)
 		if (DoesExtensionMatch(filename, "tyrScene"))
 		{
 			RemoveExtension(filename);
-			m_Files.emplace_back(SceneItem(entry.path().string(), filename));
+			m_Files.emplace_back(TabItem(entry.path().string(), filename));
 		}
 	}
 	m_Texture = CONTENT_MANAGER->LoadTexture("Editor/TyrIcon.png");
