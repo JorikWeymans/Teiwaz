@@ -26,7 +26,6 @@ void tyr::AnimatorComp::Initialize()
 
 	m_pAnimator = new Animator();
 
-	//																	{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
 	
 	m_pAnimator->AddAnimation(CONTENT_MANAGER->LoadAnimation("Bub_Idle"));
 	m_pAnimator->AddAnimation(CONTENT_MANAGER->LoadAnimation("Bub_Walking"));
