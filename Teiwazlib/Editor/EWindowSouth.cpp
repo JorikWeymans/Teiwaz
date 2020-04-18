@@ -8,11 +8,13 @@
 #include "../Vectors.h"
 #include "ETabItem.h"
 #include "ETabScenes.h"
+#include "ETabAnimations.h"
 tyr::EWindowSouth::EWindowSouth(GameContext* pContext)
 	: tyr::EWindow("SouthWindow", pContext)
 {
 	m_Flags |= SDXL_ImGuiWindowFlags_NoDecoration;
 	m_pTabItems.emplace_back(new ETabScenes(pContext));
+	m_pTabItems.emplace_back(new ETabAnimations(pContext));
 }
 
 tyr::EWindowSouth::~EWindowSouth()

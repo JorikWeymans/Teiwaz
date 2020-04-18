@@ -184,6 +184,9 @@
     <ClInclude Include="TyrTypedefs.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Editor\ETabAnimations.h">
+      <Filter>Editor\Windows\WindowSouth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -308,6 +311,9 @@
     </ClCompile>
     <ClCompile Include="Editor\EAnimation.cpp">
       <Filter>Editor\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\ETabAnimations.cpp">
+      <Filter>Editor\Windows\WindowSouth</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

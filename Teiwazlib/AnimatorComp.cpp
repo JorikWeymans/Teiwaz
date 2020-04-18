@@ -26,47 +26,11 @@ void tyr::AnimatorComp::Initialize()
 
 	m_pAnimator = new Animator();
 
-
-
-	//When the animation files get corrupt
-	//auto idleAni = new tyr::Animation("Bub_Idle", 1.f, tyr::SpritePositions{ {0, tyr::Rect(0.f ,0.f,48,48)} });
-	//
-	//
-	//auto walkAni = new tyr::Animation("Bub_Walking",.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f ,0.f,48,48)},
-	//																		{1, tyr::Rect(48.f,0.f,48,48)},
-	//																		{2, tyr::Rect(48.f * 2,0.f,48,48)} ,
-	//																		{3, tyr::Rect(48.f * 3,0.f,48,48)} });
-	//auto eatAni = new tyr::Animation("Bub_Eating",.25f, tyr::SpritePositions{ {0, tyr::Rect(0.f + 4 * 48.f ,0.f,48,48)},
 	//																	{1, tyr::Rect(48.f + 4 * 48.f,0.f,48,48)},
-	//																	{2, tyr::Rect(48.f * 2 + 4 * 48.f,0.f,48,48)} ,
-	//																	{3, tyr::Rect(48.f * 3 + 4 * 48.f,0.f,48,48)} });
-	//
-	//
-	//eatAni->Save();
-	//idleAni->Save();
-	//walkAni->Save();
-	//
-	//
-	//
-
-	AnimationID idleAniID = CONTENT_MANAGER->LoadAnimation("Bub_Idle");
-	AnimationID walkAniID = CONTENT_MANAGER->LoadAnimation("Bub_Walking");
-	AnimationID eatAniID  = CONTENT_MANAGER->LoadAnimation("Bub_Eating");
-	//UNREFERENCED_PARAMETER(idleAniID);
 	
-	//auto idleAni = new tyr::Animation("./Data/Animations/Bub_Idle.tyrAnimation");
-	//auto walkAni = new tyr::Animation("./Data/Animations/Bub_Walking.tyrAnimation");
-	//auto eatAni  = new tyr::Animation("./Data/Animations/Bub_Eating.tyrAnimation");
-	
-
-	
-	m_pAnimator->AddAnimation(idleAniID);
-	m_pAnimator->AddAnimation(walkAniID);
-	m_pAnimator->AddAnimation(eatAniID);
-
-
-
-
+	m_pAnimator->AddAnimation(CONTENT_MANAGER->LoadAnimation("Bub_Idle"));
+	m_pAnimator->AddAnimation(CONTENT_MANAGER->LoadAnimation("Bub_Walking"));
+	m_pAnimator->AddAnimation(CONTENT_MANAGER->LoadAnimation("Bub_Eating"));
 
 	
 	m_pAnimator->SetAnimation("Bub_Idle");
