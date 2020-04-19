@@ -12,6 +12,8 @@ namespace tyr
 
 		void Reset();
 		void Reset(float newElapseTime);
+		void SetMax(float newElapseTime);
+		
 		bool HasElapsed() const;
 		float GetMax() const { return m_Max; }
 		

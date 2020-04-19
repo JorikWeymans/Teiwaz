@@ -11,7 +11,7 @@ namespace tyr
 	{
 	public:
 		explicit EAnimation(GameContext* pContext);
-		~EAnimation() = default;
+		~EAnimation();
 
 		void SetCurrentAnimation(Animation* pAnimation);
 		void RenderEditor();
@@ -27,8 +27,9 @@ namespace tyr
 		int m_i = 0, m_j = 0;
 		int m_y = 1, m_z = 1;
 		float m_GridSize = 48.f;
-		SpritePositions m_tempPos;
-
+		Animation* m_pTemp;
+		
+		bool m_ShowAnimation;
 		bool m_WindowIsOpen;
 		
 	public:

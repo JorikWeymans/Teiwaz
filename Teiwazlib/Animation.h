@@ -27,13 +27,15 @@ namespace tyr
 		friend bool operator==(Animation* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 
 		friend EAnimation; //TODO: try to remove friend
+		Animation(float tpf);
 
+		
 		std::string m_AnimationName;
 		
 		Elapser m_AniElapser;
 		unsigned int m_CurrentAnimation;
 		SpritePositions m_AniSprites;
-	
+
 	public:
 		Animation(const Animation&) = delete;
 		Animation(Animation&&) = delete;

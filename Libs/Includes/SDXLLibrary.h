@@ -439,6 +439,7 @@ SDXLLibrary_API bool SDXL_ImGui_SmallButton(const char* label);															//
 SDXLLibrary_API bool SDXL_ImGui_InvisibleButton(const char* str_id, const SDXL::Float2& size);        // button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)
 SDXLLibrary_API bool SDXL_ImGui_ArrowButton(const char* str_id, SDXL_ImGuiDir dir);                  // square button with an arrow shape
 SDXLLibrary_API void SDXL_ImGui_Image(SDXL::SDXLImage* pImage);
+SDXLLibrary_API void SDXL_ImGui_Image(SDXL::SDXLImage* pImage, SDXL::SDXLRect drawRect, float scale = 1.f);
 SDXLLibrary_API void SDXL_ImGui_Image(SDXL::SDXLImage* pImage, const SDXL::SDXLVec2& size, const SDXL::Float2& uv0 = SDXL::Float2(0, 0), const SDXL::Float2& uv1 = SDXL::Float2(1, 1), const SDXL::Float4& tint_col = SDXL::Float4{ 1.f, 1.f, 1.f, 1.f }, const SDXL::Float4& border_col = SDXL::Float4{ 0.f, 0.f, 0.f, 0.f });
 SDXLLibrary_API bool SDXL_ImGui_ImageButton(SDXL::SDXLImage* pImage, const SDXL::SDXLVec2& size, const SDXL::Float2& uv0 = SDXL::Float2(0, 0), const SDXL::Float2& uv1 = SDXL::Float2(1, 1), int frame_padding = -1, const SDXL::Float4& bg_col = SDXL::Float4{ 0.f, 0.f, 0.f, 0.f }, const SDXL::Float4& tint_col = SDXL::Float4{ 1.f, 1.f, 1.f, 1.f });    // <0 frame_padding uses default frame padding settings. 0 for no padding
 SDXLLibrary_API bool SDXL_ImGui_Checkbox(const char* label, bool* v);
@@ -544,6 +545,14 @@ SDXLLibrary_API bool SDXL_ImGui_BeginMenu(const char* label, bool enabled = true
 SDXLLibrary_API void SDXL_ImGui_EndMenu();                                                          // only call EndMenu() if BeginMenu() returns true!
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut = NULL, bool selected = false, bool enabled = true);  // return true when activated. shortcuts are displayed for convenience but not processed by ImGui at the moment
 SDXLLibrary_API bool SDXL_ImGui_MenuItem(const char* label, const char* shortcut, bool* p_selected, bool enabled = true);              // return true when activated + toggle (*p_selected) if p_selected != NULL
+
+// **---------------**
+// * --- ToolTips -- *
+// **---------------**
+SDXLLibrary_API void SDXL_ImGui_BeginTooltip();                                                     // begin/append a tooltip window. to create full-featured tooltip (with any kind of items).
+SDXLLibrary_API void SDXL_ImGui_EndTooltip();
+SDXLLibrary_API void SDXL_ImGui_SetTooltip(const char* fmt, ...);                     // set a text-only tooltip, typically use with ImGui::IsItemHovered(). override any previous call to SetTooltip().
+
 
 // **---------------**
 // * ---- Popups --- *

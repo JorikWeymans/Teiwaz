@@ -40,6 +40,15 @@ void tyr::Elapser::Reset(float newElapseTime)
 	Reset();
 }
 
+void tyr::Elapser::SetMax(float newElapseTime)
+{
+	if (newElapseTime >= m_Current)
+		Reset(newElapseTime);
+	else
+		m_Max = newElapseTime;
+	
+}
+
 bool tyr::Elapser::HasElapsed() const
 {
 	return m_HasElapsed;

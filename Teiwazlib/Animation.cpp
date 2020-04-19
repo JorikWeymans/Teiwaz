@@ -61,9 +61,8 @@ void tyr::Animation::Update(float elapsed)
 	}
 
 }
-
 const tyr::Rect& tyr::Animation::GetCurrentAnimation() const
-{
+{	
 	return m_AniSprites.at(m_CurrentAnimation);
 }
 
@@ -98,6 +97,14 @@ void tyr::Animation::Save()
 
 	
 
+	
+}
+
+tyr::Animation::Animation(float tpf)
+	: m_AnimationName("NaN")
+	, m_AniElapser(tpf)
+	, m_CurrentAnimation(0)
+{
 	
 }
 
