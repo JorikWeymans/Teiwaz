@@ -16,6 +16,7 @@ tyr::Animation::Animation(const std::string& animationName, float tpf,SpritePosi
 }
 
 tyr::Animation::Animation(const std::string& path)
+	: m_CurrentAnimation(0)
 {
 	UNREFERENCED_PARAMETER(path);
 	BinaryReader reader(path);
@@ -34,10 +35,12 @@ tyr::Animation::Animation(const std::string& path)
 	m_AniElapser.Reset(reader.Read<float>());
 
 	const UINT elements = reader.Read<UINT>();
+
+	m_AniSprites.resize(elements);
 	
 	for(UINT i{0}; i < elements; ++i)
 	{
-		m_AniSprites.insert({ i, Rect(reader.Read<Rect_POD>()) });
+		m_AniSprites[i] = Rect(reader.Read<Rect_POD>());
 	}
 
 	
@@ -89,7 +92,7 @@ void tyr::Animation::Save()
 	writer.Write(m_AnimationName);
 	writer.Write(m_AniElapser.GetMax());
 	writer.Write(static_cast<UINT>(m_AniSprites.size()));
-	std::for_each(m_AniSprites.begin(), m_AniSprites.end(), [&writer](const auto& ani) { writer.Write(ani.second.ToPOD()); });
+	std::for_each(m_AniSprites.begin(), m_AniSprites.end(), [&writer](const auto& ani) { writer.Write(ani.ToPOD()); });
 	
 
 

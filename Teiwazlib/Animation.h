@@ -2,13 +2,12 @@
 #include "Elapser.h"
 #include <vector>
 #include "Vectors.h"
-#include <map>
 
 namespace tyr
 {
 	class BinaryWriter;
 	class EAnimation;
-	typedef std::map<unsigned int, Rect> SpritePositions;
+	typedef std::vector<Rect> SpritePositions;
 	
 	class Animation final
 	{

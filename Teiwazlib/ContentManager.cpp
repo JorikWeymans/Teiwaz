@@ -125,9 +125,10 @@ AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 
 	SpritePositions positions;
 
+	positions.resize(elements);
 	for (UINT i{ 0 }; i < elements; ++i)
 	{
-		positions.insert({ i, Rect(reader.Read<Rect_POD>()) });
+		positions[i] = Rect(reader.Read<Rect_POD>());
 	}
 	m_pAnimations.emplace_back(new Animation(animationName, tpf, std::move(positions)));
 
