@@ -86,7 +86,7 @@ void tyr::TransformComp::SetPositionY(float y, bool convert)
 #ifdef USE_IM_GUI
 void tyr::TransformComp::RenderEditor()
 {
-	SDXL_ImGui_Begin("Inspector");
+	if(!SDXL_ImGui_Begin("Inspector")) return;
 
 	const std::string strUniqueId = std::to_string(m_UniqueId);
 	std::string name = "Tansform##" + strUniqueId;

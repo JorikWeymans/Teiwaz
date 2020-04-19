@@ -81,7 +81,7 @@ void tyr::TextureComp::SetSourceRect(const Rect& rect)
 
 void tyr::TextureComp::RenderEditor()
 {
-	SDXL_ImGui_Begin("Inspector");
+	if (!SDXL_ImGui_Begin("Inspector")) return;
 
 	std::string name = "Texture Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))

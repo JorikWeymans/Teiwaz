@@ -127,12 +127,14 @@ SDXLLibrary_API HWND SDXL_GetWindowHandle();
 typedef unsigned int SDXL_ImGUiID;
 typedef int SDXL_ImGuiWindowFlags;
 typedef int SDXL_ImGuiTreeNodeFlags;
+typedef int SDXL_ImGuiSelectableFlags;
 typedef int SDXL_ImGuiCond;
 typedef int SDXL_ImGuiID;
 typedef int SDXL_ImGuiTabBarFlags;
 typedef int SDXL_ImGuiHoveredFlags;
 typedef int SDXL_ImGuiMouseButton;
 typedef int SDXL_ImGuiMouseCursor;
+
 
 enum class SDXL_ImGuiDir : int
 {
@@ -144,14 +146,14 @@ enum class SDXL_ImGuiDir : int
 	ImGuiDir_COUNT
 };
 
-enum class SDXL_ImGuiSelectableFlags : int
+enum SDXL_ImGuiSelectableFlags_ : int
 {
-	None = 0,
-	DontClosePopups = 1 << 0,   // Clicking this don't close parent popup window
-	SpanAllColumns = 1 << 1,   // Selectable frame can span all columns (text will still fit in current column)
-	AllowDoubleClick = 1 << 2,   // Generate press events on double clicks too
-	Disabled = 1 << 3,   // Cannot be selected, display grayed out text
-	AllowItemOverlap = 1 << 4    // (WIP) Hit testing to allow subsequent widgets to overlap this one
+	SDXL_ImGuiSelectableFlags_None = 0,
+	SDXL_ImGuiSelectableFlags_DontClosePopups = 1 << 0,   // Clicking this don't close parent popup window
+	SDXL_ImGuiSelectableFlags_SpanAllColumns = 1 << 1,   // Selectable frame can span all columns (text will still fit in current column)
+	SDXL_ImGuiSelectableFlags_AllowDoubleClick = 1 << 2,   // Generate press events on double clicks too
+	SDXL_ImGuiSelectableFlags_Disabled = 1 << 3,   // Cannot be selected, display grayed out text
+	SDXL_ImGuiSelectableFlags_AllowItemOverlap = 1 << 4    // (WIP) Hit testing to allow subsequent widgets to overlap this one
 };
 
 enum SDXL_ImGuiWindowFlags_ : int
@@ -302,7 +304,8 @@ enum SDXL_ImGuiMouseCursor_
 // * ----- Base ---- *
 // **---------------**
 SDXLLibrary_API void SDXL_ImGui_NewFrame();
-SDXLLibrary_API void SDXL_ImGui_Begin(const char* name, bool* p_open = nullptr, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API bool SDXL_ImGui_Begin(const char* name, bool* p_open = nullptr, SDXL_ImGuiWindowFlags flags = 0);
+SDXLLibrary_API bool SDXL_ImGui_BeginAuto(const char* name, bool* p_open, SDXL_ImGuiWindowFlags flags = 0);
 SDXLLibrary_API void SDXL_ImGui_End();
 
 // **---------------**
@@ -512,8 +515,8 @@ SDXLLibrary_API bool SDXL_ImGui_CollapsingHeader(const char* label, SDXL_ImGuiTr
 // **---------------**
 // * - Selectable -- *
 // **---------------**
-SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool selected = false, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::Float2 & size = SDXL::Float2(0, 0));  // "bool selected" carry the selection state (read-only). Selectable() is clicked is returns true so you can modify your selection state. size.x==0.0: use remaining width, size.x>0.0: specify width. size.y==0.0: use label height, size.y>0.0: specify height
-SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, SDXL_ImGuiSelectableFlags flags = SDXL_ImGuiSelectableFlags::None, const SDXL::Float2& size = SDXL::Float2(0, 0));       // "bool* p_selected" point to the selection state (read-write), as a convenient helper.
+SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool selected = false, SDXL_ImGuiSelectableFlags flags = 0, const SDXL::Float2 & size = SDXL::Float2(0, 0));  // "bool selected" carry the selection state (read-only). Selectable() is clicked is returns true so you can modify your selection state. size.x==0.0: use remaining width, size.x>0.0: specify width. size.y==0.0: use label height, size.y>0.0: specify height
+SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, SDXL_ImGuiSelectableFlags flags = 0, const SDXL::Float2& size = SDXL::Float2(0, 0));       // "bool* p_selected" point to the selection state (read-write), as a convenient helper.
 
 
 

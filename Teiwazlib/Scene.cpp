@@ -40,7 +40,7 @@ void tyr::Scene::Debug()
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Debug(); });
 
-	SDXL_ImGui_Begin(m_Name.c_str(), nullptr);
+	if (!SDXL_ImGui_Begin(m_Name.c_str(), nullptr)) return;
 	
 	static int selected = -1;
 	
