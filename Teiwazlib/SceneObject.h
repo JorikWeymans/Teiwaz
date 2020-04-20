@@ -15,13 +15,15 @@ namespace tyr
 	public:
 		explicit SceneObject(const Transform& transform, const std::string& name = "new GameObject" + std::to_string(counter));
 		explicit SceneObject(TransformComp* pTransform, const std::string& name = "new GameObject" + std::to_string(counter));
+		explicit SceneObject();
+		
 		~SceneObject();
 		
 		void Update();
 		void FixedUpdate();
 #ifdef USE_IM_GUI
 		void Debug();
-		void RenderEditor();
+		void RenderEditor(bool showChildren);
 		void Save(BinaryWriter& writer);
 #endif
 		void Render() const;

@@ -24,6 +24,11 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	counter++;
 }
 
+tyr::SceneObject::SceneObject()
+	: SceneObject(Transform(Vector2()))
+{
+}
+
 tyr::SceneObject::~SceneObject()
 {
 	SAFE_DELETE(m_pTransform);
@@ -79,10 +84,10 @@ void tyr::SceneObject::Debug()
 		});
 }
 
-void tyr::SceneObject::RenderEditor()
+void tyr::SceneObject::RenderEditor(bool showChildren)
 {
 	
-	if(!m_pChilds.empty())
+	if(!m_pChilds.empty() && showChildren)
 	{
 		SDXL_ImGui_Indent();
 
@@ -99,7 +104,7 @@ void tyr::SceneObject::RenderEditor()
 
 		if (m_SelectedItem != -1)
 		{
-			m_pChilds.at(m_SelectedItem)->RenderEditor();
+			m_pChilds.at(m_SelectedItem)->RenderEditor(showChildren);
 		}
 
 		SDXL_ImGui_Unindent();

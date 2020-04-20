@@ -87,10 +87,12 @@ void tyr::SceneManager::RenderEditor()
 
 	const SDXL_ImGuiWindowFlags windowFlags = SDXL_ImGuiWindowFlags_NoResize | SDXL_ImGuiWindowFlags_NoCollapse | SDXL_ImGuiWindowFlags_NoMove;
 
-	m_pEditorUI->RenderEditor();
-
 	
-	m_pCurrentScene->Debug();
+
+	m_pEditorUI->RenderEditor();
+	m_pCurrentScene->RenderEditor();
+
+
 
 	if(m_WantFlush)
 	{

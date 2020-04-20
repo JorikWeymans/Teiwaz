@@ -4,7 +4,6 @@
 #include <algorithm>
 #include "BinaryWriter.h"
 #include "BinStructureHelpers.h"
-
 tyr::Scene::Scene(const std::string& name)
 	: m_pContext(nullptr)
 	, m_Name(name)
@@ -36,30 +35,36 @@ void tyr::Scene::FixedUpdate()
 }
 
 #ifdef USE_IM_GUI
-void tyr::Scene::Debug()
+void tyr::Scene::RenderEditor()
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Debug(); });
 
 	if (!SDXL_ImGui_Begin(m_Name.c_str(), nullptr)) return;
-	
-	static int selected = -1;
+
 	
 	for(int i{0}; i < static_cast<int>(m_pSceneObjects.size()); i++)
 	{
-		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetName().c_str(), selected == i))
+		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetName().c_str(), m_SelectedItem == i, SDXL_ImGuiSelectableFlags_AllowDoubleClick))
 		{
-			selected = i;
-			m_pSceneObjects.at(selected)->m_SelectedItem = -1;
-			
+			m_SelectedItem = i;
+			m_pSceneObjects.at(m_SelectedItem)->m_SelectedItem = -1;
+			if(SDXL_ImGui_IsItemHovered() && SDXL_ImGui_IsMouseDoubleClicked(0))
+			{
+				m_ItemDoubleClicked = !m_ItemDoubleClicked;
+			}
 		}
-		if (i == selected)
+		if (i == m_SelectedItem)
 		{
-			m_pSceneObjects.at(selected)->RenderEditor();
+			m_pSceneObjects.at(m_SelectedItem)->RenderEditor(m_ItemDoubleClicked);
 		}
 	}
 
-
-		
+	SDXL_ImGui_Separator();
+	
+	if(SDXL_ImGui_Button("Add SceneObject"))
+	{
+		AddSceneObject(new SceneObject());
+	}
 	
 	SDXL_ImGui_End();
 }
