@@ -52,8 +52,6 @@ void tyr::RigidBodyComp::Debug()
 
 void tyr::RigidBodyComp::RenderEditor()
 {
-	if (!SDXL_ImGui_Begin("Inspector")) return;
-
 	std::string name = "RigidBody Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
@@ -73,7 +71,7 @@ void tyr::RigidBodyComp::RenderEditor()
 
 		SDXL_ImGui_PopItemWidth();
 	}
-	SDXL_ImGui_End();
+
 }
 
 void tyr::RigidBodyComp::Save(BinaryWriter& writer)

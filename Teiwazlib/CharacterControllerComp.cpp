@@ -136,29 +136,26 @@ void tyr::CharacterControllerComp::Debug()
 
 void tyr::CharacterControllerComp::RenderEditor()
 {
-	if (SDXL_ImGui_Begin("Inspector"))
+	std::string name = "CharacterController Component##" + std::to_string(m_UniqueId);
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		std::string name = "CharacterController Component##" + std::to_string(m_UniqueId);
-		if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			SDXL_ImGui_PushItemWidth(100.f);
+		SDXL_ImGui_PushItemWidth(100.f);
 
-			//Raycast
-			SDXL_ImGui_Text("Offset:  \t");
-			SDXL_ImGui_SameLine();
-			name = "##Offset" + std::to_string(m_UniqueId);
-			SDXL_ImGui_DragFloat(name.c_str(), &m_RayCastOffset, 1, 0, 48);
-			//
-			//SDXL_ImGui_Text("Height: \t");
-			//SDXL_ImGui_SameLine();
-			//name = "##ColW" + std::to_string(m_UniqueId);
-			//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
+		//Raycast
+		SDXL_ImGui_Text("Offset:  \t");
+		SDXL_ImGui_SameLine();
+		name = "##Offset" + std::to_string(m_UniqueId);
+		SDXL_ImGui_DragFloat(name.c_str(), &m_RayCastOffset, 1, 0, 48);
+		//
+		//SDXL_ImGui_Text("Height: \t");
+		//SDXL_ImGui_SameLine();
+		//name = "##ColW" + std::to_string(m_UniqueId);
+		//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
 
 
-			SDXL_ImGui_PopItemWidth();
-		}
-		SDXL_ImGui_End();
+		SDXL_ImGui_PopItemWidth();
 	}
+
 }
 
 void tyr::CharacterControllerComp::Save(BinaryWriter& writer)

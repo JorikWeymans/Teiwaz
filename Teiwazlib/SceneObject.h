@@ -25,6 +25,7 @@ namespace tyr
 		void Debug();
 		void RenderEditor(bool showChildren);
 		void Save(BinaryWriter& writer);
+		void AddComponentButton();
 #endif
 		void Render() const;
 

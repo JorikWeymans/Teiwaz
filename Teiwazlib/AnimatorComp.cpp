@@ -82,7 +82,7 @@ void tyr::AnimatorComp::Debug()
 
 void tyr::AnimatorComp::RenderEditor()
 {
-	if(SDXL_ImGui_Begin("Inspector"))
+	//if(SDXL_ImGui_Begin("Inspector"))
 	{
 		std::string name = "Animator Component##" + std::to_string(m_UniqueId);
 		if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
@@ -100,7 +100,7 @@ void tyr::AnimatorComp::RenderEditor()
 
 			SDXL_ImGui_PopItemWidth();
 		}
-		SDXL_ImGui_End();
+		//SDXL_ImGui_End();
 	}
 }
 

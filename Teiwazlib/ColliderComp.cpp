@@ -44,8 +44,6 @@ void tyr::ColliderComp::Debug()
 
 void tyr::ColliderComp::RenderEditor()
 {
-	if (!SDXL_ImGui_Begin("Inspector")) return;
-
 	std::string name = "Collider Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
@@ -65,9 +63,6 @@ void tyr::ColliderComp::RenderEditor()
 
 		SDXL_ImGui_PopItemWidth();
 	}
-	SDXL_ImGui_End();
-
-
 }
 
 void tyr::ColliderComp::Save(BinaryWriter& writer)

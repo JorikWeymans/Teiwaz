@@ -126,6 +126,7 @@ SDXLLibrary_API HWND SDXL_GetWindowHandle();
 //
 typedef unsigned int SDXL_ImGUiID;
 typedef int SDXL_ImGuiWindowFlags;
+typedef int SDXL_ImGuiComboFlags;
 typedef int SDXL_ImGuiTreeNodeFlags;
 typedef int SDXL_ImGuiSelectableFlags;
 typedef int SDXL_ImGuiCond;
@@ -134,6 +135,7 @@ typedef int SDXL_ImGuiTabBarFlags;
 typedef int SDXL_ImGuiHoveredFlags;
 typedef int SDXL_ImGuiMouseButton;
 typedef int SDXL_ImGuiMouseCursor;
+
 
 
 enum class SDXL_ImGuiDir : int
@@ -191,6 +193,19 @@ enum SDXL_ImGuiWindowFlags_ : int
 	SDXL_ImGuiWindowFlags_Modal = 1 << 27,  // Don't use! For internal use by BeginPopupModal()
 	SDXL_ImGuiWindowFlags_ChildMenu = 1 << 28   // Don't use! For internal use by BeginMenu()
 };
+enum SDXL_ImGuiComboFlags_
+{
+	SDXL_ImGuiComboFlags_None = 0,
+	SDXL_ImGuiComboFlags_PopupAlignLeft = 1 << 0,   // Align the popup toward the left by default
+	SDXL_ImGuiComboFlags_HeightSmall = 1 << 1,   // Max ~4 items visible. Tip: If you want your combo popup to be a specific size you can use SetNextWindowSizeConstraints() prior to calling BeginCombo()
+	SDXL_ImGuiComboFlags_HeightRegular = 1 << 2,   // Max ~8 items visible (default)
+	SDXL_ImGuiComboFlags_HeightLarge = 1 << 3,   // Max ~20 items visible
+	SDXL_ImGuiComboFlags_HeightLargest = 1 << 4,   // As many fitting items as possible
+	SDXL_ImGuiComboFlags_NoArrowButton = 1 << 5,   // Display on the preview box without the square arrow button
+	SDXL_ImGuiComboFlags_NoPreview = 1 << 6,   // Display only a square arrow button
+	SDXL_ImGuiComboFlags_HeightMask_ = SDXL_ImGuiComboFlags_HeightSmall | SDXL_ImGuiComboFlags_HeightRegular | SDXL_ImGuiComboFlags_HeightLarge | SDXL_ImGuiComboFlags_HeightLargest
+};
+
 enum SDXL_ImGuiTreeNodeFlags_
 {
 	SDXL_ImGuiTreeNodeFlags_None = 0,
@@ -449,6 +464,16 @@ SDXLLibrary_API bool SDXL_ImGui_RadioButton(const char* label, int* v, int v_but
 SDXLLibrary_API void SDXL_ImGui_ProgressBar(float fraction, const SDXL::Float2& size_arg = SDXL::Float2(-1, 0), const char* overlay = nullptr);
 SDXLLibrary_API void SDXL_ImGui_Bullet();                                                       // draw a small circle and keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses
 
+// **---------------**
+// * ---- Combo ---- *
+// **---------------**
+// The BeginCombo()/EndCombo() api allows you to manage your contents and selection state however you want it, by creating e.g. Selectable() items.
+// The old Combo() api are helpers over BeginCombo()/EndCombo() which are kept available for convenience purpose.
+SDXLLibrary_API bool SDXL_ImGui_BeginCombo(const char* label, const char* preview_value, SDXL_ImGuiComboFlags flags = 0);
+SDXLLibrary_API void SDXL_ImGui_EndCombo(); // only call EndCombo() if BeginCombo() returns true!
+SDXLLibrary_API bool SDXL_ImGui_Combo(const char* label, int* current_item, const char* const items[], int items_count, int popup_max_height_in_items = -1);
+SDXLLibrary_API bool SDXL_ImGui_Combo(const char* label, int* current_item, const char* items_separated_by_zeros, int popup_max_height_in_items = -1);      // Separate items with \0 within a string, end item-list with \0\0. e.g. "One\0Two\0Three\0"
+SDXLLibrary_API bool SDXL_ImGui_Combo(const char* label, int* current_item, bool(*items_getter)(void* data, int idx, const char** out_text), void* data, int items_count, int popup_max_height_in_items = -1);
 
 
 // **---------------**
@@ -603,6 +628,14 @@ SDXLLibrary_API void SDXL_ImGui_SetTabItemClosed(const char* tab_or_docked_windo
 // * |__|  |  | |___ |  |  | |___ ___] *
 // *                                   *
 // *** ----------------------------- ***
+
+
+// **---------------**
+// * ---- Focus ---- *
+// **---------------**
+	// - Prefer using "SetItemDefaultFocus()" over "if (IsWindowAppearing()) SetScrollHereY()" when applicable to signify "this is the default item"
+SDXLLibrary_API void SDXL_ImGui_SetItemDefaultFocus();                                              // make last item the default focused item of a window.
+SDXLLibrary_API void SDXL_ImGui_SetKeyboardFocusHere(int offset = 0);
 
 // **---------------**
 // * --- Widgets --- *

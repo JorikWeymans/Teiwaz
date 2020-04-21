@@ -4,6 +4,8 @@
 #include "TransformComp.h"
 #include <algorithm>
 #include "BinaryWriter.h"
+#include "TyrComps.h"
+#include <string_view>
 int tyr::SceneObject::counter = 0;
 tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name)
 	: SceneObject(new TransformComp(transform), name) {}
@@ -82,6 +84,7 @@ void tyr::SceneObject::Debug()
 			if (!m_IsDestroyed)
 				b->Debug();
 		});
+	
 }
 
 void tyr::SceneObject::RenderEditor(bool showChildren)
@@ -112,14 +115,21 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 
 	if(m_SelectedItem == -1)
 	{
-		m_pTransform->RenderEditor();
-		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
-			{
-				if (!m_IsDestroyed)
-					b->RenderEditor();
-			});
-	}
+		
+		if (SDXL_ImGui_Begin("Inspector"))
+		{
+			m_pTransform->RenderEditor();
+			std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+				{
+					if (!m_IsDestroyed)
+						b->RenderEditor();
+				});
 
+			AddComponentButton();
+		}
+		
+	}
+	
 
 }
 
@@ -142,6 +152,39 @@ void tyr::SceneObject::Save(BinaryWriter& writer)
 	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&writer](SceneObject* s) { s->Save(writer); });
 	//Save components
 	
+}
+
+void tyr::SceneObject::AddComponentButton()
+{
+	SDXL_ImGui_Separator();
+	static const int ComponentCount = static_cast<int>(magic_enum::enum_count<ComponentType>());
+	static const char* items[ComponentCount];
+
+	if (items[0] == nullptr)
+		for (int i = 0; i < ComponentCount; i++)
+			items[i] = magic_enum::enum_name(static_cast<ComponentType>(i)).data();
+	static const char* item_current = items[0];
+
+	SDXL_ImGui_SetNextItemWidth(150.f);
+	if (SDXL_ImGui_BeginCombo("##ComponentsSceneObj", item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (int n = 0; n < ComponentCount; n++)
+		{
+			bool is_selected = (item_current == items[n]);
+			if (SDXL_ImGui_Selectable(items[n], is_selected))
+				item_current = items[n];
+			if (is_selected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("Add Component"))
+	{
+		AddComponent(new ColliderComp(100, 100, PivotMode::TopLeft, false));
+	}
+	SDXL_ImGui_End();
 }
 #endif
 
