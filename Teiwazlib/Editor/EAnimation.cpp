@@ -266,7 +266,7 @@ void tyr::EAnimation::AnimationEditor()
 	
 	if (SDXL_ImGui_Button("Add (Batch)##EAnimation"))
 	{
-		for (int j{ m_j }; j < m_z; j++)
+		for (int j{ m_j }; j < m_j + m_z; j++)
 		{
 			for(int i {m_i}; i < m_y; i++)
 			{

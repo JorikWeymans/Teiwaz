@@ -12,6 +12,8 @@ namespace tyr
 		void PreRender() override;
 		void InternalRenderEditor() override;
 
+	private:
+		SDXL::Float2 m_Pos, m_Size;
 	public:
 
 		EWindowSceneView(const EWindowSceneView&) = delete;

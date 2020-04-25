@@ -3,7 +3,7 @@
 #include "SceneObject.h"
 #include <algorithm>
 #include "BinaryWriter.h"
-#include "BinStructureHelpers.h"
+
 tyr::Scene::Scene(const std::string& name)
 	: m_pContext(nullptr)
 	, m_Name(name)
@@ -41,10 +41,12 @@ void tyr::Scene::RenderEditor()
 
 	if (!SDXL_ImGui_Begin(m_Name.c_str(), nullptr)) return;
 
+
+	static int itemPopUP = -1;
 	
 	for(int i{0}; i < static_cast<int>(m_pSceneObjects.size()); i++)
 	{
-		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetName().c_str(), m_SelectedItem == i, SDXL_ImGuiSelectableFlags_AllowDoubleClick))
+		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetName().c_str(), m_SelectedItem == i, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
 		{
 			m_SelectedItem = i;
 			m_pSceneObjects.at(m_SelectedItem)->m_SelectedItem = -1;
@@ -56,9 +58,35 @@ void tyr::Scene::RenderEditor()
 		if (i == m_SelectedItem)
 		{
 			m_pSceneObjects.at(m_SelectedItem)->RenderEditor(m_ItemDoubleClicked);
+			
+		}
+
+		if (SDXL_ImGui_IsItemHovered() || itemPopUP == i)
+		{
+
+			if (SDXL_ImGui_BeginPopupContextWindow("SceneObjectNameEditor"))
+			{
+				itemPopUP = i;
+				static char objectName[25];
+				SDXL_ImGui_InputText("##ObjectName", objectName, 25, nullptr);
+				SDXL_ImGui_SameLine();
+				if (SDXL_ImGui_Button("Save ObjectName"))
+				{
+					m_pSceneObjects[i]->m_name = std::string(objectName);
+					itemPopUP = -1;
+				
+				}
+				SDXL_ImGui_EndPopup();
+			}
+			else
+			{
+				itemPopUP = -1;
+			}
 		}
 	}
 
+
+	
 	SDXL_ImGui_Separator();
 	
 	if(SDXL_ImGui_Button("Add SceneObject"))
