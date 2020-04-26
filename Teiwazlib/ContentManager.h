@@ -17,6 +17,8 @@ namespace tyr
 							const std::string& sceneFolder = "Scenes/", 
 							const std::string& animationFolder = "Animations/", 
 							const std::string& textureFolder = "Textures/");
+
+		//void InitialzeFormFile(const std::string& File);
 		static void Destroy();
 
 		TextureID LoadTexture(const std::string& path);

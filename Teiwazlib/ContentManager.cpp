@@ -157,31 +157,34 @@ void tyr::ContentManager::RenderEditor()
 	}
 
 	static bool pathHasChanged = false;
-	if (SDXL_ImGui_BeginPopupModal("ContentManager Settings", &areContentSettingsOpen, pathHasChanged ? SDXL_ImGuiWindowFlags_UnsavedDocument : 0))
+	SDXL_ImGuiWindowFlags flags = SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_NoResize;
+	if (pathHasChanged) flags |= SDXL_ImGuiWindowFlags_UnsavedDocument;
+	
+	if (SDXL_ImGui_BeginPopupModal("ContentManager Settings", &areContentSettingsOpen, flags))
 	{
 		//Data Path
-		if(SDXL_ImGui_InputText("Data Path##ContentManager", m_CharDataPath, 256)) 
+		if(SDXL_ImGui_InputText("Data Path##ContentManager", m_CharDataPath, ARRAY_SIZE(m_CharDataPath)))
 			pathHasChanged = true;
 
 		std::filesystem::path path = m_CharDataPath;
 		SDXL_ImGui_TextDisabled("[EPath]%s" , std::filesystem::absolute(path).string().c_str());
 
 		//Scene Folder
-		if(SDXL_ImGui_InputText("Scene Folder##ContentManager", m_CharSceneFolder, 30))
+		if(SDXL_ImGui_InputText("Scene Folder##ContentManager", m_CharSceneFolder, ARRAY_SIZE(m_CharSceneFolder)))
 			pathHasChanged = true;
 		
 		path = std::string(m_CharDataPath) + std::string(m_CharSceneFolder);
 		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
 
 		//Animation Folder
-		if(SDXL_ImGui_InputText("Animation folder##ContentManager", m_CharAnimationFolder, 30))
+		if(SDXL_ImGui_InputText("Animation folder##ContentManager", m_CharAnimationFolder, ARRAY_SIZE(m_CharAnimationFolder)))
 			pathHasChanged = true;
 		
 		path = std::string(m_CharDataPath) + std::string(m_CharAnimationFolder);
 		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
 		
 		//Texture Folder
-		if (SDXL_ImGui_InputText("Texture folder##ContentManager", m_CharTextureFolder, 30))
+		if (SDXL_ImGui_InputText("Texture folder##ContentManager", m_CharTextureFolder, ARRAY_SIZE(m_CharTextureFolder)))
 			pathHasChanged = true;
 
 		path = std::string(m_CharDataPath) + std::string(m_CharTextureFolder);
