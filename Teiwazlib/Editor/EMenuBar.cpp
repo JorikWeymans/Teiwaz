@@ -7,12 +7,14 @@
 #include "../TeiwazEngine.h"
 #include "../GameContext.h"
 #include "../SceneManager.h"
+#include "../ContentManager.h"
 #include "EAnimation.h"
 #include <sstream>
 tyr::EMenuBar::EMenuBar(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pTexture(nullptr)
 {
+	m_pContext->paused = true;
 }
 
 tyr::EMenuBar::~EMenuBar()
@@ -39,34 +41,20 @@ void tyr::EMenuBar::RenderEditor()
 			SDXL_ImGui_EndMenu();
 		}
 
-
-		//if(SDXL_ImGui_BeginMenu("Animation##MainMenu"))
-		//{
-		//	
-		//	if(SDXL_ImGui_Button("Open Ani Editor"))
-		//	{
-		//		SDXL_ImGui_OpenPopup("AniEditor");
-		//	}
-		//	m_pEditorAni->RenderEditor();
-		//	
-		//
-		//	SDXL_ImGui_EndMenu();
-		//}
-		//
-
+		CONTENT_MANAGER->RenderEditor();
 	
 
 		
 		if(m_pContext->paused)
 		{
-			if (SDXL_ImGui_Selectable("PLAY"))
+			if (SDXL_ImGui_Selectable("PLAY", false, 0, SDXL::Float2(40, 20)))
 			{
 				m_pContext->paused = !m_pContext->paused;
 			}
 		}
 		else
 		{
-			if (SDXL_ImGui_Selectable("PAUSE"))
+			if (SDXL_ImGui_Selectable("PAUSE", false, 0, SDXL::Float2(40, 20)))
 			{
 				m_pContext->paused = !m_pContext->paused;
 			}

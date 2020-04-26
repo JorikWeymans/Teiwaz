@@ -608,6 +608,8 @@ SDXLLibrary_API void SDXL_ImGui_CloseCurrentPopup();                            
 // **---------------**
 SDXLLibrary_API void SDXL_ImGui_TextUnformatted(const char* text, const char* text_end = nullptr); 
 SDXLLibrary_API void SDXL_ImGui_Text(const char* fmt, ...); // formatted text
+SDXLLibrary_API void SDXL_ImGui_TextDisabled(const char* text, ...);
+
 SDXLLibrary_API void SDXL_ImGui_TextColored(const SDXL::Float4& col, const char* fmt, ...); // shortcut for PushStyleColor(ImGuiCol_Text, col); Text(fmt, ...); PopStyleColor();
 SDXLLibrary_API void SDXL_ImGui_TextWrapped(const char* fmt, ...); // shortcut for PushTextWrapPos(0.0f); Text(fmt, ...); PopTextWrapPos(); .Note that this won't work on an auto-resizing window if there's no other widgets to extend the window width, yoy may need to set a size using SetNextWindowSize().
 // *** --------------------------- ***

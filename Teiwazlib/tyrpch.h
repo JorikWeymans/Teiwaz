@@ -24,6 +24,8 @@
 #include <SDXLStructs.h>
 #include "TyrTypedefs.h"
 
+#define ARRAY_SIZE(array)          (static_cast<int>(sizeof(array) / sizeof(*array)))   
+
 #define MAGIC_ENUM_RANGE_MIN 0
 #define MAGIC_ENUM_RANGE_MAX 20
 #include <magic_enum.hpp>

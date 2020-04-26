@@ -13,6 +13,7 @@
 #include "./Editor/ETabItem.h"
 #include "TyrException.h"
 #include <filesystem>
+
 #define ANIMATION_SUFFIX ".tyrAnimation"
 tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 
@@ -134,7 +135,7 @@ void tyr::ContentManager::RenderEditor()
 
 		if (selected == 1)
 		{
-			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager"))
+			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0,0), false, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
 			{
 				TextureWindow();
 				SDXL_ImGui_EndChild();
@@ -213,15 +214,40 @@ void tyr::ContentManager::RenderEditor()
 }
 void tyr::ContentManager::TextureWindow()
 {
-	SDXL_ImGui_Text("TextureWindow");
+	SDXL_ImGui_Text("ID\tName");
 	static int selected = -1;
 	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
 	{
-		if (SDXL_ImGui_Selectable("tamp", selected == i,  SDXL_ImGuiSelectableFlags_DontClosePopups))
+		std::string tag = FormatString(" %i\t%s", i, m_pTextures[i]->GetName().c_str());
+		
+		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i,  SDXL_ImGuiSelectableFlags_DontClosePopups))
 		{
 			selected = i;
 		}
 	}
+	
+	if (selected != -1)
+	{
+		if(SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			auto di = m_pTextures[selected]->GetDimension();
+			
+			SDXL_ImGui_Image(m_pTextures[selected]->SDXL(), { di.x, di.y}, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
+			
+			
+		}
+		SDXL_ImGui_End();
+	}
+	SDXL_ImGui_Separator();
+	static char newTexture[40];
+	
+	SDXL_ImGui_InputText("Texture name", newTexture, ARRAY_SIZE(newTexture));
+	SDXL_ImGui_SameLine();
+	if(SDXL_ImGui_Button("LoadTexture"))
+	{
+		LoadTexture(std::string(newTexture));
+	}
+
 	
 }
 #endif
