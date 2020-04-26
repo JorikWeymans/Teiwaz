@@ -19,7 +19,6 @@ namespace  tyr
 		void SetCurrentScene(const std::string& SceneName);
 		void Update();
 		void FixedUpdate();
-
 		
 		void Flush() { m_WantFlush = true; }
 		
@@ -27,6 +26,7 @@ namespace  tyr
 		void SaveCurrentScene();
 		void SetCurrentSceneName(const std::string& name);
 		const std::string& GetCurrentSceneName() const;
+		bool DoesSceneExist(std::string& sceneName);
 		void Render();
 #else
 		void Render() const;

@@ -32,6 +32,7 @@ tyr::SceneManager::SceneManager()
 tyr::SceneManager::~SceneManager()
 {
 	std::for_each(m_pScenes.begin(), m_pScenes.end(), [](Scene* s) {SAFE_DELETE(s)});
+	m_pScenes.clear();
 #ifdef USE_IM_GUI
 	SAFE_DELETE(m_pEditorUI);
 #endif
@@ -183,6 +184,18 @@ void tyr::SceneManager::SetCurrentSceneName(const std::string& name)
 const std::string& tyr::SceneManager::GetCurrentSceneName() const
 {
 	return m_pCurrentScene->GetName();
+}
+
+bool tyr::SceneManager::DoesSceneExist(std::string& sceneName)
+{
+	for(auto s : m_pScenes)
+	{
+		if (s->GetName() == sceneName)
+			return true;
+	}
+
+	return false;
+	
 }
 
 

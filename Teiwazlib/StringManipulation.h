@@ -29,9 +29,8 @@ namespace  tyr
 	}
 
 	//for conversion specifiers => https://en.cppreference.com/w/c/io/vfprintf
-	inline const char* FormatCharArray(const char* str, ...)
+	inline std::string FormatString(const char* str, ...)
 	{
-
 		va_list arguments;
 		va_start(arguments, str);
 		
@@ -39,10 +38,10 @@ namespace  tyr
 		char buffer[bufferSize];
 		vsnprintf(buffer, bufferSize, str, arguments);
 		
-		buffer[bufferSize - 1] = 0;
-		
 		va_end(arguments);
-		return _strdup(buffer);
+		
+		return std::string(buffer);
+
 	}
 
 	

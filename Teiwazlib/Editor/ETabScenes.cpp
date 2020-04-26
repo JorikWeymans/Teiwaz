@@ -53,12 +53,12 @@ void tyr::ETabScenes::InternalRenderEditor()
 		s.isHovered = SDXL_ImGui_IsItemHovered();
 		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
 		{
+			if(!m_pContext->pSceneManager->DoesSceneExist(s.name))
+				m_pContext->pSceneManager->AddScene(new Scene(s.name, s.path));
 
-			auto str = FormatCharArray("this is a string with float of %f, and a int of %i and a %u boolean", 12.f, 15, 16U);
-			UNREFERENCED_PARAMETER(str);
-			m_pContext->pSceneManager->AddScene(new Scene(s.name, s.path));
 			m_pContext->pSceneManager->SetCurrentScene(s.name);
-			SDXL_ImGui_ConsoleLog("Log");
+			
+			SDXL_ImGui_ConsoleLog(FormatString("Scene %s is loaded", s.name.c_str()).c_str());
 			
 		}
 
