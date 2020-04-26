@@ -1,10 +1,7 @@
 #pragma once
 
-#ifdef USE_IM_GUI
-namespace  tyr
+namespace tyr
 {
-	class GameContext;
-
 	struct TabItem
 	{
 		explicit TabItem(const std::string& _path, const std::string& _name)
@@ -13,6 +10,13 @@ namespace  tyr
 		std::string name;
 		bool isHovered;
 	};
+}
+#ifdef USE_IM_GUI
+namespace  tyr
+{
+	class GameContext;
+
+
 
 	
 	class ETabItem

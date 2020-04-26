@@ -11,7 +11,7 @@
 #include <direct.h>
 #include "StringManipulation.h"
 #include "./Editor/ETabItem.h"
-
+#include "TyrException.h"
 #define ANIMATION_SUFFIX ".tyrAnimation"
 tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 
@@ -59,6 +59,12 @@ std::string tyr::ContentManager::GetDataFolder() const
 	return std::string(m_DataFolder.begin(), m_DataFolder.end());
 }
 
+#ifdef USE_IM_GUI
+void tyr::ContentManager::RenderEditor()
+{
+	
+}
+#endif
 void tyr::ContentManager::Destroy()
 {
 	delete pInstance;
@@ -112,11 +118,8 @@ AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 	ULONG64 header = reader.Read<ULONG64>();
 	if (header != 0x78b109c3)
 	{
-#ifdef USE_IM_GUI
-		SDXL_ImGui_ConsoleLogError("This is not an tyrAnimation");
-#else
 		THROW_ERROR(L"This is not an animation");
-#endif
+
 	}
 
 	const std::string animationName = reader.Read<std::string>();

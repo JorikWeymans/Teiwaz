@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "../Animation.h"
-
+#ifdef USE_IM_GUI
 namespace tyr
 {
 	class Animation;
@@ -41,3 +41,4 @@ namespace tyr
 		
 	};
 }
+#endif

@@ -7,6 +7,8 @@
 #include <sstream>
 #include "../GameContext.h"
 #include "../Time.h"
+
+#ifdef USE_IM_GUI
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pAnimation(nullptr)
@@ -314,3 +316,4 @@ void tyr::EAnimation::AnimationEditor()
 
 	
 }
+#endif

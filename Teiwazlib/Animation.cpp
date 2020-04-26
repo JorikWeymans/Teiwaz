@@ -3,6 +3,7 @@
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
 #include <algorithm>
+#include "TyrException.h"
 
 tyr::Animation::Animation(const std::string& animationName, float tpf,SpritePositions&& sp)
 	: m_AnimationName(animationName)

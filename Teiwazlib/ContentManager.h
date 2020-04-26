@@ -29,6 +29,10 @@ namespace tyr
 		
 		
 		std::string GetDataFolder() const;
+
+#ifdef USE_IM_GUI
+		void RenderEditor();
+#endif
 	private:
 		ContentManager();
 		~ContentManager();
@@ -40,8 +44,6 @@ namespace tyr
 		std::vector<Texture*> m_pTextures;
 		std::vector<Font*>    m_pFonts;
 		std::vector<Animation*> m_pAnimations;
-		
-
 		
 		
 	public:
