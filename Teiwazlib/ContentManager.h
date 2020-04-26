@@ -13,7 +13,10 @@ namespace tyr
 	public:
 		static ContentManager* GetInstance();
 
-		void Initialize(const std::string& dataFolder, const std::string& sceneFolder = "Scenes/", const std::string& animationFolder = "Animations/");
+		void Initialize(const std::string& dataFolder, 
+							const std::string& sceneFolder = "Scenes/", 
+							const std::string& animationFolder = "Animations/", 
+							const std::string& textureFolder = "Textures/");
 		static void Destroy();
 
 		TextureID LoadTexture(const std::string& path);
@@ -31,7 +34,7 @@ namespace tyr
 		std::string GetDataFolder() const;
 
 #ifdef USE_IM_GUI
-		void RenderEditor();
+		void RenderEditor(); //called in EMenuBar RenderEditor()
 #endif
 	private:
 		ContentManager();
@@ -39,12 +42,22 @@ namespace tyr
 		
 		static ContentManager* pInstance;
 		bool m_IsInitialized;
-		std::string m_DataFolder, m_SceneFolder, m_AnimationFolder;
+		std::string m_DataFolder, m_SceneFolder, m_AnimationFolder, m_TextureFolder;
 		
 		std::vector<Texture*> m_pTextures;
 		std::vector<Font*>    m_pFonts;
 		std::vector<Animation*> m_pAnimations;
+
+#ifdef USE_IM_GUI
+
+		void TextureWindow();
 		
+		char m_CharDataPath[256];
+		char m_CharSceneFolder[30];
+		char m_CharAnimationFolder[30];
+		char m_CharTextureFolder[30];
+		
+#endif
 		
 	public:
 		ContentManager(const ContentManager&) = delete;

@@ -12,6 +12,7 @@
 #include "StringManipulation.h"
 #include "./Editor/ETabItem.h"
 #include "TyrException.h"
+#include <filesystem>
 #define ANIMATION_SUFFIX ".tyrAnimation"
 tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 
@@ -31,6 +32,7 @@ tyr::ContentManager::~ContentManager()
 	std::for_each(m_pAnimations.begin(), m_pAnimations.end(),	[](auto* p) {SAFE_DELETE(p) });
 }
 
+
 tyr::ContentManager* tyr::ContentManager::GetInstance()
 {
 	if(!pInstance)
@@ -40,7 +42,7 @@ tyr::ContentManager* tyr::ContentManager::GetInstance()
 	return pInstance;
 }
 
-void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder, const std::string& animationFolder)
+void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder, const std::string& animationFolder, const std::string& textureFolder)
 {
 	UNREFERENCED_PARAMETER(sceneFolder);
 	UNREFERENCED_PARAMETER(animationFolder);
@@ -49,7 +51,7 @@ void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::s
 		m_DataFolder = dataFolder;
 		m_SceneFolder = sceneFolder;
 		m_AnimationFolder = animationFolder;
-		
+		m_TextureFolder = textureFolder;
 		m_IsInitialized = true;
 	}
 }
@@ -62,6 +64,164 @@ std::string tyr::ContentManager::GetDataFolder() const
 #ifdef USE_IM_GUI
 void tyr::ContentManager::RenderEditor()
 {
+
+
+	
+	static bool openContentManager = false;
+	
+	if (SDXL_ImGui_Selectable("ContenManager",false , SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(90,20)))
+	{
+		openContentManager = !openContentManager;
+		if(openContentManager)
+		{
+			SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 100.f,100.f });
+			SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ 500.f, 300.f });
+		}
+	}
+
+	static bool openFilePathSettings = false;
+
+	if(openContentManager)
+	{
+		
+		static int selected = -1;
+
+		if (SDXL_ImGui_Begin("ContentManager##ContentManager", &openContentManager, SDXL_ImGuiWindowFlags_NoSavedSettings | SDXL_ImGuiWindowFlags_MenuBar ))
+		{
+			if(SDXL_ImGui_BeginMenuBar())
+			{
+				if(SDXL_ImGui_BeginMenu("MenuItem##ContentManger"))
+				{
+					if(SDXL_ImGui_MenuItem("File paths"))
+					{
+
+						openFilePathSettings = true;
+
+
+						strcpy_s(m_CharDataPath, m_DataFolder.c_str());
+						strcpy_s(m_CharSceneFolder, m_SceneFolder.c_str());
+						strcpy_s(m_CharAnimationFolder, m_AnimationFolder.c_str());
+						strcpy_s(m_CharTextureFolder, m_TextureFolder.c_str());
+						
+					}
+					SDXL_ImGui_EndMenu();
+				}
+				SDXL_ImGui_EndMenuBar();
+			}
+			if(SDXL_ImGui_BeginChild("child#ContentManager", SDXL::Float2(100,0), true))
+			{
+				
+				
+				if (SDXL_ImGui_Selectable("Textures", selected == 1, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+				{
+					selected = 1;
+
+				}
+				if (SDXL_ImGui_Selectable("Scenes", selected == 2, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+				{
+					selected = 2;
+
+				}
+				SDXL_ImGui_EndChild();
+			}
+			SDXL_ImGui_SameLine();
+
+
+		}
+
+
+
+
+		if (selected == 1)
+		{
+			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager"))
+			{
+				TextureWindow();
+				SDXL_ImGui_EndChild();
+			}
+		}
+		
+		SDXL_ImGui_End();
+	}
+
+	static bool areContentSettingsOpen = true;
+	if(openFilePathSettings)
+	{
+		SDXL_ImGui_OpenPopup("ContentManager Settings");
+		openFilePathSettings = false;
+		areContentSettingsOpen = true;
+
+		//SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 100.f,100.f });
+		SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ 500.f, 300.f });
+	}
+
+	static bool pathHasChanged = false;
+	if (SDXL_ImGui_BeginPopupModal("ContentManager Settings", &areContentSettingsOpen, pathHasChanged ? SDXL_ImGuiWindowFlags_UnsavedDocument : 0))
+	{
+		//Data Path
+		if(SDXL_ImGui_InputText("Data Path##ContentManager", m_CharDataPath, 256)) 
+			pathHasChanged = true;
+
+		std::filesystem::path path = m_CharDataPath;
+		SDXL_ImGui_TextDisabled("[EPath]%s" , std::filesystem::absolute(path).string().c_str());
+
+		//Scene Folder
+		if(SDXL_ImGui_InputText("Scene Folder##ContentManager", m_CharSceneFolder, 30))
+			pathHasChanged = true;
+		
+		path = std::string(m_CharDataPath) + std::string(m_CharSceneFolder);
+		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
+
+		//Animation Folder
+		if(SDXL_ImGui_InputText("Animation folder##ContentManager", m_CharAnimationFolder, 30))
+			pathHasChanged = true;
+		
+		path = std::string(m_CharDataPath) + std::string(m_CharAnimationFolder);
+		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
+		
+		//Texture Folder
+		if (SDXL_ImGui_InputText("Texture folder##ContentManager", m_CharTextureFolder, 30))
+			pathHasChanged = true;
+
+		path = std::string(m_CharDataPath) + std::string(m_CharTextureFolder);
+		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
+		
+
+		SDXL_ImGui_Separator();
+		
+		if(SDXL_ImGui_Button("Cancel##SettingsContentManager"))
+		{
+			pathHasChanged = false;
+			SDXL_ImGui_CloseCurrentPopup();
+
+		}
+		SDXL_ImGui_SameLine();
+		if(SDXL_ImGui_Button("Save"))
+		{
+			m_DataFolder = std::string(m_CharDataPath);
+			m_SceneFolder = std::string(m_CharSceneFolder);
+			m_AnimationFolder = std::string(m_CharAnimationFolder);
+
+			pathHasChanged = false;
+			SDXL_ImGui_CloseCurrentPopup();
+		}
+		
+		SDXL_ImGui_EndPopup();
+	}
+
+
+}
+void tyr::ContentManager::TextureWindow()
+{
+	SDXL_ImGui_Text("TextureWindow");
+	static int selected = -1;
+	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
+	{
+		if (SDXL_ImGui_Selectable("tamp", selected == i,  SDXL_ImGuiSelectableFlags_DontClosePopups))
+		{
+			selected = i;
+		}
+	}
 	
 }
 #endif
@@ -80,7 +240,7 @@ TextureID tyr::ContentManager::LoadTexture(const std::string& path)
 		return static_cast<TextureID>(std::distance(m_pTextures.begin(), found));
 	}
 	
-	auto pTemp = new Texture(m_DataFolder, path);
+	auto pTemp = new Texture(m_DataFolder + m_TextureFolder, path);
 	m_pTextures.emplace_back(pTemp);
 	return static_cast<TextureID>(m_pTextures.size() - 1);
 }

@@ -1,12 +1,13 @@
 #include "tyrpch.h"
 #include "Texture.h"
 
-tyr::Texture::Texture(const std::string& dataFolder, const std::string& path)
+tyr::Texture::Texture(const std::string& dataFolder, const std::string& name)
 	: m_pImage(nullptr)
-	, m_Hash(std::hash<std::string>{}(path))
+	, m_Hash(std::hash<std::string>{}(name))
+	, m_Name(name)
 	, m_Dimension(0.f,0.f)
 {
-	const std::string completePath = dataFolder + path;
+	const std::string completePath = dataFolder + name;
 
 	SDXL_CreateImage(&m_pImage, std::wstring(completePath.begin(), completePath.end()));
 	
@@ -14,6 +15,7 @@ tyr::Texture::Texture(const std::string& dataFolder, const std::string& path)
 	
 	m_Dimension.x = di.x;
 	m_Dimension.y = di.y;
+
 }
 
 tyr::Texture::~Texture()
@@ -29,6 +31,11 @@ SDXL::SDXLImage* tyr::Texture::SDXL() const
 const tyr::Vector2& tyr::Texture::GetDimension() const
 {
 	return m_Dimension;
+}
+
+const std::string& tyr::Texture::GetName() const
+{
+	return m_Name;
 }
 
 bool tyr::operator==(Texture* lhs, const std::string& rhs)

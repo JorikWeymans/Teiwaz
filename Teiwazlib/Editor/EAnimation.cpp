@@ -16,7 +16,7 @@ tyr::EAnimation::EAnimation(GameContext* pContext)
 	, m_ShowAnimation(true)
 	, m_pTemp(nullptr)
 {
-	m_Texture = CONTENT_MANAGER->LoadTexture("BBSprites/Sprites_Sliced_Combined_Scaled.png");
+	m_Texture = CONTENT_MANAGER->LoadTexture("Sprites_Sliced_Combined_Scaled.png");
 
 	
 }
