@@ -9,7 +9,7 @@
 #include "../Texture.h"
 #include "../SceneManager.h"
 #include "../GameContext.h"
-
+#include "../Scene.h"
 #include "ETabScenes.h"
 
 tyr::ETabScenes::ETabScenes(GameContext* pContext)
@@ -53,8 +53,13 @@ void tyr::ETabScenes::InternalRenderEditor()
 		s.isHovered = SDXL_ImGui_IsItemHovered();
 		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
 		{
-			SDXL_ImGui_ConsoleLog("count or something");
-			m_pContext->pSceneManager->Flush();
+
+			auto str = FormatCharArray("this is a string with float of %f, and a int of %i and a %u boolean", 12.f, 15, 16U);
+			UNREFERENCED_PARAMETER(str);
+			m_pContext->pSceneManager->AddScene(new Scene(s.name, s.path));
+			m_pContext->pSceneManager->SetCurrentScene(s.name);
+			SDXL_ImGui_ConsoleLog("Log");
+			
 		}
 
 		SDXL_ImGui_SameLine();

@@ -28,5 +28,23 @@ namespace  tyr
 		path = path.substr(0, path.find_last_of('.'));
 	}
 
+	//for conversion specifiers => https://en.cppreference.com/w/c/io/vfprintf
+	inline const char* FormatCharArray(const char* str, ...)
+	{
+
+		va_list arguments;
+		va_start(arguments, str);
+		
+		const unsigned int bufferSize = 512;
+		char buffer[bufferSize];
+		vsnprintf(buffer, bufferSize, str, arguments);
+		
+		buffer[bufferSize - 1] = 0;
+		
+		va_end(arguments);
+		return _strdup(buffer);
+	}
+
+	
 
 }

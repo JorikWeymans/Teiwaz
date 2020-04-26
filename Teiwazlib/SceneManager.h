@@ -22,6 +22,7 @@ namespace  tyr
 
 		
 		void Flush() { m_WantFlush = true; }
+		
 #ifdef USE_IM_GUI
 		void SaveCurrentScene();
 		void SetCurrentSceneName(const std::string& name);
@@ -30,6 +31,7 @@ namespace  tyr
 #else
 		void Render() const;
 #endif
+		
 	private:
 #ifdef USE_IM_GUI
 		void RenderEditor();
