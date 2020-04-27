@@ -182,6 +182,7 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 	{
 		const ComponentType type = reader.Read<ComponentType>();
 
+		//maybe one function to just pass component type
 		switch (type)
 		{
 		case ComponentType::Transform: //should always be the first
@@ -210,20 +211,15 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 			newObject->AddComponent(Factory::CreateComponent<TextureComp>(reader));
 			break;
 		case ComponentType::Player1Controller:
-			newObject->AddComponent(Factory::CreateComponent<Player1Controller>(reader));
+			newObject->AddComponent(Factory::CreateComponent<Player1Controller>(reader)); //WIP
 			break;
 		case ComponentType::Animator:
 			newObject->AddComponent(Factory::CreateComponent<AnimatorComp>(reader));
 
 		default:;
+			 //TODO:throw error;
 		}
-		// Object
-		//   transformCOm
-		// Object
-		//   TransformComp
-		// Object
-		//   TransformComp
-		// End
+
 
 	}
 	return newObject;

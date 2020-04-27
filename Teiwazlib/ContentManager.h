@@ -54,10 +54,10 @@ namespace tyr
 
 		void TextureWindow();
 		
-		char m_CharDataPath[256];
-		char m_CharSceneFolder[30];
-		char m_CharAnimationFolder[30];
-		char m_CharTextureFolder[30];
+		char m_CharDataPath[256] {};
+		char m_CharSceneFolder[30] {};
+		char m_CharAnimationFolder[30] {};
+		char m_CharTextureFolder[30] {};
 		
 #endif
 		

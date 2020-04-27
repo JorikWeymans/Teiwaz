@@ -26,6 +26,7 @@
 
 #define ARRAY_SIZE(array)          (static_cast<int>(sizeof(array) / sizeof(*array)))   
 
+//https://github.com/Neargye/magic_enum Unity has enum.ToString(), this hpp gives the same functionality
 #define MAGIC_ENUM_RANGE_MIN 0
 #define MAGIC_ENUM_RANGE_MAX 20
 #include <magic_enum.hpp>

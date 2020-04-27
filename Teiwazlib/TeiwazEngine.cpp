@@ -80,11 +80,11 @@ void tyr::TeiwazEngine::Run()
 			m_pContext->pTime->fixedDeltaTime = fixedElapsed;
 			m_pSceneManager->FixedUpdate();
 
-			m_pSceneManager->Render(); // TODO: enable vsync, otherwise leave it here
+			m_pSceneManager->Render(); // TODO: enable vsync, should be changed
 			fixedElapsed = 0;
 		}
 
-		
+	
 
 		// timings for next frame
 		const auto thisTime = high_resolution_clock::now();

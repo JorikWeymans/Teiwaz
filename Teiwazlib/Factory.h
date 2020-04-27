@@ -25,11 +25,11 @@ namespace tyr
 			UNREFERENCED_PARAMETER(reader);
 			THROW_ERROR(L"This component is not implemented yet");
 		}
-		template<> static  TransformComp*           CreateComponent(BinaryReader& reader) { return CreateTransformComp(reader); }
-		template<> static  CharacterControllerComp* CreateComponent(BinaryReader& reader) { return CreateCharacterControllerComp(reader); }
-		template<> static  ColliderComp*            CreateComponent(BinaryReader& reader) { return CreateColliderComp(reader); }
-		template<> static  RigidBodyComp*           CreateComponent(BinaryReader& reader) { return CreateRigidBodyComp(reader); }
-		template<> static  FPSComp*					CreateComponent(BinaryReader& reader) { return CreateFPSComp(reader); }
+		template<> static TransformComp*			CreateComponent(BinaryReader& reader) { return CreateTransformComp(reader); }
+		template<> static CharacterControllerComp*	CreateComponent(BinaryReader& reader) { return CreateCharacterControllerComp(reader); }
+		template<> static ColliderComp*				CreateComponent(BinaryReader& reader) { return CreateColliderComp(reader); }
+		template<> static RigidBodyComp*			CreateComponent(BinaryReader& reader) { return CreateRigidBodyComp(reader); }
+		template<> static FPSComp*					CreateComponent(BinaryReader& reader) { return CreateFPSComp(reader); }
 		template<> static TextureComp*              CreateComponent(BinaryReader& reader) { return CreateTextureComp(reader); }
 		template<> static TextComp*                 CreateComponent(BinaryReader& reader) { return CreateTextComp(reader); }
 		template<> static Player1Controller*		CreateComponent(BinaryReader& reader) { return CreatePlayer1Comp(reader); }

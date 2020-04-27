@@ -163,6 +163,8 @@ void tyr::SceneObject::AddComponentButton()
 	if (items[0] == nullptr)
 		for (int i = 0; i < ComponentCount; i++)
 			items[i] = magic_enum::enum_name(static_cast<ComponentType>(i)).data();
+
+	
 	static const char* item_current = items[0];
 
 	SDXL_ImGui_SetNextItemWidth(150.f);
