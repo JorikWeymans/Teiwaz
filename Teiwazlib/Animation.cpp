@@ -26,11 +26,7 @@ tyr::Animation::Animation(const std::string& path)
 	ULONG64 header = reader.Read<ULONG64>();
 	if (header != 0x78b109c3)
 	{
-#ifdef USE_IM_GUI
-		SDXL_ImGui_ConsoleLogError("This is no an animation");
-#else
 		THROW_ERROR(L"This is not an animation");
-#endif
 	}
 	m_AnimationName = reader.ReadString();
 	m_AniElapser.Reset(reader.Read<float>());
@@ -78,7 +74,7 @@ void tyr::Animation::Save()
 	BinaryWriter writer("./Data/Animations/" + m_AnimationName + ".tyrAnimation");
 
 	//Binsctructure
-	// Long double -> Header (JorikWeymansTyrScene hashed via Adler32 to this value)
+	// Long double -> Header (JorikWeymansTyrAnimation hashed via Adler32 to this value)
 	// std::string -> AnimationName
 	// float -> tpf
 	// UINT -> AnimationCount
@@ -111,5 +107,7 @@ tyr::Animation::Animation(float tpf)
 
 bool tyr::operator==(Animation* lhs, const std::string& rhs)
 {
+	if (!lhs) return false;
+	
 	return lhs->m_AnimationName == rhs;
 }

@@ -11,6 +11,7 @@
 #include "ContentManager.h"
 #include "Vectors.h"
 #include "Physics.h"
+#include "TyrException.h"
 bool tyr::TeiwazEngine::WantQuit = false;
 tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 	: m_pSceneManager(nullptr)
@@ -44,8 +45,17 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 								m_pSceneManager);
 	
 	
-	ContentManager::GetInstance()->Initialize("./Data/");
-	m_pSceneManager->Initialize(m_pContext);
+	//ContentManager::GetInstance()->Initialize("./Data/");
+	try
+	{
+		ContentManager::GetInstance()->InitializeFromFile();
+		m_pSceneManager->Initialize(m_pContext);
+	}
+	catch (TyrException & e)
+	{
+		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
+	}
+
 
 	return hr;
 

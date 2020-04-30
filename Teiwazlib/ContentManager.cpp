@@ -13,8 +13,13 @@
 #include "./Editor/ETabItem.h"
 #include "TyrException.h"
 #include <filesystem>
+#include "BinaryWriter.h"
+#include "BinaryReader.h"
+#include "BinStructureHelpers.h"
 
+#define CONTENT_PATH "./Bin/Content.tyr"
 #define ANIMATION_SUFFIX ".tyrAnimation"
+
 tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 
 
@@ -43,7 +48,10 @@ tyr::ContentManager* tyr::ContentManager::GetInstance()
 	return pInstance;
 }
 
-void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder, const std::string& animationFolder, const std::string& textureFolder)
+void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder,
+																	const std::string& textureFolder,
+																	const std::string& fontFolder,
+																	const std::string& animationFolder)
 {
 	UNREFERENCED_PARAMETER(sceneFolder);
 	UNREFERENCED_PARAMETER(animationFolder);
@@ -51,11 +59,79 @@ void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::s
 	{
 		m_DataFolder = dataFolder;
 		m_SceneFolder = sceneFolder;
-		m_AnimationFolder = animationFolder;
 		m_TextureFolder = textureFolder;
+		m_FontFolder = fontFolder;
+		m_AnimationFolder = animationFolder;
+
 		m_IsInitialized = true;
 	}
 }
+
+void tyr::ContentManager::InitializeFromFile()
+{
+	BinaryReader reader(CONTENT_PATH);
+
+	ULONG64 header = reader.Read<ULONG64>();
+	if (header != 0x30140623)
+	{
+		THROW_ERROR(L"This is not the contentFile");
+	}
+
+	m_DataFolder = reader.Read<std::string>();
+	
+	m_SceneFolder = reader.Read<std::string>();
+	m_TextureFolder = reader.Read<std::string>();
+	m_FontFolder = reader.Read<std::string>();
+
+	m_AnimationFolder = reader.Read<std::string>();
+
+	ContentType type = reader.Read<ContentType>();
+	while(type != ContentType::End)
+	{
+		//all types (except end) have a size and a size
+		UINT size = reader.Read<UINT>();
+
+		switch (type)
+		{
+		case ContentType::Texture:
+			m_pTextures.resize(size, nullptr);
+			
+			for(UINT i {0}; i < size; i++)
+			{
+				std::string name = reader.Read<std::string>();
+				m_pTextures[i] = new Texture(m_DataFolder + m_TextureFolder, name);
+			}
+
+			break;
+		case ContentType::Font:
+			if(size > 0)
+				THROW_ERROR(L"Font is not implemented yet");
+
+			break;
+		case ContentType::Animation: 
+			m_pAnimations.resize(size, nullptr);
+			
+			for (UINT i{ 0 }; i < size; i++)
+			{
+				std::string name = reader.Read<std::string>();
+				LoadAnimation(name);
+			}
+				
+			
+			break;
+		case ContentType::End:
+			THROW_ERROR(L"Type end should not be read");
+		default:
+			THROW_ERROR(L"This Type is invalid");
+			;
+		}
+
+		type = reader.Read<ContentType>();
+	}
+	
+	
+}
+
 std::string tyr::ContentManager::GetDataFolder() const
 {
 #pragma warning (suppress : 4244)
@@ -207,6 +283,7 @@ void tyr::ContentManager::RenderEditor()
 			m_AnimationFolder = std::string(m_CharAnimationFolder);
 
 			pathHasChanged = false;
+			Save();
 			SDXL_ImGui_CloseCurrentPopup();
 		}
 		
@@ -215,6 +292,56 @@ void tyr::ContentManager::RenderEditor()
 
 
 }
+
+void tyr::ContentManager::Save()
+{
+	BinaryWriter writer(CONTENT_PATH);
+
+	//Binsctructure
+	// Long double -> Header (JorikWeymansTyr hashed via Adler32 to this value)
+	// String -> DataFolder;
+	// String -> SceneFolder;
+	// String -> AnimationFolder;
+	// String -> TextureFolder
+	//
+	// ContentType::Texture
+	// amount of textures
+	// foreach(texture.Name)
+	//
+	// ContentType::Animation
+	// amount of animations
+	// foreach(animation.Name)
+	//
+	// ContentType::End (Marking EOF)
+
+	ULONG64 header = 0x30140623;
+	writer.Write(header); //Header
+	
+	writer.WriteString(m_DataFolder);
+	
+	writer.Write(m_SceneFolder);
+	writer.Write(m_TextureFolder);
+	writer.Write(m_FontFolder);
+	writer.Write(m_AnimationFolder);
+
+	
+	writer.Write(ContentType::Texture);
+	writer.Write(static_cast<UINT>(m_pTextures.size()));
+	std::for_each(m_pTextures.begin(), m_pTextures.end(), [&writer](Texture* t) { writer.Write(t->GetName());});
+
+	writer.Write(ContentType::Font);
+	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
+	//std::for_each(m_pFonts.begin(), m_pFonts.end(), [&writer](Font* f) { writer.Write(f->GetName()); });
+	
+	writer.Write(ContentType::Animation);
+	writer.Write(static_cast<UINT>(m_pAnimations.size()));
+	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a) { writer.Write(a->GetName()); });
+
+	
+	writer.Write(ContentType::End);
+	
+}
+
 void tyr::ContentManager::TextureWindow()
 {
 	SDXL_ImGui_Text("ID\tName");

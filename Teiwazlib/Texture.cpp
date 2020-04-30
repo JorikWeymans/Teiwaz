@@ -40,6 +40,8 @@ const std::string& tyr::Texture::GetName() const
 
 bool tyr::operator==(Texture* lhs, const std::string& rhs)
 {
+	if (!lhs) return false;
+	
 	const size_t rhsHash = std::hash<std::string>{}(rhs);
 	return (lhs->m_Hash == rhsHash);
 }

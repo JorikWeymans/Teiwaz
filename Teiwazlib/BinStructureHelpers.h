@@ -5,8 +5,8 @@ namespace tyr
 	{
 		SceneObject,
 		Component,
-
-		End,
+		//Append here
+		End = 255,
 	};
 
 	enum class ComponentType : unsigned int //UINT
@@ -22,5 +22,15 @@ namespace tyr
 		Animator,
 
 
+	};
+
+	enum class ContentType : unsigned char //BYTE (don't Expect to go over 256 values)
+	{
+		Texture,
+		Font,
+		Animation,
+		//Append here
+		End = 255,
+		
 	};
 }

@@ -14,11 +14,14 @@ namespace tyr
 		static ContentManager* GetInstance();
 
 		void Initialize(const std::string& dataFolder, 
-							const std::string& sceneFolder = "Scenes/", 
-							const std::string& animationFolder = "Animations/", 
-							const std::string& textureFolder = "Textures/");
-
-		//void InitialzeFormFile(const std::string& File);
+							const std::string& sceneFolder = "Scenes/",
+							const std::string& textureFolder = "Textures/",
+							const std::string& fontFolder = "Fonts/",
+							const std::string& animationFolder = "Animations/");
+		
+		//This file is an engine predetermined file
+		void InitializeFromFile(); 
+		
 		static void Destroy();
 
 		TextureID LoadTexture(const std::string& path);
@@ -37,6 +40,8 @@ namespace tyr
 
 #ifdef USE_IM_GUI
 		void RenderEditor(); //called in EMenuBar RenderEditor()
+		void Save();
+		
 #endif
 	private:
 		ContentManager();
@@ -44,7 +49,7 @@ namespace tyr
 		
 		static ContentManager* pInstance;
 		bool m_IsInitialized;
-		std::string m_DataFolder, m_SceneFolder, m_AnimationFolder, m_TextureFolder;
+		std::string m_DataFolder, m_SceneFolder, m_TextureFolder, m_FontFolder, m_AnimationFolder ;
 		
 		std::vector<Texture*> m_pTextures;
 		std::vector<Font*>    m_pFonts;

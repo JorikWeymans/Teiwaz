@@ -215,9 +215,9 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 			break;
 		case ComponentType::Animator:
 			newObject->AddComponent(Factory::CreateComponent<AnimatorComp>(reader));
-
+			break;
 		default:;
-			 //TODO:throw error;
+			THROW_ERROR(L"This component is not implemented yet");
 		}
 
 
