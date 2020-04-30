@@ -7,15 +7,14 @@
 #include <iostream>
 #include "TeiwazEngine.h"
 #include "BinaryWriter.h"
-tyr::TextureComp::TextureComp(const std::string& texturePath, const PivotMode& pivotMode, 
+tyr::TextureComp::TextureComp(TextureID id, const PivotMode& pivotMode,
 								const Rect& rect, const Vector2& offset)
-	: TextureComp(texturePath, Vector2(pivotMode), rect, offset)
+	: TextureComp(id, Vector2(pivotMode), rect, offset)
 {}
 
-tyr::TextureComp::TextureComp(const std::string& texturePath, const Vector2& pivot, const Rect& rect, const Vector2& offset)
+tyr::TextureComp::TextureComp(TextureID id, const Vector2& pivot, const Rect& rect, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Texture)
-	, m_TexturePath(texturePath)
-	, m_Texture(0)
+	, m_Texture(id)
 	, m_pTransform(nullptr)
 	, m_Pivot(pivot)
 	, m_SrcRect(rect)
@@ -32,7 +31,6 @@ void tyr::TextureComp::Initialize()
 
 	m_pTransform = m_pSceneObject->GetTransform();
 
-	m_Texture = CONTENT_MANAGER->LoadTexture(m_TexturePath);
 
 	if(!m_SrcRect)
 	{
@@ -46,7 +44,6 @@ void tyr::TextureComp::Initialize()
 
 void tyr::TextureComp::Update()
 {
-	std::cout << "ok";
 }
 
 void tyr::TextureComp::FixedUpdate()
@@ -70,7 +67,6 @@ void tyr::TextureComp::Render() const
 void tyr::TextureComp::Destroy()
 {
 	m_pTransform = nullptr;
-	m_TexturePath = "";
 }
 
 void tyr::TextureComp::SetSourceRect(const Rect& rect)
@@ -85,6 +81,14 @@ void tyr::TextureComp::RenderEditor()
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		SDXL_ImGui_PushItemWidth(100.f);
+		SDXL_ImGui_Text("ID     : \t");
+		SDXL_ImGui_SameLine();
+
+		name = "##TextureID" + std::to_string(m_UniqueId);
+		int TextureInInt = static_cast<int>(m_Texture);
+		SDXL_ImGui_DragInt(name.c_str(), &TextureInInt,1,0,3);
+		m_Texture = TextureInInt;
+
 		//POSITION
 		SDXL_ImGui_Text("Pivot:   \t");
 		SDXL_ImGui_SameLine();
@@ -96,7 +100,7 @@ void tyr::TextureComp::RenderEditor()
 		name = "y##" + std::to_string(m_UniqueId);
 		SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.y, 1, 0, 1);
 		
-		//POSITION
+		//Offset
 		SDXL_ImGui_Text("Offset:  \t");
 		SDXL_ImGui_SameLine();
 
@@ -115,7 +119,7 @@ void tyr::TextureComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
 	
-	writer.WriteString(m_TexturePath);
+	writer.Write(m_Texture);
 	writer.Write(m_Pivot.ToPOD());
 	writer.Write(m_SrcRect.ToPOD());
 	writer.Write(m_Offset.ToPOD());

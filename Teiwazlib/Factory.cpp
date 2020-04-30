@@ -40,12 +40,12 @@ tyr::FPSComp*                 tyr::Factory::CreateFPSComp(BinaryReader& reader)
 
 tyr::TextureComp*             tyr::Factory::CreateTextureComp(BinaryReader& reader)
 {
-	const std::string path   = reader.ReadString();
+	const TextureID id   = reader.Read<TextureID>();
 	const Vector2_POD pivot  = reader.Read<Vector2_POD>();
 	const Rect_POD    rect   = reader.Read<Rect_POD>();
 	const Vector2_POD offset = reader.Read<Vector2_POD>();
 	
-	return new TextureComp(path, Vector2(pivot), Rect(rect), Vector2(offset));
+	return new TextureComp(id, Vector2(pivot), Rect(rect), Vector2(offset));
 	
 	
 }

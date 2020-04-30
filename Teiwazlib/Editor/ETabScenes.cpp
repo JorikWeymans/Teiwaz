@@ -30,7 +30,7 @@ tyr::ETabScenes::ETabScenes(GameContext* pContext)
 			m_Files.emplace_back(TabItem(entry.path().string(), filename));
 		}
 	}
-	m_Texture = CONTENT_MANAGER->LoadTexture("Editor/TyrIcon.png");
+	m_Texture = 0; //CONTENT_MANAGER->LoadTexture("Editor/TyrIcon.png");
 }
 
 void tyr::ETabScenes::PreRender()

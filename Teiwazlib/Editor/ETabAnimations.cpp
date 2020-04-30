@@ -17,7 +17,7 @@ tyr::ETabAnimations::ETabAnimations(GameContext* pContext)
 	, m_SceneFolder(ContentManager::GetInstance()->GetDataFolder() + "Animations/")
 {
 	m_Files = CONTENT_MANAGER->GetAnimationsInFolder();
-	m_Texture = CONTENT_MANAGER->LoadTexture("Editor/AnimationIcon.png");
+	m_Texture = 1; // CONTENT_MANAGER->LoadTexture("Editor/AnimationIcon.png");
 
 	m_pEditorAni = new EAnimation(pContext);
 }

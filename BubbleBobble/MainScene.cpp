@@ -255,7 +255,7 @@ void bub::MainScene::LoadBackground()
 					{
 						filled[k][l].second = true;
 
-						pBlock->AddComponent(new tyr::TextureComp("blocksScaled.png", tyr::PivotMode::TopLeft,
+						pBlock->AddComponent(new tyr::TextureComp(3U, tyr::PivotMode::TopLeft,
 								tyr::Rect(24, 0, 24, 24), tyr::Vector2(m * scale,n * scale)));
 
 						m++;
