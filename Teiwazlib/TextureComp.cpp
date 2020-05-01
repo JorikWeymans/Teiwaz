@@ -14,7 +14,7 @@ tyr::TextureComp::TextureComp(TextureID id, const PivotMode& pivotMode,
 
 tyr::TextureComp::TextureComp(TextureID id, const Vector2& pivot, const Rect& rect, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Texture)
-	, m_Texture(id)
+	, m_TextureID(id)
 	, m_pTransform(nullptr)
 	, m_Pivot(pivot)
 	, m_SrcRect(rect)
@@ -34,8 +34,13 @@ void tyr::TextureComp::Initialize()
 
 	if(!m_SrcRect)
 	{
-		const auto di = CONTENT_MANAGER->GetTexture(m_Texture)->GetDimension();
-		m_SrcRect.Set(0.f, 0.f, di.x, di.y);
+		const Texture* pTexture = CONTENT_MANAGER->GetTexture(m_TextureID);
+		if(pTexture)
+		{
+			const auto di = pTexture->GetDimension();
+			m_SrcRect.Set(0.f, 0.f, di.x, di.y);
+		}
+
 	}
 
 
@@ -52,14 +57,20 @@ void tyr::TextureComp::FixedUpdate()
 
 void tyr::TextureComp::Render() const
 {
-	auto pos = m_pTransform->GetPosition();
-	const auto scale = m_pTransform->GetScale();
-	const auto rot = m_pTransform->GetRotation();
 
-	pos += m_Offset;
-	
-	SDXL_RenderImage(CONTENT_MANAGER->GetTexture(m_Texture)->SDXL(), { pos.x, pos.y }, { m_Pivot.x,m_Pivot.y },{ scale.x, scale.y },
-									static_cast<SDXL::SDXLRect>(m_SrcRect), rot);
+	auto pTexture = CONTENT_MANAGER->GetTexture(m_TextureID);
+	if(pTexture)
+	{
+		auto pos = m_pTransform->GetPosition();
+		const auto scale = m_pTransform->GetScale();
+		const auto rot = m_pTransform->GetRotation();
+
+		pos += m_Offset;
+
+		SDXL_RenderImage(pTexture->SDXL(), { pos.x, pos.y }, { m_Pivot.x,m_Pivot.y }, { scale.x, scale.y },
+			static_cast<SDXL::SDXLRect>(m_SrcRect), rot);
+	}
+
 
 	
 }
@@ -80,46 +91,83 @@ void tyr::TextureComp::RenderEditor()
 	std::string name = "Texture Component##" + std::to_string(m_UniqueId);
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
+
 		SDXL_ImGui_PushItemWidth(100.f);
-		SDXL_ImGui_Text("ID     : \t");
-		SDXL_ImGui_SameLine();
 
-		name = "##TextureID" + std::to_string(m_UniqueId);
-		int TextureInInt = static_cast<int>(m_Texture);
-		SDXL_ImGui_DragInt(name.c_str(), &TextureInInt,1,0,3);
-		m_Texture = TextureInInt;
-
-		//POSITION
-		SDXL_ImGui_Text("Pivot:   \t");
-		SDXL_ImGui_SameLine();
-
-		name = "x##" + std::to_string(m_UniqueId);
-		SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.x, 1, 0, 1);
-		SDXL_ImGui_SameLine();
-
-		name = "y##" + std::to_string(m_UniqueId);
-		SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.y, 1, 0, 1);
+		EditorTexture(name);
+		EditorPosition(name);
+		EditorOffset(name);
 		
-		//Offset
-		SDXL_ImGui_Text("Offset:  \t");
-		SDXL_ImGui_SameLine();
 
-		name = "x##O" + std::to_string(m_UniqueId);
-		SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.x, 1, 0, 100);
-		SDXL_ImGui_SameLine();
-
-		name = "y##O" + std::to_string(m_UniqueId);
-		SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.y, 1, 0, 100);
 
 		SDXL_ImGui_PopItemWidth();
+
+		
 	}
+}
+
+void tyr::TextureComp::EditorTexture(std::string& name)
+{
+
+	SDXL_ImGui_Text("Texture: \t");
+	SDXL_ImGui_SameLine();
+
+	name = "##TextureString" + std::to_string(m_UniqueId);
+	auto items = ContentManager::GetInstance()->m_pTextures;
+	
+
+
+
+
+	const char* item_current = ContentManager::GetInstance()->m_pTextures[m_TextureID]->GetName().c_str();
+
+	SDXL_ImGui_SetNextItemWidth(150.f);
+	if (SDXL_ImGui_BeginCombo(name.c_str(), item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (UINT n = 0; n < static_cast<UINT>(items.size()); n++)
+		{
+			bool is_selected = (item_current == items[n]->GetName().c_str());
+			
+			if (SDXL_ImGui_Selectable(items[n]->GetName().c_str(), is_selected))
+				m_TextureID = n;
+			if (is_selected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+
+}
+
+void tyr::TextureComp::EditorPosition(std::string& name)
+{
+	SDXL_ImGui_Text("Pivot:   \t");
+	SDXL_ImGui_SameLine();
+
+	name = "x##" + std::to_string(m_UniqueId);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.x, 1, 0, 1);
+	SDXL_ImGui_SameLine();
+
+	name = "y##" + std::to_string(m_UniqueId);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_Pivot.y, 1, 0, 1);
+}
+void tyr::TextureComp::EditorOffset(std::string& name)
+{
+	SDXL_ImGui_Text("Offset:  \t");
+	SDXL_ImGui_SameLine();
+
+	name = "x##O" + std::to_string(m_UniqueId);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.x, 1, 0, 100);
+	SDXL_ImGui_SameLine();
+
+	name = "y##O" + std::to_string(m_UniqueId);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.y, 1, 0, 100);
 }
 
 void tyr::TextureComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
 	
-	writer.Write(m_Texture);
+	writer.Write(m_TextureID);
 	writer.Write(m_Pivot.ToPOD());
 	writer.Write(m_SrcRect.ToPOD());
 	writer.Write(m_Offset.ToPOD());

@@ -27,15 +27,21 @@ namespace tyr
 
 #ifdef USE_IM_GUI
 		void RenderEditor() override;
+		void EditorTexture(std::string& name);
+		void EditorPosition(std::string& name);
+		void EditorOffset(std::string& name);
 		void Save(BinaryWriter& writer) override;
 #endif
 	private:
-		TextureID m_Texture;
+		TextureID m_TextureID;
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Pivot;
 		Rect m_SrcRect;
 		Vector2 m_Offset;
-		
+
+#ifdef USE_IM_GUI
+
+#endif
 	public:
 		TextureComp() = delete;
 		TextureComp(const TextureComp&) = delete;

@@ -8,6 +8,7 @@ namespace tyr
 	class Font;
 	class Texture;
 	class Animation;
+	class TextureComp;
 	class ContentManager final
 	{
 	public:
@@ -41,7 +42,7 @@ namespace tyr
 #ifdef USE_IM_GUI
 		void RenderEditor(); //called in EMenuBar RenderEditor()
 		void Save();
-		
+		friend TextureComp;
 #endif
 	private:
 		ContentManager();
