@@ -93,8 +93,13 @@ void tyr::TextureComp::RenderEditor()
 	{
 
 		SDXL_ImGui_PushItemWidth(100.f);
-
 		EditorTexture(name);
+
+		SDXL_ImGui_Text("Text map:\t");
+		SDXL_ImGui_SameLine();
+		static bool b = false;
+		SDXL_ImGui_Checkbox("##Box", &b);
+		
 		EditorPosition(name);
 		EditorOffset(name);
 		
@@ -113,28 +118,10 @@ void tyr::TextureComp::EditorTexture(std::string& name)
 	SDXL_ImGui_SameLine();
 
 	name = "##TextureString" + std::to_string(m_UniqueId);
-	auto items = ContentManager::GetInstance()->m_pTextures;
-	
+
+	ContentManager::GetInstance()->EditorTextureSelector(name.c_str(), m_TextureID);
 
 
-
-
-	const char* item_current = ContentManager::GetInstance()->m_pTextures[m_TextureID]->GetName().c_str();
-
-	SDXL_ImGui_SetNextItemWidth(150.f);
-	if (SDXL_ImGui_BeginCombo(name.c_str(), item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
-	{
-		for (UINT n = 0; n < static_cast<UINT>(items.size()); n++)
-		{
-			bool is_selected = (item_current == items[n]->GetName().c_str());
-			
-			if (SDXL_ImGui_Selectable(items[n]->GetName().c_str(), is_selected))
-				m_TextureID = n;
-			if (is_selected)
-				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-		}
-		SDXL_ImGui_EndCombo();
-	}
 
 }
 

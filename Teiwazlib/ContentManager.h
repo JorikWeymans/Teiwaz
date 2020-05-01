@@ -41,6 +41,7 @@ namespace tyr
 
 #ifdef USE_IM_GUI
 		void RenderEditor(); //called in EMenuBar RenderEditor()
+		void EditorTextureSelector(const char* imGuiID, TextureID& textureID);
 		void Save();
 		friend TextureComp;
 #endif

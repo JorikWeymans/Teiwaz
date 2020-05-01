@@ -293,6 +293,27 @@ void tyr::ContentManager::RenderEditor()
 
 }
 
+void tyr::ContentManager::EditorTextureSelector(const char* imGuiID, TextureID& textureID)
+{
+	const char* item_current = m_pTextures[textureID]->GetName().c_str();
+
+	SDXL_ImGui_SetNextItemWidth(219.f);
+	if (SDXL_ImGui_BeginCombo(imGuiID, item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (UINT n = 0; n < static_cast<UINT>(m_pTextures.size()); n++)
+		{
+			bool is_selected = (item_current == m_pTextures[n]->GetName().c_str());
+
+			if (SDXL_ImGui_Selectable(m_pTextures[n]->GetName().c_str(), is_selected))
+				textureID = n;
+			if (is_selected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+	
+}
+
 void tyr::ContentManager::Save()
 {
 	BinaryWriter writer(CONTENT_PATH);
