@@ -110,7 +110,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
-xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -134,7 +135,8 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
-xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -162,7 +164,8 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
-xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -190,7 +193,8 @@ xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
-xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>

@@ -8,9 +8,6 @@ tyr::TransformComp::TransformComp(const Transform& transform)
 	: tyr::BaseComponent(ComponentType::Transform)
 	, m_pTransform(new Transform(transform))
 {
-#ifdef USE_IM_GUI
-	SDXL_ImGui_ConsoleLog("Transform added");
-#endif
 }
 tyr::TransformComp::TransformComp(const Vector2& position)
 	: TransformComp(Transform(position))

@@ -72,6 +72,9 @@ void tyr::ContentManager::InitializeFromFile()
 {
 	BinaryReader reader(CONTENT_PATH);
 
+	if (!reader.IsOpen())
+		THROW_ERROR(L"Could not open file");
+	
 	ULONG64 header = reader.Read<ULONG64>();
 	if (header != 0x30140623)
 	{
@@ -115,6 +118,7 @@ void tyr::ContentManager::InitializeFromFile()
 			for (UINT i{ 0 }; i < size; i++)
 			{
 				std::string name = reader.Read<std::string>();
+				
 				LoadAnimation(name, i);
 			}
 				
@@ -357,10 +361,7 @@ void tyr::ContentManager::Save()
 	
 	writer.Write(ContentType::Animation);
 	writer.Write(static_cast<UINT>(m_pAnimations.size()));
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a)
-	{
-		writer.Write(a->GetName());
-	});
+	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a) { writer.Write(a->GetName()); });
 
 	
 	writer.Write(ContentType::End);
@@ -396,7 +397,7 @@ void tyr::ContentManager::TextureWindow()
 	SDXL_ImGui_Separator();
 	static char newTexture[40];
 	
-	SDXL_ImGui_InputText("Texture name", newTexture, ARRAY_SIZE(newTexture));
+	SDXL_ImGui_InputText("##ContentManagerTextureName", newTexture, ARRAY_SIZE(newTexture));
 	SDXL_ImGui_SameLine();
 	if(SDXL_ImGui_Button("LoadTexture"))
 	{
@@ -421,9 +422,18 @@ TextureID tyr::ContentManager::LoadTexture(const std::string& path)
 		return static_cast<TextureID>(std::distance(m_pTextures.begin(), found));
 	}
 	
-	auto pTemp = new Texture(m_DataFolder + m_TextureFolder, path);
-	m_pTextures.emplace_back(pTemp);
-	return static_cast<TextureID>(m_pTextures.size() - 1);
+	try
+	{
+		auto pTemp = new Texture(m_DataFolder + m_TextureFolder, path);
+		m_pTextures.emplace_back(pTemp);
+		return static_cast<TextureID>(m_pTextures.size() - 1);
+	}
+	catch (TyrException & e)
+	{
+		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
+		return 0;
+	}
+
 }
 FontID tyr::ContentManager::LoadFont(const std::string& path)
 {

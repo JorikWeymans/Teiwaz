@@ -1,6 +1,9 @@
 #include "tyrpch.h"
 #include "Texture.h"
-
+#include "TyrException.h"
+#include "StringManipulation.h"
+#include <sys/types.h>
+#include <sys/stat.h>
 tyr::Texture::Texture(const std::string& dataFolder, const std::string& name)
 	: m_pImage(nullptr)
 	, m_Hash(std::hash<std::string>{}(name))
@@ -9,6 +12,23 @@ tyr::Texture::Texture(const std::string& dataFolder, const std::string& name)
 {
 	const std::string completePath = dataFolder + name;
 
+	//https://stackoverflow.com/questions/18100097/portable-way-to-check-if-directory-exists-windows-linux-c
+	struct stat info{};
+	if (stat(completePath.c_str(), &info) != 0)
+	{
+		THROW_ERROR(L"Image does not exist");
+	}
+	else
+	{
+		if(!DoesExtensionMatch(completePath, "png"))
+		{
+			THROW_ERROR(L"Can only load png");
+		}
+		
+		const std::string what = completePath + " is Loaded";
+		SDXL_ImGui_ConsoleLog(what.c_str());
+	}
+	
 	SDXL_CreateImage(&m_pImage, std::wstring(completePath.begin(), completePath.end()));
 	
 	const auto di = SDXL_GetImageDimensions(m_pImage);

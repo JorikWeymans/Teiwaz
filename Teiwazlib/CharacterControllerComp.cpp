@@ -14,9 +14,6 @@ tyr::CharacterControllerComp::CharacterControllerComp()
 	, m_RayCastOffset(0.f)
 	, m_IsOnGround(false)
 {
-#ifdef USE_IM_GUI
-	SDXL_ImGui_ConsoleLog("CharacterController added");
-#endif
 }
 
 void tyr::CharacterControllerComp::Initialize()
