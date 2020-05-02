@@ -26,7 +26,9 @@ tyr::Texture::Texture(const std::string& dataFolder, const std::string& name)
 		}
 		
 		const std::string what = completePath + " is Loaded";
+#ifdef USE_IM_GUI
 		SDXL_ImGui_ConsoleLog(what.c_str());
+#endif
 	}
 	
 	SDXL_CreateImage(&m_pImage, std::wstring(completePath.begin(), completePath.end()));

@@ -74,21 +74,25 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\$(Platform)\Inter\BubbleBobble\</IntDir>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='_DEBUG|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\$(Platform)\Inter\BubbleBobble\</IntDir>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='_RELEASE|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\$(Platform)\Inter\BubbleBobble\</IntDir>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='_RELEASE|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\$(Platform)\Inter\BubbleBobble\</IntDir>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='_DEBUG|Win32'">
     <ClCompile>
@@ -105,13 +109,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\;$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /d /y
 xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
-xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e
+xcopy "$(SolutionDir)Libs\$(Platform)\vld_$(PlatformShortName).dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\dbghelp.dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(OutputPath)" /d /y</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -130,13 +137,16 @@ xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\;$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /d /y
 xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
-xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e
+xcopy "$(SolutionDir)Libs\$(Platform)\vld_$(PlatformShortName).dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\dbghelp.dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(OutputPath)" /d /y</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -159,13 +169,16 @@ xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\;$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /d /y
 xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
-xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e
+xcopy "$(SolutionDir)Libs\$(Platform)\vld_$(PlatformShortName).dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\dbghelp.dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(OutputPath)" /d /y</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -188,13 +201,16 @@ xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libs\$(Platform)\;$(SolutionDir)Libs\$(Platform)\$(Configuration)\;$(SolutionDir)$(Configuration)\$(Platform)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDXL.lib;Teiwazlib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /i /s /d /y /e
+      <Command>xcopy "$(SolutionDir)Libs\$(Platform)\$(Configuration)\SDXL.dll" "$(OutputPath)" /d /y
 xcopy "$(ProjectDir)Data" "$(OutputPath)Data\" /i /s /d /y /e
-xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e</Command>
+xcopy "$(ProjectDir)TyrBin" "$(OutputPath)TyrBin\" /i /s /d /y /e
+xcopy "$(SolutionDir)Libs\$(Platform)\vld_$(PlatformShortName).dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\dbghelp.dll" "$(OutputPath)" /d /y
+xcopy "$(SolutionDir)Libs\$(Platform)\Microsoft.DTfW.DHL.manifest" "$(OutputPath)" /d /y</Command>
       <Message>copy data path over to the output (only coppies new or modified files)</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
