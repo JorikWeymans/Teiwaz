@@ -48,6 +48,8 @@ namespace tyr
 	private:
 		ContentManager();
 		~ContentManager();
+		void LoadAnimation(const std::string& fileName, AnimationID arrayIndex);
+
 		
 		static ContentManager* pInstance;
 		bool m_IsInitialized;

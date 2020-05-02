@@ -39,6 +39,7 @@ tyr::ContentManager::~ContentManager()
 }
 
 
+
 tyr::ContentManager* tyr::ContentManager::GetInstance()
 {
 	if(!pInstance)
@@ -114,7 +115,7 @@ void tyr::ContentManager::InitializeFromFile()
 			for (UINT i{ 0 }; i < size; i++)
 			{
 				std::string name = reader.Read<std::string>();
-				LoadAnimation(name);
+				LoadAnimation(name, i);
 			}
 				
 			
@@ -356,7 +357,10 @@ void tyr::ContentManager::Save()
 	
 	writer.Write(ContentType::Animation);
 	writer.Write(static_cast<UINT>(m_pAnimations.size()));
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a) { writer.Write(a->GetName()); });
+	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a)
+	{
+		writer.Write(a->GetName());
+	});
 
 	
 	writer.Write(ContentType::End);
@@ -531,3 +535,30 @@ std::vector<tyr::TabItem> tyr::ContentManager::GetAnimationsInFolder() const
 	
 }
 
+void tyr::ContentManager::LoadAnimation(const std::string& fileName, AnimationID arrayIndex)
+{
+	std::stringstream ss;
+	ss << m_DataFolder << m_AnimationFolder << fileName << ANIMATION_SUFFIX;
+
+	BinaryReader reader{ ss.str() };
+
+	ULONG64 header = reader.Read<ULONG64>();
+	if (header != 0x78b109c3)
+	{
+		THROW_ERROR(L"This is not an animation");
+
+	}
+
+	const std::string animationName = reader.Read<std::string>();
+	const float tpf = reader.Read<float>();
+	const UINT elements = reader.Read<UINT>();
+
+	SpritePositions positions;
+
+	positions.resize(elements);
+	for (UINT i{ 0 }; i < elements; ++i)
+	{
+		positions[i] = Rect(reader.Read<Rect_POD>());
+	}
+	m_pAnimations.at(arrayIndex) = new Animation(animationName, tpf, std::move(positions));
+}
