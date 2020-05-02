@@ -17,7 +17,7 @@
 #include "BinaryReader.h"
 #include "BinStructureHelpers.h"
 
-#define CONTENT_PATH "./Bin/Content.tyr"
+#define CONTENT_PATH "./TyrBin/Content.tyr"
 #define ANIMATION_SUFFIX ".tyrAnimation"
 
 tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
