@@ -118,7 +118,6 @@ void tyr::ContentManager::InitializeFromFile()
 			for (UINT i{ 0 }; i < size; i++)
 			{
 				std::string name = reader.Read<std::string>();
-				
 				LoadAnimation(name, i);
 			}
 				

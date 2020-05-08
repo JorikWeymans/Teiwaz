@@ -7,9 +7,9 @@
 
 tyr::Animation::Animation(const std::string& animationName, TextureID spriteID, float tpf,SpritePositions&& sp)
 	: m_AnimationName(animationName)
+	, m_SpriteID(spriteID)
 	, m_AniElapser(tpf)
 	, m_CurrentAnimation(0)
-	, m_SpriteID(spriteID)
 
 {
 	m_AniSprites = std::move(sp);
@@ -46,7 +46,7 @@ tyr::Animation* tyr::Animation::Create(const std::string& path)
 
 	Animation* pTheAnimation = new Animation();
 	pTheAnimation->m_AnimationName = reader.ReadString();
-	//pTheAnimation->m_SpriteID = reader.Read<TextureID>();
+	pTheAnimation->m_SpriteID = reader.Read<TextureID>();
 	pTheAnimation->m_AniElapser.Reset(reader.Read<float>());
 
 	
@@ -105,7 +105,7 @@ void tyr::Animation::Save()
 	ULONG64 header = 0x78b109c3;
 	writer.Write(header);
 	writer.Write(m_AnimationName);
-	//writer.Write(m_SpriteID);
+	writer.Write(m_SpriteID);
 	writer.Write(m_AniElapser.GetMax());
 	writer.Write(static_cast<UINT>(m_AniSprites.size()));
 	std::for_each(m_AniSprites.begin(), m_AniSprites.end(), [&writer](const auto& ani) { writer.Write(ani.ToPOD()); });
