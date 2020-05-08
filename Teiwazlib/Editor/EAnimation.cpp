@@ -16,7 +16,7 @@ tyr::EAnimation::EAnimation(GameContext* pContext)
 	, m_ShowAnimation(true)
 	, m_pTemp(nullptr)
 {
-	m_Texture = CONTENT_MANAGER->LoadTexture("Sprites_Sliced_Combined_Scaled.png");
+	m_TempTextureID = 0; //Default it to 0
 
 	
 }
@@ -33,6 +33,7 @@ void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
 	//Creating a temporary animation in this class, when animation is saved, copy everything over to the selected animation
 	m_pTemp = new Animation(m_pAnimation->m_AniElapser.GetMax());
 	m_pTemp->m_AniSprites.resize(m_pAnimation->m_AniSprites.size());
+	m_TempTextureID = m_pAnimation->m_SpriteID;
 	
 	
 
@@ -40,7 +41,8 @@ void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
 
 
 
-
+	auto animationName = m_pAnimation->m_AnimationName;
+	std::copy(m_pAnimation->m_AnimationName.begin(), m_pAnimation->m_AnimationName.end(), m_Name);
 
 	
 	m_WindowIsOpen = true;
@@ -49,8 +51,6 @@ void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
 void tyr::EAnimation::RenderEditor()
 {
 	if (!m_pAnimation) return;
-
-
 
 	if(SDXL_ImGui_BeginAuto("AniEditor", &m_WindowIsOpen,
 		SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_AlwaysAutoResize | SDXL_ImGuiWindowFlags_NoMove/*| SDXL_ImGuiWindowFlags*/))
@@ -83,7 +83,7 @@ void tyr::EAnimation::RenderEditor()
 				if (m_ShowAnimation)
 					m_pTemp->Update(m_pContext->pTime->fixedDeltaTime);
 
-				auto texture = CONTENT_MANAGER->GetTexture(m_Texture);
+				auto texture = CONTENT_MANAGER->GetTexture(m_TempTextureID);
 				auto drawRect = m_pTemp->GetCurrentAnimation();
 
 				SDXL_ImGui_Image(texture->SDXL(), static_cast<SDXL::SDXLRect>(drawRect), 3.0f);
@@ -118,12 +118,15 @@ void tyr::EAnimation::Menu()
 			}
 			else
 			{
+				m_pAnimation->m_AnimationName = std::string(m_Name);
 				m_pAnimation->m_AniSprites.clear();
 				m_pAnimation->m_AniSprites.resize(m_pTemp->m_AniSprites.size());
 				std::copy(m_pTemp->m_AniSprites.begin(), m_pTemp->m_AniSprites.end(), m_pAnimation->m_AniSprites.begin());
 				m_pAnimation->m_AniElapser.Reset(m_pTemp->m_AniElapser.GetMax());
+				m_pAnimation->m_SpriteID = m_TempTextureID;
 				
 				m_pAnimation->Save();
+				
 				SDXL_ImGui_ConsoleLog("Animation is saved");
 
 			}
@@ -142,7 +145,7 @@ void tyr::EAnimation::SpriteWindow()
 		auto mousePos = SDXL_ImGui_GetMousePos();
 		auto contentRegion = SDXL_ImGui_GetWindowContentRegionMin();
 
-		SDXL_ImGui_Image(CONTENT_MANAGER->GetTexture(m_Texture)->SDXL());
+		SDXL_ImGui_Image(CONTENT_MANAGER->GetTexture(m_TempTextureID)->SDXL());
 
 		auto WindowPos = SDXL_ImGui_GetWindowPos();
 		WindowPos.x += contentRegion.x;
@@ -209,9 +212,12 @@ void tyr::EAnimation::SpriteWindow()
 
 void tyr::EAnimation::AnimationEditor()
 {
-	static char name[25];
-	SDXL_ImGui_Text(m_pAnimation->m_AnimationName.c_str());;
+	//SDXL_ImGui_InputText("Name##EAnumationName", m_Name, ANIMATION_NAME_MAX_CHAR);
 
+	//static TextureID id = 0;
+	ContentManager::GetInstance()->EditorTextureSelector("Sprite##EAnimation", m_TempTextureID);
+
+	SDXL_ImGui_Text(m_Name);
 	float tpf = m_pTemp->m_AniElapser.GetMax();
 	
 	if(SDXL_ImGui_DragFloat("Time per frame", &tpf, 0.001f))

@@ -466,26 +466,8 @@ AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 
 	BinaryReader reader{ ss.str() };
 
-	ULONG64 header = reader.Read<ULONG64>();
-	if (header != 0x78b109c3)
-	{
-		THROW_ERROR(L"This is not an animation");
-
-	}
-
-	const std::string animationName = reader.Read<std::string>();
-	const float tpf = reader.Read<float>();
-	const UINT elements = reader.Read<UINT>();
-
-	SpritePositions positions;
-
-	positions.resize(elements);
-	for (UINT i{ 0 }; i < elements; ++i)
-	{
-		positions[i] = Rect(reader.Read<Rect_POD>());
-	}
-	m_pAnimations.emplace_back(new Animation(animationName, tpf, std::move(positions)));
-
+	Animation::Create(ss.str());
+	m_pAnimations.emplace_back(Animation::Create(ss.str()));
 
 
 
@@ -510,6 +492,29 @@ tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id)
 	if (id >= m_pAnimations.size()) return nullptr;
 
 	return m_pAnimations[id];
+}
+
+tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& fileName)
+{
+	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
+	if (found != m_pAnimations.end())
+	{
+		return *found;
+	}
+
+	return nullptr;
+}
+
+AnimationID tyr::ContentManager::GetAnimationID(const std::string& fileName)
+{
+	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
+
+	if (found != m_pAnimations.end())
+	{
+		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
+	}
+
+	return 0; //
 }
 
 tyr::Animation* tyr::ContentManager::GetAnimation(std::string& name)
@@ -549,26 +554,6 @@ void tyr::ContentManager::LoadAnimation(const std::string& fileName, AnimationID
 {
 	std::stringstream ss;
 	ss << m_DataFolder << m_AnimationFolder << fileName << ANIMATION_SUFFIX;
-
-	BinaryReader reader{ ss.str() };
-
-	ULONG64 header = reader.Read<ULONG64>();
-	if (header != 0x78b109c3)
-	{
-		THROW_ERROR(L"This is not an animation");
-
-	}
-
-	const std::string animationName = reader.Read<std::string>();
-	const float tpf = reader.Read<float>();
-	const UINT elements = reader.Read<UINT>();
-
-	SpritePositions positions;
-
-	positions.resize(elements);
-	for (UINT i{ 0 }; i < elements; ++i)
-	{
-		positions[i] = Rect(reader.Read<Rect_POD>());
-	}
-	m_pAnimations.at(arrayIndex) = new Animation(animationName, tpf, std::move(positions));
+	
+	m_pAnimations.at(arrayIndex) = Animation::Create(ss.str());
 }

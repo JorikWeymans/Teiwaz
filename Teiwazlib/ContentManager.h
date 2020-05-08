@@ -32,6 +32,8 @@ namespace tyr
 		Texture* GetTexture(TextureID id);
 		Font const* GetFont(FontID id);
 		Animation* GetAnimation(AnimationID id);
+		Animation* GetAnimation(const std::string& fileName);
+		AnimationID GetAnimationID(const std::string& fileName);
 		Animation* GetAnimation(std::string& name); //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		
 		std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code

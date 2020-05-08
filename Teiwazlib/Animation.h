@@ -12,8 +12,10 @@ namespace tyr
 	class Animation final
 	{
 	public:
-		explicit Animation(const std::string& animationName, float tpf, SpritePositions&& sp);
+		explicit Animation(const std::string& animationName, TextureID spriteID, float tpf, SpritePositions&& sp);
 		explicit Animation(const std::string& path);
+		static Animation* Create(const std::string& path);
+		
 		~Animation() = default;
 		void Update(float elapsed);
 		const Rect& GetCurrentAnimation() const;
@@ -27,11 +29,12 @@ namespace tyr
 		friend bool operator==(Animation* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 
 		friend EAnimation; //TODO: try to remove friend
-		Animation(float tpf);
-
+		explicit Animation(float tpf);
+		Animation() = default;
+		
 		
 		std::string m_AnimationName;
-		
+		TextureID m_SpriteID;
 		Elapser m_AniElapser;
 		unsigned int m_CurrentAnimation;
 		SpritePositions m_AniSprites;

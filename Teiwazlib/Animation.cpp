@@ -5,42 +5,61 @@
 #include <algorithm>
 #include "TyrException.h"
 
-tyr::Animation::Animation(const std::string& animationName, float tpf,SpritePositions&& sp)
+tyr::Animation::Animation(const std::string& animationName, TextureID spriteID, float tpf,SpritePositions&& sp)
 	: m_AnimationName(animationName)
 	, m_AniElapser(tpf)
 	, m_CurrentAnimation(0)
+	, m_SpriteID(spriteID)
 
 {
 	m_AniSprites = std::move(sp);
 	
 	
 }
+tyr::Animation::Animation(float tpf)
+	: m_AnimationName("NaN")
+	, m_AniElapser(tpf)
+	, m_CurrentAnimation(0)
+{
 
+}
 tyr::Animation::Animation(const std::string& path)
 	: m_CurrentAnimation(0)
 {
 	UNREFERENCED_PARAMETER(path);
-	BinaryReader reader(path);
+	
 
 	
+}
+
+tyr::Animation* tyr::Animation::Create(const std::string& path)
+{
+	
+	BinaryReader reader(path);
+
+
 	ULONG64 header = reader.Read<ULONG64>();
 	if (header != 0x78b109c3)
 	{
 		THROW_ERROR(L"This is not an animation");
 	}
-	m_AnimationName = reader.ReadString();
-	m_AniElapser.Reset(reader.Read<float>());
 
+	Animation* pTheAnimation = new Animation();
+	pTheAnimation->m_AnimationName = reader.ReadString();
+	//pTheAnimation->m_SpriteID = reader.Read<TextureID>();
+	pTheAnimation->m_AniElapser.Reset(reader.Read<float>());
+
+	
 	const UINT elements = reader.Read<UINT>();
 
-	m_AniSprites.resize(elements);
-	
-	for(UINT i{0}; i < elements; ++i)
+	pTheAnimation->m_AniSprites.resize(elements);
+
+	for (UINT i{ 0 }; i < elements; ++i)
 	{
-		m_AniSprites[i] = Rect(reader.Read<Rect_POD>());
+		pTheAnimation->m_AniSprites[i] = Rect(reader.Read<Rect_POD>());
 	}
 
-	
+	return pTheAnimation;
 }
 
 void tyr::Animation::Update(float elapsed)
@@ -86,6 +105,7 @@ void tyr::Animation::Save()
 	ULONG64 header = 0x78b109c3;
 	writer.Write(header);
 	writer.Write(m_AnimationName);
+	//writer.Write(m_SpriteID);
 	writer.Write(m_AniElapser.GetMax());
 	writer.Write(static_cast<UINT>(m_AniSprites.size()));
 	std::for_each(m_AniSprites.begin(), m_AniSprites.end(), [&writer](const auto& ani) { writer.Write(ani.ToPOD()); });
@@ -97,13 +117,7 @@ void tyr::Animation::Save()
 	
 }
 
-tyr::Animation::Animation(float tpf)
-	: m_AnimationName("NaN")
-	, m_AniElapser(tpf)
-	, m_CurrentAnimation(0)
-{
-	
-}
+
 
 bool tyr::operator==(Animation* lhs, const std::string& rhs)
 {
