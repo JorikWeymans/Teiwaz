@@ -414,38 +414,56 @@ void tyr::ContentManager::TextureWindow()
 }
 void tyr::ContentManager::BtnRemoveSelectedTexture(int& selected)
 {
-	if (SDXL_ImGui_Button("Remove Selected##ContentManager"))
+
+	
+	if (SDXL_ImGui_Button("Remove Selected##TextureContentManager"))
 	{
+		
 		if (selected == -1) return;
+		SDXL_ImGui_OpenPopup("Are you sure?##TextureContentManager");
 
-		const std::string what = "[UNLOADED] "+ m_pTextures[selected]->GetName();
-		if(selected == static_cast<int>(m_pTextures.size()) - 1)
-		{
-			m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
-			
-
-			//const std::string what = m_pTextures[selected]->GetName() + " is Unloaded";
-			
-			
-		}
-		
-		Texture* pToDelete = m_pTextures[selected];
-		for(int i = selected; i < static_cast<int>(m_pTextures.size() - 1); i++)
-		{
-			m_pTextures[i] = m_pTextures[i + 1];
-		}
-
-		m_pTextures[m_pTextures.size() - 1] = pToDelete;
-		m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
-
-
-		
-		SDXL_ImGui_ConsoleLog(what.c_str());
-		selected = -1;
 	}
 
+	SDXL_ImGui_SetNextWindowSize(SDXL::Float2(400.f, 100.f));
+	if (SDXL_ImGui_BeginPopupModal("Are you sure?##TextureContentManager", nullptr, SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_NoResize))
+	{
+		std::string what = "This cannot be undone!";
+		std::string whatSecond = "Texture: " + m_pTextures[selected]->GetName() + " will be deleted!";
+		SDXL_ImGui_Text(what.c_str());
+		SDXL_ImGui_Text(whatSecond.c_str());
+		
+		if(SDXL_ImGui_Button("Never Mind##TextureContentManager", SDXL::Float2(180.f, 20.f)))
+		{
+			SDXL_ImGui_CloseCurrentPopup();
+		}
+		SDXL_ImGui_SameLine();
+		if(SDXL_ImGui_Button("Yes, I understand", SDXL::Float2(180.f, 20.f)))
+		{
+			const std::string WhatUnloaded = "[UNLOADED] "+ m_pTextures[selected]->GetName();
+			if(selected != static_cast<int>(m_pTextures.size()) - 1)
+			{
+				Texture* pToDelete = m_pTextures[selected];
+				for (int i = selected; i < static_cast<int>(m_pTextures.size() - 1); i++)
+				{
+					m_pTextures[i] = m_pTextures[i + 1];
+				}
+
+				m_pTextures[m_pTextures.size() - 1] = pToDelete;
+
+			}
+
+			SAFE_DELETE(m_pTextures[selected]);
+			m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
 
 
+			Save();
+			SDXL_ImGui_ConsoleLog(WhatUnloaded.c_str());
+			selected = -1;
+			SDXL_ImGui_CloseCurrentPopup();
+		}
+		
+		SDXL_ImGui_EndPopup();
+	}
 
 
 
