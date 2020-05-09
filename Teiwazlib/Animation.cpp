@@ -64,7 +64,6 @@ tyr::Animation* tyr::Animation::Create(const std::string& path)
 
 void tyr::Animation::Update(float elapsed)
 {
-
 	if(m_AniElapser.Update(elapsed))
 	{
 		m_CurrentAnimation++;

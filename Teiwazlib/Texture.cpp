@@ -25,8 +25,9 @@ tyr::Texture::Texture(const std::string& dataFolder, const std::string& name)
 			THROW_ERROR(L"Can only load png");
 		}
 		
-		const std::string what = completePath + " is Loaded";
+		
 #ifdef USE_IM_GUI
+		const std::string what = "[LOADED]   " + m_Name;
 		SDXL_ImGui_ConsoleLog(what.c_str());
 #endif
 	}

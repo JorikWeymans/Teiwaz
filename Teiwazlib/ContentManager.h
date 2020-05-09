@@ -45,6 +45,7 @@ namespace tyr
 		void RenderEditor(); //called in EMenuBar RenderEditor()
 		void EditorTextureSelector(const char* imGuiID, TextureID& textureID);
 		void Save();
+
 		friend TextureComp;
 #endif
 	private:
@@ -64,7 +65,7 @@ namespace tyr
 #ifdef USE_IM_GUI
 
 		void TextureWindow();
-		
+		void BtnRemoveSelectedTexture(int& selected);
 		char m_CharDataPath[256] {};
 		char m_CharSceneFolder[30] {};
 		char m_CharAnimationFolder[30] {};

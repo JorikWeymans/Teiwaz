@@ -149,7 +149,7 @@ void tyr::ContentManager::RenderEditor()
 
 	
 	static bool openContentManager = false;
-	
+
 	if (SDXL_ImGui_Selectable("ContenManager",false , SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(90,20)))
 	{
 		openContentManager = !openContentManager;
@@ -166,8 +166,8 @@ void tyr::ContentManager::RenderEditor()
 	{
 		
 		static int selected = -1;
-
-		if (SDXL_ImGui_Begin("ContentManager##ContentManager", &openContentManager, SDXL_ImGuiWindowFlags_NoSavedSettings | SDXL_ImGuiWindowFlags_MenuBar ))
+		SDXL_ImGui_SetNextWindowSize(SDXL::Float2(500.f, 500.f));
+		if (SDXL_ImGui_Begin("ContentManager##ContentManager", &openContentManager, SDXL_ImGuiWindowFlags_NoSavedSettings | SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_NoResize))
 		{
 			if(SDXL_ImGui_BeginMenuBar())
 			{
@@ -215,7 +215,7 @@ void tyr::ContentManager::RenderEditor()
 
 		if (selected == 1)
 		{
-			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0,0), false, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
+			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0,0), false))
 			{
 				TextureWindow();
 				SDXL_ImGui_EndChild();
@@ -300,7 +300,6 @@ void tyr::ContentManager::RenderEditor()
 void tyr::ContentManager::EditorTextureSelector(const char* imGuiID, TextureID& textureID)
 {
 	const char* item_current = m_pTextures[textureID]->GetName().c_str();
-
 	SDXL_ImGui_SetNextItemWidth(219.f);
 	if (SDXL_ImGui_BeginCombo(imGuiID, item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
@@ -367,43 +366,89 @@ void tyr::ContentManager::Save()
 	
 }
 
+
+
 void tyr::ContentManager::TextureWindow()
 {
+
 	SDXL_ImGui_Text("ID\tName");
 	static int selected = -1;
 	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
 	{
 		std::string tag = FormatString(" %i\t%s", i, m_pTextures[i]->GetName().c_str());
-		
-		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i,  SDXL_ImGuiSelectableFlags_DontClosePopups))
+
+		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
 		{
 			selected = i;
 		}
 	}
-	
+
 	if (selected != -1)
 	{
-		if(SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
+		if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			auto di = m_pTextures[selected]->GetDimension();
-			
-			SDXL_ImGui_Image(m_pTextures[selected]->SDXL(), { di.x, di.y}, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
-			
-			
+
+			SDXL_ImGui_Image(m_pTextures[selected]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
+
+
 		}
 		SDXL_ImGui_End();
 	}
 	SDXL_ImGui_Separator();
 	static char newTexture[40];
+
+	BtnRemoveSelectedTexture(selected);
 	
-	SDXL_ImGui_InputText("##ContentManagerTextureName", newTexture, ARRAY_SIZE(newTexture));
 	SDXL_ImGui_SameLine();
-	if(SDXL_ImGui_Button("LoadTexture"))
+	SDXL_ImGui_SetNextItemWidth(200.f);
+	SDXL_ImGui_InputTextWithHint("##ContentManagerTextureName", "TEXTURE_NAME.png", newTexture, ARRAY_SIZE(newTexture));
+	SDXL_ImGui_SameLine();
+	if(SDXL_ImGui_Button("Load##ContentManager"))
 	{
 		LoadTexture(std::string(newTexture));
+		Save();
 	}
 
 	
+}
+void tyr::ContentManager::BtnRemoveSelectedTexture(int& selected)
+{
+	if (SDXL_ImGui_Button("Remove Selected##ContentManager"))
+	{
+		if (selected == -1) return;
+
+		const std::string what = "[UNLOADED] "+ m_pTextures[selected]->GetName();
+		if(selected == static_cast<int>(m_pTextures.size()) - 1)
+		{
+			m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
+			
+
+			//const std::string what = m_pTextures[selected]->GetName() + " is Unloaded";
+			
+			
+		}
+		
+		Texture* pToDelete = m_pTextures[selected];
+		for(int i = selected; i < static_cast<int>(m_pTextures.size() - 1); i++)
+		{
+			m_pTextures[i] = m_pTextures[i + 1];
+		}
+
+		m_pTextures[m_pTextures.size() - 1] = pToDelete;
+		m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
+
+
+		
+		SDXL_ImGui_ConsoleLog(what.c_str());
+		selected = -1;
+	}
+
+
+
+
+
+
 }
 #endif
 void tyr::ContentManager::Destroy()

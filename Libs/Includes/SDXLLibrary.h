@@ -516,7 +516,7 @@ SDXLLibrary_API bool SDXL_ImGui_SliderInt4(const char* label, int v[4], int v_mi
 // **---------------**
 SDXLLibrary_API bool SDXL_ImGui_InputText(const char* label, char* buf, size_t buf_size,void* user_data = nullptr);
 SDXLLibrary_API bool SDXL_ImGui_InputTextMultiline(const char* label, char* buf, size_t buf_size, const SDXL::Float2& size = SDXL::Float2(0.f,0.f) , void* user_data = nullptr);
-
+SDXLLibrary_API bool SDXL_ImGui_InputTextWithHint(const char* label, const char* hint, char* buf, size_t buf_size);
 
 // **---------------**
 // * ---- Colors ----*
