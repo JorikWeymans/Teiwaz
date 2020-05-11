@@ -150,7 +150,7 @@ void tyr::ContentManager::RenderEditor()
 	
 	static bool openContentManager = false;
 
-	if (SDXL_ImGui_Selectable("ContenManager",false , SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(90,20)))
+	if (SDXL_ImGui_Selectable("ContentManager",false , SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(100,20)))
 	{
 		openContentManager = !openContentManager;
 		if(openContentManager)
@@ -193,14 +193,23 @@ void tyr::ContentManager::RenderEditor()
 			{
 				
 				
-				if (SDXL_ImGui_Selectable("Textures", selected == 1, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+				if (SDXL_ImGui_Selectable("Textures##ContentManager", selected == 1, 
+					SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
 				{
 					selected = 1;
 
 				}
-				if (SDXL_ImGui_Selectable("Scenes", selected == 2, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+				if (SDXL_ImGui_Selectable("Scenes##ContentManager", selected == 2, 
+					SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
 				{
 					selected = 2;
+
+				}
+
+				if (SDXL_ImGui_Selectable("Animations##ContentManager", selected == 3,
+					SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+				{
+					selected = 3;
 
 				}
 				SDXL_ImGui_EndChild();

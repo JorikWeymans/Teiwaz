@@ -165,16 +165,16 @@ void tyr::SceneObject::AddComponentButton()
 			items[i] = magic_enum::enum_name(static_cast<ComponentType>(i)).data();
 
 	
-	static const char* item_current = items[0];
+	static int selectedID = 0;
 
 	SDXL_ImGui_SetNextItemWidth(150.f);
-	if (SDXL_ImGui_BeginCombo("##ComponentsSceneObj", item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	if (SDXL_ImGui_BeginCombo("##ComponentsSceneObj", items[selectedID], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (int n = 0; n < ComponentCount; n++)
 		{
-			bool is_selected = (item_current == items[n]);
+			bool is_selected = (selectedID == n);
 			if (SDXL_ImGui_Selectable(items[n], is_selected))
-				item_current = items[n];
+				selectedID = n;
 			if (is_selected)
 				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
 		}
@@ -184,7 +184,58 @@ void tyr::SceneObject::AddComponentButton()
 	SDXL_ImGui_SameLine();
 	if (SDXL_ImGui_Button("Add Component"))
 	{
-		AddComponent(new ColliderComp(100, 100, PivotMode::TopLeft, false));
+		const ComponentType selectedComp = static_cast<ComponentType>(selectedID);
+
+		BaseComponent* theComp = nullptr;
+		bool usedNotImplemented = false;
+		switch (selectedComp)
+		{
+			case ComponentType::CharacterController:
+				theComp = new CharacterControllerComp();
+			break;
+			case ComponentType::Collider:
+				theComp = new ColliderComp(100, 100, PivotMode::TopLeft, false);
+			break;
+			case ComponentType::FPS:
+				theComp = new FPSComp(FPSCompType::Update);
+			break;
+			case ComponentType::RigidBody:
+				theComp = new RigidBodyComp(-150.f);
+			break;
+			case ComponentType::Text:
+				usedNotImplemented = true;
+			break;
+			case ComponentType::Texture:
+				theComp = new TextureComp(0);
+			break;
+			case ComponentType::Transform:
+				usedNotImplemented = true;
+			break;
+			case ComponentType::Player1Controller:
+				theComp = new Player1Controller();
+			break;
+			case ComponentType::Animator:
+				theComp = new AnimatorComp();
+			break;
+
+			default:
+				usedNotImplemented = true;
+			; }
+
+
+		if(usedNotImplemented)
+			SDXL_ImGui_ConsoleLogError("This component cannot be added, yet");
+	
+		else
+		{
+			AddComponent(theComp);
+			SDXL_ImGui_ConsoleLog("The component is added");
+		}
+		
+
+		
+
+		
 	}
 	SDXL_ImGui_End();
 }
