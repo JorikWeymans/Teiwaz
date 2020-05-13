@@ -11,15 +11,12 @@
 #ifdef USE_IM_GUI
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
+	, m_TempTextureID(0)
 	, m_pAnimation(nullptr)
-	, m_WindowIsOpen(false)
-	, m_ShowAnimation(true)
 	, m_pTemp(nullptr)
-{
-	m_TempTextureID = 0; //Default it to 0
-
-	
-}
+	, m_ShowAnimation(true)
+	, m_WindowIsOpen(false) // Default it to 0
+{	}
 
 tyr::EAnimation::~EAnimation()
 {
@@ -107,35 +104,65 @@ void tyr::EAnimation::Menu()
 
 	if (SDXL_ImGui_BeginMenuBar())
 	{
-		//if (SDXL_ImGui_MenuItem("close"))
+		MItemSave();
+		MItemSettings();
 
-		if(SDXL_ImGui_MenuItem("Save##EAnimation"))
-		{
 
-			if(m_pTemp->m_AniSprites.empty())
-			{
-				SDXL_ImGui_ConsoleLogError("Cannot Save animation without any elements");
-			}
-			else
-			{
-				m_pAnimation->m_AnimationName = std::string(m_Name);
-				m_pAnimation->m_AniSprites.clear();
-				m_pAnimation->m_AniSprites.resize(m_pTemp->m_AniSprites.size());
-				std::copy(m_pTemp->m_AniSprites.begin(), m_pTemp->m_AniSprites.end(), m_pAnimation->m_AniSprites.begin());
-				m_pAnimation->m_AniElapser.Reset(m_pTemp->m_AniElapser.GetMax());
-				m_pAnimation->m_SpriteID = m_TempTextureID;
-				
-				m_pAnimation->Save();
-				
-				SDXL_ImGui_ConsoleLog("Animation is saved");
+		
 
-			}
-		}
+
+		
 
 		SDXL_ImGui_EndMenuBar();
 	}
 
 
+}
+
+void tyr::EAnimation::MItemSave()
+{
+	if (SDXL_ImGui_MenuItem("Save##EAnimation"))
+	{
+
+		if (m_pTemp->m_AniSprites.empty())
+		{
+			SDXL_ImGui_ConsoleLogError("Cannot Save animation without any elements");
+		}
+		else
+		{
+			m_pAnimation->m_AnimationName = std::string(m_Name);
+			m_pAnimation->m_AniSprites.clear();
+			m_pAnimation->m_AniSprites.resize(m_pTemp->m_AniSprites.size());
+			std::copy(m_pTemp->m_AniSprites.begin(), m_pTemp->m_AniSprites.end(), m_pAnimation->m_AniSprites.begin());
+			m_pAnimation->m_AniElapser.Reset(m_pTemp->m_AniElapser.GetMax());
+			m_pAnimation->m_SpriteID = m_TempTextureID;
+
+			m_pAnimation->Save();
+
+			SDXL_ImGui_ConsoleLog("Animation is saved");
+
+		}
+	}
+}
+
+void tyr::EAnimation::MItemSettings()
+{
+	static bool isSettingWindowOpen = false;
+	if (SDXL_ImGui_MenuItem("Settings##EAnimation"))
+	{
+		SDXL_ImGui_OpenPopup("Test##EAnimation");
+		SDXL_ImGui_SetNextWindowContentSize(SDXL::Float2(150.f, 200.f));
+		isSettingWindowOpen = true;
+	}
+
+
+	SDXL_ImGuiWindowFlags flags = SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_NoResize;
+	if (SDXL_ImGui_BeginPopupModal("Test##EAnimation", &isSettingWindowOpen, flags))
+	{
+
+		SDXL_ImGui_DragFloat("Grid size##EAnimation", &m_GridSize);
+		SDXL_ImGui_EndPopup();
+	}
 }
 
 void tyr::EAnimation::SpriteWindow()
@@ -276,12 +303,10 @@ void tyr::EAnimation::AnimationEditor()
 	{
 		for (int j{ m_j }; j < m_j + m_z; j++)
 		{
-			for(int i {m_i}; i < m_y; i++)
+			for(int i {m_i}; i < m_i + m_y; i++)
 			{
 			
 					m_pTemp->m_AniSprites.emplace_back(Rect(i * m_GridSize, j * m_GridSize, m_GridSize, m_GridSize));
-				
-				
 			}
 		}
 		

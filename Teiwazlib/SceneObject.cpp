@@ -220,7 +220,7 @@ void tyr::SceneObject::AddComponentButton()
 
 			default:
 				usedNotImplemented = true;
-			; }
+			 }
 
 
 		if(usedNotImplemented)

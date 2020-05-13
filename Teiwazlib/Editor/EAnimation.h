@@ -18,6 +18,9 @@ namespace tyr
 		void RenderEditor();
 	private:
 		void Menu();
+		void MItemSave();
+		void MItemSettings();
+		
 		void SpriteWindow();
 		void AnimationEditor();
 		
