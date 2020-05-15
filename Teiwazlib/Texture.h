@@ -4,6 +4,7 @@
 namespace tyr
 {
 	class ContentManager;
+	class TextureManager;
 
 	class Texture final
 	{
@@ -13,6 +14,7 @@ namespace tyr
 		const std::string& GetName() const;
 	private:
 		friend ContentManager;
+		friend TextureManager;
 
 		explicit Texture(const std::string& dataFolder, const std::string& name);
 		~Texture();

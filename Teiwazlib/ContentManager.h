@@ -9,6 +9,7 @@ namespace tyr
 	class Texture;
 	class Animation;
 	class TextureComp;
+	class TextureManager;
 	class ContentManager final
 	{
 	public:
@@ -29,7 +30,7 @@ namespace tyr
 		FontID LoadFont(const std::string& path);
 		AnimationID LoadAnimation(const std::string& fileName);
 
-		Texture* GetTexture(TextureID id);
+		Texture* GetTexture(TextureID id) const; 
 		Font const* GetFont(FontID id);
 		Animation* GetAnimation(AnimationID id);
 		Animation* GetAnimation(const std::string& fileName);
@@ -58,14 +59,13 @@ namespace tyr
 		bool m_IsInitialized;
 		std::string m_DataFolder, m_SceneFolder, m_TextureFolder, m_FontFolder, m_AnimationFolder ;
 		
-		std::vector<Texture*> m_pTextures;
+		TextureManager* m_pTextures;
 		std::vector<Font*>    m_pFonts;
 		std::vector<Animation*> m_pAnimations;
 
 #ifdef USE_IM_GUI
 
-		void TextureWindow();
-		void BtnRemoveSelectedTexture(int& selected);
+		void SceneWindow();
 		char m_CharDataPath[256] {};
 		char m_CharSceneFolder[30] {};
 		char m_CharAnimationFolder[30] {};

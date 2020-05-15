@@ -16,6 +16,7 @@
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
 #include "BinStructureHelpers.h"
+#include "TextureManager.h"
 
 #define CONTENT_PATH "./TyrBin/Content.tyr"
 #define ANIMATION_SUFFIX ".tyrAnimation"
@@ -26,14 +27,13 @@ tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 tyr::ContentManager::ContentManager()
 	: m_IsInitialized(false)
 	, m_DataFolder("")
-	, m_pTextures(std::vector<Texture*>())
 	, m_pFonts(std::vector<Font*>())
 {
 }
 
 tyr::ContentManager::~ContentManager()
 {
-	std::for_each(m_pTextures.begin(), m_pTextures.end(),		[](auto* p) {SAFE_DELETE(p)});
+	SAFE_DELETE(m_pTextures);
 	std::for_each(m_pFonts.begin(), m_pFonts.end(),			[](auto* p) {SAFE_DELETE(p)});
 	std::for_each(m_pAnimations.begin(), m_pAnimations.end(),	[](auto* p) {SAFE_DELETE(p) });
 }
@@ -54,17 +54,17 @@ void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::s
 																	const std::string& fontFolder,
 																	const std::string& animationFolder)
 {
-	UNREFERENCED_PARAMETER(sceneFolder);
-	UNREFERENCED_PARAMETER(animationFolder);
 	if(!m_IsInitialized)
 	{
-		m_DataFolder = dataFolder;
-		m_SceneFolder = sceneFolder;
-		m_TextureFolder = textureFolder;
-		m_FontFolder = fontFolder;
+		m_DataFolder      = dataFolder;
+		m_SceneFolder     = sceneFolder;
+		m_TextureFolder   = textureFolder;
+		m_FontFolder      = fontFolder;
 		m_AnimationFolder = animationFolder;
 
-		m_IsInitialized = true;
+		m_IsInitialized   = true;
+
+		m_pTextures = new TextureManager();
 	}
 }
 
@@ -89,6 +89,8 @@ void tyr::ContentManager::InitializeFromFile()
 
 	m_AnimationFolder = reader.Read<std::string>();
 
+
+
 	ContentType type = reader.Read<ContentType>();
 	while(type != ContentType::End)
 	{
@@ -98,12 +100,13 @@ void tyr::ContentManager::InitializeFromFile()
 		switch (type)
 		{
 		case ContentType::Texture:
-			m_pTextures.resize(size, nullptr);
+			m_pTextures = new TextureManager();
+			m_pTextures->Resize(size);
 			
 			for(UINT i {0}; i < size; i++)
 			{
 				std::string name = reader.Read<std::string>();
-				m_pTextures[i] = new Texture(m_DataFolder + m_TextureFolder, name);
+				m_pTextures->InsertAt(i, new Texture(m_DataFolder + m_TextureFolder, name));
 			}
 
 			break;
@@ -145,9 +148,6 @@ std::string tyr::ContentManager::GetDataFolder() const
 #ifdef USE_IM_GUI
 void tyr::ContentManager::RenderEditor()
 {
-
-
-	
 	static bool openContentManager = false;
 
 	if (SDXL_ImGui_Selectable("ContentManager",false , SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(100,20)))
@@ -226,7 +226,7 @@ void tyr::ContentManager::RenderEditor()
 		{
 			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0,0), false))
 			{
-				TextureWindow();
+				m_pTextures->RenderEditor();
 				SDXL_ImGui_EndChild();
 			}
 		}
@@ -308,21 +308,7 @@ void tyr::ContentManager::RenderEditor()
 
 void tyr::ContentManager::EditorTextureSelector(const char* imGuiID, TextureID& textureID)
 {
-	const char* item_current = m_pTextures[textureID]->GetName().c_str();
-	SDXL_ImGui_SetNextItemWidth(219.f);
-	if (SDXL_ImGui_BeginCombo(imGuiID, item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
-	{
-		for (UINT n = 0; n < static_cast<UINT>(m_pTextures.size()); n++)
-		{
-			bool is_selected = (item_current == m_pTextures[n]->GetName().c_str());
-
-			if (SDXL_ImGui_Selectable(m_pTextures[n]->GetName().c_str(), is_selected))
-				textureID = n;
-			if (is_selected)
-				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-		}
-		SDXL_ImGui_EndCombo();
-	}
+	m_pTextures->ETextureSelector(imGuiID, textureID);
 	
 }
 
@@ -357,10 +343,7 @@ void tyr::ContentManager::Save()
 	writer.Write(m_FontFolder);
 	writer.Write(m_AnimationFolder);
 
-	
-	writer.Write(ContentType::Texture);
-	writer.Write(static_cast<UINT>(m_pTextures.size()));
-	std::for_each(m_pTextures.begin(), m_pTextures.end(), [&writer](Texture* t) { writer.Write(t->GetName());});
+	m_pTextures->SaveTextures(writer);
 
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
@@ -377,106 +360,7 @@ void tyr::ContentManager::Save()
 
 
 
-void tyr::ContentManager::TextureWindow()
-{
 
-	SDXL_ImGui_Text("ID\tName");
-	static int selected = -1;
-	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
-	{
-		std::string tag = FormatString(" %i\t%s", i, m_pTextures[i]->GetName().c_str());
-
-		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
-		{
-			selected = i;
-		}
-	}
-
-	if (selected != -1)
-	{
-		if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			auto di = m_pTextures[selected]->GetDimension();
-
-			SDXL_ImGui_Image(m_pTextures[selected]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
-
-
-		}
-		SDXL_ImGui_End();
-	}
-	SDXL_ImGui_Separator();
-	static char newTexture[40];
-
-	BtnRemoveSelectedTexture(selected);
-	
-	SDXL_ImGui_SameLine();
-	SDXL_ImGui_SetNextItemWidth(200.f);
-	SDXL_ImGui_InputTextWithHint("##ContentManagerTextureName", "TEXTURE_NAME.png", newTexture, ARRAY_SIZE(newTexture));
-	SDXL_ImGui_SameLine();
-	if(SDXL_ImGui_Button("Load##ContentManager"))
-	{
-		LoadTexture(std::string(newTexture));
-		Save();
-	}
-
-	
-}
-void tyr::ContentManager::BtnRemoveSelectedTexture(int& selected)
-{
-
-	
-	if (SDXL_ImGui_Button("Remove Selected##TextureContentManager"))
-	{
-		
-		if (selected == -1) return;
-		SDXL_ImGui_OpenPopup("Are you sure?##TextureContentManager");
-
-	}
-
-	SDXL_ImGui_SetNextWindowSize(SDXL::Float2(400.f, 100.f));
-	if (SDXL_ImGui_BeginPopupModal("Are you sure?##TextureContentManager", nullptr, SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_NoResize))
-	{
-		std::string what = "This cannot be undone!";
-		std::string whatSecond = "Texture: " + m_pTextures[selected]->GetName() + " will be deleted!";
-		SDXL_ImGui_Text(what.c_str());
-		SDXL_ImGui_Text(whatSecond.c_str());
-		
-		if(SDXL_ImGui_Button("Never Mind##TextureContentManager", SDXL::Float2(180.f, 20.f)))
-		{
-			SDXL_ImGui_CloseCurrentPopup();
-		}
-		SDXL_ImGui_SameLine();
-		if(SDXL_ImGui_Button("Yes, I understand", SDXL::Float2(180.f, 20.f)))
-		{
-			const std::string WhatUnloaded = "[UNLOADED] "+ m_pTextures[selected]->GetName();
-			if(selected != static_cast<int>(m_pTextures.size()) - 1)
-			{
-				Texture* pToDelete = m_pTextures[selected];
-				for (int i = selected; i < static_cast<int>(m_pTextures.size() - 1); i++)
-				{
-					m_pTextures[i] = m_pTextures[i + 1];
-				}
-
-				m_pTextures[m_pTextures.size() - 1] = pToDelete;
-
-			}
-
-			SAFE_DELETE(m_pTextures[selected]);
-			m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
-
-
-			Save();
-			SDXL_ImGui_ConsoleLog(WhatUnloaded.c_str());
-			selected = -1;
-			SDXL_ImGui_CloseCurrentPopup();
-		}
-		
-		SDXL_ImGui_EndPopup();
-	}
-
-
-
-}
 #endif
 void tyr::ContentManager::Destroy()
 {
@@ -486,25 +370,7 @@ void tyr::ContentManager::Destroy()
 
 TextureID tyr::ContentManager::LoadTexture(const std::string& path)
 {
-	auto found = std::find(m_pTextures.begin(), m_pTextures.end(), path);
-
-	if(found != m_pTextures.end())
-	{
-		return static_cast<TextureID>(std::distance(m_pTextures.begin(), found));
-	}
-	
-	try
-	{
-		auto pTemp = new Texture(m_DataFolder + m_TextureFolder, path);
-		m_pTextures.emplace_back(pTemp);
-		return static_cast<TextureID>(m_pTextures.size() - 1);
-	}
-	catch (TyrException & e)
-	{
-		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
-		return 0;
-	}
-
+	return m_pTextures->LoadTexture(m_DataFolder + m_TextureFolder, path);
 }
 FontID tyr::ContentManager::LoadFont(const std::string& path)
 {
@@ -546,11 +412,9 @@ AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 }
 
 
-tyr::Texture* tyr::ContentManager::GetTexture(TextureID id)
+tyr::Texture* tyr::ContentManager::GetTexture(TextureID id) const
 {
-	if (id >= m_pTextures.size()) return nullptr;
-	
-	return m_pTextures[id];
+	return m_pTextures->GetTexture(id);
 }
 tyr::Font const* tyr::ContentManager::GetFont(FontID id)
 {

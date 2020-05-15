@@ -229,6 +229,7 @@
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureComp.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TransformComp.h" />
     <ClInclude Include="GameContext.h" />
     <ClInclude Include="TyrComps.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureComp.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComp.cpp" />
     <ClCompile Include="GameContext.cpp" />

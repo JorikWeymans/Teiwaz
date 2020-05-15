@@ -315,7 +315,7 @@ void tyr::EAnimation::AnimationEditor()
 	if(SDXL_ImGui_IsItemHovered())
 	{
 		SDXL_ImGui_BeginTooltip();
-		SDXL_ImGui_Text("Add selection but");
+		SDXL_ImGui_Text("Adds selection but");
 		SDXL_ImGui_Text(" split every cell");
 		SDXL_ImGui_EndTooltip();
 	}
