@@ -45,7 +45,7 @@ void tyr::RigidBodyComp::FixedUpdate()
 	m_pController->Move(0.f, m_Vel.y);
 }
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::RigidBodyComp::Debug()
 {
 }

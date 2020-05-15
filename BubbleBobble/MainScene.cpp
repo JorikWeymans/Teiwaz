@@ -67,7 +67,7 @@ void bub::MainScene::Initialize()
 		//AddSceneObject(pinkSquare);
 		//pinkSquare->AddComponent(new tyr::TextureComp(L"BBSprites/Sprites_Sliced_Combined_Scaled.png", tyr::PivotMode::TopLeft, tyr::Rect(0, 0, 16, 16)));
 	
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		auto pFPS = new tyr::SceneObject(tyr::Transform(tyr::Vector2(650, 670)), "FPS");
 		AddSceneObject(pFPS);
 		pFPS->AddComponent(new tyr::TextComp("Fonts/Arcade_20.fnt", "Text", ColorYellow));
@@ -106,7 +106,7 @@ void bub::MainScene::Render() const
 
 
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 void bub::MainScene::Debug()
 {

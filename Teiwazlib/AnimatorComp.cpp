@@ -75,7 +75,7 @@ void tyr::AnimatorComp::SetFloat(const std::string& variable, float amount)
 	m_pAnimator->SetFloat(variable, amount);
 }
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 
 void tyr::AnimatorComp::Debug()

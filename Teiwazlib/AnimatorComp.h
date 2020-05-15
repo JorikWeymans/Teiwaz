@@ -19,7 +19,7 @@ namespace tyr
 		void Render() const override {};
 		
 		void SetFloat(const std::string& variable, float amount);
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void Debug() override;
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;

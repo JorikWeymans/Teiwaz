@@ -1,6 +1,6 @@
 #include "../tyrpch.h"
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include "EWindowInspector.h"
 #include "../TeiwazEngine.h"
 #include "../GameContext.h"

@@ -5,7 +5,7 @@ namespace  tyr
 	class BinaryReader;
 	class GameContext;
 	class Scene;
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	class EUI;
 #endif
 	class SceneManager final
@@ -22,7 +22,7 @@ namespace  tyr
 		
 		void Flush() { m_WantFlush = true; }
 		
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void SaveCurrentScene();
 		void SetCurrentSceneName(const std::string& name);
 		const std::string& GetCurrentSceneName() const;
@@ -33,7 +33,7 @@ namespace  tyr
 #endif
 		
 	private:
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void RenderEditor();
 
 

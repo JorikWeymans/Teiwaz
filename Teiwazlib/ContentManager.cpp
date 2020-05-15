@@ -145,7 +145,7 @@ std::string tyr::ContentManager::GetDataFolder() const
 	return std::string(m_DataFolder.begin(), m_DataFolder.end());
 }
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::ContentManager::RenderEditor()
 {
 	static bool openContentManager = false;

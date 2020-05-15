@@ -85,7 +85,7 @@ void tyr::Scene::FixedUpdate()
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->FixedUpdate(); });
 }
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::Scene::RenderEditor()
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Debug(); });

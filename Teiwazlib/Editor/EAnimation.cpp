@@ -8,7 +8,7 @@
 #include "../GameContext.h"
 #include "../Time.h"
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_TempTextureID(0)

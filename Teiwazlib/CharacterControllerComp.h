@@ -19,7 +19,7 @@ namespace tyr
 		void Render() const override {};
 		bool IsGrounded() const { return m_IsOnGround; }
 		void Move(float x, float y);
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void Debug() override;
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;

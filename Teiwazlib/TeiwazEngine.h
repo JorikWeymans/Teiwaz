@@ -2,7 +2,7 @@
 #include <string>
 //When using IM Gui, reserve some extra space for it
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #define ENGINE_SPACING_LEFT 400
 #define ENGINE_SPACING_RIGHT 400
 #define ENGINE_SPACING_TOP 20

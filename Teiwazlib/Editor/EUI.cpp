@@ -1,6 +1,6 @@
 #include "../tyrpch.h"
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include "EUI.h"
 #include "../SceneManager.h"
 #include "../GameContext.h"

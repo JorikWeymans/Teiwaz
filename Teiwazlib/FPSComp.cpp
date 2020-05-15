@@ -51,7 +51,7 @@ void tyr::FPSComp::FixedUpdate()
 void tyr::FPSComp::Render() const
 {
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::FPSComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);

@@ -24,7 +24,7 @@ namespace tyr
 		void SetPositionX(float x, bool convert = false);
 		void SetPositionY(float y, bool convert = false);
 		
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif

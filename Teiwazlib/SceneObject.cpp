@@ -18,7 +18,7 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	, m_IsDestroyed(false)
 	, m_name(name)
 	, m_pContext(nullptr)
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	, m_SelectedItem(-1)
 #endif
 
@@ -69,7 +69,7 @@ void tyr::SceneObject::FixedUpdate()
 		b->FixedUpdate();
 	});
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::SceneObject::Debug()
 {
 	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)

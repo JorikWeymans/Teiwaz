@@ -18,7 +18,7 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override {};
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void Debug() override;
 		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;

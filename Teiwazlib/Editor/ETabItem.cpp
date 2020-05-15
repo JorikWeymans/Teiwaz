@@ -1,6 +1,6 @@
 #include "../tyrpch.h"
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include "ETabItem.h"
 
 tyr::ETabItem::ETabItem(const char* name, GameContext* pContext)

@@ -84,7 +84,7 @@ void tyr::TextureComp::SetSourceRect(const Rect& rect)
 {
 	m_SrcRect = rect;
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 void tyr::TextureComp::RenderEditor()
 {

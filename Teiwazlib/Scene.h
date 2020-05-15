@@ -23,7 +23,7 @@ namespace tyr
 		virtual void Debug() {};
 
 		
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void RenderEditor();
 		void Save(BinaryWriter& writer);
 
@@ -43,7 +43,7 @@ namespace tyr
 
 		SceneObject* LoadSceneObject(tyr::BinaryReader& reader, tyr::SceneObject* parent = nullptr);
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		bool m_ItemDoubleClicked = false;
 		int m_SelectedItem = -1;
 #endif

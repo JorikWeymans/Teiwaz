@@ -11,7 +11,7 @@ namespace tyr
 		bool isHovered;
 	};
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 namespace  tyr
 {
 	class GameContext;

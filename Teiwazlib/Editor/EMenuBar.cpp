@@ -1,6 +1,6 @@
 #include "../tyrpch.h"
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include "../ContentManager.h"
 #include "../Texture.h"
 #include "EMenuBar.h"

@@ -1,5 +1,5 @@
 #pragma once
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include "EWindow.h"
 namespace tyr
 {

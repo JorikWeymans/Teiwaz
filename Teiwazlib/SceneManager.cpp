@@ -22,7 +22,7 @@ tyr::SceneManager::SceneManager()
 	, m_pScenes(std::vector<Scene*>())
 	, m_pCurrentScene(nullptr)
 	, m_WantFlush(false)
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	, m_pEditorUI(nullptr)
 #endif
 {
@@ -33,7 +33,7 @@ tyr::SceneManager::~SceneManager()
 {
 	std::for_each(m_pScenes.begin(), m_pScenes.end(), [](Scene* s) {SAFE_DELETE(s)});
 	m_pScenes.clear();
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	SAFE_DELETE(m_pEditorUI);
 #endif
 }
@@ -41,7 +41,7 @@ tyr::SceneManager::~SceneManager()
 void tyr::SceneManager::Initialize(GameContext* pContext)
 {
 	m_pContext = pContext;
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	m_pEditorUI = new EUI(pContext);
 #endif
 }
@@ -81,7 +81,7 @@ void tyr::SceneManager::FlushCurrentScene()
 	m_pCurrentScene->Flush();
 	
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::SceneManager::RenderEditor()
 {
 	SDXL_RenderDebugRect(SDXL::SDXLVec2{ ENGINE_SPACING_LEFT,ENGINE_SPACING_TOP }, m_pContext->pGameSpace->width, m_pContext->pGameSpace->height, static_cast<SDXL::SDXLVec4>(ColorBlue));
@@ -201,7 +201,7 @@ bool tyr::SceneManager::DoesSceneExist(std::string& sceneName)
 
 #endif
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::SceneManager::Render()
 #else
 void tyr::SceneManager::Render() const
@@ -213,7 +213,7 @@ void tyr::SceneManager::Render() const
 	m_pCurrentScene->Render();
 	SDXL_RenderAll();
 	
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	RenderEditor();
 #endif
 

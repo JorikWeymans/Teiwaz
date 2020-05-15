@@ -25,7 +25,7 @@ namespace tyr
 		void Destroy();
 		void SetSourceRect(const Rect& rect);
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void RenderEditor() override;
 		void EditorTexture(std::string& name);
 		void EditorPosition(std::string& name);
@@ -39,7 +39,7 @@ namespace tyr
 		Rect m_SrcRect;
 		Vector2 m_Offset;
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 #endif
 	public:

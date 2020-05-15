@@ -1,7 +1,7 @@
 #include "../tyrpch.h"
 #include <algorithm>
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include "EWindowSouth.h"
 #include "../TeiwazEngine.h"
 #include "../GameContext.h"

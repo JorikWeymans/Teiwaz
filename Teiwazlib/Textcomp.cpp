@@ -53,7 +53,7 @@ void tyr::TextComp::SetText(const std::string& newText)
 {
 	m_Text = newText;
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::TextComp::Save(BinaryWriter& writer)
 {
 	UNREFERENCED_PARAMETER(writer);

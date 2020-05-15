@@ -50,7 +50,7 @@ tyr::Texture* tyr::TextureManager::GetTexture(TextureID id) const
 	return m_pTextures[id];
 }
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::TextureManager::RenderEditor()
 {
 	SDXL_ImGui_Text("ID\tName");

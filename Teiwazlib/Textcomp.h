@@ -22,7 +22,7 @@ namespace tyr
 		void Destroy();
 
 		void SetText(const std::string& newText);
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
 #endif
 

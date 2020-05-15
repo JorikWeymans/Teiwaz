@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "../Animation.h"
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #define ANIMATION_NAME_MAX_CHAR 25
 namespace tyr
 {

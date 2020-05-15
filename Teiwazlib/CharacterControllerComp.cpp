@@ -109,7 +109,7 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
 	
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::CharacterControllerComp::Debug()
 {
 	

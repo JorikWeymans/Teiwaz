@@ -1,7 +1,7 @@
 #include "../tyrpch.h"
 #include <direct.h>
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 #include <filesystem>
 #include "../StringManipulation.h"
 #include "../ContentManager.h"

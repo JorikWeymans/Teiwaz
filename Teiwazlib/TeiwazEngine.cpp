@@ -23,7 +23,7 @@ tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& name, int gameWidth, int GameHeight)
 {
 	auto nameToUse = name;
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 	nameToUse += " (Editor)";
 #endif
 

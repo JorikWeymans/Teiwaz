@@ -20,7 +20,7 @@ namespace tyr
 		virtual void Update() = 0;
 		SceneObject* GetSceneObject() const { return m_pSceneObject; }
 		
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		virtual void Debug() {}
 		virtual void RenderEditor() {}; //should be overridden in 90% of the time, the window is opend in sceneobject before this call
 		virtual void Save(BinaryWriter& writer) { UNREFERENCED_PARAMETER(writer); };
@@ -32,7 +32,7 @@ namespace tyr
 		friend SceneObject;
 		SceneObject* m_pSceneObject = nullptr;
 		ComponentType m_Type;
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		size_t m_UniqueId;
 #endif
 	public:

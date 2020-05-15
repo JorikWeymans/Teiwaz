@@ -31,7 +31,7 @@ tyr::Rect tyr::ColliderComp::GetColliderRect() const
 	return rect;
 	
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::ColliderComp::Debug()
 {
 	const auto pos = m_pSceneObject->GetTransform()->GetPosition();

@@ -19,7 +19,7 @@ namespace tyr
 		TextureID LoadTexture(const std::string& dataFolder, const std::string& name);
 		Texture* GetTexture(TextureID id) const;
 		
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void RenderEditor();
 		void ETextureSelector(const char* imGuiID, TextureID& textureID); // Shows a drop down box with all the textures
 		void SaveTextures(BinaryWriter& writer);
@@ -29,7 +29,7 @@ namespace tyr
 		std::vector<Texture*> m_pTextures;
 
 		
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void BtnRemoveSelectedTexture(int& selected);
 #endif
 	public:

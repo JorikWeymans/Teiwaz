@@ -9,13 +9,13 @@
 
 // add headers that you want to pre-compile here
 #include "Windows.h"
-//#define USE_IM_GUI
+//#define EDITOR_MODE
 
 
 
 #if defined(_DEBUG) && defined(x86)
-#ifndef USE_IM_GUI
-#define USE_IM_GUI
+#ifndef EDITOR_MODE
+#define EDITOR_MODE
 #endif
 #endif
 

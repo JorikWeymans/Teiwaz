@@ -78,7 +78,7 @@ void tyr::Player1Controller::FixedUpdate()
 		m_pAni->SetFloat("Speed", 0.f);
 	}
 }
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 void tyr::Player1Controller::Save(BinaryWriter& writer)
 {

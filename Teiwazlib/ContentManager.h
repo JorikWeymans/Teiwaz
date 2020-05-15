@@ -42,7 +42,7 @@ namespace tyr
 		
 		std::string GetDataFolder() const;
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void RenderEditor(); //called in EMenuBar RenderEditor()
 		void EditorTextureSelector(const char* imGuiID, TextureID& textureID);
 		void Save();
@@ -63,7 +63,7 @@ namespace tyr
 		std::vector<Font*>    m_pFonts;
 		std::vector<Animation*> m_pAnimations;
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 		void SceneWindow();
 		char m_CharDataPath[256] {};

@@ -21,7 +21,7 @@ namespace tyr
 		
 		void Update();
 		void FixedUpdate();
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		void Debug();
 		void RenderEditor(bool showChildren);
 		void Save(BinaryWriter& writer);
@@ -67,7 +67,7 @@ namespace tyr
 		GameContext const* m_pContext; // weak pointer
 		static int counter;
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 		int m_SelectedItem;
 #endif
 	public:

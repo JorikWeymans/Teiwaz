@@ -80,7 +80,7 @@ void tyr::TransformComp::SetPositionY(float y, bool convert)
 }
 
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 void tyr::TransformComp::RenderEditor()
 {
 	const std::string strUniqueId = std::to_string(m_UniqueId);

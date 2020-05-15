@@ -1,6 +1,6 @@
 #include "ETabItem.h"
 #include <vector>
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 namespace  tyr
 {
 	class GameContext;
