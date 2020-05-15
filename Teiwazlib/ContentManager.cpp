@@ -149,104 +149,9 @@ std::string tyr::ContentManager::GetDataFolder() const
 //PUBLIC
 void tyr::ContentManager::RenderEditor()
 {
-	static bool openContentManager = false;
 
-	if (SDXL_ImGui_Selectable("ContentManager",false , SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(100,20)))
-	{
-		openContentManager = !openContentManager;
-		if(openContentManager)
-		{
-			SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 100.f,100.f });
-			SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ 500.f, 300.f });
-		}
-	}
-
-	static bool openFilePathSettings = false;
-
-	if(openContentManager)
-	{
-		
-		static int selected = -1;
-		SDXL_ImGui_SetNextWindowSize(SDXL::Float2(500.f, 500.f));
-		if (SDXL_ImGui_Begin("ContentManager##ContentManager", &openContentManager, SDXL_ImGuiWindowFlags_NoSavedSettings | SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_NoResize))
-		{
-			if(SDXL_ImGui_BeginMenuBar())
-			{
-				if(SDXL_ImGui_BeginMenu("MenuItem##ContentManger"))
-				{
-					if(SDXL_ImGui_MenuItem("File paths"))
-					{
-
-						openFilePathSettings = true;
-
-
-						strcpy_s(m_CharDataPath, m_DataFolder.c_str());
-						strcpy_s(m_CharSceneFolder, m_SceneFolder.c_str());
-						strcpy_s(m_CharAnimationFolder, m_AnimationFolder.c_str());
-						strcpy_s(m_CharTextureFolder, m_TextureFolder.c_str());
-						
-					}
-					SDXL_ImGui_EndMenu();
-				}
-				SDXL_ImGui_EndMenuBar();
-			}
-			if(SDXL_ImGui_BeginChild("child#ContentManager", SDXL::Float2(100,0), true))
-			{
-				
-				
-				if (SDXL_ImGui_Selectable("Textures##ContentManager", selected == 1, 
-					SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
-				{
-					selected = 1;
-
-				}
-				if (SDXL_ImGui_Selectable("Scenes##ContentManager", selected == 2, 
-					SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
-				{
-					selected = 2;
-
-				}
-
-				if (SDXL_ImGui_Selectable("Animations##ContentManager", selected == 3,
-					SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
-				{
-					selected = 3;
-
-				}
-				SDXL_ImGui_EndChild();
-			}
-			SDXL_ImGui_SameLine();
-
-
-		}
-
-
-
-
-		if (selected == 1)
-		{
-			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0,0), false))
-			{
-				m_pTextures->RenderEditor();
-				SDXL_ImGui_EndChild();
-			}
-		}
-		
-		SDXL_ImGui_End();
-	}
-
-	//static bool areContentSettingsOpen = true;
-	if(openFilePathSettings)
-	{
-		SDXL_ImGui_OpenPopup("ContentManager Settings");
-		openFilePathSettings = false;
-		areContentSettingsOpen = true;
-
-		//SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 100.f,100.f });
-		SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ 500.f, 300.f });
-	}
-
-	
+	EMainMenuBarItem();
+	EMainWindow();
 	ESettingsContentPath();
 
 }
@@ -304,13 +209,125 @@ void tyr::ContentManager::Save()
 }
 
 //PRIVATE
+void tyr::ContentManager::EMainMenuBarItem()
+{
+	if (SDXL_ImGui_Selectable("ContentManager", false, SDXL_ImGuiSelectableFlags_DontClosePopups, SDXL::Float2(100, 20)))
+	{
+		m_OpenContentManager = !m_OpenContentManager;
+		if (m_OpenContentManager)
+		{
+			SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 100.f,100.f });
+			SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ 500.f, 300.f });
+		}
+	}
+
+	
+}
+
+void tyr::ContentManager::EMainWindow()
+{
+	if (m_OpenContentManager)
+	{
+
+		static int selected = -1;
+		SDXL_ImGui_SetNextWindowSize(SDXL::Float2(500.f, 500.f));
+		if (SDXL_ImGui_Begin("ContentManager##ContentManager", &m_OpenContentManager, SDXL_ImGuiWindowFlags_NoSavedSettings | SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_NoResize))
+		{
+			EMenuBar();
+
+			EContentSelectorWindow(selected);
+			SDXL_ImGui_SameLine();
+
+
+		}
+
+
+		if (selected == 1)
+		{
+			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0, 0), false))
+			{
+				m_pTextures->RenderEditor();
+				SDXL_ImGui_EndChild();
+			}
+		}
+
+
+
+		SDXL_ImGui_End();
+
+	}
+}
+
+void tyr::ContentManager::EContentSelectorWindow(int& selectedItem)
+{
+	if (SDXL_ImGui_BeginChild("child#ContentManager", SDXL::Float2(100, 0), true))
+	{
+
+
+		if (SDXL_ImGui_Selectable("Textures##ContentManager", selectedItem == 1,
+			SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		{
+			selectedItem = 1;
+
+		}
+		if (SDXL_ImGui_Selectable("Scenes##ContentManager", selectedItem == 2,
+			SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		{
+			selectedItem = 2;
+
+		}
+
+		if (SDXL_ImGui_Selectable("Animations##ContentManager", selectedItem == 3,
+			SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		{
+			selectedItem = 3;
+
+		}
+		SDXL_ImGui_EndChild();
+	}
+}
+
+void tyr::ContentManager::EMenuBar()
+{
+	if (SDXL_ImGui_BeginMenuBar())
+	{
+		if (SDXL_ImGui_BeginMenu("Settings##ContentManger"))
+		{
+			if (SDXL_ImGui_MenuItem("File paths"))
+			{
+
+				m_OpenFilePathSettings = true;
+
+
+				strcpy_s(m_CharDataPath, m_DataFolder.c_str());
+				strcpy_s(m_CharSceneFolder, m_SceneFolder.c_str());
+				strcpy_s(m_CharAnimationFolder, m_AnimationFolder.c_str());
+				strcpy_s(m_CharTextureFolder, m_TextureFolder.c_str());
+
+			}
+			SDXL_ImGui_EndMenu();
+		}
+		SDXL_ImGui_EndMenuBar();
+	}
+}
+
 void tyr::ContentManager::ESettingsContentPath()
 {
+	if (m_OpenFilePathSettings)
+	{
+		SDXL_ImGui_OpenPopup("ContentManager Settings");
+		m_OpenFilePathSettings = false;
+		m_AreContentSettingsOpen = true;
+
+		//SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ 100.f,100.f });
+		SDXL_ImGui_SetNextWindowSize(SDXL::Float2{ 500.f, 300.f });
+	}
+	
 	static bool pathHasChanged = false;
 	SDXL_ImGuiWindowFlags flags = SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_NoResize;
 	if (pathHasChanged) flags |= SDXL_ImGuiWindowFlags_UnsavedDocument;
 
-	if (SDXL_ImGui_BeginPopupModal("ContentManager Settings", &areContentSettingsOpen, flags))
+	if (SDXL_ImGui_BeginPopupModal("ContentManager Settings", &m_AreContentSettingsOpen, flags))
 	{
 		//Data Path
 		if (SDXL_ImGui_InputText("Data Path##ContentManager", m_CharDataPath, ARRAY_SIZE(m_CharDataPath)))

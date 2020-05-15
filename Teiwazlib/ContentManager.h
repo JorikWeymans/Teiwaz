@@ -64,7 +64,13 @@ namespace tyr
 		std::vector<Animation*> m_pAnimations;
 
 #ifdef EDITOR_MODE
-		bool areContentSettingsOpen = true;
+		
+		bool m_OpenContentManager = false, m_OpenFilePathSettings = false, m_AreContentSettingsOpen = true;
+
+		void EMainMenuBarItem();
+		void EMainWindow();
+		void EMenuBar();
+		void EContentSelectorWindow(int& selectedItem);
 		void ESettingsContentPath();
 		
 		
