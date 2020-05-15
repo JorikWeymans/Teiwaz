@@ -64,12 +64,11 @@ namespace tyr
 		std::vector<Animation*> m_pAnimations;
 
 #ifdef EDITOR_MODE
-
-		void SceneWindow();
-		char m_CharDataPath[256] {};
-		char m_CharSceneFolder[30] {};
-		char m_CharAnimationFolder[30] {};
-		char m_CharTextureFolder[30] {};
+		bool areContentSettingsOpen = true;
+		void ESettingsContentPath();
+		
+		
+		char m_CharDataPath[256] {}, m_CharSceneFolder[30] {}, m_CharAnimationFolder[30] {}, m_CharTextureFolder[30] {};
 		
 #endif
 		
