@@ -20,6 +20,8 @@ namespace tyr
 		Transform,
 		Player1Controller,
 		Animator,
+		BubbleShootingComp,
+		//Append here
 
 
 	};

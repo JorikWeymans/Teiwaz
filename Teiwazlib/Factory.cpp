@@ -78,3 +78,9 @@ tyr::AnimatorComp* tyr::Factory::CreateAnimatorComp(BinaryReader& reader)
 	UNREFERENCED_PARAMETER(reader);
 	return new AnimatorComp();
 }
+
+tyr::BubbleShootingComp* tyr::Factory::CreateBubbleShootingComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new BubbleShootingComp();
+}

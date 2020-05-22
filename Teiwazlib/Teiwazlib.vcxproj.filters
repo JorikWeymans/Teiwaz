@@ -193,6 +193,9 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Graphics\Content</Filter>
     </ClInclude>
+    <ClInclude Include="BubbleShootingComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Graphics\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="BubbleShootingComp.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

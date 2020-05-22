@@ -216,6 +216,9 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::Animator:
 			newObject->AddComponent(Factory::CreateComponent<AnimatorComp>(reader));
 			break;
+		case ComponentType::BubbleShootingComp:
+			newObject->AddComponent(Factory::CreateComponent<BubbleShootingComp>(reader));
+			break;
 		default:;
 			THROW_ERROR(L"This component is not implemented yet");
 		}

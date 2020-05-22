@@ -202,6 +202,7 @@
     <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="BinaryWriter.h" />
     <ClInclude Include="BinStructureHelpers.h" />
+    <ClInclude Include="BubbleShootingComp.h" />
     <ClInclude Include="CharacterControllerComp.h" />
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="BinaryWriter.cpp" />
+    <ClCompile Include="BubbleShootingComp.cpp" />
     <ClCompile Include="CharacterControllerComp.cpp" />
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />
