@@ -7,10 +7,10 @@
 #include "TyrComps.h"
 #include <string_view>
 int tyr::SceneObject::counter = 0;
-tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name)
-	: SceneObject(new TransformComp(transform), name) {}
+tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name, bool AppendCounter)
+	: SceneObject(new TransformComp(transform), name ,AppendCounter) {}
 
-tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name)
+tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name, bool AppendCounter)
 	: m_pComponents(std::vector<BaseComponent*>())
 	, m_pChilds(std::vector<SceneObject*>())
 	, m_pParent(nullptr)
@@ -23,6 +23,8 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 #endif
 
 {
+	if (AppendCounter)
+		m_name += std::to_string(counter);
 	counter++;
 }
 

@@ -11,17 +11,17 @@ namespace  tyr
 	class SceneManager final
 	{
 	public:
-		 SceneManager();
+		SceneManager();
 		~SceneManager();
 		void Initialize(GameContext* pContext);
-		
+
 		void AddScene(Scene* pScene);
 		void SetCurrentScene(const std::string& SceneName);
 		void Update();
 		void FixedUpdate();
-		
+
 		void Flush() { m_WantFlush = true; }
-		
+		Scene* GetCurrentScene() const { return m_pCurrentScene; }
 #ifdef EDITOR_MODE
 		void SaveCurrentScene();
 		void SetCurrentSceneName(const std::string& name);

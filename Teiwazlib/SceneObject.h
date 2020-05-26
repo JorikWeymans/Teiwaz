@@ -13,8 +13,8 @@ namespace tyr
 	class SceneObject final
 	{
 	public:
-		explicit SceneObject(const Transform& transform, const std::string& name = "new GameObject" + std::to_string(counter));
-		explicit SceneObject(TransformComp* pTransform, const std::string& name = "new GameObject" + std::to_string(counter));
+		explicit SceneObject(const Transform& transform, const std::string& name = "new GameObject" + std::to_string(counter), bool AppendCounter = false);
+		explicit SceneObject(TransformComp* pTransform, const std::string& name = "new GameObject" + std::to_string(counter), bool AppendCounter = false);
 		explicit SceneObject();
 		
 		~SceneObject();

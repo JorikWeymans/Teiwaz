@@ -32,6 +32,7 @@ namespace tyr
 		
 		const Transform& GetTransform() const;
 		Vector2 GetPosition() const;
+		Vector2 GetPositionRaw() const;
 		Vector2 GetScale() const;
 		float GetRotation() const;
 

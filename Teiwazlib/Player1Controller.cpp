@@ -6,6 +6,8 @@
 #include "TyrComps.h"
 #include "Time.h"
 #include "BinaryWriter.h"
+
+
 tyr::Player1Controller::Player1Controller()
 	: tyr::BaseComponent(ComponentType::Player1Controller)
 	, m_pCont(nullptr)
@@ -44,8 +46,7 @@ void tyr::Player1Controller::FixedUpdate()
 		const float elapsed = GET_CONTEXT->pTime->fixedDeltaTime;
 
 
-
-
+		
 		m_pCont->Move(-150 * elapsed, 0);
 		m_pAni->SetFloat("Speed", 150 * elapsed);
 		if (!m_IsGoningLeft)

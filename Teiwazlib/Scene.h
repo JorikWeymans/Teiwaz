@@ -16,8 +16,8 @@ namespace tyr
 		
 		virtual ~Scene();
 		virtual void Initialize();
-		void AddSceneObject(SceneObject* pObj);
-
+		void AddSceneObject(SceneObject* pObj); //only call this when you are not updating the scene
+		void BufferSceneObject(SceneObject* pObj); //Call this when you addSceneObject in Update
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void Debug() {};
@@ -40,7 +40,7 @@ namespace tyr
 	private:
 		std::string m_Name, m_Path;
 		std::vector<SceneObject*> m_pSceneObjects;
-
+		std::vector<SceneObject*> m_pBufferedObjects;
 		SceneObject* LoadSceneObject(tyr::BinaryReader& reader, tyr::SceneObject* parent = nullptr);
 
 #ifdef EDITOR_MODE

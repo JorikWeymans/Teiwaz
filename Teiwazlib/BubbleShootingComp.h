@@ -21,7 +21,7 @@ namespace tyr
 #endif
 
 	private:
-
+		SceneObject* CreateBubble() const;
 	public:
 		BubbleShootingComp(const BubbleShootingComp&) = delete;
 		BubbleShootingComp(BubbleShootingComp&&) = delete;

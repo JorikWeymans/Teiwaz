@@ -151,6 +151,23 @@ tyr::Vector2 tyr::TransformComp::GetPosition() const
 	return pos;
 }
 
+tyr::Vector2 tyr::TransformComp::GetPositionRaw() const
+{
+	auto pos = m_pTransform->position;
+	const auto pParent = m_pSceneObject->GetParent();
+
+	if (pParent)
+	{
+		const auto parentPos = pParent->GetTransform()->m_pTransform->position;
+
+		pos += parentPos;
+
+	}
+	//TeiwazEngine::GameToEngineSpace(m_pSceneObject->GetGameContext(), &pos);
+
+	return pos;
+}
+
 tyr::Vector2 tyr::TransformComp::GetScale() const
 {
 	auto thisScale = m_pTransform->scale;

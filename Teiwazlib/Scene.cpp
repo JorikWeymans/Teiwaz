@@ -75,8 +75,30 @@ void tyr::Scene::AddSceneObject(SceneObject* pObj)
 	m_pSceneObjects.emplace_back(pObj);
 }
 
+void tyr::Scene::BufferSceneObject(SceneObject* pObj)
+{
+	pObj->m_pContext = m_pContext;
+	pObj->Initialize();
+	
+	m_pBufferedObjects.emplace_back(pObj);
+}
+
 void tyr::Scene::Update()
 {
+	if(!m_pBufferedObjects.empty())
+	{
+		for (auto pS: m_pBufferedObjects)
+		{
+			//pS->m_pContext = m_pContext;
+			//pS->Initialize();
+			m_pSceneObjects.emplace_back(pS);
+		}
+		m_pBufferedObjects.clear();
+		
+		
+	}
+	
+	
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Update(); });
 }
 
