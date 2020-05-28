@@ -260,18 +260,18 @@ void tyr::SceneObject::Render() const
 	});
 }
 
-void tyr::SceneObject::AddComponent(BaseComponent* pComp)
-{
-	auto found = std::find(m_pComponents.begin(), m_pComponents.end(), pComp);
-	if(found == m_pComponents.end())
-	{
-		pComp->m_pSceneObject = this;
-		pComp->Initialize();
-		
-		m_pComponents.emplace_back(pComp);
-		
-	}
-}
+//void tyr::SceneObject::AddComponent(BaseComponent* pComp)
+//{
+//	auto found = std::find(m_pComponents.begin(), m_pComponents.end(), pComp);
+//	if(found == m_pComponents.end())
+//	{
+//		pComp->m_pSceneObject = this;
+//		pComp->Initialize();
+//		
+//		m_pComponents.emplace_back(pComp);
+//		
+//	}
+//}
 
 void tyr::SceneObject::AddChild(SceneObject* pChild)
 {

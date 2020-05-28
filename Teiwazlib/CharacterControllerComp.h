@@ -1,11 +1,11 @@
 #pragma once
+#include "Vectors.h"
 #include "BaseComponent.h"
 
 namespace tyr
 {
 	class ColliderComp;
 	class TransformComp;
-	class Vector2;
 	class CharacterControllerComp final : public BaseComponent
 	{
 	public:
@@ -19,6 +19,8 @@ namespace tyr
 		void Render() const override {};
 		bool IsGrounded() const { return m_IsOnGround; }
 		void Move(float x, float y);
+		void AddForce(float x, float y);
+		
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void RenderEditor() override;
@@ -27,8 +29,13 @@ namespace tyr
 	private:
 		TransformComp* m_pTransform;
 		ColliderComp* m_pCollider; //weak pointer
+		Vector2 m_Force;
 		float m_RayCastOffset;
+		float m_ForceMultiplier;
 		bool m_IsOnGround;
+
+
+		void DoGroundCheck();
 	public:
 		//CharacterControllerComp() = delete;
 		CharacterControllerComp(const CharacterControllerComp&) = delete;

@@ -4,14 +4,15 @@
 #include "SceneObject.h"
 tyr::BubbleComp::BubbleComp()
 	: BaseComponent(ComponentType::BubbleComp)
+	, m_pController(nullptr)
 {
 }
 
 void tyr::BubbleComp::Initialize()
 {
 
-	m_pController = new CharacterControllerComp();
-	m_pSceneObject->AddComponent(m_pController);
+	m_pController = m_pSceneObject->AddComponent(new CharacterControllerComp());
+	m_pController->AddForce(300.f, 0.f);
 	
 }
 
@@ -22,7 +23,7 @@ void tyr::BubbleComp::Update()
 
 void tyr::BubbleComp::FixedUpdate()
 {
-	m_pController->Move(1.f, 0.f);
+	//m_pController->Move(1.f, 0.f);
 }
 
 #ifdef EDITOR_MODE

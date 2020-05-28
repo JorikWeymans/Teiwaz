@@ -7,10 +7,13 @@
 #include "TeiwazEngine.h"
 #include "Physics.h"
 #include "BinaryWriter.h"
+#include "time.h"
 tyr::CharacterControllerComp::CharacterControllerComp()
 	: tyr::BaseComponent(ComponentType::CharacterController)
 	, m_pTransform(nullptr)
 	, m_pCollider(nullptr)
+	, m_Force(Vector2(0.f,0.f))
+	, m_ForceMultiplier(2.f)
 	, m_RayCastOffset(0.f)
 	, m_IsOnGround(false)
 {
@@ -27,8 +30,23 @@ void tyr::CharacterControllerComp::Initialize()
 
 void tyr::CharacterControllerComp::FixedUpdate()
 {
-	RaycastHit out;
+	DoGroundCheck();
+
+	if(std::abs(m_Force.x) > 0.01)
+	{
+		float amount = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
+		m_Force.x -= amount;
+
+		Move(amount,0.f);
+
+		
+	}
 	
+}
+void tyr::CharacterControllerComp::DoGroundCheck()
+{
+	RaycastHit out;
+
 	if (GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
 
 		GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
@@ -39,6 +57,7 @@ void tyr::CharacterControllerComp::FixedUpdate()
 	}
 	else
 		m_IsOnGround = false;
+
 }
 
 void tyr::CharacterControllerComp::Move(float x, float y)
@@ -107,6 +126,14 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	}
 
 	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
+	
+}
+
+void tyr::CharacterControllerComp::AddForce(float x, float y)
+{
+	m_Force.x += x;
+	m_Force.y += y;
+	
 	
 }
 #ifdef EDITOR_MODE

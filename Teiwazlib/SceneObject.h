@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include <typeinfo>
+#include "BaseComponent.h"
 namespace tyr
 {
 	class BinaryWriter;
 	class Scene;
 	struct Transform;
-	class BaseComponent;
+	//class BaseComponent;
 	class TransformComp;
 	class GameContext;
 	struct Transform;
@@ -29,7 +30,22 @@ namespace tyr
 #endif
 		void Render() const;
 
-		void AddComponent(BaseComponent* pComp);
+		template <typename T>
+		T* AddComponent(T* pComp)
+		{
+			auto savedPointer = static_cast<BaseComponent*>(pComp);
+			auto found = std::find(m_pComponents.begin(), m_pComponents.end(), savedPointer);
+			if (found == m_pComponents.end())
+			{
+				savedPointer->m_pSceneObject = this;
+				savedPointer->Initialize();
+
+				m_pComponents.emplace_back(savedPointer);
+				
+			}
+			return pComp;
+			
+		}
 		void AddChild(SceneObject* pChild);
 		TransformComp* GetTransform() const;
 
