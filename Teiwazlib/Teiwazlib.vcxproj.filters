@@ -196,6 +196,7 @@
     <ClInclude Include="BubbleShootingComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="BubbleComp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -330,5 +331,6 @@
     <ClCompile Include="BubbleShootingComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="BubbleComp.cpp" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ namespace tyr
 		Player1Controller,
 		Animator,
 		BubbleShootingComp,
+		BubbleComp,
 		//Append here
 
 

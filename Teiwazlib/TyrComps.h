@@ -10,4 +10,6 @@
 #include "RigidBodyComp.h"
 #include "Player1Controller.h"
 #include "AnimatorComp.h"
+
 #include "BubbleShootingComp.h"
+#include "BubbleComp.h"
