@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 namespace tyr
 {
-	class CharacterControllerComp;
+	class RigidBodyComp;
 	class BubbleComp : public BaseComponent
 	{
 	public:
@@ -22,7 +22,7 @@ namespace tyr
 #endif
 
 	private:
-		CharacterControllerComp* m_pController;
+		RigidBodyComp* m_pBody;
 	public:
 		BubbleComp(const BubbleComp&) = delete;
 		BubbleComp(BubbleComp&&) = delete;

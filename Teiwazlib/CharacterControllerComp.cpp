@@ -13,7 +13,6 @@ tyr::CharacterControllerComp::CharacterControllerComp()
 	, m_pTransform(nullptr)
 	, m_pCollider(nullptr)
 	, m_Force(Vector2(0.f,0.f))
-	, m_ForceMultiplier(2.f)
 	, m_RayCastOffset(0.f)
 	, m_IsOnGround(false)
 {
@@ -30,7 +29,7 @@ void tyr::CharacterControllerComp::Initialize()
 
 void tyr::CharacterControllerComp::FixedUpdate()
 {
-	UpdateForce();
+	//UpdateForce();
 	DoGroundCheck();
 
 }
@@ -49,24 +48,6 @@ void tyr::CharacterControllerComp::DoGroundCheck() noexcept
 	else
 		m_IsOnGround = false;
 
-}
-
-void tyr::CharacterControllerComp::UpdateForce() noexcept
-{
-	float amountX = 0.f, amountY = 0.f;
-
-	if (std::abs(m_Force.x) > 0.01)
-	{
-		amountX = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
-		m_Force.x -= amountX;
-	}
-	if (std::abs(m_Force.y) > 0.01)
-	{
-		amountY = m_Force.y * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
-		m_Force.y -= amountY;
-	}
-
-	Move(amountX, amountY);
 }
 
 bool tyr::CharacterControllerComp::CalculateFalling(float y, const Rect& playerColl, const Rect* pPlaySpace) noexcept
@@ -141,14 +122,6 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 
 	
 	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
-	
-}
-
-void tyr::CharacterControllerComp::AddForce(float x, float y) noexcept
-{
-	m_Force.x += x;
-	m_Force.y += y;
-	
 	
 }
 

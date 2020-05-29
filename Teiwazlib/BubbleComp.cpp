@@ -4,15 +4,15 @@
 #include "SceneObject.h"
 tyr::BubbleComp::BubbleComp()
 	: BaseComponent(ComponentType::BubbleComp)
-	, m_pController(nullptr)
+	, m_pBody(nullptr)
 {
 }
 
 void tyr::BubbleComp::Initialize()
 {
 
-	m_pController = m_pSceneObject->AddComponent(new CharacterControllerComp());
-	m_pController->AddForce(300.f, 0.f);
+	m_pBody = m_pSceneObject->AddComponent(new RigidBodyComp(0.f, false));
+	m_pBody->AddForce(300.f, 0.f);
 	
 }
 

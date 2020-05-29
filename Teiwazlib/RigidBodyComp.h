@@ -8,16 +8,19 @@ namespace tyr
 	class RigidBodyComp final : public BaseComponent
 	{
 	public:
-		RigidBodyComp(float gravity, bool useGravity = true);
+		explicit RigidBodyComp(float gravity, bool useGravity = true);
 		~RigidBodyComp() override = default;
 
 		void Initialize() override;
 
-		void AddForce(float x, float y);
+
 		void Update() override {}
 		void FixedUpdate() override;
 		void Render() const override {};
 
+		void AddForce(float x, float y) noexcept;
+		const Vector2& GetForce() const noexcept { return m_Force; }
+		
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void RenderEditor() override;
@@ -28,6 +31,10 @@ namespace tyr
 		Vector2 m_Vel, m_Force;
 		bool m_UseGravity;
 		float m_Gravity;
+		float m_ForceMultiplier;
+
+		
+		void UpdateForce() noexcept; //Call in FixedUpdate
 		
 	public:
 		//RigidBodyComp() = delete;
