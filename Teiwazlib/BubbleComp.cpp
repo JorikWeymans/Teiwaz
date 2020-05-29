@@ -12,7 +12,7 @@ void tyr::BubbleComp::Initialize()
 {
 	m_pSceneObject->AddComponent(new CharacterControllerComp());
 	m_pBody = m_pSceneObject->AddComponent(new RigidBodyComp(0.f, false));
-	m_pBody->AddForce(300.f, 0.f);
+	m_pBody->AddForce(-300.f, 0.f);
 	
 }
 

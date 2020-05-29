@@ -63,7 +63,7 @@ void tyr::BubbleShootingComp::Save(BinaryWriter& writer)
 tyr::SceneObject* tyr::BubbleShootingComp::CreateBubble() const
 {
 	auto newPos = m_pSceneObject->GetTransform()->GetPositionRaw();
-	
+	newPos.x -= 50.f;
 	auto pReturnObj = new SceneObject(Transform(newPos), "Bubble Object", true);
 	GET_CONTEXT->pSceneManager->GetCurrentScene()->BufferSceneObject(pReturnObj);
 

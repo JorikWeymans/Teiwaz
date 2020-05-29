@@ -40,6 +40,12 @@ tyr::Vector2::operator SDXL::SDXLVec2() const
 	return SDXL::SDXLVec2{ x,y };
 }
 
+void tyr::Vector2::Zero() noexcept
+{
+	x = 0.f;
+	y = 0.f;
+}
+
 float tyr::Vector2::Cross(const Vector2& rhs) const
 {
 	return (x * rhs.y) - (y * rhs.x);

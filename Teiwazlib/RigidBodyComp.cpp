@@ -31,29 +31,16 @@ void tyr::RigidBodyComp::AddForce(float x, float y) noexcept
 
 void tyr::RigidBodyComp::FixedUpdate()
 {
-	Vector2 thisFrameVel(0.f, 0.f);
-	UpdateForce(thisFrameVel);
-
-
-	thisFrameVel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
-	m_Vel.y = thisFrameVel.y;
+	m_Vel.Zero();
 	
-	//if(m_UseGravity)
-	//	m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
-	//
-	//
-	////snapping
-	//if(m_Vel.y < m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime)
-	//{
-	//	m_Vel.y = m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
-	//}
+	UpdateForce();
 
-	
-	m_pController->Move(0.f, thisFrameVel.y);
+	m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
+	m_pController->Move(m_Vel);
 }
 
 
-void tyr::RigidBodyComp::UpdateForce(Vector2& thisFrameVel) noexcept
+void tyr::RigidBodyComp::UpdateForce() noexcept
 {
 	float amountX = 0.f, amountY = 0.f;
 
@@ -61,16 +48,17 @@ void tyr::RigidBodyComp::UpdateForce(Vector2& thisFrameVel) noexcept
 	{
 		amountX = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
 		m_Force.x -= amountX;
+		m_Vel.x += amountX;
+
 	}
 	if (std::abs(m_Force.y) > 0.01)
 	{
 		amountY = m_Force.y * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
 		m_Force.y -= amountY;
-		//m_Vel.y += amountY;
+		m_Vel.y += amountY;
 		
 	}
-	thisFrameVel.x = amountX;
-	thisFrameVel.y = amountY;
+
 
 	
 	//m_pController->Move(amountX, amountY);

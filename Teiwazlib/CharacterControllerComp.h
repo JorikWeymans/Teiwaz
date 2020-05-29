@@ -18,7 +18,9 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override {};
 		bool IsGrounded() const noexcept  { return m_IsOnGround; }
-		void Move(float x, float y);
+
+		void Move(const Vector2& vec) noexcept;
+		void Move(float x, float y) noexcept;
 		
 #ifdef EDITOR_MODE
 		void Debug() override;

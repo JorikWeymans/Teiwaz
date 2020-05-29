@@ -18,6 +18,7 @@ namespace tyr
 
 		float x, y;
 
+		void Zero() noexcept;
 		float Cross(const Vector2& rhs) const;
 
 		Vector2_POD ToPOD() const;

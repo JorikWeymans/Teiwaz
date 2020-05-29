@@ -76,7 +76,12 @@ bool tyr::CharacterControllerComp::CalculateFalling(float y, const Rect& playerC
 	return canMove;
 }
 
-void tyr::CharacterControllerComp::Move(float x, float y)
+void tyr::CharacterControllerComp::Move(const Vector2& vec) noexcept
+{
+	Move(vec.x, vec.y);
+}
+
+void tyr::CharacterControllerComp::Move(float x, float y)noexcept
 {
 	auto playerColl = m_pCollider->GetColliderRect();
 
