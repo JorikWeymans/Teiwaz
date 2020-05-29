@@ -8,13 +8,13 @@
 #include "BinaryWriter.h"
 
 
-tyr::Player1Controller::Player1Controller()
+tyr::Player1Controller::Player1Controller(float m_JumpForce)
 	: tyr::BaseComponent(ComponentType::Player1Controller)
 	, m_pCont(nullptr)
 	, m_pBody(nullptr)
 	, m_pAni(nullptr)
 	, m_IsGoningLeft(false)
-	, m_JumpForce(500.f)
+	, m_JumpForce(m_JumpForce)
 {
 }
 
@@ -85,6 +85,7 @@ void tyr::Player1Controller::FixedUpdate()
 void tyr::Player1Controller::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
+	writer.Write(m_JumpForce);
 	
 }
 

@@ -35,7 +35,9 @@ void tyr::RigidBodyComp::FixedUpdate()
 	
 	UpdateForce();
 
-	m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
+	if(m_UseGravity)
+		m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
+	
 	m_pController->Move(m_Vel);
 }
 
@@ -44,14 +46,14 @@ void tyr::RigidBodyComp::UpdateForce() noexcept
 {
 	float amountX = 0.f, amountY = 0.f;
 
-	if (std::abs(m_Force.x) > 0.01)
+	if (!IsZero(m_Force.x))
 	{
 		amountX = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
 		m_Force.x -= amountX;
 		m_Vel.x += amountX;
 
 	}
-	if (std::abs(m_Force.y) > 0.01)
+	if (!IsZero(m_Force.y))
 	{
 		amountY = m_Force.y * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
 		m_Force.y -= amountY;

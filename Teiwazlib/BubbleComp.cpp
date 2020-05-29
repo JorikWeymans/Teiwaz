@@ -24,6 +24,10 @@ void tyr::BubbleComp::Update()
 void tyr::BubbleComp::FixedUpdate()
 {
 	//m_pController->Move(1.f, 0.f);
+	if(m_pBody->GetForce().x < 0.1)
+	{
+		
+	}
 }
 
 #ifdef EDITOR_MODE

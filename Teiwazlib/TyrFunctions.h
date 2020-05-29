@@ -1,5 +1,6 @@
 #pragma once
 #include <sstream>
+#define FLOAT_PRECISION 0.01f
 namespace tyr
 {
 	//Testing code
@@ -21,5 +22,11 @@ namespace tyr
 			var & (1u << i) ? ss << '1' : ss << '0';
 		}
 		return ss.str();
+	}
+
+
+	inline bool IsZero(float value, float precision = FLOAT_PRECISION)
+	{
+		return std::abs(value) < precision;
 	}
 }

@@ -70,7 +70,10 @@ tyr::TextComp*                tyr::Factory::CreateTextComp(BinaryReader& reader)
 tyr::Player1Controller* tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
 {
 	UNREFERENCED_PARAMETER(reader);
-	return new Player1Controller();
+	
+	const float force = reader.Read<float>();
+	UNREFERENCED_PARAMETER(force);
+	return new Player1Controller(force);
 }
 
 tyr::AnimatorComp* tyr::Factory::CreateAnimatorComp(BinaryReader& reader)

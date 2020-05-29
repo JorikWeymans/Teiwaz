@@ -9,7 +9,7 @@ namespace tyr
 	class Player1Controller final : public BaseComponent
 	{
 	public:
-		Player1Controller();
+		explicit Player1Controller(float m_JumpForce = 500.f);
 		~Player1Controller() = default;
 
 		void Initialize() override;
