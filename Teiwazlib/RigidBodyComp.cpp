@@ -26,7 +26,8 @@ void tyr::RigidBodyComp::AddForce(float x, float y)
 {
 	UNREFERENCED_PARAMETER(x);
 	UNREFERENCED_PARAMETER(y);
-	m_Vel.y += y;
+	//m_Vel.y += y;
+	m_pController->AddForce(x, y);
 }
 
 

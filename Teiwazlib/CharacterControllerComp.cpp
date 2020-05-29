@@ -32,18 +32,22 @@ void tyr::CharacterControllerComp::FixedUpdate()
 {
 	DoGroundCheck();
 
+	float amountX = 0.f, amountY = 0.f;
+	
 	if(std::abs(m_Force.x) > 0.01)
 	{
-		float amount = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
-		m_Force.x -= amount;
-
-		Move(amount,0.f);
-
-		
+		amountX = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
+		m_Force.x -= amountX;
+	}
+	if (std::abs(m_Force.y) > 0.01)
+	{
+		amountY = m_Force.y * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
+		m_Force.y -= amountY;
 	}
 	
+	Move(amountX, amountY);
 }
-void tyr::CharacterControllerComp::DoGroundCheck()
+void tyr::CharacterControllerComp::DoGroundCheck() noexcept
 {
 	RaycastHit out;
 
@@ -129,13 +133,14 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	
 }
 
-void tyr::CharacterControllerComp::AddForce(float x, float y)
+void tyr::CharacterControllerComp::AddForce(float x, float y) noexcept
 {
 	m_Force.x += x;
 	m_Force.y += y;
 	
 	
 }
+
 #ifdef EDITOR_MODE
 void tyr::CharacterControllerComp::Debug()
 {

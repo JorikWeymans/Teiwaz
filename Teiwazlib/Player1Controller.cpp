@@ -35,7 +35,7 @@ void tyr::Player1Controller::Update()
 	if (GET_CONTEXT->pInput->IsActionTriggered("Jump"))
 	{
 		if (m_pCont->IsGrounded())
-			m_pBody->AddForce(0, 30.f);
+			m_pBody->AddForce(0, 300.f);
 	}
 }
 

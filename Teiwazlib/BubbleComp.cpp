@@ -18,7 +18,7 @@ void tyr::BubbleComp::Initialize()
 
 void tyr::BubbleComp::Update()
 {
-	
+		
 }
 
 void tyr::BubbleComp::FixedUpdate()

@@ -17,9 +17,10 @@ namespace tyr
 		void Update() override {};
 		void FixedUpdate() override;
 		void Render() const override {};
-		bool IsGrounded() const { return m_IsOnGround; }
+		bool IsGrounded() const noexcept  { return m_IsOnGround; }
 		void Move(float x, float y);
-		void AddForce(float x, float y);
+		void AddForce(float x, float y) noexcept;
+		const Vector2& GetForce() const noexcept { return m_Force; }
 		
 #ifdef EDITOR_MODE
 		void Debug() override;
@@ -35,7 +36,7 @@ namespace tyr
 		bool m_IsOnGround;
 
 
-		void DoGroundCheck();
+		void DoGroundCheck() noexcept;
 	public:
 		//CharacterControllerComp() = delete;
 		CharacterControllerComp(const CharacterControllerComp&) = delete;
