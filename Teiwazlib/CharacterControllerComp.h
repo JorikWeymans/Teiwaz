@@ -37,6 +37,9 @@ namespace tyr
 
 
 		void DoGroundCheck() noexcept;
+		void UpdateForce() noexcept; //Call in FixedUpdate
+		bool CalculateFalling(float y, const Rect& playerColl, const Rect* pPlaySpace) noexcept; //return true when you want to move
+		
 	public:
 		//CharacterControllerComp() = delete;
 		CharacterControllerComp(const CharacterControllerComp&) = delete;

@@ -8,7 +8,7 @@ namespace tyr
 	class RigidBodyComp final : public BaseComponent
 	{
 	public:
-		RigidBodyComp(float gravity);
+		RigidBodyComp(float gravity, bool useGravity = true);
 		~RigidBodyComp() override = default;
 
 		void Initialize() override;
@@ -25,9 +25,10 @@ namespace tyr
 #endif
 	private:
 		CharacterControllerComp* m_pController; // weak pointer;
+		Vector2 m_Vel, m_Force;
+		bool m_UseGravity;
 		float m_Gravity;
-		float m_AddedForce;
-		Vector2 m_Vel;
+		
 	public:
 		//RigidBodyComp() = delete;
 		RigidBodyComp(const RigidBodyComp&) = delete;

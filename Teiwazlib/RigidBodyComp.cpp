@@ -6,14 +6,14 @@
 #include "Time.h"
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
-tyr::RigidBodyComp::RigidBodyComp(float gravity)
+tyr::RigidBodyComp::RigidBodyComp(float gravity, bool useGravity)
 	: tyr::BaseComponent(ComponentType::RigidBody)
 	, m_pController(nullptr)
+	, m_Vel(0.f, 0.f)
+	, m_Force(0.f, 0.f)
+	, m_UseGravity(useGravity)
 	, m_Gravity(gravity)
-	, m_AddedForce(0.f)
-	, m_Vel(0.f,0.f)
-{
-}
+{}
 
 void tyr::RigidBodyComp::Initialize()
 {
@@ -35,7 +35,8 @@ void tyr::RigidBodyComp::AddForce(float x, float y)
 void tyr::RigidBodyComp::FixedUpdate()
 {
 
-	m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
+	if(m_UseGravity)
+		m_Vel.y += m_Gravity * GET_CONTEXT->pTime->fixedDeltaTime;
 
 
 	//snapping
@@ -53,23 +54,46 @@ void tyr::RigidBodyComp::Debug()
 
 void tyr::RigidBodyComp::RenderEditor()
 {
-	std::string name = "RigidBody Component##" + std::to_string(m_UniqueId);
+	const std::string strUniqueID = std::to_string(m_UniqueId);
+	std::string name = "RigidBody Component##" + strUniqueID;
+	
 	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		SDXL_ImGui_PushItemWidth(100.f);
 
-		//Gravity
+		
+		//m_UseGravity
 		SDXL_ImGui_Text("Gravity: \t");
 		SDXL_ImGui_SameLine();
-		name = "##Grav" + std::to_string(m_UniqueId);
-		SDXL_ImGui_DragFloat(name.c_str(), &m_Gravity, 1, 10, 10);
-		//
-		//SDXL_ImGui_Text("Height: \t");
-		//SDXL_ImGui_SameLine();
-		//name = "##ColW" + std::to_string(m_UniqueId);
-		//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
+		name = "##RigidbodyCompUseGravity" + strUniqueID;
+		SDXL_ImGui_Checkbox(name.c_str(), &m_UseGravity);
+
+		//m_Gravity
+		if(m_UseGravity)
+		{
+			
+			SDXL_ImGui_Text("Gravity: \t");
+			SDXL_ImGui_SameLine();
+			name = "##RigidBodyCompGravity" + strUniqueID;
+			SDXL_ImGui_DragFloat(name.c_str(), &m_Gravity, 1, 10, 10);
+		}
 
 
+		//m_Vel
+		SDXL_ImGui_TextDisabled("Velocity:\t");
+		SDXL_ImGui_SameLine();
+		name = "##RigidBodyCompVelocity" + strUniqueID;
+		auto displayVel = m_Vel;
+		SDXL_ImGui_DragFloat2(name.c_str(), &displayVel.x);
+
+		//m_Force
+		SDXL_ImGui_TextDisabled("Force:   \t");
+		SDXL_ImGui_SameLine();
+		name = "##RigidBodyCompForce" + strUniqueID;
+		auto displayForce = m_Force;
+		SDXL_ImGui_DragFloat2(name.c_str(), &displayForce.x);
+
+		
 		SDXL_ImGui_PopItemWidth();
 	}
 

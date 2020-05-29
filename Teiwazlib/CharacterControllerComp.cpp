@@ -30,11 +30,32 @@ void tyr::CharacterControllerComp::Initialize()
 
 void tyr::CharacterControllerComp::FixedUpdate()
 {
+	UpdateForce();
 	DoGroundCheck();
 
+}
+void tyr::CharacterControllerComp::DoGroundCheck() noexcept
+{
+	RaycastHit out;
+
+	if (RAYCAST(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
+
+		RAYCAST(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
+		)
+	{
+		//m_pSceneObject->GetTransform()->SetPositionY(out.point.y - m_pCollider->GetColliderRect().height / 2, true);
+		m_IsOnGround = true;
+	}
+	else
+		m_IsOnGround = false;
+
+}
+
+void tyr::CharacterControllerComp::UpdateForce() noexcept
+{
 	float amountX = 0.f, amountY = 0.f;
-	
-	if(std::abs(m_Force.x) > 0.01)
+
+	if (std::abs(m_Force.x) > 0.01)
 	{
 		amountX = m_Force.x * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
 		m_Force.x -= amountX;
@@ -44,24 +65,34 @@ void tyr::CharacterControllerComp::FixedUpdate()
 		amountY = m_Force.y * GET_CONTEXT->pTime->fixedDeltaTime * m_ForceMultiplier;
 		m_Force.y -= amountY;
 	}
-	
+
 	Move(amountX, amountY);
 }
-void tyr::CharacterControllerComp::DoGroundCheck() noexcept
+
+bool tyr::CharacterControllerComp::CalculateFalling(float y, const Rect& playerColl, const Rect* pPlaySpace) noexcept
 {
-	RaycastHit out;
-
-	if (GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
-
-		GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
-		)
+	bool canMove = true;
+	//When falling
+	if (y < 0 )
 	{
-		m_pSceneObject->GetTransform()->SetPositionY(out.point.y - m_pCollider->GetColliderRect().height / 2, true);
-		m_IsOnGround = true;
-	}
-	else
-		m_IsOnGround = false;
+		//Screenwrapping
+		if (playerColl.GetPos().y > pPlaySpace->GetHeight())
+			m_pTransform->SetPositionY(pPlaySpace->GetHeight() - ENGINE_SPACING_TOP);
 
+		//check for collider, also clip with the collider to prevent getting stuck in ground
+		RaycastHit out;
+		if (RAYCAST(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
+			RAYCAST(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
+			)
+		{
+
+			m_pSceneObject->GetTransform()->SetPositionY(out.point.y - m_pCollider->GetColliderRect().height / 2, true);
+			m_IsOnGround = true;
+		}
+		canMove = !m_IsOnGround;
+	}
+
+	return canMove;
 }
 
 void tyr::CharacterControllerComp::Move(float x, float y)
@@ -76,9 +107,9 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	{
 
 		RaycastHit out;
-		if (GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out) /*||
-		
-			GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out)*/
+		if (RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out) /*||
+		1
+			RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out)*/
 			)
 		{
 			auto pos = m_pSceneObject->GetTransform()->GetPosition();
@@ -92,9 +123,9 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 	else if( x > 0.f && (playerColl.pos.x + x) < playSpace->pos.x + playSpace->width - playerColl.width)
 	{
 		RaycastHit out;
-		if (GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(1, 0), m_pCollider->GetColliderRect().width / 2, out) /*||
+		if (RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(1, 0), m_pCollider->GetColliderRect().width / 2, out) /*||
 
-			GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out)*/
+			RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out)*/
 			)
 		{
 			auto pos = m_pSceneObject->GetTransform()->GetPosition();
@@ -106,29 +137,9 @@ void tyr::CharacterControllerComp::Move(float x, float y)
 			canMoveX = true;
 	}
 
-	bool canMoveY = true;
-	if( y < 0  && 
-		playerColl.pos.y >  playSpace->height)
-	{
-		m_pTransform->SetPositionY(playSpace->height - ENGINE_SPACING_TOP);
-	}
+	const bool canMoveY = CalculateFalling(y, playerColl, playSpace);
 
-
-
-	if (y < 0)
-	{
-		RaycastHit out;
-		if (GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
-			GET_CONTEXT->pPhysics->Raycast(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
-			)
-		{
-			
-			m_pSceneObject->GetTransform()->SetPositionY(out.point.y - m_pCollider->GetColliderRect().height / 2, true);
-			m_IsOnGround = true;
-		}
-		canMoveY = !m_IsOnGround;
-	}
-
+	
 	m_pSceneObject->Translate(canMoveX ? x: 0.f, canMoveY ? y : 0.f);
 	
 }

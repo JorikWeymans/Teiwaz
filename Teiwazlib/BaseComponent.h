@@ -1,7 +1,9 @@
 #pragma once
 #define GET_CONTEXT m_pSceneObject->GetGameContext()
-#define INPUT m_pSceneObject->GetGameContext()->pInput
 #define GET_COMPONENT m_pSceneObject->GetComponent
+#define RAYCAST GET_CONTEXT->pPhysics->Raycast
+#define INPUT m_pSceneObject->GetGameContext()->pInput
+
 
 #include "BinStructureHelpers.h"
 #include "BinaryReader.h"
@@ -33,7 +35,7 @@ namespace tyr
 		SceneObject* m_pSceneObject = nullptr;
 		ComponentType m_Type;
 #ifdef EDITOR_MODE
-		size_t m_UniqueId;
+		size_t m_UniqueId; //if you don't use a unique id, every comp will change it value, auto generated for ease of use
 #endif
 	public:
 		BaseComponent(const BaseComponent&) = delete;
