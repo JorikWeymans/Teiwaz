@@ -14,6 +14,7 @@ tyr::Player1Controller::Player1Controller()
 	, m_pBody(nullptr)
 	, m_pAni(nullptr)
 	, m_IsGoningLeft(false)
+	, m_JumpForce(500.f)
 {
 }
 
@@ -35,7 +36,7 @@ void tyr::Player1Controller::Update()
 	if (GET_CONTEXT->pInput->IsActionTriggered("Jump"))
 	{
 		if (m_pCont->IsGrounded())
-			m_pBody->AddForce(0, 300.f);
+			m_pBody->AddForce(0, m_JumpForce);
 	}
 }
 
@@ -85,6 +86,26 @@ void tyr::Player1Controller::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
 	
+}
+
+void tyr::Player1Controller::RenderEditor()
+{
+	const std::string strUniqueID = std::to_string(m_UniqueId);
+	std::string name = "Player1 Controller Component##" + strUniqueID;
+
+	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		SDXL_ImGui_PushItemWidth(100.f);
+
+		//m_JumpForce
+		SDXL_ImGui_Text("JumpForce: \t");
+		SDXL_ImGui_SameLine();
+		name = "##Player1ControllerComp" + strUniqueID;
+		SDXL_ImGui_DragFloat(name.c_str(), &m_JumpForce, 1, 10, 10);
+
+
+		SDXL_ImGui_PopItemWidth();
+	}
 }
 
 #endif

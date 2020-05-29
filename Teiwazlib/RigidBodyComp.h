@@ -34,7 +34,7 @@ namespace tyr
 		float m_ForceMultiplier;
 
 		
-		void UpdateForce() noexcept; //Call in FixedUpdate
+		void UpdateForce(Vector2& thisFrameVel) noexcept; //Call in FixedUpdate
 		
 	public:
 		//RigidBodyComp() = delete;

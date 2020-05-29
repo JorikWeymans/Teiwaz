@@ -20,12 +20,14 @@ namespace tyr
 		
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
+		void RenderEditor() override;
 #endif
 	private:
 		CharacterControllerComp* m_pCont;
 		RigidBodyComp* m_pBody;
 		AnimatorComp* m_pAni;
 		bool m_IsGoningLeft;
+		float m_JumpForce;
 	public:
 		Player1Controller(const Player1Controller&) = delete;
 		Player1Controller(Player1Controller&&) = delete;
