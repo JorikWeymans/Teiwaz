@@ -6,14 +6,14 @@
 #include "Time.h"
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
-tyr::RigidBodyComp::RigidBodyComp(float gravity, bool useGravity)
+tyr::RigidBodyComp::RigidBodyComp(float gravity, bool useGravity, float forceMultiplier)
 	: tyr::BaseComponent(ComponentType::RigidBody)
 	, m_pController(nullptr)
 	, m_Vel(0.f, 0.f)
 	, m_Force(0.f, 0.f)
 	, m_UseGravity(useGravity)
 	, m_Gravity(gravity)
-	, m_ForceMultiplier(2.f)
+	, m_ForceMultiplier(forceMultiplier)
 {}
 
 void tyr::RigidBodyComp::Initialize()

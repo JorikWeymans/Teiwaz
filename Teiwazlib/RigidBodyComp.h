@@ -8,7 +8,7 @@ namespace tyr
 	class RigidBodyComp final : public BaseComponent
 	{
 	public:
-		explicit RigidBodyComp(float gravity, bool useGravity = true);
+		explicit RigidBodyComp(float gravity, bool useGravity = true, float forceMultiplier = 2.f);
 		~RigidBodyComp() override = default;
 
 		void Initialize() override;
