@@ -7,10 +7,10 @@
 #include "TyrComps.h"
 #include <string_view>
 int tyr::SceneObject::counter = 0;
-tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name, bool AppendCounter)
-	: SceneObject(new TransformComp(transform), name ,AppendCounter) {}
+tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name, Tag tag, bool AppendCounter)
+	: SceneObject(new TransformComp(transform), name, tag, AppendCounter) {}
 
-tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name, bool AppendCounter)
+tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name, Tag tag, bool AppendCounter)
 	: m_pComponents(std::vector<BaseComponent*>())
 	, m_pChilds(std::vector<SceneObject*>())
 	, m_pParent(nullptr)
@@ -18,6 +18,7 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	, m_IsDestroyed(false)
 	, m_name(name)
 	, m_pContext(nullptr)
+	, m_Tag(tag)
 #ifdef EDITOR_MODE
 	, m_SelectedItem(-1)
 #endif
@@ -28,10 +29,31 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	counter++;
 
 	strcpy_s(m_ChangedObjectName, m_name.c_str());
+
+
+	m_SelectedTag = TagToArrayIndex(m_Tag);
 	
 #ifdef EDITOR_MODE
 	auto intID = reinterpret_cast<uint32_t>(this);
 	m_UniqueId = "##" + std::to_string(intID); //Add the ## because we don't want to see that ID in the editor
+
+	m_TagCount = static_cast<int>(magic_enum::enum_count<Tag>());
+	m_TagItems.resize(m_TagCount);
+
+	Tag first = Tag::None;
+	for (int i = 0; i < m_TagCount; i++)
+	{
+		auto theEnum = magic_enum::enum_name(first);
+		std::string enumString{};
+		enumString.resize(theEnum.size());
+		memcpy(enumString.data(), theEnum.data(), theEnum.size());
+
+		m_TagItems[i] = enumString;
+		first++;
+	}
+
+
+	
 #endif
 }
 
@@ -136,7 +158,9 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 						b->RenderEditor();
 				});
 
-			AddComponentButton();
+			//AddComponentButton();
+
+			SDXL_ImGui_End();
 		}
 		
 	}
@@ -250,7 +274,7 @@ void tyr::SceneObject::AddComponentButton()
 
 		
 	}
-	SDXL_ImGui_End();
+
 }
 #endif
 
@@ -269,18 +293,6 @@ void tyr::SceneObject::Render() const
 	});
 }
 
-//void tyr::SceneObject::AddComponent(BaseComponent* pComp)
-//{
-//	auto found = std::find(m_pComponents.begin(), m_pComponents.end(), pComp);
-//	if(found == m_pComponents.end())
-//	{
-//		pComp->m_pSceneObject = this;
-//		pComp->Initialize();
-//		
-//		m_pComponents.emplace_back(pComp);
-//		
-//	}
-//}
 
 void tyr::SceneObject::AddChild(SceneObject* pChild)
 {
@@ -308,6 +320,7 @@ void tyr::SceneObject::Initialize()
 	m_pTransform->Initialize();
 }
 
+
 void tyr::SceneObject::RenderProperties()
 {
 	std::string id = "Properties" + m_UniqueId;
@@ -315,40 +328,93 @@ void tyr::SceneObject::RenderProperties()
 	{
 		SDXL_ImGui_PushItemWidth(100.f);
 
-		//Change name
-		id = m_UniqueId + "ObjectName";
-		SDXL_ImGui_Text("Name:    \t");
-		SDXL_ImGui_SameLine();
-		SDXL_ImGui_SetNextItemWidth(200.f);
-		SDXL_ImGui_InputText(id.c_str(), m_ChangedObjectName, OBJECT_NAME_MAX_CHAR, nullptr);
+		PropertyChangeName(id);
+		PropertyTag(id);
+
+
+
 		
 
 
-		id = "Save" + m_UniqueId;
-		SDXL_ImGui_SameLine();
-		if (SDXL_ImGui_Button(id.c_str()))
-		{
-			m_name = m_ChangedObjectName;
-		}
-
-		id = "x" + m_UniqueId;
-		SDXL_ImGui_SameLine();
-		if(SDXL_ImGui_Button(id.c_str()))
-		{
-			strcpy_s(m_ChangedObjectName, m_name.c_str());
-		}
-
-
-
-		//Change tag
-		SDXL_ImGui_Text("Position:\t");
-		SDXL_ImGui_SameLine();
-		static float f = 1.f;
-		SDXL_ImGui_DragFloat("##fafafas", &f);
 		
 		
 
 		
 		SDXL_ImGui_PopItemWidth();
 	}
+}
+
+void tyr::SceneObject::PropertyChangeName(std::string& id)
+{
+	id = m_UniqueId + "ObjectName";
+	SDXL_ImGui_Text("Name:    \t");
+	SDXL_ImGui_SameLine();
+	SDXL_ImGui_SetNextItemWidth(200.f);
+	SDXL_ImGui_InputText(id.c_str(), m_ChangedObjectName, OBJECT_NAME_MAX_CHAR, nullptr);
+
+
+
+	id = "Save" + m_UniqueId;
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button(id.c_str()))
+	{
+		m_name = m_ChangedObjectName;
+	}
+
+	id = "x" + m_UniqueId;
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button(id.c_str()))
+	{
+		strcpy_s(m_ChangedObjectName, m_name.c_str());
+	}
+}
+void tyr::SceneObject::PropertyTag(std::string& id)
+{
+	id = m_UniqueId + "Tag";
+	SDXL_ImGui_Text("Tag:     \t");
+	SDXL_ImGui_SameLine();
+
+	if (SDXL_ImGui_BeginCombo(id.c_str(), m_TagItems[m_SelectedTag].c_str(), SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (int n = 0; n < m_TagCount; n++)
+		{
+			bool is_selected = (m_SelectedTag == n);
+			if (SDXL_ImGui_Selectable(m_TagItems[n].c_str(), is_selected))
+			{
+				m_SelectedTag = n;
+
+				Tag theTag = Tag::All;
+				
+				if(m_SelectedTag <= 2)
+					theTag = static_cast<Tag>(m_SelectedTag);
+				else
+					theTag = static_cast<Tag>(pow(2, m_SelectedTag - 1));
+				
+				m_Tag = theTag;
+				
+			}
+				
+			if (is_selected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+}
+
+int tyr::SceneObject::TagToArrayIndex(Tag theTag)
+{
+	int currentValue = static_cast<int>(theTag);
+	
+	if(currentValue <=2)
+		return currentValue;
+
+	//else
+	int timesDivided = 0;
+	while(currentValue !=2)
+	{
+		currentValue /= 2;
+		timesDivided++;
+	}
+
+	return timesDivided + 2; // +2 because you stop dividing when you get 2
 }

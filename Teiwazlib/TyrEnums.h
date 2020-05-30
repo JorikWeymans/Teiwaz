@@ -15,14 +15,22 @@ namespace tyr
 		BotCenter,
 		BotRight,
 	};
-
-	enum class Tag : unsigned char
+	enum class Tag : BYTE
 	{
-		Default    = 0x1,
-		Player     = 0x2,
-		Enemy      = 0x4,
-		Bubble     = 0x8,
+		None       = 0x00,
+		Default    = 0x01,
+		Player     = 0x02,
+		Enemy      = 0x04,
+		Bubble     = 0x08,
 		Background = 0x10,
-		
+		All        = 0xFF,
+
 	};
+
+	Tag operator<<(const Tag& tag, const int& rhs);
+	Tag operator++(tyr::Tag& tag, int);
+	Tag operator>>(const Tag& tag, const int& rhs);
+	Tag operator--(tyr::Tag& tag, int);
+
+
 }

@@ -134,28 +134,19 @@ void tyr::Scene::RenderEditor()
 			
 		}
 
-		if (SDXL_ImGui_IsItemHovered() || itemPopUP == i)
-		{
-
-			if (SDXL_ImGui_BeginPopupContextWindow("SceneObjectNameEditor"))
-			{
-				itemPopUP = i;
-				static char objectName[25];
-				SDXL_ImGui_InputText("##ObjectName", objectName, 25, nullptr);
-				SDXL_ImGui_SameLine();
-				if (SDXL_ImGui_Button("Save ObjectName"))
-				{
-					m_pSceneObjects[i]->m_name = std::string(objectName);
-					itemPopUP = -1;
-				
-				}
-				SDXL_ImGui_EndPopup();
-			}
-			else
-			{
-				itemPopUP = -1;
-			}
-		}
+		//if (SDXL_ImGui_IsItemHovered() || itemPopUP == i)
+		//{
+		//
+		//	if (SDXL_ImGui_BeginPopupContextWindow("SceneObjectNameEditor"))
+		//	{
+		//	
+		//		SDXL_ImGui_EndPopup();
+		//	}
+		//	else
+		//	{
+		//		itemPopUP = -1;
+		//	}
+		//}
 	}
 
 

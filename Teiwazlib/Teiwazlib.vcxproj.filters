@@ -336,5 +336,8 @@
     <ClCompile Include="BubbleComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="TyrEnums.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -16,8 +16,12 @@ namespace tyr
 	class SceneObject final
 	{
 	public:
-		explicit SceneObject(const Transform& transform, const std::string& name = "new GameObject" + std::to_string(counter), bool AppendCounter = false);
-		explicit SceneObject(TransformComp* pTransform, const std::string& name = "new GameObject" + std::to_string(counter), bool AppendCounter = false);
+		explicit SceneObject(const Transform& transform, 
+							 const std::string& name = "new GameObject" + std::to_string(counter), 
+							 Tag tag = Tag::None, bool AppendCounter = false);
+		explicit SceneObject(TransformComp* pTransform, 
+							 const std::string& name = "new GameObject" + std::to_string(counter), 
+							 Tag tag = Tag::None, bool AppendCounter = false);
 		explicit SceneObject();
 		
 		~SceneObject();
@@ -33,7 +37,7 @@ namespace tyr
 		void Render() const;
 
 		template <typename T>
-		T* AddComponent(T* pComp)
+		T* AddComponent(T* pComp) //return the comp so you can do T* comp = AddComponent(new T());
 		{
 			auto savedPointer = static_cast<BaseComponent*>(pComp);
 			auto found = std::find(m_pComponents.begin(), m_pComponents.end(), savedPointer);
@@ -75,7 +79,7 @@ namespace tyr
 		Tag                GetTag()         const noexcept { return m_Tag; }
 
 #ifdef EDITOR_MODE
-		std::string GetEditorName() const noexcept { return m_name + m_UniqueId; };
+		std::string GetEditorName() const { return m_name + m_UniqueId; };
 #endif
 	private:
 		friend Scene;
@@ -97,7 +101,16 @@ namespace tyr
 		int m_SelectedItem;
 		std::string m_UniqueId; //if you don't use a unique id, Only the first object with the same name will be selected
 		char m_ChangedObjectName[OBJECT_NAME_MAX_CHAR];
+
+		int m_TagCount, m_SelectedTag;
+		std::vector<std::string> m_TagItems;
+
 		void RenderProperties();
+		void PropertyChangeName(std::string& id);
+		void PropertyTag(std::string& id);
+
+		static int TagToArrayIndex(Tag theTag);
+		
 #endif
 	public:
 		SceneObject(const SceneObject&) = delete;

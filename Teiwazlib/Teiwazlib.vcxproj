@@ -286,6 +286,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComp.cpp" />
     <ClCompile Include="GameContext.cpp" />
+    <ClCompile Include="TyrEnums.cpp" />
     <ClCompile Include="TyrException.cpp" />
     <ClCompile Include="tyrpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='_DEBUG|Win32'">Create</PrecompiledHeader>
