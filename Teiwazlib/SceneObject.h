@@ -2,6 +2,8 @@
 #include <vector>
 #include <typeinfo>
 #include "BaseComponent.h"
+#include "TyrEnums.h"
+#define OBJECT_NAME_MAX_CHAR 25
 namespace tyr
 {
 	class BinaryWriter;
@@ -47,9 +49,9 @@ namespace tyr
 			
 		}
 		void AddChild(SceneObject* pChild);
-		TransformComp* GetTransform() const;
-
 		void Translate(float x, float y);
+		
+		TransformComp* GetTransform() const noexcept { return m_pTransform; }
 		template <typename T>
 		T* GetComponent(unsigned int index = 0) const  //index used when there are more than one component of the same type on the object.
 		{
@@ -67,9 +69,14 @@ namespace tyr
 			return nullptr;
 		}
 		
-		const GameContext* GetGameContext() const;
-		const std::string& GetName() const { return m_name; }
-		const SceneObject* GetParent() const { return m_pParent; }
+		const GameContext* GetGameContext() const noexcept { return m_pContext; };
+		const std::string& GetName()        const noexcept { return m_name; }
+		const SceneObject* GetParent()      const noexcept { return m_pParent; }
+		Tag                GetTag()         const noexcept { return m_Tag; }
+
+#ifdef EDITOR_MODE
+		std::string GetEditorName() const noexcept { return m_name + m_UniqueId; };
+#endif
 	private:
 		friend Scene;
 		void Initialize();
@@ -81,10 +88,16 @@ namespace tyr
 		bool m_IsDestroyed;
 		std::string m_name;
 		GameContext const* m_pContext; // weak pointer
+		Tag m_Tag;
+
+		
 		static int counter;
 
 #ifdef EDITOR_MODE
 		int m_SelectedItem;
+		std::string m_UniqueId; //if you don't use a unique id, Only the first object with the same name will be selected
+		char m_ChangedObjectName[OBJECT_NAME_MAX_CHAR];
+		void RenderProperties();
 #endif
 	public:
 		SceneObject(const SceneObject&) = delete;

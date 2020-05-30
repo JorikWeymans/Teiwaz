@@ -119,7 +119,7 @@ void tyr::Scene::RenderEditor()
 	
 	for(int i{0}; i < static_cast<int>(m_pSceneObjects.size()); i++)
 	{
-		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetName().c_str(), m_SelectedItem == i, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		if (SDXL_ImGui_Selectable(m_pSceneObjects[i]->GetEditorName().c_str(), m_SelectedItem == i, SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
 		{
 			m_SelectedItem = i;
 			m_pSceneObjects.at(m_SelectedItem)->m_SelectedItem = -1;

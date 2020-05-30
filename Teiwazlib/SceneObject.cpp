@@ -26,6 +26,13 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	if (AppendCounter)
 		m_name += std::to_string(counter);
 	counter++;
+
+	strcpy_s(m_ChangedObjectName, m_name.c_str());
+	
+#ifdef EDITOR_MODE
+	auto intID = reinterpret_cast<uint32_t>(this);
+	m_UniqueId = "##" + std::to_string(intID); //Add the ## because we don't want to see that ID in the editor
+#endif
 }
 
 tyr::SceneObject::SceneObject()
@@ -99,7 +106,7 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 
 		for (int i{ 0 }; i < static_cast<int>(m_pChilds.size()); i++)
 		{
-			if (SDXL_ImGui_Selectable(m_pChilds[i]->GetName().c_str(), m_SelectedItem == i))
+			if (SDXL_ImGui_Selectable(m_pChilds[i]->GetEditorName().c_str(), m_SelectedItem == i))
 			{
 				m_SelectedItem = i;
 
@@ -120,6 +127,8 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 		
 		if (SDXL_ImGui_Begin("Inspector"))
 		{
+			RenderProperties();
+			
 			m_pTransform->RenderEditor();
 			std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 				{
@@ -287,23 +296,59 @@ void tyr::SceneObject::AddChild(SceneObject* pChild)
 	
 }
 
-tyr::TransformComp* tyr::SceneObject::GetTransform() const
-{
-	return m_pTransform;
-}
-
 void tyr::SceneObject::Translate(float x, float y)
 {
 	m_pTransform->Translate(x, y);
 }
 
-const tyr::GameContext* tyr::SceneObject::GetGameContext() const
-{
-	return m_pContext;
-}
 
 void tyr::SceneObject::Initialize()
 {
 	m_pTransform->m_pSceneObject = this;
 	m_pTransform->Initialize();
+}
+
+void tyr::SceneObject::RenderProperties()
+{
+	std::string id = "Properties" + m_UniqueId;
+	if (SDXL_ImGui_CollapsingHeader(id.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		SDXL_ImGui_PushItemWidth(100.f);
+
+		//Change name
+		id = m_UniqueId + "ObjectName";
+		SDXL_ImGui_Text("Name:    \t");
+		SDXL_ImGui_SameLine();
+		SDXL_ImGui_SetNextItemWidth(200.f);
+		SDXL_ImGui_InputText(id.c_str(), m_ChangedObjectName, OBJECT_NAME_MAX_CHAR, nullptr);
+		
+
+
+		id = "Save" + m_UniqueId;
+		SDXL_ImGui_SameLine();
+		if (SDXL_ImGui_Button(id.c_str()))
+		{
+			m_name = m_ChangedObjectName;
+		}
+
+		id = "x" + m_UniqueId;
+		SDXL_ImGui_SameLine();
+		if(SDXL_ImGui_Button(id.c_str()))
+		{
+			strcpy_s(m_ChangedObjectName, m_name.c_str());
+		}
+
+
+
+		//Change tag
+		SDXL_ImGui_Text("Position:\t");
+		SDXL_ImGui_SameLine();
+		static float f = 1.f;
+		SDXL_ImGui_DragFloat("##fafafas", &f);
+		
+		
+
+		
+		SDXL_ImGui_PopItemWidth();
+	}
 }

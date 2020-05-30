@@ -69,10 +69,7 @@ tyr::TextComp*                tyr::Factory::CreateTextComp(BinaryReader& reader)
 
 tyr::Player1Controller* tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
 {
-	UNREFERENCED_PARAMETER(reader);
-	
 	const float force = reader.Read<float>();
-	UNREFERENCED_PARAMETER(force);
 	return new Player1Controller(force);
 }
 
