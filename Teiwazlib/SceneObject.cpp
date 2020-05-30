@@ -172,6 +172,7 @@ void tyr::SceneObject::Save(BinaryWriter& writer)
 {
 	writer.Write(ObjectType::SceneObject);
 	writer.WriteString(m_name);
+	writer.Write(m_Tag);
 	
 	UINT size = m_pComponents.size() + 1; //+1 is for the transform comp not saved in vec
 	writer.Write(size);
