@@ -24,7 +24,7 @@ namespace tyr
 		
 #ifdef EDITOR_MODE
 		virtual void Debug() {}
-		virtual void RenderEditor() {}; //should be overridden in 90% of the time, the window is opend in sceneobject before this call
+		virtual void RenderEditor() {}; //should be overridden in 90% of the time, the window is opened in sceneobject before this call
 		virtual void Save(BinaryWriter& writer) { UNREFERENCED_PARAMETER(writer); };
 #endif
 		virtual void FixedUpdate() = 0;
@@ -35,7 +35,7 @@ namespace tyr
 		SceneObject* m_pSceneObject = nullptr;
 		ComponentType m_Type;
 #ifdef EDITOR_MODE
-		size_t m_UniqueId; //if you don't use a unique id, every comp will change it value, auto generated for ease of use
+		uint32_t m_UniqueId; //if you don't use a unique id, every comp will change its value, auto generated for ease of use
 #endif
 	public:
 		BaseComponent(const BaseComponent&) = delete;
