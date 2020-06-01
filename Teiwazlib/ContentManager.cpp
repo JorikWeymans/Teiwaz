@@ -28,12 +28,13 @@ tyr::ContentManager::ContentManager()
 	: m_IsInitialized(false)
 	, m_DataFolder("")
 	, m_pFonts(std::vector<Font*>())
+	, m_SelectedContentWindow(ContentWindow::None)
 {
 }
 
 tyr::ContentManager::~ContentManager()
 {
-	SAFE_DELETE(m_pTextures);
+	SAFE_DELETE(m_pTextureManager);
 	std::for_each(m_pFonts.begin(), m_pFonts.end(),			[](auto* p) {SAFE_DELETE(p)});
 	std::for_each(m_pAnimations.begin(), m_pAnimations.end(),	[](auto* p) {SAFE_DELETE(p) });
 }
@@ -64,7 +65,7 @@ void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::s
 
 		m_IsInitialized   = true;
 
-		m_pTextures = new TextureManager();
+		m_pTextureManager = new TextureManager();
 	}
 }
 
@@ -100,13 +101,13 @@ void tyr::ContentManager::InitializeFromFile()
 		switch (type)
 		{
 		case ContentType::Texture:
-			m_pTextures = new TextureManager();
-			m_pTextures->Resize(size);
+			m_pTextureManager = new TextureManager();
+			m_pTextureManager->Resize(size);
 			
 			for(UINT i {0}; i < size; i++)
 			{
 				std::string name = reader.Read<std::string>();
-				m_pTextures->InsertAt(i, new Texture(m_DataFolder + m_TextureFolder, name));
+				m_pTextureManager->InsertAt(i, new Texture(m_DataFolder + m_TextureFolder, name));
 			}
 
 			break;
@@ -158,7 +159,7 @@ void tyr::ContentManager::RenderEditor()
 
 void tyr::ContentManager::EditorTextureSelector(const char* imGuiID, TextureID& textureID)
 {
-	m_pTextures->ETextureSelector(imGuiID, textureID);
+	m_pTextureManager->ETextureSelector(imGuiID, textureID);
 	
 }
 
@@ -193,7 +194,7 @@ void tyr::ContentManager::Save()
 	writer.Write(m_FontFolder);
 	writer.Write(m_AnimationFolder);
 
-	m_pTextures->SaveTextures(writer);
+	m_pTextureManager->SaveTextures(writer);
 
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
@@ -229,27 +230,20 @@ void tyr::ContentManager::EMainWindow()
 	if (m_OpenContentManager)
 	{
 
-		static int selected = -1;
 		SDXL_ImGui_SetNextWindowSize(SDXL::Float2(500.f, 500.f));
 		if (SDXL_ImGui_Begin("ContentManager##ContentManager", &m_OpenContentManager, SDXL_ImGuiWindowFlags_NoSavedSettings | SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_NoResize))
 		{
 			EMenuBar();
 
-			EContentSelectorWindow(selected);
+			EContentSelectorWindow();
 			SDXL_ImGui_SameLine();
-
-
+			
 		}
 
 
-		if (selected == 1)
-		{
-			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0, 0), false))
-			{
-				m_pTextures->RenderEditor();
-				SDXL_ImGui_EndChild();
-			}
-		}
+		ERenderContentWindow();
+
+		
 
 
 
@@ -258,33 +252,30 @@ void tyr::ContentManager::EMainWindow()
 	}
 }
 
-void tyr::ContentManager::EContentSelectorWindow(int& selectedItem)
+void tyr::ContentManager::EContentSelectorWindow()
 {
+	
+	const SDXL_ImGuiSelectableFlags flag = SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups;
+	
 	if (SDXL_ImGui_BeginChild("child#ContentManager", SDXL::Float2(100, 0), true))
 	{
-
-
-		if (SDXL_ImGui_Selectable("Textures##ContentManager", selectedItem == 1,
-			SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		if (SDXL_ImGui_Selectable("Textures##ContentManager", m_SelectedContentWindow == ContentWindow::Textures, flag))
 		{
-			selectedItem = 1;
-
+			m_SelectedContentWindow = ContentWindow::Textures;
 		}
-		if (SDXL_ImGui_Selectable("Scenes##ContentManager", selectedItem == 2,
-			SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		if (SDXL_ImGui_Selectable("Scenes##ContentManager", m_SelectedContentWindow == ContentWindow::Scenes, flag))
 		{
-			selectedItem = 2;
-
+			m_SelectedContentWindow = ContentWindow::Scenes;
 		}
 
-		if (SDXL_ImGui_Selectable("Animations##ContentManager", selectedItem == 3,
-			SDXL_ImGuiSelectableFlags_AllowDoubleClick | SDXL_ImGuiSelectableFlags_DontClosePopups))
+		if (SDXL_ImGui_Selectable("Animations##ContentManager", m_SelectedContentWindow == ContentWindow::Animations, flag))
 		{
-			selectedItem = 3;
-
+			m_SelectedContentWindow = ContentWindow::Animations;
 		}
 		SDXL_ImGui_EndChild();
 	}
+
+
 }
 
 void tyr::ContentManager::EMenuBar()
@@ -382,7 +373,25 @@ void tyr::ContentManager::ESettingsContentPath()
 	}
 }
 
-
+void tyr::ContentManager::ERenderContentWindow() const
+{
+	switch(m_SelectedContentWindow)
+	{
+		case ContentWindow::None: break;
+		case ContentWindow::Textures:
+			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0, 0), false))
+			{
+				m_pTextureManager->RenderEditor();
+				SDXL_ImGui_EndChild();
+			}
+		break;
+		case ContentWindow::Scenes: break;
+		case ContentWindow::Animations: break;
+		default:
+			SDXL_ImGui_ConsoleLogError("You have selected an invalid window");
+		;
+	}
+}
 
 
 #endif
@@ -394,7 +403,7 @@ void tyr::ContentManager::Destroy()
 
 TextureID tyr::ContentManager::LoadTexture(const std::string& path)
 {
-	return m_pTextures->LoadTexture(m_DataFolder + m_TextureFolder, path);
+	return m_pTextureManager->LoadTexture(m_DataFolder + m_TextureFolder, path);
 }
 FontID tyr::ContentManager::LoadFont(const std::string& path)
 {
@@ -438,7 +447,7 @@ AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 
 tyr::Texture* tyr::ContentManager::GetTexture(TextureID id) const
 {
-	return m_pTextures->GetTexture(id);
+	return m_pTextureManager->GetTexture(id);
 }
 tyr::Font const* tyr::ContentManager::GetFont(FontID id)
 {
