@@ -4,7 +4,7 @@
 #include "TeiwazEngine.h"
 #include "Color.h"
 #include "ColliderComp.h"
-bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit)
+bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller)
 {
 	// Vec1
 	const auto A = pos;
@@ -13,7 +13,10 @@ bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float l
 	for(auto pC : m_pColliders)
 	{
 		 auto tC = pC->GetColliderRect();
-
+		 if(pC->GetSceneObject() == pCaller)
+		 {
+			 continue;
+		 }
 		
 		 if (LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y },hit) || //Top
 			LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot

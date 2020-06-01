@@ -64,11 +64,11 @@ tyr::SceneObject* tyr::BubbleShootingComp::CreateBubble() const
 {
 	auto newPos = m_pSceneObject->GetTransform()->GetPositionRaw();
 	newPos.x -= 50.f;
+	newPos.y += 2.f;
 	auto pReturnObj = new SceneObject(Transform(newPos), "Bubble Object", Tag::Bubble, true);
 	GET_CONTEXT->pSceneManager->GetCurrentScene()->BufferSceneObject(pReturnObj);
 
-	pReturnObj->AddComponent(new TextureComp(2, PivotMode::Center, tyr::Rect(576.f,0.f,48.f,48.f)));
-	pReturnObj->AddComponent(new ColliderComp(48, 48, PivotMode::Center, true));
+
 	pReturnObj->AddComponent(new BubbleComp());
 
 	

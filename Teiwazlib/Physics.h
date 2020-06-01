@@ -18,7 +18,7 @@ namespace tyr
 	{
 	public:
 		Physics() = default;
-		bool Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit);
+		bool Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller);
 		void AddCollider(ColliderComp* pCollider);
 	private:
 		std::vector<ColliderComp*> m_pColliders;

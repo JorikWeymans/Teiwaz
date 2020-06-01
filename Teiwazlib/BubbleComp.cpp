@@ -10,8 +10,11 @@ tyr::BubbleComp::BubbleComp()
 
 void tyr::BubbleComp::Initialize()
 {
-	m_pSceneObject->AddComponent(new CharacterControllerComp());
-	m_pBody = m_pSceneObject->AddComponent(new RigidBodyComp(0.f, false,4.f));
+	ADD_COMPONENT(new TextureComp(2, PivotMode::Center, tyr::Rect(576.f, 0.f, 48.f, 48.f)));
+	ADD_COMPONENT(new ColliderComp(48, 48, PivotMode::Center, false));
+	ADD_COMPONENT(new CharacterControllerComp());
+	
+	m_pBody = ADD_COMPONENT(new RigidBodyComp(0.f, false,4.f));
 	m_pBody->AddForce(-300.f, 0.f);
 	
 }
