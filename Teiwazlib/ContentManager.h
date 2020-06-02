@@ -22,8 +22,8 @@ namespace tyr
 		static ContentManager* GetInstance();
 
 		void Initialize	   (const std::string& dataFolder, 
-							const std::string& sceneFolder     = "Scenes/", const std::string& textureFolder   = "Textures/",
-							const std::string& fontFolder      = "Fonts/", const std::string& animationFolder = "Animations/");
+							const std::string& sceneFolder = "Scenes/", const std::string& textureFolder   = "Textures/",
+							const std::string& fontFolder  = "Fonts/",  const std::string& animationFolder = "Animations/");
 		
 		//This file is an engine predetermined file
 		void InitializeFromFile(); 
