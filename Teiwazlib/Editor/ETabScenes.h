@@ -17,7 +17,6 @@ namespace  tyr
 		 void InternalRenderEditor() override;
 
 	private:
-		std::string m_SceneFolder;
 		std::vector<TabItem> m_Files;
 		TextureID m_Texture;
 	public:

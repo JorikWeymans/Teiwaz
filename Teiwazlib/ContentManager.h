@@ -15,20 +15,15 @@ namespace tyr
 	private:
 		enum class ContentWindow : int
 		{
-			None       = -1,
-			Textures   = 0,
-			Scenes     = 1,
-			Animations = 2,
+			None = -1, Textures = 0, Scenes = 1, Animations = 2,
 		};
 		
 	public:
 		static ContentManager* GetInstance();
 
 		void Initialize	   (const std::string& dataFolder, 
-							const std::string& sceneFolder     = "Scenes/",
-							const std::string& textureFolder   = "Textures/",
-							const std::string& fontFolder      = "Fonts/",
-							const std::string& animationFolder = "Animations/");
+							const std::string& sceneFolder     = "Scenes/", const std::string& textureFolder   = "Textures/",
+							const std::string& fontFolder      = "Fonts/", const std::string& animationFolder = "Animations/");
 		
 		//This file is an engine predetermined file
 		void InitializeFromFile(); 
@@ -46,7 +41,10 @@ namespace tyr
 		AnimationID          GetAnimationID(const std::string& fileName);
 		Animation*           GetAnimation(std::string& name); //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code
-		std::string          GetDataFolder() const;
+
+		const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
+		std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
+		
 		
 
 #ifdef EDITOR_MODE

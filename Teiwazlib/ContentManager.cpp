@@ -140,12 +140,6 @@ void tyr::ContentManager::InitializeFromFile()
 	
 }
 
-std::string tyr::ContentManager::GetDataFolder() const
-{
-#pragma warning (suppress : 4244)
-	return std::string(m_DataFolder.begin(), m_DataFolder.end());
-}
-
 #ifdef EDITOR_MODE
 //PUBLIC
 void tyr::ContentManager::RenderEditor()

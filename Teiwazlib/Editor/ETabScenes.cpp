@@ -14,12 +14,13 @@
 
 tyr::ETabScenes::ETabScenes(GameContext* pContext)
 	: tyr::ETabItem("Scenes", pContext)
-	, m_SceneFolder(ContentManager::GetInstance()->GetDataFolder() + "Scenes/")
 {
 	
 #pragma warning (suppress : 6031)
-	_mkdir(m_SceneFolder.c_str()); //making dir if dir does not exist
-	for (auto& entry : std::filesystem::directory_iterator(m_SceneFolder))
+
+	std::string absolutePath = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
+	_mkdir(absolutePath.c_str()); //making dir if dir does not exist
+	for (auto& entry : std::filesystem::directory_iterator(absolutePath))
 	{
 
 		std::string filename{ GetFileFromPath(entry.path().string()) };
@@ -39,11 +40,12 @@ void tyr::ETabScenes::PreRender()
 
 void tyr::ETabScenes::InternalRenderEditor()
 {
+	SDXL::SDXLImage* theImage = CONTENT_MANAGER->GetTexture(m_Texture)->SDXL();
 	for (auto& s : m_Files)
 	{
 
 		SDXL_ImGui_BeginGroup();
-		SDXL_ImGui_Image(CONTENT_MANAGER->GetTexture(m_Texture)->SDXL(), { 50.f, 50.f }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f },
+		SDXL_ImGui_Image(theImage, { 50.f, 50.f }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f },
 			static_cast<SDXL::Float4>(s.isHovered ? ColorGray : ColorWhite));
 		SDXL_ImGui_PushTextWrapPos(SDXL_ImGui_GetCursorPos().x + 50.f);
 		SDXL_ImGui_TextWrapped(s.name.c_str());
