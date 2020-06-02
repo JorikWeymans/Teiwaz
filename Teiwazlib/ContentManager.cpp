@@ -374,13 +374,19 @@ void tyr::ContentManager::ERenderContentWindow() const
 	{
 		case ContentWindow::None: break;
 		case ContentWindow::Textures:
-			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0, 0), false))
+			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0.f, 0.f), false))
 			{
 				m_pCMTextures->RenderEditor();
 				SDXL_ImGui_EndChild();
 			}
 		break;
-		case ContentWindow::Scenes: break;
+		case ContentWindow::Scenes: 
+			if(SDXL_ImGui_BeginChild("SceneWindow##ContentManager", SDXL::Float2(0.f,0.f), false))
+			{
+				m_pCMScenes->RenderEditor();
+				SDXL_ImGui_EndChild();
+			}
+		break;
 		case ContentWindow::Animations: break;
 		default:
 			SDXL_ImGui_ConsoleLogError("You have selected an invalid window");

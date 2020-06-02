@@ -17,6 +17,7 @@ namespace  tyr
 
 		void AddScene(Scene* pScene);
 		void SetCurrentScene(const std::string& SceneName);
+		void SetCurrentScene(SceneID id);
 		void Update();
 		void FixedUpdate();
 
@@ -42,7 +43,6 @@ namespace  tyr
 		void FlushCurrentScene();
 		
 		GameContext* m_pContext; //Weak ptr
-		std::vector<Scene*> m_pScenes;
 		Scene* m_pCurrentScene;
 		bool m_WantFlush;
 

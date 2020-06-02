@@ -16,10 +16,9 @@
 #include "TyrComps.h"
 #include "Factory.h"
 #include "./Editor/EUI.h"
-
+#include "CMScenes.h"
 tyr::SceneManager::SceneManager()
 	: m_pContext(nullptr)
-	, m_pScenes(std::vector<Scene*>())
 	, m_pCurrentScene(nullptr)
 	, m_WantFlush(false)
 #ifdef EDITOR_MODE
@@ -31,8 +30,6 @@ tyr::SceneManager::SceneManager()
 
 tyr::SceneManager::~SceneManager()
 {
-	std::for_each(m_pScenes.begin(), m_pScenes.end(), [](Scene* s) {SAFE_DELETE(s)});
-	m_pScenes.clear();
 #ifdef EDITOR_MODE
 	SAFE_DELETE(m_pEditorUI);
 #endif
@@ -48,20 +45,23 @@ void tyr::SceneManager::Initialize(GameContext* pContext)
 
 void tyr::SceneManager::AddScene(Scene* pScene)
 {
-	pScene->m_pContext = m_pContext;
-	pScene->Initialize();
-
-	m_pScenes.emplace_back(pScene);
-	if (!m_pCurrentScene) SetCurrentScene(pScene->GetName());
+	UNREFERENCED_PARAMETER(pScene);
 }
 
 void tyr::SceneManager::SetCurrentScene(const std::string& SceneName)
 {
-	auto found = std::find_if(m_pScenes.begin(), m_pScenes.end(), [&SceneName](Scene* s) { return s->GetName() == SceneName; });
-	if(found != m_pScenes.end())
-	{
-		m_pCurrentScene = *found;
-	}
+	m_pCurrentScene = ContentManager::GetInstance()->GetScenes()->GetScene(SceneName);
+	m_pCurrentScene->m_pContext = m_pContext;
+	m_pCurrentScene->Initialize();
+
+}
+
+void tyr::SceneManager::SetCurrentScene(SceneID id)
+{
+	m_pCurrentScene = ContentManager::GetInstance()->GetScenes()->GetScene(id);
+	m_pCurrentScene->m_pContext = m_pContext;
+	m_pCurrentScene->Initialize();
+
 }
 
 void tyr::SceneManager::Update()
@@ -188,11 +188,12 @@ const std::string& tyr::SceneManager::GetCurrentSceneName() const
 
 bool tyr::SceneManager::DoesSceneExist(std::string& sceneName)
 {
-	for(auto s : m_pScenes)
-	{
-		if (s->GetName() == sceneName)
-			return true;
-	}
+	UNREFERENCED_PARAMETER(sceneName);
+	//for(auto s : m_pScenes)
+	//{
+	//	if (s->GetName() == sceneName)
+	//		return true;
+	//}
 
 	return false;
 	

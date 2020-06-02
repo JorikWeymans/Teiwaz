@@ -16,10 +16,10 @@ void bub::BubbleBobble::Initialize(HINSTANCE hinstance)
 
 void bub::BubbleBobble::LoadGame()
 {
-	m_pSceneManager->AddScene(new ReadScene());
+	//m_pSceneManager->AddScene(new ReadScene());
 	//m_pSceneManager->AddScene(new MainScene());
 	
-	//m_pSceneManager->SetCurrentScene("MainScene");
+	m_pSceneManager->SetCurrentScene(0);
 }
 
 void bub::BubbleBobble::Cleanup()
