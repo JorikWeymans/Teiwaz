@@ -17,7 +17,7 @@ namespace  tyr
 		 void InternalRenderEditor() override;
 
 	private:
-		std::vector<TabItem> m_Files;
+		std::vector<TabItem> m_TabItems;
 		TextureID m_Texture;
 	public:
 		ETabScenes(const ETabScenes&) = delete;

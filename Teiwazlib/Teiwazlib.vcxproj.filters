@@ -190,14 +190,17 @@
     <ClInclude Include="ContentManager.h">
       <Filter>Graphics\Content</Filter>
     </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Graphics\Content</Filter>
-    </ClInclude>
     <ClInclude Include="BubbleShootingComp.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="BubbleComp.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CMTextures.h">
+      <Filter>Graphics\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="CMScenes.h">
+      <Filter>Graphics\Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -327,9 +330,6 @@
     <ClCompile Include="ContentManager.cpp">
       <Filter>Graphics\Content</Filter>
     </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Graphics\Content</Filter>
-    </ClCompile>
     <ClCompile Include="BubbleShootingComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -338,6 +338,12 @@
     </ClCompile>
     <ClCompile Include="TyrEnums.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="CMTextures.cpp">
+      <Filter>Graphics\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="CMScenes.cpp">
+      <Filter>Graphics\Content</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

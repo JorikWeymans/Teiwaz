@@ -16,8 +16,8 @@
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
 #include "BinStructureHelpers.h"
-#include "TextureManager.h"
-
+#include "CMTextures.h"
+#include "CMScenes.h"
 #define CONTENT_PATH "./TyrBin/Content.tyr"
 #define ANIMATION_SUFFIX ".tyrAnimation"
 
@@ -34,7 +34,8 @@ tyr::ContentManager::ContentManager()
 
 tyr::ContentManager::~ContentManager()
 {
-	SAFE_DELETE(m_pTextureManager);
+	SAFE_DELETE(m_pCMTextures);
+	SAFE_DELETE(m_pCMScenes);
 	std::for_each(m_pFonts.begin(), m_pFonts.end(),			[](auto* p) {SAFE_DELETE(p)});
 	std::for_each(m_pAnimations.begin(), m_pAnimations.end(),	[](auto* p) {SAFE_DELETE(p) });
 }
@@ -65,7 +66,7 @@ void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::s
 
 		m_IsInitialized   = true;
 
-		m_pTextureManager = new TextureManager();
+		m_pCMTextures = new CMTextures();
 	}
 }
 
@@ -101,13 +102,13 @@ void tyr::ContentManager::InitializeFromFile()
 		switch (type)
 		{
 		case ContentType::Texture:
-			m_pTextureManager = new TextureManager();
-			m_pTextureManager->Resize(size);
+			m_pCMTextures = new CMTextures();
+			m_pCMTextures->Resize(size);
 			
 			for(UINT i {0}; i < size; i++)
 			{
 				std::string name = reader.Read<std::string>();
-				m_pTextureManager->InsertAt(i, new Texture(m_DataFolder + m_TextureFolder, name));
+				m_pCMTextures->InsertAt(i, new Texture(m_DataFolder + m_TextureFolder, name));
 			}
 
 			break;
@@ -137,7 +138,7 @@ void tyr::ContentManager::InitializeFromFile()
 		type = reader.Read<ContentType>();
 	}
 	
-	
+	m_pCMScenes = new CMScenes(GetAbsoluteSceneFolder());
 }
 
 #ifdef EDITOR_MODE
@@ -153,7 +154,7 @@ void tyr::ContentManager::RenderEditor()
 
 void tyr::ContentManager::EditorTextureSelector(const char* imGuiID, TextureID& textureID)
 {
-	m_pTextureManager->ETextureSelector(imGuiID, textureID);
+	m_pCMTextures->ETextureSelector(imGuiID, textureID);
 	
 }
 
@@ -188,7 +189,7 @@ void tyr::ContentManager::Save()
 	writer.Write(m_FontFolder);
 	writer.Write(m_AnimationFolder);
 
-	m_pTextureManager->SaveTextures(writer);
+	m_pCMTextures->SaveTextures(writer);
 
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
@@ -375,7 +376,7 @@ void tyr::ContentManager::ERenderContentWindow() const
 		case ContentWindow::Textures:
 			if (SDXL_ImGui_BeginChild("TextureWindow##ContentManager", SDXL::Float2(0, 0), false))
 			{
-				m_pTextureManager->RenderEditor();
+				m_pCMTextures->RenderEditor();
 				SDXL_ImGui_EndChild();
 			}
 		break;
@@ -397,7 +398,7 @@ void tyr::ContentManager::Destroy()
 
 TextureID tyr::ContentManager::LoadTexture(const std::string& path)
 {
-	return m_pTextureManager->LoadTexture(m_DataFolder + m_TextureFolder, path);
+	return m_pCMTextures->LoadTexture(m_DataFolder + m_TextureFolder, path);
 }
 FontID tyr::ContentManager::LoadFont(const std::string& path)
 {
@@ -441,7 +442,7 @@ AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
 
 tyr::Texture* tyr::ContentManager::GetTexture(TextureID id) const
 {
-	return m_pTextureManager->GetTexture(id);
+	return m_pCMTextures->GetTexture(id);
 }
 tyr::Font const* tyr::ContentManager::GetFont(FontID id)
 {

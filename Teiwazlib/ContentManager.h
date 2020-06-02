@@ -9,7 +9,8 @@ namespace tyr
 	class Texture;
 	class Animation;
 	class TextureComp;
-	class TextureManager;
+	class CMTextures;
+	class CMScenes;
 	class ContentManager final
 	{
 	private:
@@ -44,7 +45,7 @@ namespace tyr
 
 		const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
 		std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
-		
+		CMScenes* GetScenes() const noexcept { return m_pCMScenes; }
 		
 
 #ifdef EDITOR_MODE
@@ -64,7 +65,8 @@ namespace tyr
 		bool m_IsInitialized;
 		std::string m_DataFolder, m_SceneFolder, m_TextureFolder, m_FontFolder, m_AnimationFolder ;
 		
-		TextureManager* m_pTextureManager;
+		CMTextures* m_pCMTextures;
+		CMScenes* m_pCMScenes;
 		std::vector<Font*>    m_pFonts;
 		std::vector<Animation*> m_pAnimations;
 

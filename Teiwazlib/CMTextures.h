@@ -7,11 +7,11 @@ namespace tyr
 	class ContentManager;
 	class Texture;
 	
-	class TextureManager final
+	class CMTextures final
 	{
 	public:
-		TextureManager() = default;
-		~TextureManager();
+		CMTextures() = default;
+		~CMTextures();
 
 		void Resize(unsigned int newSize);
 		void InsertAt(unsigned int index, Texture* pData);
@@ -33,10 +33,10 @@ namespace tyr
 		void BtnRemoveSelectedTexture(int& selected);
 #endif
 	public:
-		TextureManager(const TextureManager&) = delete;
-		TextureManager(TextureManager&&) = delete;
-		TextureManager& operator=(const TextureManager&) = delete;
-		TextureManager& operator=(TextureManager&&) = delete;
+		CMTextures(const CMTextures&) = delete;
+		CMTextures(CMTextures&&) = delete;
+		CMTextures& operator=(const CMTextures&) = delete;
+		CMTextures& operator=(CMTextures&&) = delete;
 	};
 
 

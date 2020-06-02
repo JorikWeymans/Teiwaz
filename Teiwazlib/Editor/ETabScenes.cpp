@@ -11,27 +11,17 @@
 #include "../GameContext.h"
 #include "../Scene.h"
 #include "ETabScenes.h"
-
+#include "../CMScenes.h"
 tyr::ETabScenes::ETabScenes(GameContext* pContext)
 	: tyr::ETabItem("Scenes", pContext)
+	, m_Texture(0)
 {
-	
-#pragma warning (suppress : 6031)
-
-	std::string absolutePath = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
-	_mkdir(absolutePath.c_str()); //making dir if dir does not exist
-	for (auto& entry : std::filesystem::directory_iterator(absolutePath))
+	CMScenes* t = ContentManager::GetInstance()->GetScenes();
+	std::string path = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
+	std::for_each(t->Begin(), t->End(), [&](Scene* s)
 	{
-
-		std::string filename{ GetFileFromPath(entry.path().string()) };
-
-		if (DoesExtensionMatch(filename, "tyrScene"))
-		{
-			RemoveExtension(filename);
-			m_Files.emplace_back(TabItem(entry.path().string(), filename));
-		}
-	}
-	m_Texture = 0; //CONTENT_MANAGER->LoadTexture("Editor/TyrIcon.png");
+			m_TabItems.emplace_back(TabItem(path, s->GetName()));
+	});
 }
 
 void tyr::ETabScenes::PreRender()
@@ -41,7 +31,7 @@ void tyr::ETabScenes::PreRender()
 void tyr::ETabScenes::InternalRenderEditor()
 {
 	SDXL::SDXLImage* theImage = CONTENT_MANAGER->GetTexture(m_Texture)->SDXL();
-	for (auto& s : m_Files)
+	for (auto& s : m_TabItems)
 	{
 
 		SDXL_ImGui_BeginGroup();

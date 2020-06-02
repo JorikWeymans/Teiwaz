@@ -205,6 +205,7 @@
     <ClInclude Include="BubbleComp.h" />
     <ClInclude Include="BubbleShootingComp.h" />
     <ClInclude Include="CharacterControllerComp.h" />
+    <ClInclude Include="CMScenes.h" />
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ContentManager.h" />
@@ -231,7 +232,7 @@
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureComp.h" />
-    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="CMTextures.h" />
     <ClInclude Include="TransformComp.h" />
     <ClInclude Include="GameContext.h" />
     <ClInclude Include="TyrComps.h" />
@@ -258,6 +259,7 @@
     <ClCompile Include="BubbleComp.cpp" />
     <ClCompile Include="BubbleShootingComp.cpp" />
     <ClCompile Include="CharacterControllerComp.cpp" />
+    <ClCompile Include="CMScenes.cpp" />
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ContentManager.cpp" />
@@ -282,7 +284,7 @@
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureComp.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="CMTextures.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComp.cpp" />
     <ClCompile Include="GameContext.cpp" />

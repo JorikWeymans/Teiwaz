@@ -1,5 +1,5 @@
 #include "tyrpch.h"
-#include "TextureManager.h"
+#include "CMTextures.h"
 #include <algorithm>
 #include "TyrException.h"
 #include "Texture.h"
@@ -7,21 +7,21 @@
 #include "ContentManager.h"
 #include "BinStructureHelpers.h"
 #include "BinaryWriter.h"
-tyr::TextureManager::~TextureManager()
+tyr::CMTextures::~CMTextures()
 {
 	std::for_each(m_pTextures.begin(), m_pTextures.end(), [](auto* p) {SAFE_DELETE(p)});
 }
 
-void tyr::TextureManager::Resize(unsigned newSize)
+void tyr::CMTextures::Resize(unsigned newSize)
 {
 	m_pTextures.resize(newSize, nullptr);	
 }
-void tyr::TextureManager::InsertAt(unsigned index, Texture* pData)
+void tyr::CMTextures::InsertAt(unsigned index, Texture* pData)
 {
 	m_pTextures.at(index) = pData;
 }
 
-TextureID tyr::TextureManager::LoadTexture(const std::string& dataFolder, const std::string& name)
+TextureID tyr::CMTextures::LoadTexture(const std::string& dataFolder, const std::string& name)
 {
 	auto found = std::find(m_pTextures.begin(), m_pTextures.end(), name);
 
@@ -43,7 +43,7 @@ TextureID tyr::TextureManager::LoadTexture(const std::string& dataFolder, const 
 	}
 }
 
-tyr::Texture* tyr::TextureManager::GetTexture(TextureID id) const
+tyr::Texture* tyr::CMTextures::GetTexture(TextureID id) const
 {
 	if (id >= m_pTextures.size()) return nullptr;
 
@@ -51,7 +51,7 @@ tyr::Texture* tyr::TextureManager::GetTexture(TextureID id) const
 }
 
 #ifdef EDITOR_MODE
-void tyr::TextureManager::RenderEditor()
+void tyr::CMTextures::RenderEditor()
 {
 	SDXL_ImGui_Text("ID\tName");
 	static int selected = -1;
@@ -93,7 +93,7 @@ void tyr::TextureManager::RenderEditor()
 	}
 }
 
-void tyr::TextureManager::ETextureSelector(const char* imGuiID, TextureID& textureID)
+void tyr::CMTextures::ETextureSelector(const char* imGuiID, TextureID& textureID)
 {
 	const char* item_current = m_pTextures[textureID]->GetName().c_str();
 	SDXL_ImGui_SetNextItemWidth(219.f);
@@ -112,14 +112,14 @@ void tyr::TextureManager::ETextureSelector(const char* imGuiID, TextureID& textu
 	}
 }
 
-void tyr::TextureManager::SaveTextures(BinaryWriter& writer)
+void tyr::CMTextures::SaveTextures(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Texture);
 	writer.Write(static_cast<UINT>(m_pTextures.size()));
 	std::for_each(m_pTextures.begin(), m_pTextures.end(), [&writer](Texture* t) { writer.Write(t->GetName()); });
 }
 
-void tyr::TextureManager::BtnRemoveSelectedTexture(int& selected)
+void tyr::CMTextures::BtnRemoveSelectedTexture(int& selected)
 {
 	if (SDXL_ImGui_Button("Remove Selected##TextureContentManager"))
 	{
