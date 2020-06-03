@@ -104,76 +104,9 @@ void tyr::SceneManager::RenderEditor()
 
 void tyr::SceneManager::SaveCurrentScene()
 {
-
-	std::stringstream ss;
-	ss << ContentManager::GetInstance()->GetDataFolder();
-	ss << "Scenes/" << m_pCurrentScene->GetName() << ".tyrScene";
-	
-	{
-		BinaryWriter writer(ss.str());
-		// Header
-		// Long double (JorikWeymansTyrScene hashed via Adler32 to this value)
-		ULONG64 header = 0x545e0811;
-		writer.Write(header);
-	
-		m_pCurrentScene->Save(writer);
-		writer.Write(ObjectType::End);
-	
-	
-		writer.Close();
-
-		//m_pCurrentScene->Flush();
-	}
+	m_pCurrentScene->Save();
 
 	SDXL_ImGui_ConsoleLog("Scene is saved");
-
-
-
-
-	//{
-	//	BinaryReader reader(ss.str());
-	//	// rn
-	//	// header
-	//	ULONG64 header = reader.Read<ULONG64>();
-	//	if (header != 0x4A6F72696B576579)
-	//	{
-	//		SDXL_ImGui_ConsoleLogError("This is no a scene");
-	//	}
-	//		// sceneName
-	//	std::string sceneName = reader.ReadString();
-	//	UNREFERENCED_PARAMETER(sceneName);
-
-	//	
-	//	try
-	//	{
-	//		while (reader.Read<ObjectType>() == ObjectType::SceneObject)
-	//		{
-	//			auto parent = LoadSceneObject(reader, nullptr);
-
-	//			const size_t childs = reader.Read<size_t>();
-	//			for(size_t i{0}; i < childs; ++i  )
-	//			{
-	//				reader.Read<ObjectType>(); //no need to check, this is always an SeneObject.
-	//				LoadSceneObject(reader, parent);
-	//				reader.Read<size_t>(); //no need to save, only 1 depth child relation allowed
-	//			}
-	//		}
-	//	}
-	//	catch(TyrException& e)
-	//	{
-	//		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
-	//	}
-	//
-	//		
-	//}
-
-
-
-	
-
-
-
-	
 }
 
 void tyr::SceneManager::SetCurrentSceneName(const std::string& name)

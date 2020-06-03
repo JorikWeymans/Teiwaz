@@ -84,13 +84,11 @@ void tyr::CMScenes::RenderEditor()
 	SDXL_ImGui_SameLine();
 	if (SDXL_ImGui_Button("Add##ContentManager"))
 	{
-		std::string path = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
-			
-		if (std::filesystem::exists(path + std::string(newScene) + SCENE_SUFFIX))
-		{
-			
-		};
-		
+
+		Scene* pScene = new Scene(std::string(newScene), ContentManager::GetInstance()->GetAbsoluteSceneFolder());
+		pScene->Save();
+		m_pScenes.emplace_back(pScene);
+		ContentManager::GetInstance()->Save();
 		
 		//ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
 		//ContentManager::GetInstance()->Save();

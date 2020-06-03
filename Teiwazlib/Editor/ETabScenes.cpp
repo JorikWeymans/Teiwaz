@@ -16,16 +16,12 @@ tyr::ETabScenes::ETabScenes(GameContext* pContext)
 	: tyr::ETabItem("Scenes", pContext)
 	, m_Texture(0)
 {
-	CMScenes* t = ContentManager::GetInstance()->GetScenes();
-	std::string path = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
-	std::for_each(t->Begin(), t->End(), [&](Scene* s)
-	{
-			m_TabItems.emplace_back(TabItem(path, s->GetName()));
-	});
+	CreateTabItems();
 }
 
 void tyr::ETabScenes::PreRender()
 {
+	
 }
 
 void tyr::ETabScenes::InternalRenderEditor()
@@ -56,6 +52,17 @@ void tyr::ETabScenes::InternalRenderEditor()
 
 		SDXL_ImGui_SameLine();
 	}
+}
+
+void tyr::ETabScenes::CreateTabItems()
+{
+	m_TabItems.clear();
+	CMScenes* t = ContentManager::GetInstance()->GetScenes();
+	std::string path = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
+	std::for_each(t->Begin(), t->End(), [&](Scene* s)
+		{
+			m_TabItems.emplace_back(TabItem(path, s->GetName()));
+		});
 }
 
 #endif

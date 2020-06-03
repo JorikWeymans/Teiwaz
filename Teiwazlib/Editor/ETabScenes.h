@@ -19,6 +19,9 @@ namespace  tyr
 	private:
 		std::vector<TabItem> m_TabItems;
 		TextureID m_Texture;
+
+		void CreateTabItems();
+
 	public:
 		ETabScenes(const ETabScenes&) = delete;
 		ETabScenes(ETabScenes&&) = delete;

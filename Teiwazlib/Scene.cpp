@@ -162,15 +162,32 @@ void tyr::Scene::RenderEditor()
 	SDXL_ImGui_End();
 }
 
-void tyr::Scene::Save(BinaryWriter& writer)
+void tyr::Scene::Save()
 {
-	UNREFERENCED_PARAMETER(writer);
+	std::stringstream ss;
+	ss << ContentManager::GetInstance()->GetAbsoluteSceneFolder();
+	ss << m_Name << SCENE_SUFFIX;
+	
+	BinaryWriter writer(ss.str());
+	if(writer.IsOpen())
+	{
+		ULONG64 header = 0x545e0811;
+		writer.Write(header);
+		
+		writer.WriteString(m_Name);
+		std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [&writer](SceneObject* s) {s->Save(writer); });
 
+
+		
+		writer.Write(ObjectType::End);
+
+
+		writer.Close();
+	}
+	
 	//Save name
 	//Save Objects
-	writer.WriteString(m_Name);
-	
-	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [&writer](SceneObject* s) {s->Save(writer); });
+
 	
 	
 }
