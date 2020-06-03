@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#define SCENE_SUFFIX ".tyrScene"
 namespace tyr
 {
 	class BinaryWriter;

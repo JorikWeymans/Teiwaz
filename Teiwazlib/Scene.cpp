@@ -33,7 +33,8 @@ void tyr::Scene::Initialize()
 	
 	try
 	{
-		BinaryReader reader(m_Path);
+		const std::string fullFile = m_Path + m_Name + ".tyrScene";
+		BinaryReader reader(fullFile);
 		// rn
 		// header
 		ULONG64 header = reader.Read<ULONG64>();

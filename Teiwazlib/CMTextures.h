@@ -14,7 +14,7 @@ namespace tyr
 		~CMTextures();
 
 		void Resize(unsigned int newSize);
-		void InsertAt(unsigned int index, Texture* pData);
+		void InsertAt(unsigned int index, Texture* pData) noexcept;
 		
 		TextureID LoadTexture(const std::string& dataFolder, const std::string& name);
 		Texture* GetTexture(TextureID id) const;

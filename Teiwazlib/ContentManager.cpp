@@ -1,23 +1,30 @@
 #include "tyrpch.h"
 #include "ContentManager.h"
+
 #include <algorithm>
+#include <functional>
+#include <sstream>
+#include <filesystem>
+#include <direct.h>
+
+#include "BinaryReader.h"
+#include "BinaryWriter.h"
+#include "BinStructureHelpers.h"
+
 #include "Font.h"
 #include "Texture.h"
 #include "Animation.h"
-#include <functional>
-#include <sstream>
-#include "BinaryReader.h"
-#include <filesystem>
-#include <direct.h>
+#include "Scene.h"
+
+
 #include "StringManipulation.h"
 #include "./Editor/ETabItem.h"
 #include "TyrException.h"
-#include <filesystem>
-#include "BinaryWriter.h"
-#include "BinaryReader.h"
-#include "BinStructureHelpers.h"
+
 #include "CMTextures.h"
 #include "CMScenes.h"
+
+
 #define CONTENT_PATH "./TyrBin/Content.tyr"
 #define ANIMATION_SUFFIX ".tyrAnimation"
 
@@ -102,32 +109,50 @@ void tyr::ContentManager::InitializeFromFile()
 		switch (type)
 		{
 		case ContentType::Texture:
-			m_pCMTextures = new CMTextures();
-			m_pCMTextures->Resize(size);
-			
-			for(UINT i {0}; i < size; i++)
 			{
-				std::string name = reader.Read<std::string>();
-				m_pCMTextures->InsertAt(i, new Texture(m_DataFolder + m_TextureFolder, name));
+				m_pCMTextures = new CMTextures();
+				m_pCMTextures->Resize(size);
+				const std::string absoluteTextureFolder = m_DataFolder + m_TextureFolder;
+				for (UINT i{ 0 }; i < size; i++)
+				{
+					std::string name = reader.Read<std::string>();
+					m_pCMTextures->InsertAt(i, new Texture(absoluteTextureFolder, name));
+				}
+
+				break;
 			}
 
-			break;
 		case ContentType::Font:
 			if(size > 0)
 				THROW_ERROR(L"Font is not implemented yet");
 
 			break;
-		case ContentType::Animation: 
-			m_pAnimations.resize(size, nullptr);
-			
-			for (UINT i{ 0 }; i < size; i++)
+		case ContentType::Animation:
 			{
-				std::string name = reader.Read<std::string>();
-				LoadAnimation(name, i);
+				m_pAnimations.resize(size, nullptr);
+
+				for (UINT i{ 0 }; i < size; i++)
+				{
+					std::string name = reader.Read<std::string>();
+					LoadAnimation(name, i);
+				}
+
+
+				break;
 			}
+		case ContentType::Scenes:
+			{
+				m_pCMScenes = new CMScenes();
+				m_pCMScenes->Resize(size);
 				
-			
-			break;
+				for (UINT i{ 0 }; i < size; i++)
+				{
+					std::string sceneName = reader.Read<std::string>();
+					m_pCMScenes->InsertAt(i, new Scene(sceneName, GetAbsoluteSceneFolder()));
+				}
+				break;
+			}
+
 		case ContentType::End:
 			THROW_ERROR(L"Type end should not be read");
 		default:
@@ -138,7 +163,7 @@ void tyr::ContentManager::InitializeFromFile()
 		type = reader.Read<ContentType>();
 	}
 	
-	m_pCMScenes = new CMScenes(GetAbsoluteSceneFolder());
+	
 }
 
 #ifdef EDITOR_MODE
@@ -190,7 +215,7 @@ void tyr::ContentManager::Save()
 	writer.Write(m_AnimationFolder);
 
 	m_pCMTextures->SaveTextures(writer);
-
+	m_pCMScenes->SaveScenes(writer);
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
 	//std::for_each(m_pFonts.begin(), m_pFonts.end(), [&writer](Font* f) { writer.Write(f->GetName()); });
@@ -292,6 +317,10 @@ void tyr::ContentManager::EMenuBar()
 
 			}
 			SDXL_ImGui_EndMenu();
+		}
+		if(SDXL_ImGui_MenuItem("Save##ContentManagerMenu"))
+		{
+			Save();
 		}
 		SDXL_ImGui_EndMenuBar();
 	}

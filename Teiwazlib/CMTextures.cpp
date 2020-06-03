@@ -16,7 +16,7 @@ void tyr::CMTextures::Resize(unsigned newSize)
 {
 	m_pTextures.resize(newSize, nullptr);	
 }
-void tyr::CMTextures::InsertAt(unsigned index, Texture* pData)
+void tyr::CMTextures::InsertAt(unsigned index, Texture* pData) noexcept
 {
 	m_pTextures.at(index) = pData;
 }

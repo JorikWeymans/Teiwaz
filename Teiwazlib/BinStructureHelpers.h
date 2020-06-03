@@ -32,6 +32,7 @@ namespace tyr
 		Texture,
 		Font,
 		Animation,
+		Scenes,
 		//Append here
 		End = 255,
 		
