@@ -7,7 +7,7 @@
 #include "BinaryWriter.h"
 #include "BinStructureHelpers.h"
 #include "ContentManager.h"
-
+#include "Editor/ETabScenes.h"
 tyr::CMScenes::~CMScenes()
 {
 	std::for_each(m_pScenes.begin(), m_pScenes.end(), [](Scene* s) {SAFE_DELETE(s)});
@@ -74,7 +74,6 @@ void tyr::CMScenes::RenderEditor()
 	SDXL_ImGui_Separator();
 	static char newScene[40];
 
-
 	
 	///BtnRemoveSelectedTexture(selected);
 	
@@ -89,6 +88,7 @@ void tyr::CMScenes::RenderEditor()
 		pScene->Save();
 		m_pScenes.emplace_back(pScene);
 		ContentManager::GetInstance()->Save();
+		m_pTabScenes->CreateTabItems();
 		
 		//ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
 		//ContentManager::GetInstance()->Save();

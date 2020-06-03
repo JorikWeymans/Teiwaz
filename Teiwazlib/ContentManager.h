@@ -69,7 +69,6 @@ namespace tyr
 		CMScenes* m_pCMScenes;
 		std::vector<Font*>    m_pFonts;
 		std::vector<Animation*> m_pAnimations;
-
 #ifdef EDITOR_MODE
 		
 		bool m_OpenContentManager = false, m_OpenFilePathSettings = false, m_AreContentSettingsOpen = true;

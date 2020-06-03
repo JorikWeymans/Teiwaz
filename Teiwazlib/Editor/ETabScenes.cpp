@@ -17,6 +17,8 @@ tyr::ETabScenes::ETabScenes(GameContext* pContext)
 	, m_Texture(0)
 {
 	CreateTabItems();
+	ContentManager::GetInstance()->GetScenes()->m_pTabScenes = this;
+	
 }
 
 void tyr::ETabScenes::PreRender()
@@ -56,6 +58,7 @@ void tyr::ETabScenes::InternalRenderEditor()
 
 void tyr::ETabScenes::CreateTabItems()
 {
+	
 	m_TabItems.clear();
 	CMScenes* t = ContentManager::GetInstance()->GetScenes();
 	std::string path = ContentManager::GetInstance()->GetAbsoluteSceneFolder();

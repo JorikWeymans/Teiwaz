@@ -11,6 +11,8 @@ namespace  tyr
 		explicit ETabScenes(GameContext* pContext);
 		virtual ~ETabScenes() = default;
 
+		void CreateTabItems();
+		
 	protected:
 		
 		 void PreRender() override;
@@ -20,7 +22,7 @@ namespace  tyr
 		std::vector<TabItem> m_TabItems;
 		TextureID m_Texture;
 
-		void CreateTabItems();
+	
 
 	public:
 		ETabScenes(const ETabScenes&) = delete;

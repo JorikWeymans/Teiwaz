@@ -5,6 +5,7 @@ namespace tyr
 {
 	class BinaryWriter;
 	class Scene;
+	class ETabScenes;
 	class CMScenes final
 	{
 	public:
@@ -25,9 +26,14 @@ namespace tyr
 #ifdef EDITOR_MODE
 		void RenderEditor();
 		void SaveScenes(BinaryWriter& writer);
+
+		ETabScenes* m_pTabScenes; //weak ptr
 #endif
 	private:
 		std::vector<Scene*> m_pScenes; // un-initialized Scenes by default
+#ifdef EDITOR_MODE
+		
+#endif
 	public:
 		CMScenes(const CMScenes&) = delete;
 		CMScenes(CMScenes&&) = delete;
