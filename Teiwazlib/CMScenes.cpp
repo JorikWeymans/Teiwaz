@@ -84,8 +84,7 @@ void tyr::CMScenes::RenderEditor()
 	if (SDXL_ImGui_Button("Add##ContentManager"))
 	{
 
-		Scene* pScene = new Scene(std::string(newScene), ContentManager::GetInstance()->GetAbsoluteSceneFolder());
-		pScene->Save();
+		Scene* pScene = Scene::GenerateNewScene(std::string(newScene), ContentManager::GetInstance()->GetAbsoluteSceneFolder());
 		m_pScenes.emplace_back(pScene);
 		ContentManager::GetInstance()->Save();
 		m_pTabScenes->CreateTabItems();

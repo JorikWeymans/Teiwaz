@@ -192,6 +192,13 @@ void tyr::Scene::Save()
 	
 }
 
+tyr::Scene* tyr::Scene::GenerateNewScene(const std::string& name, const std::string& path)
+{
+	Scene* returnScene = new Scene(name, path);
+	returnScene->Save();
+	return returnScene;
+}
+
 
 #endif
 void tyr::Scene::Flush()

@@ -143,13 +143,24 @@ void tyr::ContentManager::InitializeFromFile()
 		case ContentType::Scenes:
 			{
 				m_pCMScenes = new CMScenes();
-				m_pCMScenes->Resize(size);
-				
-				for (UINT i{ 0 }; i < size; i++)
+			
+				if(size > 0)
 				{
-					std::string sceneName = reader.Read<std::string>();
-					m_pCMScenes->InsertAt(i, new Scene(sceneName, GetAbsoluteSceneFolder()));
+					m_pCMScenes->Resize(size);
+
+					for (UINT i{ 0 }; i < size; i++)
+					{
+						std::string sceneName = reader.Read<std::string>();
+						m_pCMScenes->InsertAt(i, new Scene(sceneName, GetAbsoluteSceneFolder()));
+					}
 				}
+				else //Default Empty Scene
+				{
+					m_pCMScenes->Resize(1);
+					m_pCMScenes->InsertAt(0, Scene::GenerateNewScene("New tyrScene", GetAbsoluteSceneFolder()));
+				}
+					
+
 				break;
 			}
 
