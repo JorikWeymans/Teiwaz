@@ -71,13 +71,54 @@ void tyr::CMScenes::RenderEditor()
 	//	}
 	//	SDXL_ImGui_End();
 	//}
+	//
 	SDXL_ImGui_Separator();
+	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
+	if(SDXL_ImGui_Button("Delete Scene##CMScenes"))
+	{
+		if(selected > -1)
+		{
+			auto deleteThis = m_pScenes[selected];
+			m_pScenes[selected] = *(m_pScenes.end() -1);
+			m_pScenes.pop_back();
+			delete deleteThis;
+			ContentManager::GetInstance()->Save();
+			
+		}
+	}
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("UP##CMScenes"))
+	{
+		if(selected > 0)
+		{
+			auto temp = m_pScenes[selected - 1];
+			m_pScenes[selected - 1] = m_pScenes[selected];
+			m_pScenes[selected] = temp;
+			selected--;
+			ContentManager::GetInstance()->Save();
+			
+		}
+	}
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("DOWN##CMScenes"))
+	{
+		if (selected >= 0 && selected < static_cast<int>(m_pScenes.size()-1))
+		{
+			auto temp = m_pScenes[selected + 1];
+			m_pScenes[selected + 1] = m_pScenes[selected];
+			m_pScenes[selected] = temp;
+			selected++;
+			ContentManager::GetInstance()->Save();
+
+		}
+	}
+
+	
 	static char newScene[40];
 
 	
 	///BtnRemoveSelectedTexture(selected);
 	
-	SDXL_ImGui_SameLine();
 	SDXL_ImGui_SetNextItemWidth(200.f);
 	SDXL_ImGui_InputTextWithHint("##CMScenesNewScene", "New scene name", newScene, ARRAY_SIZE(newScene));
 	SDXL_ImGui_SameLine();

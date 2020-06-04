@@ -165,7 +165,7 @@ void tyr::ContentManager::InitializeFromFile()
 			}
 
 		case ContentType::End:
-			THROW_ERROR(L"Type end should not be read");
+			THROW_ERROR(L"Type end should not trigger switch case");
 		default:
 			THROW_ERROR(L"This Type is invalid");
 			;
