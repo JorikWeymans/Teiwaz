@@ -57,31 +57,24 @@ void tyr::CMScenes::RenderEditor()
 		}
 	}
 
-
-	
-	//if (selected != -1)
-	//{
-	//	if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
-	//	{
-	//		auto di = m_pScenes[selected]->GetDimension();
-	//
-	//		SDXL_ImGui_Image(m_pScenes[selected]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
-	//
-	//
-	//	}
-	//	SDXL_ImGui_End();
-	//}
-	//
 	SDXL_ImGui_Separator();
 	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
 	if(SDXL_ImGui_Button("Delete Scene##CMScenes"))
 	{
-		if(selected > -1)
+		if(selected > -1 && m_pScenes.size() > 1)
 		{
 			auto deleteThis = m_pScenes[selected];
 			m_pScenes[selected] = *(m_pScenes.end() -1);
 			m_pScenes.pop_back();
-			delete deleteThis;
+
+			if(ContentManager::GetInstance()->GetCurrentScene() == deleteThis)
+			{
+				ContentManager::GetInstance()->SetCurrentScene(0);
+			}
+
+
+			SAFE_DELETE(deleteThis);
+			
 			ContentManager::GetInstance()->Save();
 			
 		}

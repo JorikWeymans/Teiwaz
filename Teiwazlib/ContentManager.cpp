@@ -24,6 +24,8 @@
 #include "CMTextures.h"
 #include "CMScenes.h"
 
+#include "GameContext.h"
+#include "SceneManager.h"
 
 #define CONTENT_PATH "./TyrBin/Content.tyr"
 #define ANIMATION_SUFFIX ".tyrAnimation"
@@ -34,7 +36,10 @@ tyr::ContentManager* tyr::ContentManager::pInstance = nullptr;
 tyr::ContentManager::ContentManager()
 	: m_IsInitialized(false)
 	, m_DataFolder("")
+	, m_pCMTextures(nullptr)
+	, m_pCMScenes(nullptr)
 	, m_pFonts(std::vector<Font*>())
+	, m_pContext(nullptr)
 	, m_SelectedContentWindow(ContentWindow::None)
 {
 }
@@ -58,27 +63,10 @@ tyr::ContentManager* tyr::ContentManager::GetInstance()
 	return pInstance;
 }
 
-void tyr::ContentManager::Initialize(const std::string& dataFolder, const std::string& sceneFolder,
-																	const std::string& textureFolder,
-																	const std::string& fontFolder,
-																	const std::string& animationFolder)
+
+void tyr::ContentManager::Initialize(GameContext* pContext)
 {
-	if(!m_IsInitialized)
-	{
-		m_DataFolder      = dataFolder;
-		m_SceneFolder     = sceneFolder;
-		m_TextureFolder   = textureFolder;
-		m_FontFolder      = fontFolder;
-		m_AnimationFolder = animationFolder;
-
-		m_IsInitialized   = true;
-
-		m_pCMTextures = new CMTextures();
-	}
-}
-
-void tyr::ContentManager::InitializeFromFile()
-{
+	m_pContext = pContext;
 	BinaryReader reader(CONTENT_PATH);
 
 	if (!reader.IsOpen())
@@ -176,8 +164,18 @@ void tyr::ContentManager::InitializeFromFile()
 	
 	
 }
+tyr::Scene* tyr::ContentManager::GetCurrentScene() const noexcept
+{
+	return m_pContext->pSceneManager->GetCurrentScene();
+}
+
+void tyr::ContentManager::SetCurrentScene(SceneID id)
+{
+	m_pContext->pSceneManager->SetCurrentScene(id);
+}
 
 #ifdef EDITOR_MODE
+
 //PUBLIC
 void tyr::ContentManager::RenderEditor()
 {

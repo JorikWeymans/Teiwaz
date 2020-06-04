@@ -22,7 +22,7 @@ namespace  tyr
 		void FixedUpdate();
 
 		void Flush() { m_WantFlush = true; }
-		Scene* GetCurrentScene() const { return m_pCurrentScene; }
+		_NODISCARD Scene* GetCurrentScene() const noexcept { return m_pCurrentScene; }
 #ifdef EDITOR_MODE
 		void SaveCurrentScene();
 		void SetCurrentSceneName(const std::string& name);

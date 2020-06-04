@@ -48,7 +48,7 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 	//ContentManager::GetInstance()->Initialize("./Data/");
 	try
 	{
-		ContentManager::GetInstance()->InitializeFromFile();
+		ContentManager::GetInstance()->Initialize(m_pContext);
 		m_pSceneManager->Initialize(m_pContext);
 	}
 	catch (TyrException & e)
