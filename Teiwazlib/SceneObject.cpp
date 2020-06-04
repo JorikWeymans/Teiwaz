@@ -28,12 +28,12 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 		m_name += std::to_string(counter);
 	counter++;
 
+#ifdef EDITOR_MODE
+
 	strcpy_s(m_ChangedObjectName, m_name.c_str());
 
 
 	m_SelectedTag = TagToArrayIndex(m_Tag);
-	
-#ifdef EDITOR_MODE
 	auto intID = reinterpret_cast<uint32_t>(this);
 	m_UniqueId = "##" + std::to_string(intID); //Add the ## because we don't want to see that ID in the editor
 
@@ -321,7 +321,7 @@ void tyr::SceneObject::Initialize()
 	m_pTransform->Initialize();
 }
 
-
+#ifdef EDITOR_MODE
 void tyr::SceneObject::RenderProperties()
 {
 	std::string id = "Properties" + m_UniqueId;
@@ -419,3 +419,4 @@ int tyr::SceneObject::TagToArrayIndex(Tag theTag)
 
 	return timesDivided + 2; // +2 because you stop dividing when you get 2
 }
+#endif

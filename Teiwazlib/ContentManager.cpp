@@ -40,7 +40,9 @@ tyr::ContentManager::ContentManager()
 	, m_pCMScenes(nullptr)
 	, m_pFonts(std::vector<Font*>())
 	, m_pContext(nullptr)
+#ifdef EDITOR_MODE
 	, m_SelectedContentWindow(ContentWindow::None)
+#endif
 {
 }
 
@@ -142,12 +144,13 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 						m_pCMScenes->InsertAt(i, new Scene(sceneName, GetAbsoluteSceneFolder()));
 					}
 				}
+#ifdef EDITOR_MODE
 				else //Default Empty Scene
 				{
 					m_pCMScenes->Resize(1);
 					m_pCMScenes->InsertAt(0, Scene::GenerateNewScene("New tyrScene", GetAbsoluteSceneFolder()));
 				}
-					
+#endif
 
 				break;
 			}
