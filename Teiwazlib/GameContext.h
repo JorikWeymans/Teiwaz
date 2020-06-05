@@ -6,6 +6,7 @@ namespace tyr
 	class InputHandler;
 	class Rect;
 	class Physics;
+	class EUI;
 	class GameContext final
 	{
 	public:
@@ -18,6 +19,10 @@ namespace tyr
 		Physics* pPhysics;
 		SceneManager* const pSceneManager; //weak ptr
 		bool paused;
+#ifdef EDITOR_MODE
+		EUI* pEditorUI;
+#endif
+
 	public:
 		GameContext(const GameContext&) = delete;
 		GameContext(GameContext&&) = delete;

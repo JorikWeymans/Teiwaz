@@ -17,7 +17,6 @@ tyr::ETabScenes::ETabScenes(GameContext* pContext)
 	, m_Texture(0)
 {
 	CreateTabItems();
-	ContentManager::GetInstance()->GetScenes()->m_pTabScenes = this;
 	
 }
 

@@ -8,6 +8,10 @@
 #include "BinStructureHelpers.h"
 #include "ContentManager.h"
 #include "Editor/ETabScenes.h"
+#include "GameContext.h"
+#include "Editor/EUI.h"
+#include "Editor/EWindowSouth.h"
+#include "Editor/ETabScenes.h"
 tyr::CMScenes::~CMScenes()
 {
 	std::for_each(m_pScenes.begin(), m_pScenes.end(), [](Scene* s) {SAFE_DELETE(s)});
@@ -67,15 +71,15 @@ void tyr::CMScenes::RenderEditor()
 			m_pScenes[selected] = *(m_pScenes.end() -1);
 			m_pScenes.pop_back();
 
-			if(ContentManager::GetInstance()->GetCurrentScene() == deleteThis)
+			if(CONTENT_MANAGER->GetCurrentScene() == deleteThis)
 			{
-				ContentManager::GetInstance()->SetCurrentScene(0);
+				CONTENT_MANAGER->SetCurrentScene(0);
 			}
 
 
 			SAFE_DELETE(deleteThis);
 			
-			ContentManager::GetInstance()->Save();
+			CONTENT_MANAGER->Save();
 			
 		}
 	}
@@ -88,7 +92,7 @@ void tyr::CMScenes::RenderEditor()
 			m_pScenes[selected - 1] = m_pScenes[selected];
 			m_pScenes[selected] = temp;
 			selected--;
-			ContentManager::GetInstance()->Save();
+			CONTENT_MANAGER->Save();
 			
 		}
 	}
@@ -101,7 +105,7 @@ void tyr::CMScenes::RenderEditor()
 			m_pScenes[selected + 1] = m_pScenes[selected];
 			m_pScenes[selected] = temp;
 			selected++;
-			ContentManager::GetInstance()->Save();
+			CONTENT_MANAGER->Save();
 
 		}
 	}
@@ -121,7 +125,8 @@ void tyr::CMScenes::RenderEditor()
 		Scene* pScene = Scene::GenerateNewScene(std::string(newScene), ContentManager::GetInstance()->GetAbsoluteSceneFolder());
 		m_pScenes.emplace_back(pScene);
 		ContentManager::GetInstance()->Save();
-		m_pTabScenes->CreateTabItems();
+
+		CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabScenes>()->CreateTabItems();
 		
 		//ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
 		//ContentManager::GetInstance()->Save();

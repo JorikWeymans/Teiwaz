@@ -16,6 +16,8 @@ tyr::EUI::EUI(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pMenu(new EMenuBar(pContext))
 {
+	m_pContext->pEditorUI = this;
+	
 	m_pWindows.emplace_back(new EWindowSceneView(pContext));
 	m_pWindows.emplace_back(new EWindowInspector(pContext));
 	m_pWindows.emplace_back(new EWindowSouth(pContext));

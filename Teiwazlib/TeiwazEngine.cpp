@@ -44,7 +44,10 @@ HRESULT tyr::TeiwazEngine::Initialize(HINSTANCE hInstance, const std::string& na
 								new Physics(),
 								m_pSceneManager);
 	
-	
+#ifdef EDITOR_MODE
+	//m_pContext->pContentManager = 
+#endif
+
 	//ContentManager::GetInstance()->Initialize("./Data/");
 	try
 	{

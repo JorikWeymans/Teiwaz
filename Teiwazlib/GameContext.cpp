@@ -13,6 +13,9 @@ tyr::GameContext::GameContext(Time* pTime, InputHandler* pInput, Rect* pGameSpac
 	, pPhysics(pPhysics)
 	, pSceneManager(pSceneManager)
 	, paused(false)
+#ifdef EDITOR_MODE
+	, pEditorUI(nullptr)
+#endif
 {
 }
 

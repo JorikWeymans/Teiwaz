@@ -16,11 +16,24 @@ namespace tyr
 		
 		
 		void RenderEditor();
-	private:
-		GameContext* const m_pContext; //Weak ptr
 
+		template<typename  T>
+	 _NODISCARD	T* GetWindow() const
+		{
+			for (auto* pW : m_pWindows)
+			{
+				if(typeid(*pW) == typeid(T))
+				{
+					return static_cast<T*>(pW);
+				}
+			}
+			return nullptr;
+		}
+	private:
+		GameContext* const m_pContext;
 		EMenuBar* m_pMenu;
 		std::vector<EWindow*> m_pWindows;
+		
 	public:
 		EUI(const EUI&) = delete;
 		EUI(EUI&&) = delete;

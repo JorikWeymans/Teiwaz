@@ -57,7 +57,7 @@ namespace tyr
 		
 		TransformComp* GetTransform() const noexcept { return m_pTransform; }
 		template <typename T>
-		T* GetComponent(unsigned int index = 0) const  //index used when there are more than one component of the same type on the object.
+		_NODISCARD T* GetComponent(unsigned int index = 0) const  //index used when there are more than one component of the same type on the object.
 		{
 			unsigned int currIndex = 0;
 			for (auto* component : m_pComponents)

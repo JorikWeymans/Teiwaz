@@ -11,7 +11,18 @@ namespace tyr
 	public:
 		explicit EWindowSouth(GameContext* pContext);
 		~EWindowSouth();
-		
+		template <typename T>
+		_NODISCARD	T* GetTabItem() const
+		{
+			for (auto* pT : m_pTabItems)
+			{
+				if (typeid(*pT) == typeid(T))
+				{
+					return static_cast<T*>(pT);
+				}
+			}
+			return nullptr;
+		}
 	protected:
 		void PreRender() override;
 		void InternalRenderEditor() override;

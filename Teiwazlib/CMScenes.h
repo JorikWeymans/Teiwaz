@@ -26,8 +26,7 @@ namespace tyr
 #ifdef EDITOR_MODE
 		void RenderEditor();
 		void SaveScenes(BinaryWriter& writer);
-
-		ETabScenes* m_pTabScenes = nullptr; //weak ptr
+		
 #endif
 	private:
 		std::vector<Scene*> m_pScenes; // un-initialized Scenes by default

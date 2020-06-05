@@ -491,20 +491,20 @@ tyr::Texture* tyr::ContentManager::GetTexture(TextureID id) const
 {
 	return m_pCMTextures->GetTexture(id);
 }
-tyr::Font const* tyr::ContentManager::GetFont(FontID id)
+tyr::Font const* tyr::ContentManager::GetFont(FontID id) const
 {
 	if (id >= m_pFonts.size()) return nullptr;
 
 	return m_pFonts[id];
 }
-tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id)
+tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id) const
 {
 	if (id >= m_pAnimations.size()) return nullptr;
 
 	return m_pAnimations[id];
 }
 
-tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& fileName)
+tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& fileName) const
 {
 	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
 	if (found != m_pAnimations.end())
@@ -515,7 +515,7 @@ tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& fileName)
 	return nullptr;
 }
 
-AnimationID tyr::ContentManager::GetAnimationID(const std::string& fileName)
+AnimationID tyr::ContentManager::GetAnimationID(const std::string& fileName) const
 {
 	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
 
@@ -527,7 +527,7 @@ AnimationID tyr::ContentManager::GetAnimationID(const std::string& fileName)
 	return 0; //
 }
 
-tyr::Animation* tyr::ContentManager::GetAnimation(std::string& name)
+tyr::Animation* tyr::ContentManager::GetAnimation(std::string& name) const
 {
 	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), name);
 	if (found != m_pAnimations.end())

@@ -34,20 +34,21 @@ namespace tyr
 		AnimationID LoadAnimation(const std::string& fileName);
 
 		_NODISCARD Texture*    GetTexture(TextureID id) const; 
-		_NODISCARD Font const* GetFont(FontID id);
-		_NODISCARD Animation*  GetAnimation(AnimationID id);
-		_NODISCARD Animation*  GetAnimation(const std::string& fileName);
-		_NODISCARD AnimationID GetAnimationID(const std::string& fileName);
-		_NODISCARD Animation*  GetAnimation(std::string& name); //this does not load the animation, returns pointer to an existing animation (else nullptr)
+		_NODISCARD Font const* GetFont(FontID id) const;
+		_NODISCARD Animation*  GetAnimation(AnimationID id) const;
+		_NODISCARD Animation*  GetAnimation(const std::string& fileName) const;
+		_NODISCARD AnimationID GetAnimationID(const std::string& fileName) const;
+		_NODISCARD Animation*  GetAnimation(std::string& name) const ; //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		_NODISCARD std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code
 
 		const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
-		std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
+		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
 		_NODISCARD CMScenes* GetScenes() const noexcept { return m_pCMScenes; }
 		_NODISCARD Scene* GetCurrentScene() const noexcept;
 		void SetCurrentScene(SceneID id);
 
 #ifdef EDITOR_MODE
+		_NODISCARD GameContext* GetContext() const noexcept { return m_pContext; }
 		void RenderEditor(); //called in EMenuBar RenderEditor()
 		void EditorTextureSelector(const char* imGuiID, TextureID& textureID);
 		void Save();
