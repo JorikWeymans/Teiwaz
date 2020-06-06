@@ -138,7 +138,7 @@ void tyr::CMScenes::RenderEditor()
 	}
 }
 
-void tyr::CMScenes::SaveScenes(BinaryWriter& writer)
+void tyr::CMScenes::Save(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Scenes);
 	writer.Write(static_cast<UINT>(m_pScenes.size()));

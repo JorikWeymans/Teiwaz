@@ -23,6 +23,7 @@
 
 #include "CMTextures.h"
 #include "CMScenes.h"
+#include "CMAnimations.h"
 
 #include "GameContext.h"
 #include "SceneManager.h"
@@ -50,8 +51,8 @@ tyr::ContentManager::~ContentManager()
 {
 	SAFE_DELETE(m_pCMTextures);
 	SAFE_DELETE(m_pCMScenes);
-	std::for_each(m_pFonts.begin(), m_pFonts.end(),			[](auto* p) {SAFE_DELETE(p)});
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(),	[](auto* p) {SAFE_DELETE(p) });
+	SAFE_DELETE(m_pCMAnimations);
+	std::for_each(m_pFonts.begin(), m_pFonts.end(),[](auto* p) {SAFE_DELETE(p)});
 }
 
 
@@ -119,12 +120,15 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 			break;
 		case ContentType::Animation:
 			{
-				m_pAnimations.resize(size, nullptr);
+				m_pCMAnimations = new CMAnimations();
+				m_pCMAnimations->Resize(size);
 
+				const std::string absoluteAnimationFolder = GetAbsoluteAnimationFolder();
 				for (UINT i{ 0 }; i < size; i++)
 				{
-					std::string name = reader.Read<std::string>();
-					LoadAnimation(name, i);
+					std::string animationName = reader.Read<std::string>();
+					
+					m_pCMAnimations->InsertAt(i, Animation::Create(absoluteAnimationFolder + animationName));
 				}
 
 
@@ -227,14 +231,13 @@ void tyr::ContentManager::Save()
 	writer.Write(m_AnimationFolder);
 
 	m_pCMTextures->SaveTextures(writer);
-	m_pCMScenes->SaveScenes(writer);
+	m_pCMScenes->Save(writer);
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
 	//std::for_each(m_pFonts.begin(), m_pFonts.end(), [&writer](Font* f) { writer.Write(f->GetName()); });
-	
-	writer.Write(ContentType::Animation);
-	writer.Write(static_cast<UINT>(m_pAnimations.size()));
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a) { writer.Write(a->GetName()); });
+
+	m_pCMAnimations->Save(writer);
+
 
 	
 	writer.Write(ContentType::End);
@@ -462,29 +465,7 @@ FontID tyr::ContentManager::LoadFont(const std::string& path)
 	m_pFonts.emplace_back(pTemp);
 	return static_cast<FontID>(m_pFonts.size() - 1);
 }
-AnimationID tyr::ContentManager::LoadAnimation(const std::string& fileName)
-{
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
 
-	if (found != m_pAnimations.end())
-	{
-		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
-	}
-
-
-	//Loading animation if it does not already exist
-	std::stringstream ss;
-	ss << m_DataFolder << m_AnimationFolder << fileName << ANIMATION_SUFFIX;
-
-	BinaryReader reader{ ss.str() };
-
-	Animation::Create(ss.str());
-	m_pAnimations.emplace_back(Animation::Create(ss.str()));
-
-
-
-	return static_cast<AnimationID>(m_pAnimations.size() - 1);
-}
 
 
 tyr::Texture* tyr::ContentManager::GetTexture(TextureID id) const
@@ -499,41 +480,22 @@ tyr::Font const* tyr::ContentManager::GetFont(FontID id) const
 }
 tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id) const
 {
-	if (id >= m_pAnimations.size()) return nullptr;
-
-	return m_pAnimations[id];
+	return m_pCMAnimations->GetAnimation(id);
 }
 
 tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& fileName) const
 {
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
-	if (found != m_pAnimations.end())
-	{
-		return *found;
-	}
-
-	return nullptr;
+	return m_pCMAnimations->GetAnimation(fileName);
 }
 
 AnimationID tyr::ContentManager::GetAnimationID(const std::string& fileName) const
 {
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), fileName);
-
-	if (found != m_pAnimations.end())
-	{
-		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
-	}
-
-	return 0; //
+	return m_pCMAnimations->GetAnimationID(fileName);
 }
 
 tyr::Animation* tyr::ContentManager::GetAnimation(std::string& name) const
 {
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), name);
-	if (found != m_pAnimations.end())
-		return *found;
-
-	return nullptr;
+	return m_pCMAnimations->GetAnimation(name);
 	
 }
 
@@ -559,12 +521,3 @@ std::vector<tyr::TabItem> tyr::ContentManager::GetAnimationsInFolder() const
 	return files;
 	
 }
-
-void tyr::ContentManager::LoadAnimation(const std::string& fileName, AnimationID arrayIndex)
-{
-	std::stringstream ss;
-	ss << m_DataFolder << m_AnimationFolder << fileName << ANIMATION_SUFFIX;
-	
-	m_pAnimations.at(arrayIndex) = Animation::Create(ss.str());
-}
-

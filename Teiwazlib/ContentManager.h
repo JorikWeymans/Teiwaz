@@ -10,8 +10,11 @@ namespace tyr
 	class Texture;
 	class Animation;
 	class TextureComp;
+
 	class CMTextures;
 	class CMScenes;
+	class CMAnimations;
+	
 	class Scene;
 	class ContentManager final
 	{
@@ -29,9 +32,8 @@ namespace tyr
 		
 		static void Destroy();
 
-		TextureID LoadTexture(const std::string& path);
-		FontID LoadFont(const std::string& path);
-		AnimationID LoadAnimation(const std::string& fileName);
+		TextureID   LoadTexture(const std::string& path);
+		FontID      LoadFont(const std::string& path);
 
 		_NODISCARD Texture*    GetTexture(TextureID id) const; 
 		_NODISCARD Font const* GetFont(FontID id) const;
@@ -41,9 +43,10 @@ namespace tyr
 		_NODISCARD Animation*  GetAnimation(std::string& name) const ; //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		_NODISCARD std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code
 
-		const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
+		_NODISCARD const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
 		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
-		_NODISCARD CMScenes* GetScenes() const noexcept { return m_pCMScenes; }
+		_NODISCARD std::string GetAbsoluteAnimationFolder() const { return m_DataFolder + m_AnimationFolder; }
+		_NODISCARD CMScenes* GetCMScenes() const noexcept { return m_pCMScenes; }
 		_NODISCARD Scene* GetCurrentScene() const noexcept;
 		void SetCurrentScene(SceneID id);
 
@@ -66,9 +69,10 @@ namespace tyr
 		std::string m_DataFolder, m_SceneFolder, m_TextureFolder, m_FontFolder, m_AnimationFolder ;
 		
 		CMTextures* m_pCMTextures;
-		CMScenes* m_pCMScenes;
+		CMScenes*   m_pCMScenes;
+		CMAnimations* m_pCMAnimations;
+		
 		std::vector<Font*>    m_pFonts;
-		std::vector<Animation*> m_pAnimations;
 		GameContext* m_pContext; //Weak ptr
 #ifdef EDITOR_MODE
 		

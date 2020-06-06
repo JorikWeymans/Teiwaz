@@ -25,7 +25,7 @@ namespace tyr
 
 #ifdef EDITOR_MODE
 		void RenderEditor();
-		void SaveScenes(BinaryWriter& writer);
+		void Save(BinaryWriter& writer);
 		
 #endif
 	private:

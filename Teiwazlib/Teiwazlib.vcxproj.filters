@@ -202,6 +202,7 @@
     <ClInclude Include="CMScenes.h">
       <Filter>Graphics\Content</Filter>
     </ClInclude>
+    <ClInclude Include="CMAnimations.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -345,5 +346,11 @@
     <ClCompile Include="CMScenes.cpp">
       <Filter>Graphics\Content</Filter>
     </ClCompile>
+    <ClCompile Include="CMAnimations.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint">
+      <Filter>Helpers</Filter>
+    </None>
   </ItemGroup>
 </Project>

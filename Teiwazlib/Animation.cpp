@@ -5,6 +5,9 @@
 #include <algorithm>
 #include "TyrException.h"
 
+
+#define ANIMATION_SUFFIX ".tyrAnimation"
+
 tyr::Animation::Animation(const std::string& animationName, TextureID spriteID, float tpf,SpritePositions&& sp)
 	: m_AnimationName(animationName)
 	, m_SpriteID(spriteID)
@@ -35,7 +38,7 @@ tyr::Animation::Animation(const std::string& path)
 tyr::Animation* tyr::Animation::Create(const std::string& path)
 {
 	
-	BinaryReader reader(path);
+	BinaryReader reader(path + ANIMATION_SUFFIX);
 
 
 	ULONG64 header = reader.Read<ULONG64>();

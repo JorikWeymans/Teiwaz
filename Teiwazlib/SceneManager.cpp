@@ -50,7 +50,7 @@ void tyr::SceneManager::AddScene(Scene* pScene)
 
 void tyr::SceneManager::SetCurrentScene(const std::string& SceneName)
 {
-	m_pCurrentScene = ContentManager::GetInstance()->GetScenes()->GetScene(SceneName);
+	m_pCurrentScene = ContentManager::GetInstance()->GetCMScenes()->GetScene(SceneName);
 	m_pCurrentScene->m_pContext = m_pContext;
 	m_pCurrentScene->Load();
 
@@ -59,7 +59,7 @@ void tyr::SceneManager::SetCurrentScene(const std::string& SceneName)
 void tyr::SceneManager::SetCurrentScene(SceneID id)
 {
 	
-	auto pFoundScene = ContentManager::GetInstance()->GetScenes()->GetScene(id);
+	auto pFoundScene = ContentManager::GetInstance()->GetCMScenes()->GetScene(id);
 
 	if(pFoundScene != m_pCurrentScene)
 	{
