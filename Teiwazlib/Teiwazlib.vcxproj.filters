@@ -202,7 +202,9 @@
     <ClInclude Include="CMScenes.h">
       <Filter>Graphics\Content</Filter>
     </ClInclude>
-    <ClInclude Include="CMAnimations.h" />
+    <ClInclude Include="CMAnimations.h">
+      <Filter>Graphics\Content</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -346,7 +348,9 @@
     <ClCompile Include="CMScenes.cpp">
       <Filter>Graphics\Content</Filter>
     </ClCompile>
-    <ClCompile Include="CMAnimations.cpp" />
+    <ClCompile Include="CMAnimations.cpp">
+      <Filter>Graphics\Content</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">
