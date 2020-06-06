@@ -22,9 +22,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="MiniginScene.cpp">
-      <Filter>GameScenes</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -34,14 +31,8 @@
     <ClCompile Include="BubPrefab.cpp">
       <Filter>Prefab</Filter>
     </ClCompile>
-    <ClCompile Include="ReadScene.cpp">
-      <Filter>GameScenes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MiniginScene.h">
-      <Filter>GameScenes</Filter>
-    </ClInclude>
     <ClInclude Include="BubbleBobble.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -53,9 +44,6 @@
     </ClInclude>
     <ClInclude Include="BubPrefab.h">
       <Filter>Prefab</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadScene.h">
-      <Filter>GameScenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#ifdef SCENE_NOT_FINAL
 #include "MainScene.h"
 #include "Transform.h"
 #include "TyrComps.h"
@@ -285,3 +286,5 @@ void bub::MainScene::LoadBackground()
 	
 
 }
+
+#endif

@@ -2,7 +2,6 @@
 #include "BubbleBobble.h"
 #include "SceneManager.h"
 #include "MainScene.h"
-#include "ReadScene.h"
 bub::BubbleBobble::BubbleBobble()
 	: TeiwazEngine(0.02f) // 50 frames per second;
 {

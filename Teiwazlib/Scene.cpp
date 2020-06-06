@@ -8,16 +8,17 @@
 #include "BinaryReader.h"
 #include "Factory.h"
 #include "TyrComps.h"
+
 tyr::Scene::Scene(const std::string& name)
 	: Scene(name, "")
 {
-
+	
 }
 
 tyr::Scene::Scene(const std::string& name, const std::string& path)
 	: m_pContext(nullptr)
 	, m_Name(name) , m_Path(path)
-	, m_pSceneObjects(std::vector<SceneObject*>())
+	, m_IsLoaded(false)
 {
 }
 
@@ -29,7 +30,7 @@ tyr::Scene::~Scene()
 void tyr::Scene::Load()
 {
 	if (m_Path.empty()) return;
-
+	if (m_IsLoaded) return;
 	
 	try
 	{
@@ -60,13 +61,20 @@ void tyr::Scene::Load()
 				reader.Read<unsigned int>(); //no need to save, only 1 depth child relation allowed
 			}
 		}
-		
+
+		m_IsLoaded = true;
 	}
 	catch (TyrException & e)
 	{
 		MessageBoxW(NULL, e.what(), L"Error", MB_ICONERROR);
 	}
 	
+}
+
+void tyr::Scene::UnLoad()
+{
+	//TODO: CALL Unload on sceneObject if implemented
+	m_IsLoaded = false;
 }
 
 void tyr::Scene::AddSceneObject(SceneObject* pObj)

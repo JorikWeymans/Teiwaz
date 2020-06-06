@@ -1,4 +1,6 @@
 #pragma once
+
+#ifdef SCENE_NOT_FINAL
 #include "Scene.h"
 #include "Vectors.h"
 
@@ -38,4 +40,4 @@ namespace bub
 	};
 }
 
-
+#endif
