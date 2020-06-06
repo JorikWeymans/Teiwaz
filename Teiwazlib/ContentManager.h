@@ -37,15 +37,17 @@ namespace tyr
 
 		_NODISCARD Texture*    GetTexture(TextureID id) const; 
 		_NODISCARD Font const* GetFont(FontID id) const;
-		_NODISCARD Animation*  GetAnimation(AnimationID id) const;
-		_NODISCARD Animation*  GetAnimation(const std::string& fileName) const;
-		_NODISCARD AnimationID GetAnimationID(const std::string& fileName) const;
-		_NODISCARD Animation*  GetAnimation(std::string& name) const ; //this does not load the animation, returns pointer to an existing animation (else nullptr)
+		
+		_NODISCARD Animation*  GetAnimation(AnimationID id) const; 
+		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const; //this does not load the animation, returns pointer to an existing animation (else nullptr)
+		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
+
 		_NODISCARD std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code
 
 		_NODISCARD const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
 		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
 		_NODISCARD std::string GetAbsoluteAnimationFolder() const { return m_DataFolder + m_AnimationFolder; }
+		
 		_NODISCARD CMScenes* GetCMScenes() const noexcept { return m_pCMScenes; }
 		_NODISCARD Scene* GetCurrentScene() const noexcept;
 		void SetCurrentScene(SceneID id);
@@ -61,7 +63,6 @@ namespace tyr
 	private:
 		ContentManager();
 		~ContentManager();
-		void LoadAnimation(const std::string& fileName, AnimationID arrayIndex);
 
 		
 		static ContentManager* pInstance;
@@ -78,6 +79,8 @@ namespace tyr
 		
 		bool m_OpenContentManager = false, m_OpenFilePathSettings = false, m_AreContentSettingsOpen = true;
 		ContentWindow m_SelectedContentWindow;
+		char m_CharDataPath[256]{}, m_CharSceneFolder[30]{}, m_CharAnimationFolder[30]{}, m_CharTextureFolder[30]{};
+		
 		void EMainMenuBarItem();
 		void EMainWindow();
 		void EMenuBar();
@@ -87,7 +90,7 @@ namespace tyr
 
 		void ERenderContentWindow() const;
 		
-		char m_CharDataPath[256] {}, m_CharSceneFolder[30] {}, m_CharAnimationFolder[30] {}, m_CharTextureFolder[30] {};
+
 		
 #endif
 		

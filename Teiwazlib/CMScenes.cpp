@@ -49,93 +49,15 @@ tyr::Scene* tyr::CMScenes::GetScene(SceneID id) const noexcept
 #ifdef EDITOR_MODE
 void tyr::CMScenes::RenderEditor()
 {
-	SDXL_ImGui_Text("ID\tName");
-	static int selected = -1;
-	for (int i{ 0 }; i < static_cast<int>(m_pScenes.size()); ++i)
-	{
-		std::string tag = FormatString(" %i\t%s", i, m_pScenes[i]->GetName().c_str());
-
-		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i, SDXL_ImGuiSelectableFlags_DontClosePopups ))
-		{
-			selected = i;
-		}
-		if(SDXL_ImGui_IsItemHovered() && SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left))
-		{
-			
-			CONTENT_MANAGER->SetCurrentScene(i);
-		}
-	}
-
-	SDXL_ImGui_Separator();
-	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
-	if(SDXL_ImGui_Button("Delete Scene##CMScenes"))
-	{
-		if(selected > -1 && m_pScenes.size() > 1)
-		{
-			auto deleteThis = m_pScenes[selected];
-			m_pScenes[selected] = *(m_pScenes.end() -1);
-			m_pScenes.pop_back();
-
-			if(CONTENT_MANAGER->GetCurrentScene() == deleteThis)
-			{
-				CONTENT_MANAGER->SetCurrentScene(0);
-			}
-
-
-			SAFE_DELETE(deleteThis);
-			
-			CONTENT_MANAGER->Save();
-			
-		}
-	}
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("UP##CMScenes"))
-	{
-		if(selected > 0)
-		{
-			auto temp = m_pScenes[selected - 1];
-			m_pScenes[selected - 1] = m_pScenes[selected];
-			m_pScenes[selected] = temp;
-			selected--;
-			CONTENT_MANAGER->Save();
-			
-		}
-	}
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("DOWN##CMScenes"))
-	{
-		if (selected >= 0 && selected < static_cast<int>(m_pScenes.size()-1))
-		{
-			auto temp = m_pScenes[selected + 1];
-			m_pScenes[selected + 1] = m_pScenes[selected];
-			m_pScenes[selected] = temp;
-			selected++;
-			CONTENT_MANAGER->Save();
-
-		}
-	}
-
+	static int selectedScene = -1;
 	
-	static char newScene[40];
-
+	ShowScenes(selectedScene);
 	
-	///BtnRemoveSelectedTexture(selected);
+	BtnDeleteScene(selectedScene);
+	BtnMoveSceneUp(selectedScene);
+	BtnMoveSceneDown(selectedScene);
 	
-	SDXL_ImGui_SetNextItemWidth(200.f);
-	SDXL_ImGui_InputTextWithHint("##CMScenesNewScene", "New scene name", newScene, ARRAY_SIZE(newScene));
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("Add##ContentManager"))
-	{
-
-		Scene* pScene = Scene::GenerateNewScene(std::string(newScene), ContentManager::GetInstance()->GetAbsoluteSceneFolder());
-		m_pScenes.emplace_back(pScene);
-		ContentManager::GetInstance()->Save();
-
-		CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabScenes>()->CreateTabItems();
-		
-		//ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
-		//ContentManager::GetInstance()->Save();
-	}
+	BtnAddScene();
 }
 
 void tyr::CMScenes::Save(BinaryWriter& writer)
@@ -144,5 +66,105 @@ void tyr::CMScenes::Save(BinaryWriter& writer)
 	writer.Write(static_cast<UINT>(m_pScenes.size()));
 	std::for_each(m_pScenes.begin(), m_pScenes.end(), [&writer](Scene* s) { writer.Write(s->GetName()); });
 }
+
+void tyr::CMScenes::ShowScenes(int& selectedScene)
+{
+	SDXL_ImGui_Text("ID\tName");
+
+	for (int i{ 0 }; i < static_cast<int>(m_pScenes.size()); ++i)
+	{
+		std::string tag = FormatString(" %i\t%s", i, m_pScenes[i]->GetName().c_str());
+
+		if (SDXL_ImGui_Selectable(tag.c_str(), selectedScene == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
+		{
+			selectedScene = i;
+		}
+		if (SDXL_ImGui_IsItemHovered() && SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left))
+		{
+
+			CONTENT_MANAGER->SetCurrentScene(i);
+		}
+	}
+	SDXL_ImGui_Separator();
+}
+
+void tyr::CMScenes::BtnDeleteScene(int selectedScene)
+{
+	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("Delete Scene##CMScenes"))
+	{
+		if (selectedScene > -1 && m_pScenes.size() > 1)
+		{
+			auto deleteThis = m_pScenes[selectedScene];
+			m_pScenes[selectedScene] = *(m_pScenes.end() - 1);
+			m_pScenes.pop_back();
+
+			if (CONTENT_MANAGER->GetCurrentScene() == deleteThis)
+			{
+				CONTENT_MANAGER->SetCurrentScene(0);
+			}
+
+
+			SAFE_DELETE(deleteThis);
+
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
+void tyr::CMScenes::BtnMoveSceneUp(int& selectedScene)
+{
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("UP##CMScenes"))
+	{
+		if (selectedScene > 0)
+		{
+			auto temp = m_pScenes[selectedScene - 1];
+			m_pScenes[selectedScene - 1] = m_pScenes[selectedScene];
+			m_pScenes[selectedScene] = temp;
+			selectedScene--;
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
+void tyr::CMScenes::BtnMoveSceneDown(int& selectedScene)
+{
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("DOWN##CMScenes"))
+	{
+		if (selectedScene >= 0 && selectedScene < static_cast<int>(m_pScenes.size() - 1))
+		{
+			auto temp = m_pScenes[selectedScene + 1];
+			m_pScenes[selectedScene + 1] = m_pScenes[selectedScene];
+			m_pScenes[selectedScene] = temp;
+			selectedScene++;
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
+
+void tyr::CMScenes::BtnAddScene()
+{
+	static char newScene[40];
+
+
+	SDXL_ImGui_Text("      "); SDXL_ImGui_SameLine();
+	SDXL_ImGui_SetNextItemWidth(200.f);
+	SDXL_ImGui_InputTextWithHint("##CMScenesNewScene", "New scene name", newScene, ARRAY_SIZE(newScene));
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("Add##ContentManager"))
+	{
+
+		Scene* pScene = Scene::GenerateNew(std::string(newScene), ContentManager::GetInstance()->GetAbsoluteSceneFolder());
+		m_pScenes.emplace_back(pScene);
+
+		CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabScenes>()->CreateTabItems();
+		ContentManager::GetInstance()->Save();
+
+	}
+}
+
 #endif
 

@@ -13,8 +13,8 @@ namespace tyr
 	{
 	public:
 		explicit Animation(const std::string& animationName, TextureID spriteID, float tpf, SpritePositions&& sp);
-		explicit Animation(const std::string& path);
 		static Animation* Create(const std::string& path);
+		static Animation* GenerateNew(const std::string& name);
 		
 		~Animation() = default;
 		void Update(float elapsed);
@@ -23,14 +23,16 @@ namespace tyr
 		bool IsAtEnd() const { return m_CurrentAnimation == m_AniSprites.size() - 1; }
 
 		const std::string& GetName() const { return m_AnimationName; }
-		
+#ifdef EDITOR_MODE
 		void Save();
+#endif
+
 	private:
 		friend bool operator==(Animation* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 
 		friend EAnimation; //TODO: try to remove friend
 		explicit Animation(float tpf);
-		Animation() = default;
+		Animation();
 		
 		
 		std::string m_AnimationName;

@@ -4,6 +4,7 @@
 #include "BinaryReader.h"
 #include <algorithm>
 #include "TyrException.h"
+#include "ContentManager.h"
 
 
 #define ANIMATION_SUFFIX ".tyrAnimation"
@@ -21,19 +22,21 @@ tyr::Animation::Animation(const std::string& animationName, TextureID spriteID, 
 }
 tyr::Animation::Animation(float tpf)
 	: m_AnimationName("NaN")
+	, m_SpriteID(0)
 	, m_AniElapser(tpf)
 	, m_CurrentAnimation(0)
 {
 
 }
-tyr::Animation::Animation(const std::string& path)
-	: m_CurrentAnimation(0)
-{
-	UNREFERENCED_PARAMETER(path);
-	
 
-	
+tyr::Animation::Animation() //Private constructor
+	: m_AnimationName("NaN")
+	, m_SpriteID(0)
+	, m_AniElapser(0.25f)
+	, m_CurrentAnimation(0)
+{
 }
+
 
 tyr::Animation* tyr::Animation::Create(const std::string& path)
 {
@@ -65,6 +68,14 @@ tyr::Animation* tyr::Animation::Create(const std::string& path)
 	return pTheAnimation;
 }
 
+tyr::Animation* tyr::Animation::GenerateNew(const std::string& name)
+{
+	Animation* pReturnAnimation = new Animation();
+	pReturnAnimation->m_AnimationName = name;
+	pReturnAnimation->Save();
+	return pReturnAnimation;
+}
+
 void tyr::Animation::Update(float elapsed)
 {
 	if(m_AniElapser.Update(elapsed))
@@ -89,10 +100,15 @@ void tyr::Animation::Reset()
 	m_AniElapser.Reset();
 	m_CurrentAnimation = 0;
 }
-
+#ifdef EDITOR_MODE
 void tyr::Animation::Save()
 {
-	BinaryWriter writer("./Data/Animations/" + m_AnimationName + ".tyrAnimation");
+	std::stringstream ss;
+	ss << CONTENT_MANAGER->GetAbsoluteAnimationFolder();
+	ss << m_AnimationName;
+	ss << ANIMATION_SUFFIX;
+	
+	BinaryWriter writer(ss.str());
 
 	//Binsctructure
 	// Long double -> Header (JorikWeymansTyrAnimation hashed via Adler32 to this value)
@@ -104,13 +120,18 @@ void tyr::Animation::Save()
 	//  (no need to save the position because a map is auto sorted
 	//
 
-	ULONG64 header = 0x78b109c3;
-	writer.Write(header);
-	writer.Write(m_AnimationName);
-	writer.Write(m_SpriteID);
-	writer.Write(m_AniElapser.GetMax());
-	writer.Write(static_cast<UINT>(m_AniSprites.size()));
-	std::for_each(m_AniSprites.begin(), m_AniSprites.end(), [&writer](const auto& ani) { writer.Write(ani.ToPOD()); });
+	if (writer.IsOpen())
+	{
+		ULONG64 header = 0x78b109c3;
+		writer.Write(header);
+		writer.Write(m_AnimationName);
+		writer.Write(m_SpriteID);
+		writer.Write(m_AniElapser.GetMax());
+		writer.Write(static_cast<UINT>(m_AniSprites.size()));
+		std::for_each(m_AniSprites.begin(), m_AniSprites.end(), [&writer](const auto& ani) { writer.Write(ani.ToPOD()); });
+	}
+	else
+		SDXL_ImGui_ConsoleLogWarning("Could not safe the animation");
 	
 
 
@@ -118,7 +139,7 @@ void tyr::Animation::Save()
 
 	
 }
-
+#endif
 
 
 bool tyr::operator==(Animation* lhs, const std::string& rhs)

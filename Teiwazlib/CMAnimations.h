@@ -9,13 +9,12 @@ namespace tyr
 	public:
 		CMAnimations() = default;
 		~CMAnimations();
-		AnimationID LoadAnimation(const std::string& animationName);
-
+		
 		void Resize(unsigned int newSize);
 		void InsertAt(unsigned int index, Animation* pData) noexcept;
 
-		_NODISCARD Animation* GetAnimation(const std::string& animationName) const;
-		_NODISCARD Animation* GetAnimation(AnimationID id) const;
+		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const;
+		_NODISCARD Animation*  GetAnimation(AnimationID id) const;
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
 #ifdef EDITOR_MODE
 		void RenderEditor();
@@ -23,6 +22,16 @@ namespace tyr
 #endif
 	private:
 		std::vector<Animation*> m_pAnimations;
+#ifdef EDITOR_MODE
+		void ShowAnimations(int& selectedAnimation);
+
+		void BtnDeleteAnimation(int selectedAnimation);
+		void BtnMoveAnimationUp(int& selectedAnimation);
+		void BtnMoveAnimationDown(int& selectedAnimation);
+
+		void BtnAddAnimation();
+#endif
+
 	public:
 		CMAnimations(const CMAnimations&) = delete;
 		CMAnimations(CMAnimations&&) = delete;

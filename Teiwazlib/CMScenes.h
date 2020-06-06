@@ -31,7 +31,14 @@ namespace tyr
 	private:
 		std::vector<Scene*> m_pScenes; // un-initialized Scenes by default
 #ifdef EDITOR_MODE
+		void ShowScenes(int& selectedScene);
 		
+		void BtnDeleteScene(int selectedScene);
+		void BtnMoveSceneUp(int& selectedScene);
+		void BtnMoveSceneDown(int& selectedScene);
+
+		void BtnAddScene();
+
 #endif
 	public:
 		CMScenes(const CMScenes&) = delete;

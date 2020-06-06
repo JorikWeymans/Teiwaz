@@ -152,7 +152,7 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 				else //Default Empty Scene
 				{
 					m_pCMScenes->Resize(1);
-					m_pCMScenes->InsertAt(0, Scene::GenerateNewScene("New tyrScene", GetAbsoluteSceneFolder()));
+					m_pCMScenes->InsertAt(0, Scene::GenerateNew("New tyrScene", GetAbsoluteSceneFolder()));
 				}
 #endif
 
@@ -232,11 +232,13 @@ void tyr::ContentManager::Save()
 
 	m_pCMTextures->SaveTextures(writer);
 	m_pCMScenes->Save(writer);
+	m_pCMAnimations->Save(writer);
+	
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
 	//std::for_each(m_pFonts.begin(), m_pFonts.end(), [&writer](Font* f) { writer.Write(f->GetName()); });
 
-	m_pCMAnimations->Save(writer);
+	
 
 
 	
@@ -431,7 +433,13 @@ void tyr::ContentManager::ERenderContentWindow() const
 				SDXL_ImGui_EndChild();
 			}
 		break;
-		case ContentWindow::Animations: break;
+		case ContentWindow::Animations:
+			if (SDXL_ImGui_BeginChild("AnimationsWindow##ContentManager", SDXL::Float2(0.f, 0.f), false))
+			{
+				m_pCMAnimations->RenderEditor();
+				SDXL_ImGui_EndChild();
+			}
+		break;
 		default:
 			SDXL_ImGui_ConsoleLogError("You have selected an invalid window");
 		;
@@ -483,21 +491,16 @@ tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id) const
 	return m_pCMAnimations->GetAnimation(id);
 }
 
-tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& fileName) const
+tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& animationName) const
 {
-	return m_pCMAnimations->GetAnimation(fileName);
+	return m_pCMAnimations->GetAnimation(animationName);
 }
 
-AnimationID tyr::ContentManager::GetAnimationID(const std::string& fileName) const
+AnimationID tyr::ContentManager::GetAnimationID(const std::string& animationName) const
 {
-	return m_pCMAnimations->GetAnimationID(fileName);
+	return m_pCMAnimations->GetAnimationID(animationName);
 }
 
-tyr::Animation* tyr::ContentManager::GetAnimation(std::string& name) const
-{
-	return m_pCMAnimations->GetAnimation(name);
-	
-}
 
 std::vector<tyr::TabItem> tyr::ContentManager::GetAnimationsInFolder() const
 {

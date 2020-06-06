@@ -27,7 +27,7 @@ namespace tyr
 #ifdef EDITOR_MODE
 		void RenderEditor();
 		void Save();
-		_NODISCARD static Scene* GenerateNewScene(const std::string& name, const std::string& path);
+		_NODISCARD static Scene* GenerateNew(const std::string& name, const std::string& path);
 		
 #endif
 		

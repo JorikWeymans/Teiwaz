@@ -201,7 +201,7 @@ void tyr::Scene::Save()
 	
 }
 
-tyr::Scene* tyr::Scene::GenerateNewScene(const std::string& name, const std::string& path)
+tyr::Scene* tyr::Scene::GenerateNew(const std::string& name, const std::string& path)
 {
 	Scene* returnScene = new Scene(name, path);
 	returnScene->Save();
