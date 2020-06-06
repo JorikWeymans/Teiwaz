@@ -26,7 +26,7 @@ bub::MainScene::~MainScene()
 
 }
 
-void bub::MainScene::Initialize()
+void bub::MainScene::Load()
 {
 	try
 	{

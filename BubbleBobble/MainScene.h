@@ -16,7 +16,7 @@ namespace bub
 	public:
 		MainScene();
 		~MainScene();
-		void Initialize() override;
+		void Load() override;
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() const override;

@@ -55,9 +55,14 @@ void tyr::CMScenes::RenderEditor()
 	{
 		std::string tag = FormatString(" %i\t%s", i, m_pScenes[i]->GetName().c_str());
 
-		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
+		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i, SDXL_ImGuiSelectableFlags_DontClosePopups ))
 		{
 			selected = i;
+		}
+		if(SDXL_ImGui_IsItemHovered() && SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left))
+		{
+			
+			CONTENT_MANAGER->SetCurrentScene(i);
 		}
 	}
 

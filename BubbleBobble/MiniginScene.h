@@ -7,7 +7,7 @@ namespace bub
 	public:
 		MiniginScene() = default;
 		~MiniginScene() override;
-		void Initialize() override;
+		void Load() override;
 
 	protected:
 		void Render() const override;

@@ -52,15 +52,22 @@ void tyr::SceneManager::SetCurrentScene(const std::string& SceneName)
 {
 	m_pCurrentScene = ContentManager::GetInstance()->GetScenes()->GetScene(SceneName);
 	m_pCurrentScene->m_pContext = m_pContext;
-	m_pCurrentScene->Initialize();
+	m_pCurrentScene->Load();
 
 }
 
 void tyr::SceneManager::SetCurrentScene(SceneID id)
 {
-	m_pCurrentScene = ContentManager::GetInstance()->GetScenes()->GetScene(id);
-	m_pCurrentScene->m_pContext = m_pContext;
-	m_pCurrentScene->Initialize();
+	
+	auto pFoundScene = ContentManager::GetInstance()->GetScenes()->GetScene(id);
+
+	if(pFoundScene != m_pCurrentScene)
+	{
+		m_pCurrentScene = pFoundScene;
+		m_pCurrentScene->m_pContext = m_pContext;
+		m_pCurrentScene->Load();
+	}
+
 
 }
 

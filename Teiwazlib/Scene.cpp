@@ -26,7 +26,7 @@ tyr::Scene::~Scene()
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {SAFE_DELETE(s)});
 }
 
-void tyr::Scene::Initialize()
+void tyr::Scene::Load()
 {
 	if (m_Path.empty()) return;
 
@@ -60,6 +60,7 @@ void tyr::Scene::Initialize()
 				reader.Read<unsigned int>(); //no need to save, only 1 depth child relation allowed
 			}
 		}
+		
 	}
 	catch (TyrException & e)
 	{
@@ -91,7 +92,7 @@ void tyr::Scene::Update()
 		for (auto pS: m_pBufferedObjects)
 		{
 			//pS->m_pContext = m_pContext;
-			//pS->Initialize();
+			//pS->Load();
 			m_pSceneObjects.emplace_back(pS);
 		}
 		m_pBufferedObjects.clear();

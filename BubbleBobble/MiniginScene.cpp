@@ -8,7 +8,7 @@ bub::MiniginScene::~MiniginScene()
 {
 }
 
-void bub::MiniginScene::Initialize()
+void bub::MiniginScene::Load()
 {
 	
 	//auto pBackground = new tyr::SceneObject(tyr::Transform(tyr::Vector2(0.0f, 0.0f)));

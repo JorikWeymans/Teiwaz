@@ -16,7 +16,7 @@ namespace tyr
 		explicit Scene(const std::string& name, const std::string& path);
 		
 		virtual ~Scene();
-		virtual void Initialize();
+		virtual void Load();
 		void AddSceneObject(SceneObject* pObj); //only call this when you are not updating the scene
 		void BufferSceneObject(SceneObject* pObj); //Call this when you addSceneObject in Update
 		virtual void Update();
