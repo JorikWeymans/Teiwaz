@@ -1,5 +1,7 @@
 #include "../tyrpch.h"
 #include "EAnimation.h"
+#include "EWindowSouth.h"
+#ifdef EDITOR_MODE
 #include "../Texture.h"
 #include "../ContentManager.h"
 #include "../Animation.h"
@@ -7,15 +9,16 @@
 #include <sstream>
 #include "../GameContext.h"
 #include "../Time.h"
+#include "EUI.h"
 
-#ifdef EDITOR_MODE
 tyr::EAnimation::EAnimation(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_TempTextureID(0)
 	, m_pAnimation(nullptr)
 	, m_pTemp(nullptr)
-	, m_ShowAnimation(true)
-	, m_WindowIsOpen(false) // Default it to 0
+	, m_Name{}
+	, m_ShowAnimation(true) // Default it to 0
+	, m_WindowIsOpen(false)
 {	}
 
 tyr::EAnimation::~EAnimation()
@@ -38,8 +41,8 @@ void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
 
 
 
-	auto animationName = m_pAnimation->m_AnimationName;
-	std::copy(m_pAnimation->m_AnimationName.begin(), m_pAnimation->m_AnimationName.end(), m_Name);
+	const auto animationName = m_pAnimation->m_AnimationName;
+	std::copy(animationName.cbegin(), animationName.cend(), m_Name);
 
 	
 	m_WindowIsOpen = true;
@@ -106,13 +109,7 @@ void tyr::EAnimation::Menu()
 	{
 		MItemSave();
 		MItemSettings();
-
-
 		
-
-
-		
-
 		SDXL_ImGui_EndMenuBar();
 	}
 
@@ -131,6 +128,7 @@ void tyr::EAnimation::MItemSave()
 		else
 		{
 			m_pAnimation->m_AnimationName = std::string(m_Name);
+			m_pAnimation->Reset();
 			m_pAnimation->m_AniSprites.clear();
 			m_pAnimation->m_AniSprites.resize(m_pTemp->m_AniSprites.size());
 			std::copy(m_pTemp->m_AniSprites.begin(), m_pTemp->m_AniSprites.end(), m_pAnimation->m_AniSprites.begin());
@@ -138,7 +136,8 @@ void tyr::EAnimation::MItemSave()
 			m_pAnimation->m_SpriteID = m_TempTextureID;
 
 			m_pAnimation->Save();
-
+			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->Test();
+			
 			SDXL_ImGui_ConsoleLog("Animation is saved");
 
 		}

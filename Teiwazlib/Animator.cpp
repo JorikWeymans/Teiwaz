@@ -51,7 +51,6 @@ void tyr::Animator::AddAnimation(Animation* pAni)
 
 void tyr::Animator::SetAnimation(const std::string& name)
 {
-	UNREFERENCED_PARAMETER(name);
 	const auto found = m_pAnimations.find(name);
 	if (found != m_pAnimations.end())
 	{
@@ -65,10 +64,6 @@ void tyr::Animator::SetAnimation(const std::string& name)
 void tyr::Animator::Update(float elapsed)
 {
 	m_pCurrent->Update(elapsed);
-
-
-
-	
 }
 
 void tyr::Animator::SetFloat(const std::string& variable, float value)

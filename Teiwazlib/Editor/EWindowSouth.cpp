@@ -23,6 +23,11 @@ tyr::EWindowSouth::~EWindowSouth()
 }
 
 
+void tyr::EWindowSouth::Test()
+{
+	SDXL_ImGui_SetTabItemClosed("Animations");
+}
+
 void tyr::EWindowSouth::PreRender()
 {
 	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
@@ -34,12 +39,13 @@ void tyr::EWindowSouth::InternalRenderEditor()
 {
 	if (SDXL_ImGui_BeginTabBar("SouthTabBar"))
 	{
-		if (SDXL_ImGui_ConsoleBegin("Console", SDXL_ImGuiTabBarFlags_None))
+		if (SDXL_ImGui_ConsoleBegin("Console", SDXL_ImGuiTabBarFlags_None ))
 		{
 			SDXL_ImGui_ConsoleDraw();
 			SDXL_ImGui_ConsoleEnd();
 		}
-
+		
+		
 		std::for_each(m_pTabItems.begin(), m_pTabItems.end(), [](ETabItem* t) { t->RenderEditor(); });
 
 

@@ -65,9 +65,6 @@ void tyr::ETabAnimations::InternalRenderEditor()
 		s.isHovered = SDXL_ImGui_IsItemHovered();
 		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
 		{
-			SDXL_ImGui_ConsoleLog("count or something");
-
-
 			m_pEditorAni->SetCurrentAnimation(CONTENT_MANAGER->GetAnimation(s.name));
 			
 			SDXL_ImGui_OpenPopup("AniEditor");

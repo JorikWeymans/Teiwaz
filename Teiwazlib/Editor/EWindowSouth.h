@@ -23,6 +23,8 @@ namespace tyr
 			}
 			return nullptr;
 		}
+
+		void Test();
 	protected:
 		void PreRender() override;
 		void InternalRenderEditor() override;
