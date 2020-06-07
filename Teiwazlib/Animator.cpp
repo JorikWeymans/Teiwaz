@@ -14,9 +14,11 @@ tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable
 {
 }
 
+//TODO: Should all the connections be checked every frame? Right now a connection gets checked when it gets set and it seem to work fine
 tyr::Animator::Animator()
 	: m_pCurrent(nullptr)
 {
+	m_Name = "TestAnimator";
 	m_pConnections.emplace_back(new Connection(1, 0, AnimatorVariable( "Speed", 0.f, Equation::BiggerThan)));
 	m_pConnections.emplace_back(new Connection( 0, 1, AnimatorVariable("Speed", 0.f, Equation::Equal)));
 	

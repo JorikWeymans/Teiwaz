@@ -53,44 +53,17 @@ tyr::Texture* tyr::CMTextures::GetTexture(TextureID id) const
 #ifdef EDITOR_MODE
 void tyr::CMTextures::RenderEditor()
 {
-	SDXL_ImGui_Text("ID\tName");
-	static int selected = -1;
-	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
-	{
-		std::string tag = FormatString(" %i\t%s", i, m_pTextures[i]->GetName().c_str());
 
-		if (SDXL_ImGui_Selectable(tag.c_str(), selected == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
-		{
-			selected = i;
-		}
-	}
+	static int selectedTexture = -1;
 
-	if (selected != -1)
-	{
-		if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			auto di = m_pTextures[selected]->GetDimension();
+	ShowTextures(selectedTexture);
 
-			SDXL_ImGui_Image(m_pTextures[selected]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
+	BtnDeleteTexture(selectedTexture);
+	BtnMoveTextureUp(selectedTexture);
+	BtnMoveTextureDown(selectedTexture);
 
+	BtnLoadTexture();
 
-		}
-		SDXL_ImGui_End();
-	}
-	SDXL_ImGui_Separator();
-	static char newTexture[40];
-
-	BtnRemoveSelectedTexture(selected);
-
-	SDXL_ImGui_SameLine();
-	SDXL_ImGui_SetNextItemWidth(200.f);
-	SDXL_ImGui_InputTextWithHint("##ContentManagerTextureName", "TEXTURE_NAME.png", newTexture, ARRAY_SIZE(newTexture));
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("Load##ContentManager"))
-	{
-		ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
-		ContentManager::GetInstance()->Save();
-	}
 }
 
 void tyr::CMTextures::ETextureSelector(const char* imGuiID, TextureID& textureID)
@@ -169,5 +142,100 @@ void tyr::CMTextures::BtnRemoveSelectedTexture(int& selected)
 
 		SDXL_ImGui_EndPopup();
 	}
+}
+
+void tyr::CMTextures::ShowTextures(int& selectedTexture)
+{
+	SDXL_ImGui_Text("ID\tName");
+
+	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
+	{
+		std::string tag = FormatString(" %i\t%s", i, m_pTextures[i]->GetName().c_str());
+
+		if (SDXL_ImGui_Selectable(tag.c_str(), selectedTexture == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
+		{
+			selectedTexture = i;
+		}
+	}
+
+	//Show the texture in another window (if one is selected)
+	if (selectedTexture != -1)
+	{
+		if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			auto di = m_pTextures[selectedTexture]->GetDimension();
+
+			SDXL_ImGui_Image(m_pTextures[selectedTexture]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
+			SDXL_ImGui_End();
+		}
+		
+	}
+	SDXL_ImGui_Separator();
+}
+
+void tyr::CMTextures::BtnDeleteTexture(int selectedTexture)
+{
+	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("Delete Texture##CMTextures"))
+	{
+		if (selectedTexture > -1 && m_pTextures.size() > 1)
+		{
+			auto deleteThis = m_pTextures[selectedTexture];
+			m_pTextures[selectedTexture] = *(m_pTextures.end() - 1);
+			m_pTextures.pop_back();
+
+			SAFE_DELETE(deleteThis);
+			
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
+void tyr::CMTextures::BtnMoveTextureUp(int& selectedTexture)
+{
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("UP##CMTextures"))
+	{
+		if (selectedTexture > 0)
+		{
+			auto temp = m_pTextures[selectedTexture - 1];
+			m_pTextures[selectedTexture - 1] = m_pTextures[selectedTexture];
+			m_pTextures[selectedTexture] = temp;
+			selectedTexture--;
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
+void tyr::CMTextures::BtnMoveTextureDown(int& selectedTexture)
+{
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("DOWN##CMTextures"))
+	{
+		if (selectedTexture >= 0 && selectedTexture < static_cast<int>(m_pTextures.size() - 1))
+		{
+			auto temp = m_pTextures[selectedTexture + 1];
+			m_pTextures[selectedTexture + 1] = m_pTextures[selectedTexture];
+			m_pTextures[selectedTexture] = temp;
+			selectedTexture++;
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
+
+void tyr::CMTextures::BtnLoadTexture()
+{
+	static char newTexture[40];
+	SDXL_ImGui_Text("      "); SDXL_ImGui_SameLine();
+	SDXL_ImGui_SetNextItemWidth(200.f);
+	SDXL_ImGui_InputTextWithHint("##ContentManagerTextureName", "TEXTURE_NAME.png", newTexture, ARRAY_SIZE(newTexture));
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("Load##ContentManager"))
+	{
+		ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
+		ContentManager::GetInstance()->Save();
+	}
+
 }
 #endif

@@ -33,6 +33,7 @@ namespace tyr
 
 	private:
 
+		std::string m_Name;
 		std::map<AnimationID, Animation* > m_pAnimations; //weak pointers
 		std::vector<Connection*> m_pConnections;;
 		

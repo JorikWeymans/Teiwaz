@@ -31,6 +31,14 @@ namespace tyr
 		
 #ifdef EDITOR_MODE
 		void BtnRemoveSelectedTexture(int& selected);
+		
+		void ShowTextures(int& selectedTexture);
+
+		void BtnDeleteTexture(int selectedTexture);
+		void BtnMoveTextureUp(int& selectedTexture);
+		void BtnMoveTextureDown(int& selectedTexture);
+
+		void BtnLoadTexture();
 #endif
 	public:
 		CMTextures(const CMTextures&) = delete;

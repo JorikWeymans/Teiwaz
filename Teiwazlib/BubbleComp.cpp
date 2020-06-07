@@ -10,7 +10,7 @@ tyr::BubbleComp::BubbleComp()
 
 void tyr::BubbleComp::Initialize()
 {
-	ADD_COMPONENT(new TextureComp(2, PivotMode::Center, tyr::Rect(576.f, 0.f, 48.f, 48.f)));
+	ADD_COMPONENT(new TextureComp(3, PivotMode::Center, tyr::Rect(576.f, 0.f, 48.f, 48.f)));
 	ADD_COMPONENT(new ColliderComp(48, 48, PivotMode::Center, false));
 	ADD_COMPONENT(new CharacterControllerComp());
 	
