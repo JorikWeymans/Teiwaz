@@ -7,71 +7,19 @@
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
 #include "TyrException.h"
+#include "Connection.h"
 #define ANIMATOR_SUFFIX ".tyrAnimator"
 
 
-tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable* _pVariable)
-	: lhs(_Lhs)
-	, rhs(_Rhs)
-	, pVariable(_pVariable)
-{
-}
-
-tyr::Connection::~Connection()
-{
-	SAFE_DELETE(pVariable);
-}
-
-void tyr::Connection::Save(BinaryWriter& writer)
-{
-	writer.Write(lhs);
-	writer.Write(rhs);
-	pVariable->Save(writer);
-	
-}
-
-tyr::Connection* tyr::Connection::Create(BinaryReader& reader)
-{
-	UNREFERENCED_PARAMETER(reader);
-	Connection* pTheConnection = new Connection();
-	pTheConnection->lhs = reader.Read<AnimationID>();
-	pTheConnection->rhs = reader.Read<AnimationID>();
-	pTheConnection->pVariable = AnimatorVariable::Create(reader);
-	
-
-
-	return pTheConnection;
-}
-
-
-tyr::Connection::Connection()
-	: lhs(0)
-	, rhs(0)
-	, pVariable(nullptr)
-{
-}
-
 //TODO: Should all the connections be checked every frame? Right now a connection gets checked when it gets set and it seem to work fine
 tyr::Animator::Animator()
-	: m_pCurrent(nullptr)
+	: m_Name("")
+	, m_pCurrent(nullptr)
 {
-	m_Name = "TestAnimator";
-	m_pConnections.emplace_back(new Connection(1, 0, new AnimatorVariable( "Speed", 0.f, Equation::BiggerThan)));
-	m_pConnections.emplace_back(new Connection( 0, 1, new AnimatorVariable("Speed", 0.f, Equation::Equal)));
-	
-	m_pConnections.emplace_back(new Connection( 1,2, new AnimatorVariable("IsEating",true,  Equation::Equal)));
-	m_pConnections.emplace_back(new Connection(0, 2, new AnimatorVariable("IsEating", true, Equation::Equal)));
-	
-
-	m_pConnections.emplace_back(new Connection(2, 1, new AnimatorVariable("IsEating", false, Equation::Equal)));
-	m_pConnections.emplace_back(new Connection(2, 0, new AnimatorVariable("IsEating", false, Equation::Equal)));
-
-	
 }
 
 tyr::Animator::~Animator()
 {
-	//std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](auto& a) {delete a.second; a.second = nullptr; });
 	std::for_each(m_pConnections.begin(), m_pConnections.end(), [](auto& a) {delete a; a = nullptr; });
 	m_pConnections.clear();
 }

@@ -210,6 +210,7 @@
     <ClInclude Include="CMScenes.h" />
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Editor\EAnimation.h" />
     <ClInclude Include="Editor\EUI.h" />
@@ -267,6 +268,7 @@
     <ClCompile Include="CMScenes.cpp" />
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Editor\EAnimation.cpp" />
     <ClCompile Include="Editor\EUI.cpp" />

@@ -24,12 +24,8 @@ tyr::AnimatorComp::~AnimatorComp()
 
 void tyr::AnimatorComp::Initialize()
 {
-	m_pAnimator = new Animator();
-	m_pAnimator->SetAnimation(1);
-	m_pAnimator->Save();
+	m_pAnimator = Animator::Create(CONTENT_MANAGER->GetAbsoluteAnimationFolder() + "TestAnimator");
 	
-	auto test = Animator::Create(CONTENT_MANAGER->GetAbsoluteAnimationFolder() + "TestAnimator");
-	UNREFERENCED_PARAMETER(test);
 
 	m_pTextureComp = m_pSceneObject->GetComponent<TextureComp>();
 	
