@@ -106,8 +106,7 @@ void tyr::CMAnimations::ShowAnimations(int& selectedAnimation)
 		}
 		if (SDXL_ImGui_IsItemHovered() && SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left))
 		{
-
-			//TODO: Open Animation editor
+			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->OpenAnimationEditorWindow(selectedAnimation);
 		}
 	}
 	SDXL_ImGui_Separator();

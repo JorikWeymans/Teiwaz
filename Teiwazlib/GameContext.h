@@ -20,6 +20,7 @@ namespace tyr
 		SceneManager* const pSceneManager; //weak ptr
 		bool paused;
 #ifdef EDITOR_MODE
+#define E_UI m_pContext->pEditorUI
 		EUI* pEditorUI;
 #endif
 

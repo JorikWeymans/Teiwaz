@@ -14,7 +14,7 @@ namespace tyr
 		explicit EAnimation(GameContext* pContext);
 		~EAnimation();
 
-		void SetCurrentAnimation(Animation* pAnimation);
+		void OpenAnimationEditorWindow(Animation* pAnimation);
 		void RenderEditor();
 	private:
 		void Menu();
@@ -23,7 +23,8 @@ namespace tyr
 		
 		void SpriteWindow();
 		void AnimationEditor();
-		
+
+		void RenderAnimationPreviewWindow();
 		GameContext* m_pContext;
 		TextureID m_TempTextureID;
 		Animation* m_pAnimation;

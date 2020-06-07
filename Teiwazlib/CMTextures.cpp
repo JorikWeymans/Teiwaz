@@ -166,9 +166,9 @@ void tyr::CMTextures::ShowTextures(int& selectedTexture)
 			auto di = m_pTextures[selectedTexture]->GetDimension();
 
 			SDXL_ImGui_Image(m_pTextures[selectedTexture]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
-			SDXL_ImGui_End();
+			
 		}
-		
+		SDXL_ImGui_End();
 	}
 	SDXL_ImGui_Separator();
 }

@@ -11,10 +11,12 @@
 #include "EWindowSceneView.h"
 #include "EWindowInspector.h"
 #include "EWindowSouth.h"
+#include "EAnimation.h"
 
 tyr::EUI::EUI(GameContext* pContext)
 	: m_pContext(pContext)
 	, m_pMenu(new EMenuBar(pContext))
+	, m_pEAnimation(new EAnimation(pContext))
 {
 	m_pContext->pEditorUI = this;
 	
@@ -26,6 +28,7 @@ tyr::EUI::EUI(GameContext* pContext)
 tyr::EUI::~EUI()
 {
 	SAFE_DELETE(m_pMenu);
+	SAFE_DELETE(m_pEAnimation);
 	std::for_each(m_pWindows.begin(), m_pWindows.end(), [](EWindow* w) { SAFE_DELETE(w); });
 	m_pWindows.clear();
 }
@@ -33,6 +36,7 @@ tyr::EUI::~EUI()
 void tyr::EUI::RenderEditor()
 {
 	m_pMenu->RenderEditor();
+	m_pEAnimation->RenderEditor();
 	std::for_each(m_pWindows.begin(), m_pWindows.end(), [](EWindow* w) {w->RenderEditor(); });
 	
 }

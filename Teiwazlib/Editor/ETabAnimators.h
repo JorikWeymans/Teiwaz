@@ -9,7 +9,7 @@ namespace tyr
 	public:
 		explicit ETabAnimators(GameContext* pContext);
 		virtual ~ETabAnimators() = default;
-		void CreateTabItems() override {}
+		void CreateTabItems() override;
 		
 	protected:
 		void PreTabRender() override;

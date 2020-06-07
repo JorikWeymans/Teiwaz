@@ -9,7 +9,7 @@
 #include "../Animation.h"
 #include "../GameContext.h"
 #include "EAnimation.h"
-
+#include "EUI.h"
 
 
 tyr::ETabAnimations::ETabAnimations(GameContext* pContext)
@@ -17,14 +17,9 @@ tyr::ETabAnimations::ETabAnimations(GameContext* pContext)
 	, m_SceneFolder(ContentManager::GetInstance()->GetDataFolder() + "Animations/")
 {
 	
-	m_pEditorAni = new EAnimation(pContext);
 	CreateTabItems();
 }
 
-tyr::ETabAnimations::~ETabAnimations()
-{
-	SAFE_DELETE(m_pEditorAni);
-}
 
 void tyr::ETabAnimations::CreateTabItems()
 {
@@ -40,19 +35,25 @@ void tyr::ETabAnimations::CreateTabItems()
 	
 }
 
+void tyr::ETabAnimations::OpenAnimationEditorWindow(AnimationID id)
+{
+
+	E_UI->GetAnimationEditor()->OpenAnimationEditorWindow(CONTENT_MANAGER->GetAnimation(id));
+}
+
 void tyr::ETabAnimations::PreTabRender()
 {}
 
 void tyr::ETabAnimations::PostTabRender()
 {	
-	m_pEditorAni->RenderEditor();
 }
 
 void tyr::ETabAnimations::OnItemDoubleClick(TabItem& clickedItem)
 {
-	m_pEditorAni->SetCurrentAnimation(CONTENT_MANAGER->GetAnimation(clickedItem.name));
+	E_UI->GetAnimationEditor()->OpenAnimationEditorWindow(
+		CONTENT_MANAGER->GetAnimation(clickedItem.name));
 
-	SDXL_ImGui_OpenPopup("AniEditor");
+	
 }
 
 #endif

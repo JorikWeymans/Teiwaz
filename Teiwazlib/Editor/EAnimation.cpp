@@ -26,10 +26,16 @@ tyr::EAnimation::~EAnimation()
 	SAFE_DELETE(m_pTemp); //Only happens when the porgram is closed without closing the Animation Window
 }
 
-void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
+void tyr::EAnimation::OpenAnimationEditorWindow(Animation* pAnimation)
 {
+
+	//When you open the Editor when it is already open, delete what is currently in there
+	SAFE_DELETE(m_pTemp);
+	//m_pAnimation = nullptr;
+	
 	m_pAnimation = pAnimation;
 
+	
 	//Creating a temporary animation in this class, when animation is saved, copy everything over to the selected animation
 	m_pTemp = new Animation(m_pAnimation->m_AniElapser.GetMax());
 	m_pTemp->m_AniSprites.resize(m_pAnimation->m_AniSprites.size());
@@ -46,14 +52,15 @@ void tyr::EAnimation::SetCurrentAnimation(Animation* pAnimation)
 
 	
 	m_WindowIsOpen = true;
+	SDXL_ImGui_OpenPopup("AniEditor##EAnimation");
 }
 
 void tyr::EAnimation::RenderEditor()
 {
 	if (!m_pAnimation) return;
 
-	if(SDXL_ImGui_BeginAuto("AniEditor", &m_WindowIsOpen,
-		SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_AlwaysAutoResize | SDXL_ImGuiWindowFlags_NoMove/*| SDXL_ImGuiWindowFlags*/))
+	if(SDXL_ImGui_BeginAuto("AniEditor##EAnimation", &m_WindowIsOpen,
+		SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_AlwaysAutoResize | SDXL_ImGuiWindowFlags_NoCollapse))
 	
 	{
 		Menu();
@@ -70,27 +77,8 @@ void tyr::EAnimation::RenderEditor()
 		SDXL_ImGui_EndGroup();
 		SDXL_ImGui_End();
 
-
-		if (SDXL_ImGui_Begin("Animation Preview##EAnimation", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			if(SDXL_ImGui_Checkbox("Animate", &m_ShowAnimation))
-			{
-				//m_pTemp->m_AniElapser.Reset();
-				//m_pTemp->m_CurrentAnimation = 0;
-			}
-			if (!m_pTemp->m_AniSprites.empty())
-			{
-				if (m_ShowAnimation)
-					m_pTemp->Update(m_pContext->pTime->fixedDeltaTime);
-
-				auto texture = CONTENT_MANAGER->GetTexture(m_TempTextureID);
-				auto drawRect = m_pTemp->GetCurrentAnimation();
-
-				SDXL_ImGui_Image(texture->SDXL(), static_cast<SDXL::SDXLRect>(drawRect), 3.0f);
-			}
+		RenderAnimationPreviewWindow();
 		
-			SDXL_ImGui_End();
-		}
 	}
 	else
 	{
@@ -165,7 +153,7 @@ void tyr::EAnimation::MItemSettings()
 
 void tyr::EAnimation::SpriteWindow()
 {
-	if (SDXL_ImGui_BeginChild("Child", SDXL::Float2{ 600.f, 600.f }, true, SDXL_ImGuiWindowFlags_HorizontalScrollbar))
+	if (SDXL_ImGui_BeginChild("Child", SDXL::Float2{ 600.f, 600.f }, true, SDXL_ImGuiWindowFlags_HorizontalScrollbar ))
 	{
 		auto mousePos = SDXL_ImGui_GetMousePos();
 		auto contentRegion = SDXL_ImGui_GetWindowContentRegionMin();
@@ -182,21 +170,12 @@ void tyr::EAnimation::SpriteWindow()
 			SDXL::Float2(WindowPos.x + m_y * m_GridSize + m_i * m_GridSize, WindowPos.y + m_z * m_GridSize + m_j * m_GridSize));
 
 
-		
-
-
-
 		mousePos.x -= WindowPos.x;
 		mousePos.y -= WindowPos.y;
 
-
-
-
-
 		static bool mouseIsDown = false; //makes down to pressed
 
-
-
+		
 		if (SDXL_ImGui_IsMouseDown(SDXL_ImGuiMouseButton_Left))
 		{
 
@@ -219,20 +198,18 @@ void tyr::EAnimation::SpriteWindow()
 			{
 				mouseIsDown = true;
 			}
-
-
-
+			
 		}
 		else
 		{
 			mouseIsDown = false;
 		}
 
-
-
-
 		SDXL_ImGui_EndChild();
+		
 	}
+
+	
 }
 
 void tyr::EAnimation::AnimationEditor()
@@ -344,5 +321,30 @@ void tyr::EAnimation::AnimationEditor()
 	}
 
 	
+}
+
+void tyr::EAnimation::RenderAnimationPreviewWindow()
+{
+	if (SDXL_ImGui_Begin("Animation Preview##EAnimation", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		if (SDXL_ImGui_Checkbox("Animate", &m_ShowAnimation))
+		{
+			//m_pTemp->m_AniElapser.Reset();
+			//m_pTemp->m_CurrentAnimation = 0;
+		}
+		if (!m_pTemp->m_AniSprites.empty())
+		{
+			if (m_ShowAnimation)
+				m_pTemp->Update(m_pContext->pTime->fixedDeltaTime);
+
+			auto texture = CONTENT_MANAGER->GetTexture(m_TempTextureID);
+			auto drawRect = m_pTemp->GetCurrentAnimation();
+
+			SDXL_ImGui_Image(texture->SDXL(), static_cast<SDXL::SDXLRect>(drawRect), 3.0f);
+		}
+
+
+	}
+	SDXL_ImGui_End();
 }
 #endif

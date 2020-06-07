@@ -10,9 +10,10 @@ namespace  tyr
 
 	public:
 		explicit ETabAnimations(GameContext* pContext);
-		virtual ~ETabAnimations();
+		virtual ~ETabAnimations() = default;
 
 		void CreateTabItems() override;
+		void OpenAnimationEditorWindow(AnimationID id);
 	protected:
 
 		void PreTabRender() override;
@@ -20,7 +21,6 @@ namespace  tyr
 		void OnItemDoubleClick(TabItem& clickedItem) override;
 	private:
 		std::string m_SceneFolder;
-		EAnimation* m_pEditorAni;
 	public:
 		ETabAnimations(const ETabAnimations&) = delete;
 		ETabAnimations(ETabAnimations&&) = delete;
