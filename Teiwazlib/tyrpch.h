@@ -24,6 +24,10 @@
 #include <SDXLStructs.h>
 
 #define ARRAY_SIZE(array)          (static_cast<int>(sizeof(array) / sizeof(*array)))   
+#ifndef _FALLTHROUGH
+#define _FALLTHROUGH [[fallthrough]];
+#endif
+
 
 //https://github.com/Neargye/magic_enum Unity has enum.ToString(), this hpp gives the same functionality and other stuff as well
 #define MAGIC_ENUM_RANGE_MIN 0

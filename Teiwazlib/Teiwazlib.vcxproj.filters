@@ -205,6 +205,9 @@
     <ClInclude Include="CMAnimations.h">
       <Filter>Graphics\Content</Filter>
     </ClInclude>
+    <ClInclude Include="AnimatorVariable.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -350,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="CMAnimations.cpp">
       <Filter>Graphics\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimatorVariable.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

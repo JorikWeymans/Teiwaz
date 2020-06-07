@@ -4,23 +4,29 @@
 #include "Animation.h"
 #include "ContentManager.h"
 
+
+
+
+tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable&& _Variable)
+	: lhs(_Lhs)
+	, rhs(_Rhs)
+	, variable(std::move(_Variable))
+{
+}
+
 tyr::Animator::Animator()
 	: m_pCurrent(nullptr)
 {
-	const auto equalTo0 = [](const float  b) -> bool { return b < 0.02f; };
-	const auto moreThan0 = [](const float  b) -> bool { return b > 0.02f; };
-
-	const auto isTrue = [](const bool b) -> bool { return b; };
-	const auto isFalse = [](const bool b) -> bool { return !b; };
-
-	m_pConnections.emplace_back(new Connection{ 1,0, "Speed",  moreThan0 });
-	m_pConnections.emplace_back(new Connection{ 0, 1, "Speed", equalTo0 });
+	m_pConnections.emplace_back(new Connection(1, 0, AnimatorVariable( "Speed", 0.f, Equation::BiggerThan)));
+	m_pConnections.emplace_back(new Connection( 0, 1, AnimatorVariable("Speed", 0.f, Equation::Equal)));
 	
-	m_pConnections.emplace_back(new Connection{ 1,2, "IsEating",equalTo0,  isTrue });
-	m_pConnections.emplace_back(new Connection{ 0, 2, "IsEating", equalTo0, isTrue});
+	m_pConnections.emplace_back(new Connection( 1,2, AnimatorVariable("IsEating",true,  Equation::Equal)));
+	m_pConnections.emplace_back(new Connection(0, 2, AnimatorVariable("IsEating", true, Equation::Equal)));
+	
 
-	m_pConnections.emplace_back(new Connection{ 2,1, "IsEating", equalTo0, isFalse });
-	m_pConnections.emplace_back(new Connection{ 2, 0, "IsEating", equalTo0, isFalse });
+	m_pConnections.emplace_back(new Connection(2, 1, AnimatorVariable("IsEating", false, Equation::Equal)));
+	m_pConnections.emplace_back(new Connection(2, 0, AnimatorVariable("IsEating", false, Equation::Equal)));
+
 	
 }
 
@@ -37,7 +43,6 @@ void tyr::Animator::AddAnimation(AnimationID id)
 	Animation* pTHeAnimation = CONTENT_MANAGER->GetAnimation(id);
 	AddAnimation(pTHeAnimation);
 }
-
 void tyr::Animator::AddAnimation(Animation* pAni)
 {
 	const AnimationID id = CONTENT_MANAGER->GetAnimationID(pAni);
@@ -68,17 +73,15 @@ void tyr::Animator::Update(float elapsed)
 
 void tyr::Animator::SetFloat(const std::string& variable, float value)
 {
-	UNREFERENCED_PARAMETER(variable);
-
 	for(auto pcon : m_pConnections)
 	{
-		if (pcon->VariableName != variable) continue;
-		if (pcon->Lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
+		if (pcon->variable.GetName() != variable) continue;
+		if (pcon->variable.GetType() != VariableType::Float) continue;
+		if (pcon->lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
 
-		if(pcon->floatTest(value))
-		{
-			SetAnimation(pcon->Rhs);
-		}
+
+		if(pcon->variable.DoEquation(value))
+			SetAnimation(pcon->rhs);
 		
 	}
 }
@@ -87,13 +90,14 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 {
 	for (auto pcon : m_pConnections)
 	{
-		if (pcon->VariableName != variable) continue;
-		if (pcon->Lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
+		if (pcon->variable.GetName() != variable) continue;
+		if (pcon->variable.GetType() != VariableType::Bool) continue;
+		if (pcon->lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
 
-		if (pcon->boolTest(value))
-		{
-			SetAnimation(pcon->Rhs);
-		}
+
+		if (pcon->variable.DoEquation(value))
+			SetAnimation(pcon->rhs);
+
 
 	}
 	

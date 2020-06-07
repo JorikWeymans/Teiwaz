@@ -1,33 +1,14 @@
 #pragma once
 #include <map>
-#include <functional>
-#include <set>
-
+#include <vector>
+#include "AnimatorVariable.h"
 namespace tyr
 {
-
-	template <typename T>
-	struct Var
-	{
-		T data;
-	};
-
-	struct Varfloat : Var<float> {};
-
-	struct ValBool : Var<bool> {};
-	
 	struct Connection
 	{
-		AnimationID Lhs, Rhs;
-		std::string VariableName;
-		
-		//float condition;
-
-		std::function<bool(float)> floatTest;
-		std::function<bool(bool)> boolTest;
-	
-
-		
+		explicit Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable&& _Variable);
+		AnimationID lhs, rhs;
+		AnimatorVariable variable;
 	};
 
 	
