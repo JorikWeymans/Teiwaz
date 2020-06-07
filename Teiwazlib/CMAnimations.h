@@ -9,6 +9,11 @@ namespace tyr
 	public:
 		CMAnimations() = default;
 		~CMAnimations();
+
+		_NODISCARD auto Begin()        noexcept { return m_pAnimations.begin(); }
+		_NODISCARD auto End()          noexcept { return m_pAnimations.end(); }
+		_NODISCARD auto CBegin() const noexcept { return m_pAnimations.cbegin(); }
+		_NODISCARD auto CEnd()   const noexcept { return m_pAnimations.cend(); }
 		
 		void Resize(unsigned int newSize);
 		void InsertAt(unsigned int index, Animation* pData) noexcept;

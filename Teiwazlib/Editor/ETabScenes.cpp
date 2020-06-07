@@ -59,8 +59,8 @@ void tyr::ETabScenes::CreateTabItems()
 {
 	
 	m_TabItems.clear();
-	CMScenes* t = ContentManager::GetInstance()->GetCMScenes();
-	std::string path = ContentManager::GetInstance()->GetAbsoluteSceneFolder();
+	CMScenes* t = CONTENT_MANAGER->GetCMScenes();
+	std::string path = CONTENT_MANAGER->GetAbsoluteSceneFolder();
 	std::for_each(t->Begin(), t->End(), [&](Scene* s)
 		{
 			m_TabItems.emplace_back(TabItem(path, s->GetName()));

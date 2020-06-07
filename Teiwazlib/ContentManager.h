@@ -42,13 +42,12 @@ namespace tyr
 		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const; //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
 
-		_NODISCARD std::vector<TabItem> GetAnimationsInFolder() const; //Should not be in the program's hot code
-
 		_NODISCARD const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
 		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
 		_NODISCARD std::string GetAbsoluteAnimationFolder() const { return m_DataFolder + m_AnimationFolder; }
 		
 		_NODISCARD CMScenes* GetCMScenes() const noexcept { return m_pCMScenes; }
+		_NODISCARD CMAnimations* GetCMAnimations() const noexcept { return m_pCMAnimations; }
 		_NODISCARD Scene* GetCurrentScene() const noexcept;
 		void SetCurrentScene(SceneID id);
 

@@ -9,6 +9,10 @@
 #include "BinStructureHelpers.h"
 #include "StringManipulation.h"
 
+#include "GameContext.h"
+#include "Editor/EUI.h"
+#include "Editor/EWindowSouth.h"
+#include "Editor/ETabAnimations.h"
 
 tyr::CMAnimations::~CMAnimations()
 {
@@ -110,6 +114,7 @@ void tyr::CMAnimations::BtnDeleteAnimation(int selectedAnimation)
 			
 			SAFE_DELETE(deleteThis);
 
+			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->CreateTabItems();
 			CONTENT_MANAGER->Save();
 
 		}
@@ -163,9 +168,14 @@ void tyr::CMAnimations::BtnAddAnimation()
 		Animation* pAnimation = Animation::GenerateNew(std::string(newAnimation));
 		m_pAnimations.emplace_back(pAnimation);
 
+		CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->CreateTabItems();
 		CONTENT_MANAGER->Save();
 
 	}
+
+
+
+	
 }
 #endif
 

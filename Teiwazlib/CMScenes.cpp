@@ -7,8 +7,8 @@
 #include "BinaryWriter.h"
 #include "BinStructureHelpers.h"
 #include "ContentManager.h"
-#include "Editor/ETabScenes.h"
 #include "GameContext.h"
+
 #include "Editor/EUI.h"
 #include "Editor/EWindowSouth.h"
 #include "Editor/ETabScenes.h"
@@ -107,6 +107,7 @@ void tyr::CMScenes::BtnDeleteScene(int selectedScene)
 
 			SAFE_DELETE(deleteThis);
 
+			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabScenes>()->CreateTabItems();
 			CONTENT_MANAGER->Save();
 
 		}
@@ -161,7 +162,7 @@ void tyr::CMScenes::BtnAddScene()
 		m_pScenes.emplace_back(pScene);
 
 		CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabScenes>()->CreateTabItems();
-		ContentManager::GetInstance()->Save();
+		CONTENT_MANAGER->Save();
 
 	}
 }

@@ -475,7 +475,6 @@ FontID tyr::ContentManager::LoadFont(const std::string& path)
 }
 
 
-
 tyr::Texture* tyr::ContentManager::GetTexture(TextureID id) const
 {
 	return m_pCMTextures->GetTexture(id);
@@ -501,26 +500,3 @@ AnimationID tyr::ContentManager::GetAnimationID(const std::string& animationName
 	return m_pCMAnimations->GetAnimationID(animationName);
 }
 
-
-std::vector<tyr::TabItem> tyr::ContentManager::GetAnimationsInFolder() const
-{
-	std::vector<tyr::TabItem> files;
-
-	std::string folder = m_DataFolder + m_AnimationFolder;
-#pragma warning (suppress : 6031)
-	_mkdir(folder.c_str()); //making dir if dir does not exist
-	for (auto& entry : std::filesystem::directory_iterator(folder))
-	{
-
-		std::string filename{ GetFileFromPath(entry.path().string()) };
-
-		if (DoesExtensionMatch(filename, ANIMATION_SUFFIX, false))
-		{
-			RemoveExtension(filename);
-			files.emplace_back(TabItem(entry.path().string(), filename));
-		}
-	}
-
-	return files;
-	
-}
