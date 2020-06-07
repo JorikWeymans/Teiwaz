@@ -27,9 +27,9 @@ void tyr::AnimatorComp::Initialize()
 	m_pAnimator = new Animator();
 
 	
-	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation("Bub_Idle"));
-	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation("Bub_Idle"));
-	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation("Bub_Idle"));
+	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(0));
+	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(1));
+	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(2));
 
 	
 	m_pAnimator->SetAnimation("Bub_Idle");

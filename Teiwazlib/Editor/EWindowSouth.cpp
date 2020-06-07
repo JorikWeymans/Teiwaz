@@ -22,12 +22,6 @@ tyr::EWindowSouth::~EWindowSouth()
 	std::for_each(m_pTabItems.begin(), m_pTabItems.end(), [](ETabItem* t) { SAFE_DELETE(t); });
 }
 
-
-void tyr::EWindowSouth::Test()
-{
-	SDXL_ImGui_SetTabItemClosed("Animations");
-}
-
 void tyr::EWindowSouth::PreRender()
 {
 	SDXL_ImGui_SetNextWindowPos(SDXL::Float2{ m_pContext->pGameSpace->pos.x,m_pContext->pGameSpace->height });
