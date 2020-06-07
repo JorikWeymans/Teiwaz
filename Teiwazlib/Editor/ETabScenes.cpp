@@ -1,58 +1,38 @@
 #include "../tyrpch.h"
-#include <direct.h>
+#include "../CMScenes.h"
 
 #ifdef EDITOR_MODE
 #include <filesystem>
 #include "../StringManipulation.h"
 #include "../ContentManager.h"
-#include "../Color.h"
-#include "../Texture.h"
 #include "../SceneManager.h"
 #include "../GameContext.h"
 #include "../Scene.h"
+
 #include "ETabScenes.h"
-#include "../CMScenes.h"
 tyr::ETabScenes::ETabScenes(GameContext* pContext)
-	: tyr::ETabItem("Scenes", pContext)
-	, m_Texture(0)
+	: tyr::ETabItem("Scenes", pContext, 0)
 {
 	CreateTabItems();
-	
 }
 
-void tyr::ETabScenes::PreRender()
-{
-	
+void tyr::ETabScenes::PreTabRender()
+{	
 }
 
-void tyr::ETabScenes::InternalRenderEditor()
+void tyr::ETabScenes::PostTabRender()
 {
-	SDXL::SDXLImage* theImage = CONTENT_MANAGER->GetTexture(m_Texture)->SDXL();
-	for (auto& s : m_TabItems)
+}
+
+void tyr::ETabScenes::OnItemDoubleClick(TabItem& clickedItem)
+{
+	if (!m_pContext->pSceneManager->DoesSceneExist(clickedItem.name))
 	{
-
-		SDXL_ImGui_BeginGroup();
-		SDXL_ImGui_Image(theImage, { 50.f, 50.f }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f },
-			static_cast<SDXL::Float4>(s.isHovered ? ColorGray : ColorWhite));
-		SDXL_ImGui_PushTextWrapPos(SDXL_ImGui_GetCursorPos().x + 50.f);
-		SDXL_ImGui_TextWrapped(s.name.c_str());
-		SDXL_ImGui_PopTextWrapPos();
-		SDXL_ImGui_EndGroup();
-
-		s.isHovered = SDXL_ImGui_IsItemHovered();
-		if (SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left) && s.isHovered)
-		{
-			if(!m_pContext->pSceneManager->DoesSceneExist(s.name))
-				m_pContext->pSceneManager->AddScene(new Scene(s.name, s.path));
-
-			m_pContext->pSceneManager->SetCurrentScene(s.name);
-			
-			SDXL_ImGui_ConsoleLog(FormatString("Scene %s is loaded", s.name.c_str()).c_str());
-			
-		}
-
-		SDXL_ImGui_SameLine();
+		m_pContext->pSceneManager->AddScene(new Scene(clickedItem.name, clickedItem.path));
+		m_pContext->pSceneManager->SetCurrentScene(clickedItem.name);
+		SDXL_ImGui_ConsoleLog(FormatString("Scene %s is loaded", clickedItem.name.c_str()).c_str());
 	}
+	
 }
 
 void tyr::ETabScenes::CreateTabItems()

@@ -11,19 +11,12 @@ namespace  tyr
 		explicit ETabScenes(GameContext* pContext);
 		virtual ~ETabScenes() = default;
 
-		void CreateTabItems();
+		void CreateTabItems() override;
 		
 	protected:
-		
-		 void PreRender() override;
-		 void InternalRenderEditor() override;
-
-	private:
-		std::vector<TabItem> m_TabItems;
-		TextureID m_Texture;
-
-	
-
+		 void PreTabRender() override;
+		 void PostTabRender() override;
+		 void OnItemDoubleClick(TabItem& clickedItem) override;
 	public:
 		ETabScenes(const ETabScenes&) = delete;
 		ETabScenes(ETabScenes&&) = delete;

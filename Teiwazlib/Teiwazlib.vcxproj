@@ -221,6 +221,7 @@
     <ClInclude Include="Editor\ETabItem.h" />
     <ClInclude Include="Editor\ETabScenes.h" />
     <ClInclude Include="Editor\ETabAnimations.h" />
+    <ClInclude Include="Editor\ETabAnimators.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="Editor\ETabItem.cpp" />
     <ClCompile Include="Editor\ETabScenes.cpp" />
     <ClCompile Include="Editor\ETabAnimations.cpp" />
+    <ClCompile Include="Editor\ETabAnimators.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />

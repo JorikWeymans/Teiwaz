@@ -12,17 +12,14 @@ namespace  tyr
 		explicit ETabAnimations(GameContext* pContext);
 		virtual ~ETabAnimations();
 
-		void CreateTabItems();
+		void CreateTabItems() override;
 	protected:
 
-		void PreRender() override;
-		void InternalRenderEditor() override;
-
+		void PreTabRender() override;
+		void PostTabRender() override;
+		void OnItemDoubleClick(TabItem& clickedItem) override;
 	private:
 		std::string m_SceneFolder;
-		std::vector<TabItem> m_TabItems;
-		TextureID m_Texture;
-
 		EAnimation* m_pEditorAni;
 	public:
 		ETabAnimations(const ETabAnimations&) = delete;

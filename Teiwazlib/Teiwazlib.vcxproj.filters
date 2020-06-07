@@ -208,6 +208,9 @@
     <ClInclude Include="AnimatorVariable.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Editor\ETabAnimators.h">
+      <Filter>Editor\Windows\WindowSouth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -356,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="AnimatorVariable.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\ETabAnimators.cpp">
+      <Filter>Editor\Windows\WindowSouth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
