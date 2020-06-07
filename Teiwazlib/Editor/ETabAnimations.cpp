@@ -11,20 +11,37 @@
 #include "../GameContext.h"
 #include "EAnimation.h"
 #include "ETabAnimations.h"
+#include "../CMAnimations.h"
+#include "../Animation.h"
 
 tyr::ETabAnimations::ETabAnimations(GameContext* pContext)
 	: tyr::ETabItem("Animations", pContext)
 	, m_SceneFolder(ContentManager::GetInstance()->GetDataFolder() + "Animations/")
 {
-	m_Files = CONTENT_MANAGER->GetAnimationsInFolder();
+	//m_TabItems = CONTENT_MANAGER->GetAnimationsInFolder();
 	m_Texture = 1; // CONTENT_MANAGER->LoadTexture("Editor/AnimationIcon.png");
 
 	m_pEditorAni = new EAnimation(pContext);
+	CreateTabItems();
 }
 
 tyr::ETabAnimations::~ETabAnimations()
 {
 	SAFE_DELETE(m_pEditorAni);
+}
+
+void tyr::ETabAnimations::CreateTabItems()
+{
+	m_TabItems.clear();
+	CMAnimations* a = CONTENT_MANAGER->GetCMAnimations();
+
+	std::string path = CONTENT_MANAGER->GetAbsoluteAnimationFolder();
+	std::for_each(a->Begin(), a->End(), [&](Animation* a)
+		{
+			m_TabItems.emplace_back(TabItem(path, a->GetName()));
+		});
+	
+	
 }
 
 void tyr::ETabAnimations::PreRender()
@@ -34,7 +51,7 @@ void tyr::ETabAnimations::PreRender()
 void tyr::ETabAnimations::InternalRenderEditor()
 {
 
-	for (auto& s : m_Files)
+	for (auto& s : m_TabItems)
 	{
 
 		SDXL_ImGui_BeginGroup();
