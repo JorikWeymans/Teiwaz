@@ -1,6 +1,8 @@
 #include "tyrpch.h"
 #include "AnimatorVariable.h"
 #include "TyrFunctions.h"
+#include "BinaryWriter.h"
+#include "BinaryReader.h"
 tyr::AnimatorVariable::AnimatorVariable(const std::string& name, float _Data, Equation _Equation)
 	: m_Name(name)
 	, m_Type(VariableType::Float)
@@ -36,7 +38,43 @@ tyr::AnimatorVariable::AnimatorVariable(AnimatorVariable&& other) noexcept
 		break;
 	default: ; }
 }
+tyr::AnimatorVariable::AnimatorVariable() // Private
+	: m_Name("")
+	, m_Type(VariableType::Float)
+	, m_Equation(Equation::Equal)
+	, fSetValue(0.f)
+	, fComparatorValue(0.f) {}
+tyr::AnimatorVariable* tyr::AnimatorVariable::Create(BinaryReader& reader)
+{
+	AnimatorVariable* pTheVariable = new AnimatorVariable();
+	pTheVariable->m_Name     = reader.ReadString();
+	pTheVariable->m_Type     = reader.Read<VariableType>();
+	pTheVariable->m_Equation = reader.Read<Equation>();
 
+	
+	switch (pTheVariable->m_Type)
+	{
+	case VariableType::Bool:
+		{
+		const bool readBool = reader.Read<bool>();
+		pTheVariable->bComparatorValue = readBool;
+		pTheVariable->bSetValue = readBool;
+		break;
+		}
+		
+	case VariableType::Float:
+		{
+			const float readFloat = reader.Read<float>();
+			pTheVariable->fComparatorValue = readFloat;
+			pTheVariable->fSetValue = readFloat;
+			break;
+		}
+	default:
+		SDXL_ImGui_ConsoleLogError("AnimatorVariable type is wrong");
+	}
+	
+	return pTheVariable;
+}
 bool tyr::AnimatorVariable::DoEquation(float setValue)
 {
 	fSetValue = setValue;
@@ -76,3 +114,28 @@ bool tyr::AnimatorVariable::DoEquation(bool setValue)
 		return false;
 	}
 }
+
+
+#ifdef EDITOR_MODE
+void tyr::AnimatorVariable::Save(BinaryWriter& writer)
+{
+	writer.Write(m_Name);
+	writer.Write(m_Type);
+	writer.Write(m_Equation);
+
+	//No need to save setvalue, because the save is for saving animator, not the state of the game
+	switch (m_Type)
+	{
+		case VariableType::Bool:
+			writer.Write(bComparatorValue);
+		break;
+		case VariableType::Float:
+			writer.Write(fComparatorValue);
+		break;
+		default:
+			SDXL_ImGui_ConsoleLogError("AnimatorVariable type is wrong")
+		; }
+	}
+
+
+#endif

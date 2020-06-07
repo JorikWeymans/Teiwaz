@@ -21,19 +21,15 @@ tyr::AnimatorComp::~AnimatorComp()
 	SAFE_DELETE(m_pAnimator);
 }
 
+
 void tyr::AnimatorComp::Initialize()
 {
-
 	m_pAnimator = new Animator();
-
-	
-	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(0));
-	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(1));
-	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(2));
-
-	
 	m_pAnimator->SetAnimation(1);
-
+	m_pAnimator->Save();
+	
+	auto test = Animator::Create(CONTENT_MANAGER->GetAbsoluteAnimationFolder() + "TestAnimator");
+	UNREFERENCED_PARAMETER(test);
 
 	m_pTextureComp = m_pSceneObject->GetComponent<TextureComp>();
 	

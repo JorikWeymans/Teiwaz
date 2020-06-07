@@ -4,11 +4,23 @@
 #include "AnimatorVariable.h"
 namespace tyr
 {
-	struct Connection
+	class BinaryReader;
+	class BinaryWriter;
+
+	class Connection final
 	{
-		explicit Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable&& _Variable);
+	public:
+		explicit Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable* _pVariable);
+		~Connection();
+		void Save(BinaryWriter& writer);
+		static Connection* Create(BinaryReader& reader);
+		
 		AnimationID lhs, rhs;
-		AnimatorVariable variable;
+		AnimatorVariable* pVariable;
+		
+
+	private:
+		Connection();
 	};
 
 	
@@ -20,8 +32,6 @@ namespace tyr
 		Animator();
 		~Animator();
 
-		void AddAnimation(AnimationID id);
-		void AddAnimation(Animation* pAni);
 		void SetAnimation(AnimationID id);
 		void Update(float elapsed);
 
@@ -31,10 +41,14 @@ namespace tyr
 		bool IsAtEnd() const;
 		const Rect& GetCurrentAnimation() const;
 
+		static Animator* Create(const std::string& path);
+		
+#ifdef EDITOR_MODE
+		void Save();
+#endif
 	private:
-
+		
 		std::string m_Name;
-		std::map<AnimationID, Animation* > m_pAnimations; //weak pointers
 		std::vector<Connection*> m_pConnections;;
 		
 

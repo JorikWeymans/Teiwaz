@@ -1,6 +1,9 @@
 #pragma once
 namespace tyr
 {
+	class BinaryReader;
+	class BinaryWriter;
+
 	enum class VariableType : BYTE { Bool = 0, Float = 1 };
 	enum class Equation : BYTE
 	{
@@ -23,6 +26,11 @@ namespace tyr
 
 		bool DoEquation(float setValue);
 		bool DoEquation(bool setValue);
+
+		static AnimatorVariable* Create(BinaryReader& reader);
+#ifdef EDITOR_MODE
+		void Save(BinaryWriter& writer);
+#endif
 	private:
 		std::string m_Name;
 		VariableType m_Type;
@@ -39,8 +47,9 @@ namespace tyr
 			bool bComparatorValue{};
 			float fComparatorValue;
 		};
+
+		AnimatorVariable();
 	public:
-		AnimatorVariable() = delete;
 		AnimatorVariable(const AnimatorVariable&) = delete;
 
 		AnimatorVariable& operator=(const AnimatorVariable&) = delete;

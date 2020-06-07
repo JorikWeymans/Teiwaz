@@ -4,13 +4,50 @@
 #include "Animation.h"
 #include "ContentManager.h"
 
+#include "BinaryWriter.h"
+#include "BinaryReader.h"
+#include "TyrException.h"
+#define ANIMATOR_SUFFIX ".tyrAnimator"
 
 
-
-tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable&& _Variable)
+tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable* _pVariable)
 	: lhs(_Lhs)
 	, rhs(_Rhs)
-	, variable(std::move(_Variable))
+	, pVariable(_pVariable)
+{
+}
+
+tyr::Connection::~Connection()
+{
+	SAFE_DELETE(pVariable);
+}
+
+void tyr::Connection::Save(BinaryWriter& writer)
+{
+	writer.Write(lhs);
+	writer.Write(rhs);
+	pVariable->Save(writer);
+	
+}
+
+tyr::Connection* tyr::Connection::Create(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	Connection* pTheConnection = new Connection();
+	pTheConnection->lhs = reader.Read<AnimationID>();
+	pTheConnection->rhs = reader.Read<AnimationID>();
+	pTheConnection->pVariable = AnimatorVariable::Create(reader);
+	
+
+
+	return pTheConnection;
+}
+
+
+tyr::Connection::Connection()
+	: lhs(0)
+	, rhs(0)
+	, pVariable(nullptr)
 {
 }
 
@@ -19,15 +56,15 @@ tyr::Animator::Animator()
 	: m_pCurrent(nullptr)
 {
 	m_Name = "TestAnimator";
-	m_pConnections.emplace_back(new Connection(1, 0, AnimatorVariable( "Speed", 0.f, Equation::BiggerThan)));
-	m_pConnections.emplace_back(new Connection( 0, 1, AnimatorVariable("Speed", 0.f, Equation::Equal)));
+	m_pConnections.emplace_back(new Connection(1, 0, new AnimatorVariable( "Speed", 0.f, Equation::BiggerThan)));
+	m_pConnections.emplace_back(new Connection( 0, 1, new AnimatorVariable("Speed", 0.f, Equation::Equal)));
 	
-	m_pConnections.emplace_back(new Connection( 1,2, AnimatorVariable("IsEating",true,  Equation::Equal)));
-	m_pConnections.emplace_back(new Connection(0, 2, AnimatorVariable("IsEating", true, Equation::Equal)));
+	m_pConnections.emplace_back(new Connection( 1,2, new AnimatorVariable("IsEating",true,  Equation::Equal)));
+	m_pConnections.emplace_back(new Connection(0, 2, new AnimatorVariable("IsEating", true, Equation::Equal)));
 	
 
-	m_pConnections.emplace_back(new Connection(2, 1, AnimatorVariable("IsEating", false, Equation::Equal)));
-	m_pConnections.emplace_back(new Connection(2, 0, AnimatorVariable("IsEating", false, Equation::Equal)));
+	m_pConnections.emplace_back(new Connection(2, 1, new AnimatorVariable("IsEating", false, Equation::Equal)));
+	m_pConnections.emplace_back(new Connection(2, 0, new AnimatorVariable("IsEating", false, Equation::Equal)));
 
 	
 }
@@ -36,36 +73,12 @@ tyr::Animator::~Animator()
 {
 	//std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](auto& a) {delete a.second; a.second = nullptr; });
 	std::for_each(m_pConnections.begin(), m_pConnections.end(), [](auto& a) {delete a; a = nullptr; });
-	m_pAnimations.clear();
-	
-}
-
-void tyr::Animator::AddAnimation(AnimationID id)
-{
-	Animation* pTHeAnimation = CONTENT_MANAGER->GetAnimation(id);
-	AddAnimation(pTHeAnimation);
-}
-void tyr::Animator::AddAnimation(Animation* pAni)
-{
-	const AnimationID id = CONTENT_MANAGER->GetAnimationID(pAni);
-	const auto found = m_pAnimations.find(id);
-	if (found == m_pAnimations.end())
-	{
-		m_pAnimations.insert({ id, pAni });
-	}
-	
+	m_pConnections.clear();
 }
 
 void tyr::Animator::SetAnimation(AnimationID id)
 {
-	const auto found = m_pAnimations.find(id);
-	if (found != m_pAnimations.end())
-	{
-
-		if (m_pCurrent) m_pCurrent->Reset();
-		m_pCurrent = found->second;
-	}
-	
+	m_pCurrent = CONTENT_MANAGER->GetAnimation(id);
 }
 
 void tyr::Animator::Update(float elapsed)
@@ -77,12 +90,12 @@ void tyr::Animator::SetFloat(const std::string& variable, float value)
 {
 	for(auto pcon : m_pConnections)
 	{
-		if (pcon->variable.GetName() != variable) continue;
-		if (pcon->variable.GetType() != VariableType::Float) continue;
+		if (pcon->pVariable->GetName() != variable) continue;
+		if (pcon->pVariable->GetType() != VariableType::Float) continue;
 		if (pcon->lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
 
 
-		if(pcon->variable.DoEquation(value))
+		if(pcon->pVariable->DoEquation(value))
 			SetAnimation(pcon->rhs);
 		
 	}
@@ -92,12 +105,12 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 {
 	for (auto pcon : m_pConnections)
 	{
-		if (pcon->variable.GetName() != variable) continue;
-		if (pcon->variable.GetType() != VariableType::Bool) continue;
+		if (pcon->pVariable->GetName() != variable) continue;
+		if (pcon->pVariable->GetType() != VariableType::Bool) continue;
 		if (pcon->lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
 
 
-		if (pcon->variable.DoEquation(value))
+		if (pcon->pVariable->DoEquation(value))
 			SetAnimation(pcon->rhs);
 
 
@@ -114,3 +127,68 @@ const tyr::Rect& tyr::Animator::GetCurrentAnimation() const
 {
 	return m_pCurrent->GetCurrentAnimation();
 }
+
+tyr::Animator* tyr::Animator::Create(const std::string& path)
+{
+	BinaryReader reader(path + ANIMATOR_SUFFIX);
+
+	const ULONG64 header = reader.Read<ULONG64>();
+	if (header != 0x6efd095e)
+		THROW_ERROR(L"This is not an animator");
+
+	Animator* pTheAnimator = new Animator();
+	pTheAnimator->m_Name = reader.ReadString();
+	pTheAnimator->m_pCurrent = CONTENT_MANAGER->GetAnimation(reader.Read<AnimationID>());
+	const UINT connectionSize = reader.Read<UINT>();
+	pTheAnimator->m_pConnections.resize(connectionSize);
+
+	for(UINT i{0}; i < connectionSize; ++i)
+	{
+		pTheAnimator->m_pConnections[i] = Connection::Create(reader);
+	}
+
+
+
+	
+	return pTheAnimator;
+}
+
+#ifdef EDITOR_MODE
+void tyr::Animator::Save()
+{
+	std::stringstream ss;
+	ss << CONTENT_MANAGER->GetAbsoluteAnimationFolder();
+	ss << m_Name;
+	ss << ANIMATOR_SUFFIX;
+
+
+	//Binary structure
+	// Long double -> Header (JorikWeymansTyrAnimator hashed via Adler32 to this value)
+	// std::string -> m_Name
+	// AnimationID -> m_pCurrent(pointer to AID)
+	// UINT -> ConnectionSize
+	// for each connection
+	//   AnimationID  -> lhs
+	//   AnimationID  -> rhs
+	//   std::string  -> var::m_Name
+	//   VariableType -> var::m_Type
+	//   Equation     -> var::m_Equation
+	//   bool/float   -> var::b/fComparatorValue (depended on what type it is.
+	
+	BinaryWriter writer(ss.str());
+
+	if(writer.IsOpen())
+	{
+		const ULONG64 header = 0x6efd095e;
+		writer.Write(header);
+		writer.Write(m_Name);
+		writer.Write(CONTENT_MANAGER->GetAnimationID(m_pCurrent));
+		writer.Write(static_cast<UINT>(m_pConnections.size()));
+		std::for_each(m_pConnections.begin(), m_pConnections.end(), [&writer](Connection* pC) { pC->Save(writer); });
+
+		SDXL_ImGui_ConsoleLog("Animator is saved");
+	}
+	else
+		SDXL_ImGui_ConsoleLogWarning("Could not save the Animator");
+}
+#endif

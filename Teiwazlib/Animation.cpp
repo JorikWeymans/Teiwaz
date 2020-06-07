@@ -1,8 +1,10 @@
 #include "tyrpch.h"
 #include "Animation.h"
+#include <algorithm>
+
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
-#include <algorithm>
+
 #include "TyrException.h"
 #include "ContentManager.h"
 
@@ -44,7 +46,7 @@ tyr::Animation* tyr::Animation::Create(const std::string& path)
 	BinaryReader reader(path + ANIMATION_SUFFIX);
 
 
-	ULONG64 header = reader.Read<ULONG64>();
+	const ULONG64 header = reader.Read<ULONG64>();
 	if (header != 0x78b109c3)
 	{
 		THROW_ERROR(L"This is not an animation");
@@ -122,7 +124,7 @@ void tyr::Animation::Save()
 
 	if (writer.IsOpen())
 	{
-		ULONG64 header = 0x78b109c3;
+		const ULONG64 header = 0x78b109c3;
 		writer.Write(header);
 		writer.Write(m_AnimationName);
 		writer.Write(m_SpriteID);
