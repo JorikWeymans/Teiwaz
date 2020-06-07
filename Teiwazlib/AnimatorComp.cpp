@@ -32,13 +32,12 @@ void tyr::AnimatorComp::Initialize()
 	m_pAnimator->AddAnimation(CONTENT_MANAGER->GetAnimation(2));
 
 	
-	m_pAnimator->SetAnimation("Bub_Idle");
+	m_pAnimator->SetAnimation(1);
 
 
 	m_pTextureComp = m_pSceneObject->GetComponent<TextureComp>();
-
-	INPUT->AddAction("AWalking", ButtonState::Pressed, 'E');
-	INPUT->AddAction("AEating", ButtonState::Pressed, 'T');
+	
+	INPUT->AddAction("AEating", ButtonState::Pressed, VK_SPACE);
 }
 
 void tyr::AnimatorComp::Update()
@@ -50,7 +49,7 @@ void tyr::AnimatorComp::Update()
 	static bool isEating = false;
 	
 	
-	if(INPUT->IsActionTriggered("AWalking"))
+	if(INPUT->IsActionTriggered("AEating"))
 	{
 		isEating = true;
 		m_pAnimator->SetBool("IsEating", true);

@@ -21,6 +21,7 @@ namespace tyr
 		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const;
 		_NODISCARD Animation*  GetAnimation(AnimationID id) const;
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
+		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 #ifdef EDITOR_MODE
 		void RenderEditor();
 		void Save(BinaryWriter& writer);

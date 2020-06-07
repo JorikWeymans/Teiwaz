@@ -13,14 +13,14 @@ tyr::Animator::Animator()
 	const auto isTrue = [](const bool b) -> bool { return b; };
 	const auto isFalse = [](const bool b) -> bool { return !b; };
 
-	m_pConnections.emplace_back(new Connection{ "Bub_Idle","Bub_Walking", "Speed",  moreThan0 });
-	m_pConnections.emplace_back(new Connection{ "Bub_Walking", "Bub_Idle", "Speed", equalTo0 });
+	m_pConnections.emplace_back(new Connection{ 1,0, "Speed",  moreThan0 });
+	m_pConnections.emplace_back(new Connection{ 0, 1, "Speed", equalTo0 });
 	
-	m_pConnections.emplace_back(new Connection{ "Bub_Idle","Bub_Eating", "IsEating",equalTo0,  isTrue });
-	m_pConnections.emplace_back(new Connection{ "Bub_Walking", "Bub_Eating", "IsEating", equalTo0, isTrue});
+	m_pConnections.emplace_back(new Connection{ 1,2, "IsEating",equalTo0,  isTrue });
+	m_pConnections.emplace_back(new Connection{ 0, 2, "IsEating", equalTo0, isTrue});
 
-	m_pConnections.emplace_back(new Connection{ "Bub_Eating","Bub_Idle", "IsEating", equalTo0, isFalse });
-	m_pConnections.emplace_back(new Connection{ "Bub_Eating", "Bub_Walking", "IsEating", equalTo0, isFalse });
+	m_pConnections.emplace_back(new Connection{ 2,1, "IsEating", equalTo0, isFalse });
+	m_pConnections.emplace_back(new Connection{ 2, 0, "IsEating", equalTo0, isFalse });
 	
 }
 
@@ -40,18 +40,18 @@ void tyr::Animator::AddAnimation(AnimationID id)
 
 void tyr::Animator::AddAnimation(Animation* pAni)
 {
-	const std::string& name = pAni->GetName();
-	const auto found = m_pAnimations.find(pAni->GetName());
+	const AnimationID id = CONTENT_MANAGER->GetAnimationID(pAni);
+	const auto found = m_pAnimations.find(id);
 	if (found == m_pAnimations.end())
 	{
-		m_pAnimations.insert({ name, pAni });
+		m_pAnimations.insert({ id, pAni });
 	}
 	
 }
 
-void tyr::Animator::SetAnimation(const std::string& name)
+void tyr::Animator::SetAnimation(AnimationID id)
 {
-	const auto found = m_pAnimations.find(name);
+	const auto found = m_pAnimations.find(id);
 	if (found != m_pAnimations.end())
 	{
 
@@ -73,11 +73,11 @@ void tyr::Animator::SetFloat(const std::string& variable, float value)
 	for(auto pcon : m_pConnections)
 	{
 		if (pcon->VariableName != variable) continue;
-		if (pcon->A != m_pCurrent->GetName()) continue;
+		if (pcon->Lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
 
 		if(pcon->floatTest(value))
 		{
-			SetAnimation(pcon->B);
+			SetAnimation(pcon->Rhs);
 		}
 		
 	}
@@ -88,11 +88,11 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 	for (auto pcon : m_pConnections)
 	{
 		if (pcon->VariableName != variable) continue;
-		if (pcon->A != m_pCurrent->GetName()) continue;
+		if (pcon->Lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
 
 		if (pcon->boolTest(value))
 		{
-			SetAnimation(pcon->B);
+			SetAnimation(pcon->Rhs);
 		}
 
 	}

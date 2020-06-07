@@ -41,6 +41,7 @@ namespace tyr
 		_NODISCARD Animation*  GetAnimation(AnimationID id) const; 
 		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const; //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
+		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 
 		_NODISCARD const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
 		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }

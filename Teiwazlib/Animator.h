@@ -18,7 +18,7 @@ namespace tyr
 	
 	struct Connection
 	{
-		std::string A, B;
+		AnimationID Lhs, Rhs;
 		std::string VariableName;
 		
 		//float condition;
@@ -41,7 +41,7 @@ namespace tyr
 
 		void AddAnimation(AnimationID id);
 		void AddAnimation(Animation* pAni);
-		void SetAnimation(const std::string& name);
+		void SetAnimation(AnimationID id);
 		void Update(float elapsed);
 
 		void SetFloat(const std::string& variable, float value);
@@ -52,7 +52,7 @@ namespace tyr
 
 	private:
 
-		std::map<std::string, Animation* > m_pAnimations; //weak pointers
+		std::map<AnimationID, Animation* > m_pAnimations; //weak pointers
 		std::vector<Connection*> m_pConnections;;
 		
 

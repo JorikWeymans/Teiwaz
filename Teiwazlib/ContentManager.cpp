@@ -500,3 +500,8 @@ AnimationID tyr::ContentManager::GetAnimationID(const std::string& animationName
 	return m_pCMAnimations->GetAnimationID(animationName);
 }
 
+AnimationID tyr::ContentManager::GetAnimationID(Animation* pAnimation) const noexcept
+{
+	return m_pCMAnimations->GetAnimationID(pAnimation);
+}
+

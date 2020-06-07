@@ -58,6 +58,18 @@ AnimationID tyr::CMAnimations::GetAnimationID(const std::string& animationName) 
 
 	return 0; //When animation is not found, return the first one
 }
+
+AnimationID tyr::CMAnimations::GetAnimationID(Animation* pAnimation) const noexcept
+{
+	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), pAnimation);
+
+	if (found != m_pAnimations.end())
+	{
+		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
+	}
+
+	return 0; //When animation is not found, return the first one
+}
 #ifdef EDITOR_MODE
 void tyr::CMAnimations::RenderEditor()
 {
