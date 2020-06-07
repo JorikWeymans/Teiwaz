@@ -39,7 +39,7 @@ tyr::ContentManager::ContentManager()
 	, m_DataFolder("")
 	, m_pCMTextures(nullptr)
 	, m_pCMScenes(nullptr)
-	, m_pFonts(std::vector<Font*>())
+	, m_pCMAnimations(nullptr)
 	, m_pContext(nullptr)
 #ifdef EDITOR_MODE
 	, m_SelectedContentWindow(ContentWindow::None)

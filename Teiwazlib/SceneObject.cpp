@@ -158,7 +158,7 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 						b->RenderEditor();
 				});
 
-			//AddComponentButton();
+			AddComponentButton();
 
 			SDXL_ImGui_End();
 		}
