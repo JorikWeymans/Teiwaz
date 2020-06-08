@@ -15,10 +15,12 @@ namespace tyr
 	private:
 		void RenderConnectionProperties(int selected);
 		void OnSelectionChanged(int newSelected);
-		
+
+		void Menu();
 		Animator* m_pAnimator;
 
-		char m_Temp[30]{};
+		char m_TempConnectionName[30]{};
+		char m_TempName[40]{};
 		bool m_WindowIsOpen;
 	};
 

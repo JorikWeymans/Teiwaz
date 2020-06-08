@@ -124,7 +124,7 @@ void tyr::EAnimation::MItemSave()
 			m_pAnimation->m_SpriteID = m_TempTextureID;
 
 			m_pAnimation->Save();
-			
+			CONTENT_MANAGER->Save();
 			SDXL_ImGui_ConsoleLog("Animation is saved");
 
 		}

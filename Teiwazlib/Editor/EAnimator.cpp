@@ -1,12 +1,18 @@
 #include "../tyrpch.h"
 #include "EAnimator.h"
-#include "../ContentManager.h"
+
 
 #ifdef  EDITOR_MODE
 #include "../Animator.h"
 #include "../Connection.h"
 #include "../StringManipulation.h"
 #include "../EnumDropdown.h"
+#include "../ContentManager.h"
+#include "../GameContext.h"
+
+#include "EUI.h"
+#include "ETabAnimators.h"
+#include "EWindowSouth.h"
 #endif
 tyr::EAnimator::EAnimator()
 	: m_pAnimator(nullptr)
@@ -24,6 +30,7 @@ void tyr::EAnimator::OpenAnimatorEditorWindow(Animator* pAnimator)
 	m_WindowIsOpen = true;
 	SDXL_ImGui_OpenPopup("Animator Editor##EAnimator");
 
+	strcpy_s(m_TempName, m_pAnimator->GetName().c_str());
 	
 	OnSelectionChanged(0); //Default selection to 0
 }
@@ -35,9 +42,18 @@ void tyr::EAnimator::RenderEditor()
 	if (SDXL_ImGui_BeginAuto("Animator Editor##EAnimator", &m_WindowIsOpen,
 		SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_AlwaysAutoResize | SDXL_ImGuiWindowFlags_NoCollapse))
 	{
+		Menu();
+		
 		static int selected = 0;
 		if(SDXL_ImGui_BeginChild("Child##EAnimator", SDXL::Float2{ 200.f, 200.f }, false))
 		{
+			
+			SDXL_ImGui_Text("Name:"); SDXL_ImGui_SameLine();
+			if(SDXL_ImGui_InputText("##AnimatorNameEAnimator", m_TempName, ARRAY_SIZE(m_TempName)))
+			{
+				m_pAnimator->m_Name = std::string(m_TempName);
+			}
+
 			
 			SDXL_ImGui_Text("  CONNECTIONS  ");
 
@@ -57,7 +73,27 @@ void tyr::EAnimator::RenderEditor()
 
 			//if (selected != -1)
 
-			
+			if(SDXL_ImGui_Button("ADD##EAnimatorConnection"))
+			{
+				m_pAnimator->m_pConnections.emplace_back(Connection::CreateNew());
+				
+			} SDXL_ImGui_SameLine();
+			if (SDXL_ImGui_Button("REMOVE##EAnimatorConnection"))
+			{
+				if (selected > -1 && m_pAnimator->m_pConnections.size() > 1)
+				{
+					auto deleteThis = m_pAnimator->m_pConnections[selected];
+					m_pAnimator->m_pConnections[selected] = *(m_pAnimator->m_pConnections.end() - 1);
+
+					//When deleting the last one, -- selected to avoid "array out of range"
+					if (m_pAnimator->m_pConnections.size() - 1 == static_cast<UINT>(selected))
+						selected--;
+
+					OnSelectionChanged(selected);
+					m_pAnimator->m_pConnections.pop_back();
+					SAFE_DELETE(deleteThis);
+				}
+			}
 			SDXL_ImGui_EndChild();
 		}
 		SDXL_ImGui_SameLine();
@@ -75,7 +111,7 @@ void tyr::EAnimator::RenderEditor()
 
 void tyr::EAnimator::RenderConnectionProperties(int selected)
 {
-	if (SDXL_ImGui_BeginChild("Child2##EAnimator", SDXL::Float2{ 200.f, 0.f }, false))
+	if (SDXL_ImGui_BeginChild("Child2##EAnimator", SDXL::Float2{ 200.f, 0.f }, true))
 	{
 		if (selected == -1)
 		{
@@ -85,12 +121,12 @@ void tyr::EAnimator::RenderConnectionProperties(int selected)
 		
 		auto con = m_pAnimator->m_pConnections[selected];
 
-		SDXL_ImGui_Text("Name: \t");
+		SDXL_ImGui_Text("Var name: ");
 		SDXL_ImGui_SameLine();
 		SDXL_ImGui_SetNextItemWidth(110.f);
-		if (SDXL_ImGui_InputText("##EAnimatorName", m_Temp, ARRAY_SIZE(m_Temp)))
+		if (SDXL_ImGui_InputText("##EAnimatorName", m_TempConnectionName, ARRAY_SIZE(m_TempConnectionName)))
 		{
-			con->pVariable->m_Name = std::string(m_Temp);
+			con->pVariable->m_Name = std::string(m_TempConnectionName);
 		}
 
 		SDXL_ImGui_Text("LHS:  \t"); SDXL_ImGui_SameLine();
@@ -128,5 +164,22 @@ void tyr::EAnimator::RenderConnectionProperties(int selected)
 
 void tyr::EAnimator::OnSelectionChanged(int newSelected)
 {
-	strcpy_s(m_Temp, m_pAnimator->m_pConnections[newSelected]->pVariable->GetName().c_str());
+	strcpy_s(m_TempConnectionName, m_pAnimator->m_pConnections[newSelected]->pVariable->GetName().c_str());
+}
+
+void tyr::EAnimator::Menu()
+{
+	if (SDXL_ImGui_BeginMenuBar())
+	{
+		if (SDXL_ImGui_MenuItem("Save##EAnimation"))
+		{
+			m_pAnimator->Save();
+			CONTENT_MANAGER->Save();
+			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
+				GetTabItem<ETabAnimators>()->CreateTabItems();
+			
+			SDXL_ImGui_ConsoleLog("Animator is Saved");
+		}
+		SDXL_ImGui_EndMenuBar();
+	}
 }

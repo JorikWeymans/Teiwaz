@@ -16,6 +16,7 @@ namespace tyr
 
 		AnimationID lhs, rhs;
 		AnimatorVariable* pVariable;
+		static Connection* CreateNew();
 		
 	private:
 		Connection();

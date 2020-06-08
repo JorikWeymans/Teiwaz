@@ -10,6 +10,15 @@ tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable
 	, pVariable(_pVariable)
 {
 }
+
+
+tyr::Connection* tyr::Connection::CreateNew()
+{
+	Connection* pReturnConnection = new Connection();
+	pReturnConnection->pVariable = new AnimatorVariable("NEW", true, Equation::Equal);
+	return pReturnConnection;
+}
+
 tyr::Connection::Connection()
 	: lhs(0)
 	, rhs(0)
