@@ -230,7 +230,7 @@ void tyr::ContentManager::Save()
 	writer.Write(m_FontFolder);
 	writer.Write(m_AnimationFolder);
 
-	m_pCMTextures->SaveTextures(writer);
+	m_pCMTextures->Save(writer);
 	m_pCMScenes->Save(writer);
 	m_pCMAnimations->Save(writer);
 	

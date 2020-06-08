@@ -207,6 +207,7 @@
     <ClInclude Include="BubbleShootingComp.h" />
     <ClInclude Include="CharacterControllerComp.h" />
     <ClInclude Include="CMAnimations.h" />
+    <ClInclude Include="CMAnimators.h" />
     <ClInclude Include="CMBase.h" />
     <ClInclude Include="CMScenes.h" />
     <ClInclude Include="ColliderComp.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="BubbleShootingComp.cpp" />
     <ClCompile Include="CharacterControllerComp.cpp" />
     <ClCompile Include="CMAnimations.cpp" />
+    <ClCompile Include="CMAnimators.cpp" />
     <ClCompile Include="CMScenes.cpp" />
     <ClCompile Include="ColliderComp.cpp" />
     <ClCompile Include="Color.cpp" />

@@ -4,6 +4,7 @@
 #include "StringManipulation.h"
 namespace tyr
 {
+	class BinaryWriter;
 	template <class T>
 	class CMBase
 	{
@@ -61,6 +62,7 @@ namespace tyr
 
 			PostRender();
 		}
+		virtual void Save(BinaryWriter& writer) = 0;
 
 		
 #endif	

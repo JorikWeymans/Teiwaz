@@ -15,7 +15,7 @@ namespace tyr
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
 		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 #ifdef EDITOR_MODE
-		void Save(BinaryWriter& writer);
+		void Save(BinaryWriter& writer) override;
 #endif
 	protected:
 #ifdef EDITOR_MODE
@@ -23,7 +23,8 @@ namespace tyr
 		void OnBtnAddClicked(const std::string& what) override;
 		void OnItemDoubleClicked(int selected) override;
 #endif
-
+	private:
+		static void GenerateTabItems();
 	public:
 		CMAnimations(const CMAnimations&) = delete;
 		CMAnimations(CMAnimations&&) = delete;

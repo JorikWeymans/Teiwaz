@@ -16,7 +16,7 @@ namespace tyr
 		_NODISCARD Scene* GetScene(SceneID id) const noexcept;
 
 #ifdef EDITOR_MODE
-		void Save(BinaryWriter& writer);
+		void Save(BinaryWriter& writer) override;
 		
 #endif
 

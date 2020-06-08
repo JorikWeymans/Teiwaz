@@ -21,7 +21,8 @@ namespace tyr
 		const Rect& GetCurrentAnimation() const;
 
 		static Animator* Create(const std::string& path);
-		
+
+		const std::string& GetName() const noexcept { return m_Name; }
 #ifdef EDITOR_MODE
 		void Save();
 #endif

@@ -33,6 +33,7 @@ namespace tyr
 		Font,
 		Animation,
 		Scenes,
+		Animators,
 		//Append here
 		End = 255,
 		

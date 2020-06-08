@@ -72,21 +72,26 @@ void tyr::CMAnimations::Save(BinaryWriter& writer)
 void tyr::CMAnimations::OnBtnDeleteClicked(Animation* pDeletedContent)
 {
 	SAFE_DELETE(pDeletedContent);
-	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
-	GetTabItem<ETabAnimations>()->CreateTabItems();
+	GenerateTabItems();
 }
 void tyr::CMAnimations::OnBtnAddClicked(const std::string& what)
 {
 	Animation* pAnimation = Animation::GenerateNew(what);
 	m_pContent.emplace_back(pAnimation);
 
-	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->CreateTabItems();
 
 }
 void tyr::CMAnimations::OnItemDoubleClicked(int selected)
 {
 	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
 	GetTabItem<ETabAnimations>()->OpenAnimationEditorWindow(selected);
+
+}
+
+void tyr::CMAnimations::GenerateTabItems()
+{
+	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
+	GetTabItem<ETabAnimations>()->CreateTabItems();
 
 }
 

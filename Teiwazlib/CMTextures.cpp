@@ -65,7 +65,7 @@ void tyr::CMTextures::ETextureSelector(const char* imGuiID, TextureID& textureID
 	}
 }
 
-void tyr::CMTextures::SaveTextures(BinaryWriter& writer)
+void tyr::CMTextures::Save(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Texture);
 	writer.Write(static_cast<UINT>(m_pContent.size()));
