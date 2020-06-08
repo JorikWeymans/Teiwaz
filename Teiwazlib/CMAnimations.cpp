@@ -7,32 +7,21 @@
 #include "ContentManager.h"
 #include "BinaryWriter.h"
 #include "BinStructureHelpers.h"
-#include "StringManipulation.h"
 
 #include "GameContext.h"
 #include "Editor/EUI.h"
 #include "Editor/EWindowSouth.h"
 #include "Editor/ETabAnimations.h"
 
-tyr::CMAnimations::~CMAnimations()
+tyr::CMAnimations::CMAnimations()
+	:CMBase("CMAnimations", "New Animation name")
 {
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](Animation* pA) {SAFE_DELETE(pA); });
-}
-
-void tyr::CMAnimations::Resize(unsigned newSize)
-{
-	m_pAnimations.resize(newSize, nullptr);
-}
-
-void tyr::CMAnimations::InsertAt(unsigned index, Animation* pData) noexcept
-{
-	m_pAnimations.at(index) = pData;
 }
 
 tyr::Animation* tyr::CMAnimations::GetAnimation(const std::string& animationName) const
 {
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), animationName);
-	if (found != m_pAnimations.end())
+	auto found = std::find(m_pContent.begin(), m_pContent.end(), animationName);
+	if (found != m_pContent.end())
 	{
 		return *found;
 	}
@@ -42,18 +31,18 @@ tyr::Animation* tyr::CMAnimations::GetAnimation(const std::string& animationName
 
 tyr::Animation* tyr::CMAnimations::GetAnimation(AnimationID id) const
 {
-	if (id >= m_pAnimations.size()) return nullptr;
+	if (id >= m_pContent.size()) return nullptr;
 
-	return m_pAnimations[id];
+	return m_pContent[id];
 }
 
 AnimationID tyr::CMAnimations::GetAnimationID(const std::string& animationName) const
 {
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), animationName);
+	auto found = std::find(m_pContent.begin(), m_pContent.end(), animationName);
 
-	if (found != m_pAnimations.end())
+	if (found != m_pContent.end())
 	{
-		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
+		return static_cast<AnimationID>(std::distance(m_pContent.begin(), found));
 	}
 
 	return 0; //When animation is not found, return the first one
@@ -61,132 +50,45 @@ AnimationID tyr::CMAnimations::GetAnimationID(const std::string& animationName) 
 
 AnimationID tyr::CMAnimations::GetAnimationID(Animation* pAnimation) const noexcept
 {
-	auto found = std::find(m_pAnimations.begin(), m_pAnimations.end(), pAnimation);
+	auto found = std::find(m_pContent.begin(), m_pContent.end(), pAnimation);
 
-	if (found != m_pAnimations.end())
+	if (found != m_pContent.end())
 	{
-		return static_cast<AnimationID>(std::distance(m_pAnimations.begin(), found));
+		return static_cast<AnimationID>(std::distance(m_pContent.begin(), found));
 	}
 
 	return 0; //When animation is not found, return the first one
 }
 #ifdef EDITOR_MODE
-void tyr::CMAnimations::RenderEditor()
-{
-	static int selectedAnimation = -1;
 
-	ShowAnimations(selectedAnimation);
-
-	BtnDeleteAnimation(selectedAnimation);
-	BtnMoveAnimationUp(selectedAnimation);
-	BtnMoveAnimationDown(selectedAnimation);
-
-	BtnAddAnimation();
-}
 
 void tyr::CMAnimations::Save(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Animation);
-	writer.Write(static_cast<UINT>(m_pAnimations.size()));
-	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [&writer](Animation* a) { writer.Write(a->GetName()); });
+	writer.Write(static_cast<UINT>(m_pContent.size()));
+	std::for_each(m_pContent.begin(), m_pContent.end(), [&writer](Animation* a) { writer.Write(a->GetName()); });
 }
 
-
-void tyr::CMAnimations::ShowAnimations(int& selectedAnimation)
+void tyr::CMAnimations::OnBtnDeleteClicked(Animation* pDeletedContent)
 {
-	SDXL_ImGui_Text("ID\tName");
-
-	for (int i{ 0 }; i < static_cast<int>(m_pAnimations.size()); ++i)
-	{
-		std::string tag = FormatString(" %i\t%s", i, m_pAnimations[i]->GetName().c_str());
-
-		if (SDXL_ImGui_Selectable(tag.c_str(), selectedAnimation == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
-		{
-			selectedAnimation = i;
-		}
-		if (SDXL_ImGui_IsItemHovered() && SDXL_ImGui_IsMouseDoubleClicked(SDXL_ImGuiMouseButton_Left))
-		{
-			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->OpenAnimationEditorWindow(selectedAnimation);
-		}
-	}
-	SDXL_ImGui_Separator();
+	SAFE_DELETE(pDeletedContent);
+	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
+	GetTabItem<ETabAnimations>()->CreateTabItems();
 }
-
-void tyr::CMAnimations::BtnDeleteAnimation(int selectedAnimation)
+void tyr::CMAnimations::OnBtnAddClicked(const std::string& what)
 {
-	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("Delete Animation##CMAnimations"))
-	{
-		if (selectedAnimation > -1 && m_pAnimations.size() > 1)
-		{
-			auto deleteThis = m_pAnimations[selectedAnimation];
-			m_pAnimations[selectedAnimation] = *(m_pAnimations.end() - 1);
-			m_pAnimations.pop_back();
-			
-			SAFE_DELETE(deleteThis);
+	Animation* pAnimation = Animation::GenerateNew(what);
+	m_pContent.emplace_back(pAnimation);
 
-			CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->CreateTabItems();
-			CONTENT_MANAGER->Save();
+	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->CreateTabItems();
 
-		}
-	}
 }
-void tyr::CMAnimations::BtnMoveAnimationUp(int& selectedAnimation)
+void tyr::CMAnimations::OnItemDoubleClicked(int selected)
 {
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("UP##CMAnimations"))
-	{
-		if (selectedAnimation > 0)
-		{
-			auto temp = m_pAnimations[selectedAnimation - 1];
-			m_pAnimations[selectedAnimation - 1] = m_pAnimations[selectedAnimation];
-			m_pAnimations[selectedAnimation] = temp;
-			selectedAnimation--;
-			CONTENT_MANAGER->Save();
+	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
+	GetTabItem<ETabAnimations>()->OpenAnimationEditorWindow(selected);
 
-		}
-	}
-}
-void tyr::CMAnimations::BtnMoveAnimationDown(int& selectedAnimation)
-{
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("DOWN##CMAnimations"))
-	{
-		if (selectedAnimation >= 0 && selectedAnimation < static_cast<int>(m_pAnimations.size() - 1))
-		{
-			auto temp = m_pAnimations[selectedAnimation + 1];
-			m_pAnimations[selectedAnimation + 1] = m_pAnimations[selectedAnimation];
-			m_pAnimations[selectedAnimation] = temp;
-			selectedAnimation++;
-			CONTENT_MANAGER->Save();
-
-		}
-	}
 }
 
-void tyr::CMAnimations::BtnAddAnimation()
-{
-	static char newAnimation[40];
-
-
-	SDXL_ImGui_Text("      "); SDXL_ImGui_SameLine();
-	SDXL_ImGui_SetNextItemWidth(200.f);
-	SDXL_ImGui_InputTextWithHint("##CMAnimationsNewAnimation", "New Animation name", newAnimation, ARRAY_SIZE(newAnimation));
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("Add##ContentManager"))
-	{
-
-		Animation* pAnimation = Animation::GenerateNew(std::string(newAnimation));
-		m_pAnimations.emplace_back(pAnimation);
-
-		CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->GetTabItem<ETabAnimations>()->CreateTabItems();
-		CONTENT_MANAGER->Save();
-
-	}
-
-
-
-	
-}
 #endif
 

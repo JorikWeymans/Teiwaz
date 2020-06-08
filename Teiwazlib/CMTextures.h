@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "CMBase.h"
 
 namespace tyr
 {
@@ -7,39 +7,28 @@ namespace tyr
 	class ContentManager;
 	class Texture;
 	
-	class CMTextures final
+	class CMTextures final : public CMBase<Texture>
 	{
 	public:
-		CMTextures() = default;
-		~CMTextures();
+		CMTextures();
+		~CMTextures() = default;
 
-		void Resize(unsigned int newSize);
-		void InsertAt(unsigned int index, Texture* pData) noexcept;
-		
 		TextureID LoadTexture(const std::string& dataFolder, const std::string& name);
 		Texture* GetTexture(TextureID id) const;
 		
 #ifdef EDITOR_MODE
-		void RenderEditor();
 		void ETextureSelector(const char* imGuiID, TextureID& textureID); // Shows a drop down box with all the textures
 		void SaveTextures(BinaryWriter& writer);
 #endif
-
-	private:
-		std::vector<Texture*> m_pTextures;
-
 		
+	protected:
 #ifdef EDITOR_MODE
-		void BtnRemoveSelectedTexture(int& selected);
-		
-		void ShowTextures(int& selectedTexture);
-
-		void BtnDeleteTexture(int selectedTexture);
-		void BtnMoveTextureUp(int& selectedTexture);
-		void BtnMoveTextureDown(int& selectedTexture);
-
-		void BtnLoadTexture();
+		void OnBtnDeleteClicked(Texture* pDeletedContent) override;
+		void OnBtnAddClicked(const std::string& what) override;
+		void OnItemSelected(int selected) override;
 #endif
+
+		
 	public:
 		CMTextures(const CMTextures&) = delete;
 		CMTextures(CMTextures&&) = delete;

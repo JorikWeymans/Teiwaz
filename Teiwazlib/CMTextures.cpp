@@ -7,34 +7,27 @@
 #include "ContentManager.h"
 #include "BinStructureHelpers.h"
 #include "BinaryWriter.h"
-tyr::CMTextures::~CMTextures()
-{
-	std::for_each(m_pTextures.begin(), m_pTextures.end(), [](auto* p) {SAFE_DELETE(p)});
-}
 
-void tyr::CMTextures::Resize(unsigned newSize)
+tyr::CMTextures::CMTextures()
+	:CMBase("CMTextures", "TEXTURE_NAME.png")
 {
-	m_pTextures.resize(newSize, nullptr);	
-}
-void tyr::CMTextures::InsertAt(unsigned index, Texture* pData) noexcept
-{
-	m_pTextures.at(index) = pData;
+	
 }
 
 TextureID tyr::CMTextures::LoadTexture(const std::string& dataFolder, const std::string& name)
 {
-	auto found = std::find(m_pTextures.begin(), m_pTextures.end(), name);
+	auto found = std::find(m_pContent.begin(), m_pContent.end(), name);
 
-	if (found != m_pTextures.end())
+	if (found != m_pContent.end())
 	{
-		return static_cast<TextureID>(std::distance(m_pTextures.begin(), found));
+		return static_cast<TextureID>(std::distance(m_pContent.begin(), found));
 	}
 
 	try
 	{
 		auto pTemp = new Texture(dataFolder, name);
-		m_pTextures.emplace_back(pTemp);
-		return static_cast<TextureID>(m_pTextures.size() - 1);
+		m_pContent.emplace_back(pTemp);
+		return static_cast<TextureID>(m_pContent.size() - 1);
 	}
 	catch (TyrException& e)
 	{
@@ -45,38 +38,25 @@ TextureID tyr::CMTextures::LoadTexture(const std::string& dataFolder, const std:
 
 tyr::Texture* tyr::CMTextures::GetTexture(TextureID id) const
 {
-	if (id >= m_pTextures.size()) return nullptr;
+	if (id >= m_pContent.size()) return nullptr;
 
-	return m_pTextures[id];
+	return m_pContent[id];
 }
 
 #ifdef EDITOR_MODE
-void tyr::CMTextures::RenderEditor()
-{
 
-	static int selectedTexture = -1;
-
-	ShowTextures(selectedTexture);
-
-	BtnDeleteTexture(selectedTexture);
-	BtnMoveTextureUp(selectedTexture);
-	BtnMoveTextureDown(selectedTexture);
-
-	BtnLoadTexture();
-
-}
 
 void tyr::CMTextures::ETextureSelector(const char* imGuiID, TextureID& textureID)
 {
-	const char* item_current = m_pTextures[textureID]->GetName().c_str();
+	const char* item_current = m_pContent[textureID]->GetName().c_str();
 	SDXL_ImGui_SetNextItemWidth(219.f);
 	if (SDXL_ImGui_BeginCombo(imGuiID, item_current, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
-		for (UINT n = 0; n < static_cast<UINT>(m_pTextures.size()); n++)
+		for (UINT n = 0; n < static_cast<UINT>(m_pContent.size()); n++)
 		{
-			bool is_selected = (item_current == m_pTextures[n]->GetName().c_str());
+			bool is_selected = (item_current == m_pContent[n]->GetName().c_str());
 
-			if (SDXL_ImGui_Selectable(m_pTextures[n]->GetName().c_str(), is_selected))
+			if (SDXL_ImGui_Selectable(m_pContent[n]->GetName().c_str(), is_selected))
 				textureID = n;
 			if (is_selected)
 				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
@@ -88,12 +68,34 @@ void tyr::CMTextures::ETextureSelector(const char* imGuiID, TextureID& textureID
 void tyr::CMTextures::SaveTextures(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Texture);
-	writer.Write(static_cast<UINT>(m_pTextures.size()));
-	std::for_each(m_pTextures.begin(), m_pTextures.end(), [&writer](Texture* t) { writer.Write(t->GetName()); });
+	writer.Write(static_cast<UINT>(m_pContent.size()));
+	std::for_each(m_pContent.begin(), m_pContent.end(), [&writer](Texture* t) { writer.Write(t->GetName()); });
 }
 
+void tyr::CMTextures::OnBtnDeleteClicked(Texture* pDeletedContent)
+{
+	SAFE_DELETE(pDeletedContent);
+}
+void tyr::CMTextures::OnBtnAddClicked(const std::string& what)
+{
+	CONTENT_MANAGER->LoadTexture(what);
+}
+void tyr::CMTextures::OnItemSelected(int selected)
+{
+	if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		auto di = m_pContent[selected]->GetDimension();
+
+		SDXL_ImGui_Image(m_pContent[selected]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
+
+	}
+	SDXL_ImGui_End();
+}
+
+/*
 void tyr::CMTextures::BtnRemoveSelectedTexture(int& selected)
 {
+	UNREFERENCED_PARAMETER(selected);
 	if (SDXL_ImGui_Button("Remove Selected##TextureContentManager"))
 	{
 
@@ -106,7 +108,7 @@ void tyr::CMTextures::BtnRemoveSelectedTexture(int& selected)
 	if (SDXL_ImGui_BeginPopupModal("Are you sure?##TextureContentManager", nullptr, SDXL_ImGuiWindowFlags_NoMove | SDXL_ImGuiWindowFlags_NoResize))
 	{
 		std::string what = "This cannot be undone!";
-		std::string whatSecond = "Texture: " + m_pTextures[selected]->GetName() + " will be deleted!";
+		std::string whatSecond = "Texture: " + m_pContent[selected]->GetName() + " will be deleted!";
 		SDXL_ImGui_Text(what.c_str());
 		SDXL_ImGui_Text(whatSecond.c_str());
 
@@ -117,21 +119,21 @@ void tyr::CMTextures::BtnRemoveSelectedTexture(int& selected)
 		SDXL_ImGui_SameLine();
 		if (SDXL_ImGui_Button("Yes, I understand", SDXL::Float2(180.f, 20.f)))
 		{
-			const std::string WhatUnloaded = "[UNLOADED] " + m_pTextures[selected]->GetName();
-			if (selected != static_cast<int>(m_pTextures.size()) - 1)
+			const std::string WhatUnloaded = "[UNLOADED] " + m_pContent[selected]->GetName();
+			if (selected != static_cast<int>(m_pContent.size()) - 1)
 			{
-				Texture* pToDelete = m_pTextures[selected];
-				for (int i = selected; i < static_cast<int>(m_pTextures.size() - 1); i++)
+				Texture* pToDelete = m_pContent[selected];
+				for (int i = selected; i < static_cast<int>(m_pContent.size() - 1); i++)
 				{
-					m_pTextures[i] = m_pTextures[i + 1];
+					m_pContent[i] = m_pContent[i + 1];
 				}
 
-				m_pTextures[m_pTextures.size() - 1] = pToDelete;
+				m_pContent[m_pContent.size() - 1] = pToDelete;
 
 			}
 
-			SAFE_DELETE(m_pTextures[selected]);
-			m_pTextures.erase(std::remove(m_pTextures.begin(), m_pTextures.end(), m_pTextures[selected]));
+			SAFE_DELETE(m_pContent[selected]);
+			m_pContent.erase(std::remove(m_pContent.begin(), m_pContent.end(), m_pContent[selected]));
 
 
 			ContentManager::GetInstance()->Save();
@@ -143,99 +145,7 @@ void tyr::CMTextures::BtnRemoveSelectedTexture(int& selected)
 		SDXL_ImGui_EndPopup();
 	}
 }
+*/
 
-void tyr::CMTextures::ShowTextures(int& selectedTexture)
-{
-	SDXL_ImGui_Text("ID\tName");
 
-	for (int i{ 0 }; i < static_cast<int>(m_pTextures.size()); ++i)
-	{
-		std::string tag = FormatString(" %i\t%s", i, m_pTextures[i]->GetName().c_str());
-
-		if (SDXL_ImGui_Selectable(tag.c_str(), selectedTexture == i, SDXL_ImGuiSelectableFlags_DontClosePopups))
-		{
-			selectedTexture = i;
-		}
-	}
-
-	//Show the texture in another window (if one is selected)
-	if (selectedTexture != -1)
-	{
-		if (SDXL_ImGui_Begin("Texture##", nullptr, SDXL_ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			auto di = m_pTextures[selectedTexture]->GetDimension();
-
-			SDXL_ImGui_Image(m_pTextures[selectedTexture]->SDXL(), { di.x, di.y }, SDXL::Float2{ 0.f, 0.f }, SDXL::Float2{ 1.f, 1.f });
-			
-		}
-		SDXL_ImGui_End();
-	}
-	SDXL_ImGui_Separator();
-}
-
-void tyr::CMTextures::BtnDeleteTexture(int selectedTexture)
-{
-	SDXL_ImGui_Text("            "); SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("Delete Texture##CMTextures"))
-	{
-		if (selectedTexture > -1 && m_pTextures.size() > 1)
-		{
-			auto deleteThis = m_pTextures[selectedTexture];
-			m_pTextures[selectedTexture] = *(m_pTextures.end() - 1);
-			m_pTextures.pop_back();
-
-			SAFE_DELETE(deleteThis);
-			
-			CONTENT_MANAGER->Save();
-
-		}
-	}
-}
-void tyr::CMTextures::BtnMoveTextureUp(int& selectedTexture)
-{
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("UP##CMTextures"))
-	{
-		if (selectedTexture > 0)
-		{
-			auto temp = m_pTextures[selectedTexture - 1];
-			m_pTextures[selectedTexture - 1] = m_pTextures[selectedTexture];
-			m_pTextures[selectedTexture] = temp;
-			selectedTexture--;
-			CONTENT_MANAGER->Save();
-
-		}
-	}
-}
-void tyr::CMTextures::BtnMoveTextureDown(int& selectedTexture)
-{
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("DOWN##CMTextures"))
-	{
-		if (selectedTexture >= 0 && selectedTexture < static_cast<int>(m_pTextures.size() - 1))
-		{
-			auto temp = m_pTextures[selectedTexture + 1];
-			m_pTextures[selectedTexture + 1] = m_pTextures[selectedTexture];
-			m_pTextures[selectedTexture] = temp;
-			selectedTexture++;
-			CONTENT_MANAGER->Save();
-
-		}
-	}
-}
-
-void tyr::CMTextures::BtnLoadTexture()
-{
-	static char newTexture[40];
-	SDXL_ImGui_Text("      "); SDXL_ImGui_SameLine();
-	SDXL_ImGui_SetNextItemWidth(200.f);
-	SDXL_ImGui_InputTextWithHint("##ContentManagerTextureName", "TEXTURE_NAME.png", newTexture, ARRAY_SIZE(newTexture));
-	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("Load##ContentManager"))
-	{
-		ContentManager::GetInstance()->LoadTexture(std::string(newTexture));
-		ContentManager::GetInstance()->Save();
-	}
-
-}
 #endif

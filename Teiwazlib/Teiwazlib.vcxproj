@@ -207,6 +207,7 @@
     <ClInclude Include="BubbleShootingComp.h" />
     <ClInclude Include="CharacterControllerComp.h" />
     <ClInclude Include="CMAnimations.h" />
+    <ClInclude Include="CMBase.h" />
     <ClInclude Include="CMScenes.h" />
     <ClInclude Include="ColliderComp.h" />
     <ClInclude Include="Color.h" />

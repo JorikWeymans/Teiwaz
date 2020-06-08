@@ -44,6 +44,7 @@ tyr::AnimatorVariable::AnimatorVariable() // Private
 	, m_Equation(Equation::Equal)
 	, fSetValue(0.f)
 	, fComparatorValue(0.f) {}
+
 tyr::AnimatorVariable* tyr::AnimatorVariable::Create(BinaryReader& reader)
 {
 	AnimatorVariable* pTheVariable = new AnimatorVariable();
@@ -70,7 +71,10 @@ tyr::AnimatorVariable* tyr::AnimatorVariable::Create(BinaryReader& reader)
 			break;
 		}
 	default:
+#ifdef EDITOR_MODE
 		SDXL_ImGui_ConsoleLogError("AnimatorVariable type is wrong");
+#endif
+		;
 	}
 	
 	return pTheVariable;

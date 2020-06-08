@@ -22,6 +22,7 @@ tyr::Connection::~Connection()
 	SAFE_DELETE(pVariable);
 }
 
+#ifdef EDITOR_MODE
 void tyr::Connection::Save(BinaryWriter& writer)
 {
 	writer.Write(lhs);
@@ -29,6 +30,7 @@ void tyr::Connection::Save(BinaryWriter& writer)
 	pVariable->Save(writer);
 
 }
+#endif
 
 tyr::Connection* tyr::Connection::Create(BinaryReader& reader)
 {

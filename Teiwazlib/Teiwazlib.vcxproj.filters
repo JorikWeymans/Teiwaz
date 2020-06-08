@@ -214,6 +214,9 @@
     <ClInclude Include="Connection.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="CMBase.h">
+      <Filter>Graphics\Content</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">

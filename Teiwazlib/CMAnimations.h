@@ -1,41 +1,27 @@
 #pragma once
-#include <vector>
+#include "CMBase.h"
 namespace tyr
 {
 	class Animation;
 	class BinaryWriter;
-	class CMAnimations final
+	class CMAnimations final : public CMBase<Animation>
 	{
 	public:
-		CMAnimations() = default;
-		~CMAnimations();
-
-		_NODISCARD auto Begin()        noexcept { return m_pAnimations.begin(); }
-		_NODISCARD auto End()          noexcept { return m_pAnimations.end(); }
-		_NODISCARD auto CBegin() const noexcept { return m_pAnimations.cbegin(); }
-		_NODISCARD auto CEnd()   const noexcept { return m_pAnimations.cend(); }
-		
-		void Resize(unsigned int newSize);
-		void InsertAt(unsigned int index, Animation* pData) noexcept;
+		CMAnimations();
+		~CMAnimations() = default;;
 
 		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const;
 		_NODISCARD Animation*  GetAnimation(AnimationID id) const;
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
 		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 #ifdef EDITOR_MODE
-		void RenderEditor();
 		void Save(BinaryWriter& writer);
 #endif
-	private:
-		std::vector<Animation*> m_pAnimations;
+	protected:
 #ifdef EDITOR_MODE
-		void ShowAnimations(int& selectedAnimation);
-
-		void BtnDeleteAnimation(int selectedAnimation);
-		void BtnMoveAnimationUp(int& selectedAnimation);
-		void BtnMoveAnimationDown(int& selectedAnimation);
-
-		void BtnAddAnimation();
+		void OnBtnDeleteClicked(Animation* pDeletedContent) override;
+		void OnBtnAddClicked(const std::string& what) override;
+		void OnItemDoubleClicked(int selected) override;
 #endif
 
 	public:

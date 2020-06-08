@@ -70,13 +70,7 @@ tyr::Animation* tyr::Animation::Create(const std::string& path)
 	return pTheAnimation;
 }
 
-tyr::Animation* tyr::Animation::GenerateNew(const std::string& name)
-{
-	Animation* pReturnAnimation = new Animation();
-	pReturnAnimation->m_AnimationName = name;
-	pReturnAnimation->Save();
-	return pReturnAnimation;
-}
+
 
 void tyr::Animation::Update(float elapsed)
 {
@@ -134,12 +128,14 @@ void tyr::Animation::Save()
 	}
 	else
 		SDXL_ImGui_ConsoleLogWarning("Could not safe the animation");
-	
 
-
-	
-
-	
+}
+tyr::Animation* tyr::Animation::GenerateNew(const std::string& name)
+{
+	Animation* pReturnAnimation = new Animation();
+	pReturnAnimation->m_AnimationName = name;
+	pReturnAnimation->Save();
+	return pReturnAnimation;
 }
 #endif
 
