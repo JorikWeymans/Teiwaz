@@ -19,10 +19,10 @@ namespace tyr
 		static void Destroy();
 
 		
-		void ComponentTypeDropdown(const char* ImGuiID, ComponentType& selected) const;
-		void TagDropdown(const char* ImGuiID, Tag& selected) const;
-		void EquationDropdown(const char* ImGuiID, Equation& selected) const;
-		void VariableTypeDropdown(const char* ImGuiID, VariableType& selected) const;
+		void ComponentTypeDropdown(const char* ImGuiID, ComponentType& selected, int customWidth = -1) const;
+		void TagDropdown(const char* ImGuiID, Tag& selected, int customWidth = -1) const;
+		void EquationDropdown(const char* ImGuiID, Equation& selected, int customWidth = -1) const;
+		void VariableTypeDropdown(const char* ImGuiID, VariableType& selected, int customWidth = -1) const;
 		
 	private:
 		EnumDropdown();

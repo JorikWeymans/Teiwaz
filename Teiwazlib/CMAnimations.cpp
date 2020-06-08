@@ -14,7 +14,7 @@
 #include "Editor/ETabAnimations.h"
 
 tyr::CMAnimations::CMAnimations()
-	:CMBase("CMAnimations", "New Animation name", 150.f)
+	:CMBase("CMAnimations", "New Animation name", 110.f)
 {
 }
 

@@ -6,7 +6,9 @@
 #include "AnimatorVariable.h"
 
 #define COMPONENT_TYPE_WIDTH 150.f
+#define TAG_WIDTH 120.f
 #define EQUATON_WIDTH 100.f
+#define VARIABLE_TYPE_WIDTH 60.f
 
 tyr::EnumDropdown* tyr::EnumDropdown::pInstance = nullptr;
 tyr::EnumDropdown::EnumDropdown()
@@ -54,12 +56,14 @@ void tyr::EnumDropdown::Destroy()
 }
 
 
-void tyr::EnumDropdown::ComponentTypeDropdown(const char* ImGuiID, ComponentType& selected) const
+void tyr::EnumDropdown::ComponentTypeDropdown(const char* ImGuiID, ComponentType& selected, int customWidth) const
 {
 	UINT castSelected = static_cast<UINT>(selected);
 
-	
-	SDXL_ImGui_SetNextItemWidth(COMPONENT_TYPE_WIDTH);
+	if (customWidth == -1)
+		SDXL_ImGui_SetNextItemWidth(COMPONENT_TYPE_WIDTH);
+	else
+		SDXL_ImGui_SetNextItemWidth(static_cast<float>(customWidth));
 	if (SDXL_ImGui_BeginCombo(ImGuiID, m_ComponentItems[castSelected], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (UINT n = 0; n < m_ComponentCount; n++)
@@ -76,9 +80,14 @@ void tyr::EnumDropdown::ComponentTypeDropdown(const char* ImGuiID, ComponentType
 	selected = static_cast<ComponentType>(castSelected);
 	
 }
-void tyr::EnumDropdown::TagDropdown(const char* ImGuiID, Tag& selected) const
+void tyr::EnumDropdown::TagDropdown(const char* ImGuiID, Tag& selected, int customWidth) const
 {
 	UINT tag = TagToArrayIndex(selected);
+
+	if (customWidth == -1)
+		SDXL_ImGui_SetNextItemWidth(TAG_WIDTH);
+	else
+		SDXL_ImGui_SetNextItemWidth(static_cast<float>(customWidth));
 	if (SDXL_ImGui_BeginCombo(ImGuiID, m_TagItems[tag], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (UINT n = 0; n < m_TagCount; n++)
@@ -102,12 +111,15 @@ void tyr::EnumDropdown::TagDropdown(const char* ImGuiID, Tag& selected) const
 	}
 }
 
-void tyr::EnumDropdown::EquationDropdown(const char* ImGuiID, Equation& selected) const
+void tyr::EnumDropdown::EquationDropdown(const char* ImGuiID, Equation& selected, int customWidth) const
 {
 	UINT castSelected = static_cast<UINT>(selected);
 
-
-	SDXL_ImGui_SetNextItemWidth(EQUATON_WIDTH);
+	if(customWidth == -1)
+		SDXL_ImGui_SetNextItemWidth(EQUATON_WIDTH);
+	else
+		SDXL_ImGui_SetNextItemWidth(static_cast<float>(customWidth));
+	
 	if (SDXL_ImGui_BeginCombo(ImGuiID, m_EquationItems[castSelected], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (UINT n = 0; n < m_EquationCount; n++)
@@ -123,12 +135,15 @@ void tyr::EnumDropdown::EquationDropdown(const char* ImGuiID, Equation& selected
 
 	selected = static_cast<Equation>(castSelected);
 }
-void tyr::EnumDropdown::VariableTypeDropdown(const char* ImGuiID, VariableType& selected) const
+void tyr::EnumDropdown::VariableTypeDropdown(const char* ImGuiID, VariableType& selected, int customWidth) const
 {
 	UINT castSelected = static_cast<UINT>(selected);
 
-
-	SDXL_ImGui_SetNextItemWidth(EQUATON_WIDTH);
+	if(customWidth == -1)
+		SDXL_ImGui_SetNextItemWidth(VARIABLE_TYPE_WIDTH);
+	else
+		SDXL_ImGui_SetNextItemWidth(static_cast<float>(customWidth));
+	
 	if (SDXL_ImGui_BeginCombo(ImGuiID, m_VariableTypeItems[castSelected], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (UINT n = 0; n < m_VariableTypeCount; n++)
