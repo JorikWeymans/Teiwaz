@@ -220,6 +220,9 @@
     <ClInclude Include="CMAnimators.h">
       <Filter>Graphics\Content</Filter>
     </ClInclude>
+    <ClInclude Include="Editor\EAnimator.h">
+      <Filter>Editor\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -377,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="CMAnimators.cpp">
       <Filter>Graphics\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\EAnimator.cpp">
+      <Filter>Editor\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

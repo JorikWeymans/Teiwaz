@@ -1,10 +1,15 @@
 #include "../tyrpch.h"
 #include "ETabAnimators.h"
 
+
 #ifdef EDITOR_MODE
 #include "../CMAnimators.h"
 #include "../ContentManager.h"
 #include "../Animator.h"
+#include "../GameContext.h"
+#include "EUI.h"
+#include "EAnimator.h"
+
 tyr::ETabAnimators::ETabAnimators(GameContext* pContext)
 	: ETabItem("Animators", pContext, 2)
 {
@@ -34,6 +39,8 @@ void tyr::ETabAnimators::PostTabRender()
 
 void tyr::ETabAnimators::OnItemDoubleClick(TabItem& clickedItem)
 {
-	UNREFERENCED_PARAMETER(clickedItem);
+	E_UI->GetAnimatorEditor()->OpenAnimatorEditorWindow(
+		CONTENT_MANAGER->GetAnimator(clickedItem.name));
+	
 }
 #endif

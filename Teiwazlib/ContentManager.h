@@ -45,6 +45,7 @@ namespace tyr
 		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 
 		_NODISCARD Animator* GetAnimator(AnimatorID id) const noexcept;
+		_NODISCARD Animator* GetAnimator(const std::string& animatorName) const;
 		
 		_NODISCARD Scene* GetCurrentScene() const noexcept;
 
@@ -63,7 +64,9 @@ namespace tyr
 #ifdef EDITOR_MODE
 		_NODISCARD GameContext* GetContext() const noexcept { return m_pContext; }
 		void RenderEditor(); //called in EMenuBar RenderEditor()
-		void EditorTextureSelector(const char* imGuiID, TextureID& textureID);
+		
+		void EditorTextureDropDown(const char* imGuiID, TextureID& textureID);
+		void EditorAnimationDropDown(const char* imGUiID, AnimationID& animationID);
 		void Save();
 
 		friend TextureComp;
@@ -91,7 +94,7 @@ namespace tyr
 			 m_CharSceneFolder[30]{},
 			 m_CharTextureFolder[30]{},
 			 m_CharAnimationFolder[30]{},
-			 m_CharAnimatorFolder[30];
+			 m_CharAnimatorFolder[30]{};
 		
 		void EMainMenuBarItem();
 		void EMainWindow();

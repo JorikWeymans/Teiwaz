@@ -3,6 +3,7 @@
 
 namespace tyr
 {
+	class EAnimator;
 	class Animation;
 	class Rect;
 	class Connection;
@@ -28,10 +29,12 @@ namespace tyr
 		static Animator* GenerateNew(const std::string& name);
 #endif
 	private:
+		friend bool operator==(Animator* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
+		friend EAnimator;
 		Animator();
 		
 		std::string m_Name;
-		std::vector<Connection*> m_pConnections;;
+		std::vector<Connection*> m_pConnections;
 		
 
 		Animation* m_pCurrent; //weak pointer

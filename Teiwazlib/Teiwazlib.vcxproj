@@ -214,6 +214,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="Connection.h" />
     <ClInclude Include="ContentManager.h" />
+    <ClInclude Include="Editor\EAnimator.h" />
     <ClInclude Include="Editor\EAnimation.h" />
     <ClInclude Include="Editor\EUI.h" />
     <ClInclude Include="Elapser.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="ContentManager.cpp" />
+    <ClCompile Include="Editor\EAnimator.cpp" />
     <ClCompile Include="Editor\EAnimation.cpp" />
     <ClCompile Include="Editor\EUI.cpp" />
     <ClCompile Include="Elapser.cpp" />

@@ -11,6 +11,7 @@ namespace tyr
 		~CMAnimators() = default;
 
 		_NODISCARD Animator* GetAnimator(AnimatorID id) const noexcept;
+		_NODISCARD Animator* GetAnimator(const std::string& animatorName) const;
 		
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;

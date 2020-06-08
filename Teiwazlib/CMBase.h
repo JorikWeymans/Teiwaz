@@ -9,22 +9,24 @@ namespace tyr
 	class CMBase
 	{
 	public:
-		explicit CMBase(const std::string& label, const std::string& addHint)
-		{
-			
+		explicit CMBase(const std::string& label, const std::string& addHint, float selectorItemWidth)
 #ifdef EDITOR_MODE
-			m_DeleteLabel = "Delete##" + label;
-			m_UpLabel     = "UP##"     + label;
-			m_DownLabel   = "DOWN##"   + label;
-			m_AddLabel    = "##"       + label;
-
-			m_AddHint = addHint;
+			: m_DeleteLabel("Delete##" + label)
+			, m_UpLabel    ("UP##"     + label)
+			, m_DownLabel  ("DOWN##"   + label)
+			, m_AddLabel   ("##"       + label)
+			, m_AddHint(addHint)
+			, m_SelectorItemWidth(selectorItemWidth)
+			{
 #else
+			{
 		   //We don't need parameters when not in editor mode, but leave them for ease of use
 			UNREFERENCED_PARAMETER(label);
 			UNREFERENCED_PARAMETER(addHint);
+			UNREFERENCED_PARAMETER(selectorItemWidth);
 #endif
-		}
+		    }
+			
 		virtual ~CMBase()
 		{
 			std::for_each(m_pContent.begin(), m_pContent.end(), [](auto* pC) {SAFE_DELETE(pC)});
@@ -63,7 +65,24 @@ namespace tyr
 			PostRender();
 		}
 		virtual void Save(BinaryWriter& writer) = 0;
+		void ItemDropDown(const char* imGuiID, UINT&selectedID)
+		{
+			const char* currentItem = m_pContent[selectedID]->GetName().c_str();
+			SDXL_ImGui_SetNextItemWidth(m_SelectorItemWidth);
+			if (SDXL_ImGui_BeginCombo(imGuiID, currentItem, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+			{
+				for (UINT n = 0; n < static_cast<UINT>(m_pContent.size()); n++)
+				{
+					bool IsSelected = (currentItem == m_pContent[n]->GetName().c_str());
 
+					if (SDXL_ImGui_Selectable(m_pContent[n]->GetName().c_str(), IsSelected))
+						selectedID = n;
+					if (IsSelected)
+						SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+				}
+				SDXL_ImGui_EndCombo();
+			}
+		}
 		
 #endif	
 	protected:
@@ -185,6 +204,7 @@ namespace tyr
 #ifdef EDITOR_MODE
 		std::string m_DeleteLabel, m_UpLabel, m_DownLabel, m_AddLabel;
 		std::string m_AddHint;
+		float m_SelectorItemWidth;
 #endif
 		
 	public:

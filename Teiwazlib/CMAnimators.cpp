@@ -11,7 +11,7 @@
 #include "GameContext.h"
 
 tyr::CMAnimators::CMAnimators()
-	:CMBase("CMAnimator", "New Animator name")
+	:CMBase("CMAnimator", "New Animator name", 200.f)
 {
 }
 
@@ -20,6 +20,17 @@ tyr::Animator* tyr::CMAnimators::GetAnimator(AnimatorID id) const noexcept
 	if (id >= m_pContent.size()) return nullptr;
 
 	return m_pContent[id];
+}
+
+tyr::Animator* tyr::CMAnimators::GetAnimator(const std::string& animatorName) const
+{
+	const auto found = std::find(m_pContent.begin(), m_pContent.end(), animatorName);
+	if (found != m_pContent.end())
+	{
+		return *found;
+	}
+
+	return nullptr;
 }
 
 void tyr::CMAnimators::Save(BinaryWriter& writer)

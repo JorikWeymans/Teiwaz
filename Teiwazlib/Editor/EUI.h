@@ -9,6 +9,8 @@ namespace tyr
 	class EMenuBar;
 	class EWindow;
 	class EAnimation;
+	class EAnimator;
+	
 	class EUI final
 	{
 	public:
@@ -19,6 +21,7 @@ namespace tyr
 		void RenderEditor();
 
 		_NODISCARD EAnimation* GetAnimationEditor() const noexcept { return m_pEAnimation; }
+		_NODISCARD EAnimator* GetAnimatorEditor() const noexcept { return m_pEAnimator; }
 		
 		template<typename  T>
 		_NODISCARD	T* GetWindow() const
@@ -38,7 +41,7 @@ namespace tyr
 		EMenuBar* m_pMenu;
 		std::vector<EWindow*> m_pWindows;
 		EAnimation* m_pEAnimation;
-		
+		EAnimator* m_pEAnimator;
 	public:
 		EUI(const EUI&) = delete;
 		EUI(EUI&&) = delete;

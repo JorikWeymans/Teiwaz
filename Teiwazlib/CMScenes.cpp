@@ -14,7 +14,7 @@
 #include "Editor/ETabScenes.h"
 
 tyr::CMScenes::CMScenes()
-	:CMBase("CMScenes", "New scene name")
+	:CMBase("CMScenes", "New scene name", 200.f)
 {
 }
 

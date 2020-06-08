@@ -119,7 +119,7 @@ void tyr::TextureComp::EditorTexture(std::string& name)
 
 	name = "##TextureString" + std::to_string(m_UniqueId);
 
-	ContentManager::GetInstance()->EditorTextureSelector(name.c_str(), m_TextureID);
+	ContentManager::GetInstance()->EditorTextureDropDown(name.c_str(), m_TextureID);
 
 
 

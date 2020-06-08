@@ -211,10 +211,15 @@ void tyr::ContentManager::RenderEditor()
 
 }
 
-void tyr::ContentManager::EditorTextureSelector(const char* imGuiID, TextureID& textureID)
+void tyr::ContentManager::EditorTextureDropDown(const char* imGuiID, TextureID& textureID)
 {
-	m_pCMTextures->ETextureSelector(imGuiID, textureID);
+	m_pCMTextures->ItemDropDown(imGuiID, textureID);
 	
+}
+
+void tyr::ContentManager::EditorAnimationDropDown(const char* imGUiID, AnimationID& animationID)
+{
+	m_pCMAnimations->ItemDropDown(imGUiID, animationID);
 }
 
 void tyr::ContentManager::Save()
@@ -550,17 +555,14 @@ tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id) const
 {
 	return m_pCMAnimations->GetAnimation(id);
 }
-
 tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& animationName) const
 {
 	return m_pCMAnimations->GetAnimation(animationName);
 }
-
 AnimationID tyr::ContentManager::GetAnimationID(const std::string& animationName) const
 {
 	return m_pCMAnimations->GetAnimationID(animationName);
 }
-
 AnimationID tyr::ContentManager::GetAnimationID(Animation* pAnimation) const noexcept
 {
 	return m_pCMAnimations->GetAnimationID(pAnimation);
@@ -569,5 +571,9 @@ AnimationID tyr::ContentManager::GetAnimationID(Animation* pAnimation) const noe
 tyr::Animator* tyr::ContentManager::GetAnimator(AnimatorID id) const noexcept
 {
 	return m_pCMAnimators->GetAnimator(id);
+}
+tyr::Animator* tyr::ContentManager::GetAnimator(const std::string& animatorName) const
+{
+	return m_pCMAnimators->GetAnimator(animatorName);
 }
 

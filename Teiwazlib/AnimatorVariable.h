@@ -1,6 +1,7 @@
 #pragma once
 namespace tyr
 {
+	class EAnimator;
 	class BinaryReader;
 	class BinaryWriter;
 
@@ -30,6 +31,7 @@ namespace tyr
 		static AnimatorVariable* Create(BinaryReader& reader);
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer);
+		friend EAnimator; //TODO: Try to remove friend
 #endif
 	private:
 		std::string m_Name;

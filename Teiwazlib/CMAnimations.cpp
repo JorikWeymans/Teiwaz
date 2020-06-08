@@ -14,7 +14,7 @@
 #include "Editor/ETabAnimations.h"
 
 tyr::CMAnimations::CMAnimations()
-	:CMBase("CMAnimations", "New Animation name")
+	:CMBase("CMAnimations", "New Animation name", 150.f)
 {
 }
 
@@ -83,6 +83,7 @@ void tyr::CMAnimations::OnItemDoubleClicked(int selected)
 {
 	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
 	GetTabItem<ETabAnimations>()->OpenAnimationEditorWindow(selected);
+
 
 }
 

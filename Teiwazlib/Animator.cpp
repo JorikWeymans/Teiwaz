@@ -149,3 +149,10 @@ tyr::Animator* tyr::Animator::GenerateNew(const std::string& name)
 	return pReturnAnimator;
 }
 #endif
+
+bool tyr::operator==(Animator* lhs, const std::string& rhs)
+{
+	if (!lhs) return false;
+
+	return lhs->m_Name == rhs;
+}

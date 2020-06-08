@@ -52,14 +52,14 @@ void tyr::EAnimation::OpenAnimationEditorWindow(Animation* pAnimation)
 
 	
 	m_WindowIsOpen = true;
-	SDXL_ImGui_OpenPopup("AniEditor##EAnimation");
+	SDXL_ImGui_OpenPopup("Animation Editor##EAnimation");
 }
 
 void tyr::EAnimation::RenderEditor()
 {
 	if (!m_pAnimation) return;
 
-	if(SDXL_ImGui_BeginAuto("AniEditor##EAnimation", &m_WindowIsOpen,
+	if(SDXL_ImGui_BeginAuto("Animation Editor##EAnimation", &m_WindowIsOpen,
 		SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_AlwaysAutoResize | SDXL_ImGuiWindowFlags_NoCollapse))
 	
 	{
@@ -217,7 +217,7 @@ void tyr::EAnimation::AnimationEditor()
 	//SDXL_ImGui_InputText("Name##EAnumationName", m_Name, ANIMATION_NAME_MAX_CHAR);
 
 	//static TextureID id = 0;
-	ContentManager::GetInstance()->EditorTextureSelector("Sprite##EAnimation", m_TempTextureID);
+	CONTENT_MANAGER->EditorTextureDropDown("Sprite##EAnimation", m_TempTextureID);
 
 	SDXL_ImGui_Text(m_Name);
 	float tpf = m_pTemp->m_AniElapser.GetMax();

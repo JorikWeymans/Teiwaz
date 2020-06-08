@@ -17,7 +17,6 @@ namespace tyr
 		Texture* GetTexture(TextureID id) const;
 		
 #ifdef EDITOR_MODE
-		void ETextureSelector(const char* imGuiID, TextureID& textureID); // Shows a drop down box with all the textures
 		void Save(BinaryWriter& writer) override;
 #endif
 		
