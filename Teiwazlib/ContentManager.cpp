@@ -24,6 +24,7 @@
 #include "CMTextures.h"
 #include "CMScenes.h"
 #include "CMAnimations.h"
+#include "CMAnimators.h"
 
 #include "GameContext.h"
 #include "SceneManager.h"
@@ -40,6 +41,7 @@ tyr::ContentManager::ContentManager()
 	, m_pCMTextures(nullptr)
 	, m_pCMScenes(nullptr)
 	, m_pCMAnimations(nullptr)
+	, m_pCMAnimators(nullptr)
 	, m_pContext(nullptr)
 #ifdef EDITOR_MODE
 	, m_SelectedContentWindow(ContentWindow::None)
@@ -52,6 +54,8 @@ tyr::ContentManager::~ContentManager()
 	SAFE_DELETE(m_pCMTextures);
 	SAFE_DELETE(m_pCMScenes);
 	SAFE_DELETE(m_pCMAnimations);
+	SAFE_DELETE(m_pCMAnimators);
+	
 	std::for_each(m_pFonts.begin(), m_pFonts.end(),[](auto* p) {SAFE_DELETE(p)});
 }
 
@@ -88,8 +92,7 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 	m_FontFolder = reader.Read<std::string>();
 
 	m_AnimationFolder = reader.Read<std::string>();
-
-
+	m_AnimatorFolder = reader.Read<std::string>();
 
 	ContentType type = reader.Read<ContentType>();
 	while(type != ContentType::End)
@@ -158,6 +161,12 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 
 				break;
 			}
+		case ContentType::Animators:
+			{
+				m_pCMAnimators = new CMAnimators();
+
+				break;
+			}
 
 		case ContentType::End:
 			THROW_ERROR(L"Type end should not trigger switch case");
@@ -168,7 +177,7 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 
 		type = reader.Read<ContentType>();
 	}
-	
+
 	
 }
 tyr::Scene* tyr::ContentManager::GetCurrentScene() const noexcept
@@ -229,10 +238,12 @@ void tyr::ContentManager::Save()
 	writer.Write(m_TextureFolder);
 	writer.Write(m_FontFolder);
 	writer.Write(m_AnimationFolder);
-
+	writer.Write(m_AnimatorFolder);
+	
 	m_pCMTextures->Save(writer);
 	m_pCMScenes->Save(writer);
 	m_pCMAnimations->Save(writer);
+	m_pCMAnimators->Save(writer);
 	
 	writer.Write(ContentType::Font);
 	writer.Write(static_cast<UINT>(0 /*m_pFonts.size()*/));
@@ -309,6 +320,11 @@ void tyr::ContentManager::EContentSelectorWindow()
 		{
 			m_SelectedContentWindow = ContentWindow::Animations;
 		}
+		
+		if (SDXL_ImGui_Selectable("Animators##ContentManager", m_SelectedContentWindow == ContentWindow::Animators, flag))
+		{
+			m_SelectedContentWindow = ContentWindow::Animators;
+		}
 		SDXL_ImGui_EndChild();
 	}
 
@@ -329,9 +345,9 @@ void tyr::ContentManager::EMenuBar()
 
 				strcpy_s(m_CharDataPath, m_DataFolder.c_str());
 				strcpy_s(m_CharSceneFolder, m_SceneFolder.c_str());
-				strcpy_s(m_CharAnimationFolder, m_AnimationFolder.c_str());
 				strcpy_s(m_CharTextureFolder, m_TextureFolder.c_str());
-
+				strcpy_s(m_CharAnimationFolder, m_AnimationFolder.c_str());
+				strcpy_s(m_CharAnimatorFolder, m_AnimatorFolder.c_str());
 			}
 			SDXL_ImGui_EndMenu();
 		}
@@ -375,6 +391,13 @@ void tyr::ContentManager::ESettingsContentPath()
 		path = std::string(m_CharDataPath) + std::string(m_CharSceneFolder);
 		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
 
+		//Texture Folder
+		if (SDXL_ImGui_InputText("Texture folder##ContentManager", m_CharTextureFolder, ARRAY_SIZE(m_CharTextureFolder)))
+			pathHasChanged = true;
+
+		path = std::string(m_CharDataPath) + std::string(m_CharTextureFolder);
+		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
+		
 		//Animation Folder
 		if (SDXL_ImGui_InputText("Animation folder##ContentManager", m_CharAnimationFolder, ARRAY_SIZE(m_CharAnimationFolder)))
 			pathHasChanged = true;
@@ -382,11 +405,11 @@ void tyr::ContentManager::ESettingsContentPath()
 		path = std::string(m_CharDataPath) + std::string(m_CharAnimationFolder);
 		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
 
-		//Texture Folder
-		if (SDXL_ImGui_InputText("Texture folder##ContentManager", m_CharTextureFolder, ARRAY_SIZE(m_CharTextureFolder)))
+		//Animator Folder
+		if (SDXL_ImGui_InputText("Animator folder##ContentManager", m_CharAnimatorFolder, ARRAY_SIZE(m_CharAnimatorFolder)))
 			pathHasChanged = true;
 
-		path = std::string(m_CharDataPath) + std::string(m_CharTextureFolder);
+		path = std::string(m_CharDataPath) + std::string(m_CharAnimatorFolder);
 		SDXL_ImGui_TextDisabled("[EPath]%s", std::filesystem::absolute(path).string().c_str());
 
 
@@ -404,7 +427,10 @@ void tyr::ContentManager::ESettingsContentPath()
 			m_DataFolder = std::string(m_CharDataPath);
 			m_SceneFolder = std::string(m_CharSceneFolder);
 			m_AnimationFolder = std::string(m_CharAnimationFolder);
+			m_AnimatorFolder = std::string(m_CharAnimatorFolder);
 
+			CreateFolders();
+			
 			pathHasChanged = false;
 			Save();
 			SDXL_ImGui_CloseCurrentPopup();
@@ -440,10 +466,36 @@ void tyr::ContentManager::ERenderContentWindow() const
 				SDXL_ImGui_EndChild();
 			}
 		break;
+		case ContentWindow::Animators:
+			if (SDXL_ImGui_BeginChild("AnimatorsWindow##ContentManager", SDXL::Float2(0.f, 0.f), false))
+			{
+				m_pCMAnimators->RenderEditor();
+				SDXL_ImGui_EndChild();
+			}
+			break;
 		default:
 			SDXL_ImGui_ConsoleLogError("You have selected an invalid window");
 		;
 	}
+}
+
+void tyr::ContentManager::CreateFolders() const
+{
+	std::filesystem::path path = m_DataFolder + m_SceneFolder;
+	_mkdir(std::filesystem::absolute(path).string().c_str());
+
+	path = m_DataFolder + m_TextureFolder;
+	_mkdir(std::filesystem::absolute(path).string().c_str());
+
+	path = m_DataFolder + m_FontFolder;
+	_mkdir(std::filesystem::absolute(path).string().c_str());
+
+	path = m_DataFolder + m_AnimationFolder;
+	_mkdir(std::filesystem::absolute(path).string().c_str());
+
+	path = m_DataFolder + m_AnimatorFolder;
+	_mkdir(std::filesystem::absolute(path).string().c_str());
+	
 }
 
 
@@ -503,5 +555,10 @@ AnimationID tyr::ContentManager::GetAnimationID(const std::string& animationName
 AnimationID tyr::ContentManager::GetAnimationID(Animation* pAnimation) const noexcept
 {
 	return m_pCMAnimations->GetAnimationID(pAnimation);
+}
+
+tyr::Animator* tyr::ContentManager::GetAnimator(AnimatorID id) const noexcept
+{
+	return m_pCMAnimators->GetAnimator(id);
 }
 

@@ -9,6 +9,9 @@ namespace tyr
 	public:
 		CMAnimators();
 		~CMAnimators() = default;
+
+		_NODISCARD Animator* GetAnimator(AnimatorID id) const noexcept;
+		
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
 #endif

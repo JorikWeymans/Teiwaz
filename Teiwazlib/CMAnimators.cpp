@@ -1,12 +1,19 @@
 #include "tyrpch.h"
 #include "CMAnimators.h"
 
-#include "Animator.h"
+
 #include "BinStructureHelpers.h"
 #include "BinaryWriter.h"
 tyr::CMAnimators::CMAnimators()
 	:CMBase("CMAnimator", "New Animator name")
 {
+}
+
+tyr::Animator* tyr::CMAnimators::GetAnimator(AnimatorID id) const noexcept
+{
+	if (id >= m_pContent.size()) return nullptr;
+
+	return m_pContent[id];
 }
 
 void tyr::CMAnimators::Save(BinaryWriter& writer)

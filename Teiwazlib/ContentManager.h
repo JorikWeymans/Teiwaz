@@ -10,18 +10,19 @@ namespace tyr
 	class Texture;
 	class Animation;
 	class TextureComp;
-
+	class Animator;
+	
 	class CMTextures;
 	class CMScenes;
 	class CMAnimations;
-	
+	class CMAnimators;
 	class Scene;
 	class ContentManager final
 	{
 	private:
 		enum class ContentWindow : int
 		{
-			None = -1, Textures = 0, Scenes = 1, Animations = 2,
+			None = -1, Textures = 0, Scenes = 1, Animations = 2, Animators = 3,
 		};
 		
 	public:
@@ -43,13 +44,19 @@ namespace tyr
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
 		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 
+		_NODISCARD Animator* GetAnimator(AnimatorID id) const noexcept;
+		
+		_NODISCARD Scene* GetCurrentScene() const noexcept;
+
+		
 		_NODISCARD const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
 		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
 		_NODISCARD std::string GetAbsoluteAnimationFolder() const { return m_DataFolder + m_AnimationFolder; }
+		_NODISCARD std::string GetAbsoluteAnimatorFolder() const { return m_DataFolder + m_AnimationFolder; }
 		
 		_NODISCARD CMScenes* GetCMScenes() const noexcept { return m_pCMScenes; }
 		_NODISCARD CMAnimations* GetCMAnimations() const noexcept { return m_pCMAnimations; }
-		_NODISCARD Scene* GetCurrentScene() const noexcept;
+
 		void SetCurrentScene(SceneID id);
 
 #ifdef EDITOR_MODE
@@ -67,19 +74,23 @@ namespace tyr
 		
 		static ContentManager* pInstance;
 		bool m_IsInitialized;
-		std::string m_DataFolder, m_SceneFolder, m_TextureFolder, m_FontFolder, m_AnimationFolder ;
+		std::string m_DataFolder,m_SceneFolder, m_TextureFolder, m_FontFolder, m_AnimationFolder, m_AnimatorFolder;
 		
 		CMTextures* m_pCMTextures;
 		CMScenes*   m_pCMScenes;
 		CMAnimations* m_pCMAnimations;
-		
+		CMAnimators* m_pCMAnimators;
 		std::vector<Font*>    m_pFonts;
 		GameContext* m_pContext; //Weak ptr
 #ifdef EDITOR_MODE
 		
 		bool m_OpenContentManager = false, m_OpenFilePathSettings = false, m_AreContentSettingsOpen = true;
 		ContentWindow m_SelectedContentWindow;
-		char m_CharDataPath[256]{}, m_CharSceneFolder[30]{}, m_CharAnimationFolder[30]{}, m_CharTextureFolder[30]{};
+		char m_CharDataPath[256]{},
+			 m_CharSceneFolder[30]{},
+			 m_CharTextureFolder[30]{},
+			 m_CharAnimationFolder[30]{},
+			 m_CharAnimatorFolder[30];
 		
 		void EMainMenuBarItem();
 		void EMainWindow();
@@ -90,7 +101,7 @@ namespace tyr
 
 		void ERenderContentWindow() const;
 		
-
+		void CreateFolders() const;
 		
 #endif
 		
