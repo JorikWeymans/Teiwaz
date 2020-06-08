@@ -164,6 +164,14 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 		case ContentType::Animators:
 			{
 				m_pCMAnimators = new CMAnimators();
+				m_pCMAnimators->Resize(size);
+
+				const std::string absoluteAnimationFolder = GetAbsoluteAnimatorFolder();
+				for (UINT i{ 0 }; i < size; i++)
+				{
+					std::string animatorName = reader.Read<std::string>();
+					m_pCMAnimators->InsertAt(i, Animator::Create(absoluteAnimationFolder + animatorName));
+				}
 
 				break;
 			}

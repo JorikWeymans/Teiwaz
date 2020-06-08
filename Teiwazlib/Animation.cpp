@@ -135,6 +135,7 @@ tyr::Animation* tyr::Animation::GenerateNew(const std::string& name)
 	Animation* pReturnAnimation = new Animation();
 	pReturnAnimation->m_AnimationName = name;
 	pReturnAnimation->Save();
+	
 	return pReturnAnimation;
 }
 #endif

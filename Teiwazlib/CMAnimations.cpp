@@ -76,10 +76,7 @@ void tyr::CMAnimations::OnBtnDeleteClicked(Animation* pDeletedContent)
 }
 void tyr::CMAnimations::OnBtnAddClicked(const std::string& what)
 {
-	Animation* pAnimation = Animation::GenerateNew(what);
-	m_pContent.emplace_back(pAnimation);
-
-
+	m_pContent.emplace_back(Animation::GenerateNew(what));
 }
 void tyr::CMAnimations::OnItemDoubleClicked(int selected)
 {

@@ -20,6 +20,7 @@ void tyr::CMAnimators::Save(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Animators);
 	writer.Write(static_cast<UINT>(m_pContent.size()));
+	std::for_each(m_pContent.begin(), m_pContent.end(), [&writer](Animator* pA) { writer.Write(pA->GetName()); });
 }
 
 void tyr::CMAnimators::OnBtnDeleteClicked(Animator* pDeletedContent)
@@ -29,7 +30,7 @@ void tyr::CMAnimators::OnBtnDeleteClicked(Animator* pDeletedContent)
 
 void tyr::CMAnimators::OnBtnAddClicked(const std::string& what)
 {
-	UNREFERENCED_PARAMETER(what);
+	m_pContent.emplace_back(Animator::GenerateNew(what));
 }
 
 void tyr::CMAnimators::OnItemDoubleClicked(int selected)

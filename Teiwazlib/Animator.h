@@ -25,6 +25,7 @@ namespace tyr
 		const std::string& GetName() const noexcept { return m_Name; }
 #ifdef EDITOR_MODE
 		void Save();
+		static Animator* GenerateNew(const std::string& name);
 #endif
 	private:
 		Animator();

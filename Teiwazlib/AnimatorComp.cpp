@@ -18,13 +18,12 @@ tyr::AnimatorComp::AnimatorComp()
 
 tyr::AnimatorComp::~AnimatorComp()
 {
-	SAFE_DELETE(m_pAnimator);
 }
 
 
 void tyr::AnimatorComp::Initialize()
 {
-	m_pAnimator = Animator::Create(CONTENT_MANAGER->GetAbsoluteAnimationFolder() + "TestAnimator");
+	m_pAnimator = CONTENT_MANAGER->GetAnimator(0);
 	
 
 	m_pTextureComp = m_pSceneObject->GetComponent<TextureComp>();

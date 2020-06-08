@@ -14,7 +14,7 @@
 //TODO: Should all the connections be checked every frame? Right now a connection gets checked when it gets set and it seem to work fine
 tyr::Animator::Animator()
 	: m_Name("")
-	, m_pCurrent(nullptr)
+	, m_pCurrent(CONTENT_MANAGER->GetAnimation(0))
 {
 }
 
@@ -105,7 +105,7 @@ tyr::Animator* tyr::Animator::Create(const std::string& path)
 void tyr::Animator::Save()
 {
 	std::stringstream ss;
-	ss << CONTENT_MANAGER->GetAbsoluteAnimationFolder();
+	ss << CONTENT_MANAGER->GetAbsoluteAnimatorFolder();
 	ss << m_Name;
 	ss << ANIMATOR_SUFFIX;
 
@@ -138,5 +138,14 @@ void tyr::Animator::Save()
 	}
 	else
 		SDXL_ImGui_ConsoleLogWarning("Could not save the Animator");
+}
+
+tyr::Animator* tyr::Animator::GenerateNew(const std::string& name)
+{
+	Animator* pReturnAnimator = new Animator();
+	pReturnAnimator->m_Name = name;
+	pReturnAnimator->Save();
+	
+	return pReturnAnimator;
 }
 #endif
