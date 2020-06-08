@@ -50,13 +50,14 @@ namespace tyr
 
 		
 		_NODISCARD const std::string& GetDataFolder() const noexcept { return m_DataFolder; }
-		_NODISCARD std::string GetAbsoluteSceneFolder() const { return m_DataFolder + m_SceneFolder; }
-		_NODISCARD std::string GetAbsoluteAnimationFolder() const { return m_DataFolder + m_AnimationFolder; }
-		_NODISCARD std::string GetAbsoluteAnimatorFolder() const { return m_DataFolder + m_AnimatorFolder; }
+		_NODISCARD std::string GetAbsoluteSceneFolder() const        { return m_DataFolder + m_SceneFolder; }
+		_NODISCARD std::string GetAbsoluteAnimationFolder() const    { return m_DataFolder + m_AnimationFolder; }
+		_NODISCARD std::string GetAbsoluteAnimatorFolder() const     { return m_DataFolder + m_AnimatorFolder; }
 		
-		_NODISCARD CMScenes* GetCMScenes() const noexcept { return m_pCMScenes; }
+		_NODISCARD CMScenes* GetCMScenes() const noexcept         { return m_pCMScenes; }
 		_NODISCARD CMAnimations* GetCMAnimations() const noexcept { return m_pCMAnimations; }
-
+		_NODISCARD CMAnimators* GetCMAnimators() const noexcept   { return m_pCMAnimators; }
+		
 		void SetCurrentScene(SceneID id);
 
 #ifdef EDITOR_MODE

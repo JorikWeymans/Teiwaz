@@ -2,7 +2,6 @@
 #include "ETabAnimations.h"
 
 #ifdef EDITOR_MODE
-#include "../StringManipulation.h"
 #include "../ContentManager.h"
 
 #include "../CMAnimations.h"

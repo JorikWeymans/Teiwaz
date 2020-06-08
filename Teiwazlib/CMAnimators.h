@@ -20,6 +20,9 @@ namespace tyr
 		void OnBtnDeleteClicked(Animator* pDeletedContent) override;
 		void OnBtnAddClicked(const std::string& what) override;
 		void OnItemDoubleClicked(int selected) override;
+		
+	private:
+		static void GenerateTabItems();
 #endif
 
 	public:

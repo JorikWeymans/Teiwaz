@@ -5,6 +5,11 @@
 #include "BinStructureHelpers.h"
 #include "BinaryWriter.h"
 #include "Animator.h"
+#include "Editor/EUI.h"
+#include "Editor/EWindowSouth.h"
+#include "Editor/ETabAnimators.h"
+#include "GameContext.h"
+
 tyr::CMAnimators::CMAnimators()
 	:CMBase("CMAnimator", "New Animator name")
 {
@@ -26,15 +31,23 @@ void tyr::CMAnimators::Save(BinaryWriter& writer)
 
 void tyr::CMAnimators::OnBtnDeleteClicked(Animator* pDeletedContent)
 {
-	UNREFERENCED_PARAMETER(pDeletedContent);
+	SAFE_DELETE(pDeletedContent);
+	GenerateTabItems();
 }
 
 void tyr::CMAnimators::OnBtnAddClicked(const std::string& what)
 {
 	m_pContent.emplace_back(Animator::GenerateNew(what));
+	GenerateTabItems();
 }
 
 void tyr::CMAnimators::OnItemDoubleClicked(int selected)
 {
 	UNREFERENCED_PARAMETER(selected);
+}
+
+void tyr::CMAnimators::GenerateTabItems()
+{
+	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
+		GetTabItem<ETabAnimators>()->CreateTabItems();
 }

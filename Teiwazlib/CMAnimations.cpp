@@ -77,6 +77,7 @@ void tyr::CMAnimations::OnBtnDeleteClicked(Animation* pDeletedContent)
 void tyr::CMAnimations::OnBtnAddClicked(const std::string& what)
 {
 	m_pContent.emplace_back(Animation::GenerateNew(what));
+	GenerateTabItems();
 }
 void tyr::CMAnimations::OnItemDoubleClicked(int selected)
 {
