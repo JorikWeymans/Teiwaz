@@ -6,6 +6,7 @@
 #include "BinaryWriter.h"
 #include "TyrComps.h"
 #include <string_view>
+#include "EnumDropdown.h"
 int tyr::SceneObject::counter = 0;
 tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name, Tag tag, bool AppendCounter)
 	: SceneObject(new TransformComp(transform), name, tag, AppendCounter) {}
@@ -33,24 +34,10 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	strcpy_s(m_ChangedObjectName, m_name.c_str());
 
 
-	m_SelectedTag = TagToArrayIndex(m_Tag);
 	auto intID = reinterpret_cast<uint32_t>(this);
 	m_UniqueId = "##" + std::to_string(intID); //Add the ## because we don't want to see that ID in the editor
 
-	m_TagCount = static_cast<int>(magic_enum::enum_count<Tag>());
-	m_TagItems.resize(m_TagCount);
 
-	Tag first = Tag::None;
-	for (int i = 0; i < m_TagCount; i++)
-	{
-		auto theEnum = magic_enum::enum_name(first);
-		std::string enumString{};
-		enumString.resize(theEnum.size());
-		memcpy(enumString.data(), theEnum.data(), theEnum.size());
-
-		m_TagItems[i] = enumString;
-		first++;
-	}
 
 
 	
@@ -193,34 +180,15 @@ void tyr::SceneObject::Save(BinaryWriter& writer)
 void tyr::SceneObject::AddComponentButton()
 {
 	SDXL_ImGui_Separator();
-	static const int ComponentCount = static_cast<int>(magic_enum::enum_count<ComponentType>());
-	static const char* items[ComponentCount];
 
-	if (items[0] == nullptr)
-		for (int i = 0; i < ComponentCount; i++)
-			items[i] = magic_enum::enum_name(static_cast<ComponentType>(i)).data();
-
+	static ComponentType selectedComp = ComponentType::CharacterController;
+	DROPDOWN_COMPONENT_TYPE("##ComponentsSceneObj", selectedComp);
 	
-	static int selectedID = 0;
-
-	SDXL_ImGui_SetNextItemWidth(150.f);
-	if (SDXL_ImGui_BeginCombo("##ComponentsSceneObj", items[selectedID], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
-	{
-		for (int n = 0; n < ComponentCount; n++)
-		{
-			bool is_selected = (selectedID == n);
-			if (SDXL_ImGui_Selectable(items[n], is_selected))
-				selectedID = n;
-			if (is_selected)
-				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-		}
-		SDXL_ImGui_EndCombo();
-	}
 
 	SDXL_ImGui_SameLine();
 	if (SDXL_ImGui_Button("Add Component"))
 	{
-		const ComponentType selectedComp = static_cast<ComponentType>(selectedID);
+		
 
 		BaseComponent* theComp = nullptr;
 		bool usedNotImplemented = false;
@@ -332,14 +300,7 @@ void tyr::SceneObject::RenderProperties()
 		PropertyChangeName(id);
 		PropertyTag(id);
 
-
-
-		
-
-
-		
-		
-
+		DROPDOWN_TAG(id.c_str(), m_Tag);
 		
 		SDXL_ImGui_PopItemWidth();
 	}
@@ -375,48 +336,6 @@ void tyr::SceneObject::PropertyTag(std::string& id)
 	SDXL_ImGui_Text("Tag:     \t");
 	SDXL_ImGui_SameLine();
 
-	if (SDXL_ImGui_BeginCombo(id.c_str(), m_TagItems[m_SelectedTag].c_str(), SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
-	{
-		for (int n = 0; n < m_TagCount; n++)
-		{
-			bool is_selected = (m_SelectedTag == n);
-			if (SDXL_ImGui_Selectable(m_TagItems[n].c_str(), is_selected))
-			{
-				m_SelectedTag = n;
 
-				Tag theTag = Tag::All;
-				
-				if(m_SelectedTag <= 2)
-					theTag = static_cast<Tag>(m_SelectedTag);
-				else
-					theTag = static_cast<Tag>(pow(2, m_SelectedTag - 1));
-				
-				m_Tag = theTag;
-				
-			}
-				
-			if (is_selected)
-				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
-		}
-		SDXL_ImGui_EndCombo();
-	}
-}
-
-int tyr::SceneObject::TagToArrayIndex(Tag theTag)
-{
-	int currentValue = static_cast<int>(theTag);
-	
-	if(currentValue <=2)
-		return currentValue;
-
-	//else
-	int timesDivided = 0;
-	while(currentValue !=2)
-	{
-		currentValue /= 2;
-		timesDivided++;
-	}
-
-	return timesDivided + 2; // +2 because you stop dividing when you get 2
 }
 #endif

@@ -102,14 +102,10 @@ namespace tyr
 		std::string m_UniqueId; //if you don't use a unique id, Only the first object with the same name will be selected
 		char m_ChangedObjectName[OBJECT_NAME_MAX_CHAR];
 
-		int m_TagCount, m_SelectedTag;
-		std::vector<std::string> m_TagItems;
-
 		void RenderProperties();
 		void PropertyChangeName(std::string& id);
 		void PropertyTag(std::string& id);
 
-		static int TagToArrayIndex(Tag theTag);
 		
 #endif
 	public:

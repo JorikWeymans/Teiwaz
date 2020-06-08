@@ -12,6 +12,7 @@
 #include "Vectors.h"
 #include "Physics.h"
 #include "TyrException.h"
+#include "EnumDropDown.h"
 bool tyr::TeiwazEngine::WantQuit = false;
 tyr::TeiwazEngine::TeiwazEngine(float fixedTimeStep)
 	: m_pSceneManager(nullptr)
@@ -109,7 +110,9 @@ void tyr::TeiwazEngine::Run()
 	}
 
 	ContentManager::Destroy();
-	
+#ifdef EDITOR_MODE
+	EnumDropdown::Destroy();
+#endif
 	Cleanup();
 	
 	SAFE_DELETE(m_pContext);
