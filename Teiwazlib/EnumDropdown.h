@@ -3,9 +3,14 @@
 
 namespace tyr
 {
+	enum class VariableType : unsigned char;
+	enum class Equation : unsigned char;
 #ifdef EDITOR_MODE
-#define DROPDOWN_TAG EnumDropdown::GetInstance()->TagDropDown
-#define DROPDOWN_COMPONENT_TYPE EnumDropdown::GetInstance()->ComponentTypeDropDown
+#define DROPDOWN_TAG EnumDropdown::GetInstance()->TagDropdown
+#define DROPDOWN_COMPONENT_TYPE EnumDropdown::GetInstance()->ComponentTypeDropdown
+#define DROPDOWN_EQUATION EnumDropdown::GetInstance()->EquationDropdown
+#define DROPDOWN_VARIABLE_TYPE EnumDropdown::GetInstance()->VariableTypeDropdown
+
 	enum class ComponentType : UINT;
 	class EnumDropdown final
 	{
@@ -14,9 +19,11 @@ namespace tyr
 		static void Destroy();
 
 		
-		void ComponentTypeDropDown(const char* ImGuiID, ComponentType& selected) const;
-		void TagDropDown(const char* ImGuiID, Tag& selected) const;
-
+		void ComponentTypeDropdown(const char* ImGuiID, ComponentType& selected) const;
+		void TagDropdown(const char* ImGuiID, Tag& selected) const;
+		void EquationDropdown(const char* ImGuiID, Equation& selected) const;
+		void VariableTypeDropdown(const char* ImGuiID, VariableType& selected) const;
+		
 	private:
 		EnumDropdown();
 		
@@ -24,9 +31,15 @@ namespace tyr
 
 		const UINT m_ComponentCount;
 		std::vector<const char*> m_ComponentItems;
+		
 		const UINT m_TagCount;
-		std::vector<std::string> m_TagItems;
+		std::vector<const char*> m_TagItems;
 
+		const UINT m_EquationCount;
+		std::vector<const char*> m_EquationItems;
+
+		const UINT m_VariableTypeCount;
+		std::vector<const char*> m_VariableTypeItems;
 
 		static UINT TagToArrayIndex(Tag theTag);
 	};

@@ -3,13 +3,17 @@
 
 #ifdef EDITOR_MODE
 #include "AnimatorComp.h"
+#include "AnimatorVariable.h"
 
 #define COMPONENT_TYPE_WIDTH 150.f
+#define EQUATON_WIDTH 100.f
 
 tyr::EnumDropdown* tyr::EnumDropdown::pInstance = nullptr;
 tyr::EnumDropdown::EnumDropdown()
 	: m_ComponentCount(static_cast<UINT>(magic_enum::enum_count<ComponentType>()))
 	, m_TagCount(static_cast<UINT>(magic_enum::enum_count<Tag>()))
+	, m_EquationCount(static_cast<UINT>(magic_enum::enum_count<Equation>()))
+	, m_VariableTypeCount(static_cast<UINT>(magic_enum::enum_count<VariableType>()))
 {
 
 	m_ComponentItems.resize(m_ComponentCount);
@@ -23,14 +27,19 @@ tyr::EnumDropdown::EnumDropdown()
 	Tag first = Tag::None;
 	for (UINT i = 0; i < m_TagCount; i++)
 	{
-		auto theEnum = magic_enum::enum_name(first);
-		std::string enumString{};
-		enumString.resize(theEnum.size());
-		memcpy(enumString.data(), theEnum.data(), theEnum.size());
-
-		m_TagItems[i] = enumString;
+		m_TagItems[i] = magic_enum::enum_name(first).data();
 		first++;
 	}
+
+	m_EquationItems.resize(m_EquationCount);
+	for (UINT i = 0; i < m_EquationCount; i++)
+		m_EquationItems[i] = magic_enum::enum_name(static_cast<Equation>(i)).data();
+
+	m_VariableTypeItems.resize(m_VariableTypeCount);
+	//Manual because magic_enum fails this
+	m_VariableTypeItems[0] = "Bool";
+	m_VariableTypeItems[1] = "Float";
+	
 }
 tyr::EnumDropdown* tyr::EnumDropdown::GetInstance()
 {
@@ -45,7 +54,7 @@ void tyr::EnumDropdown::Destroy()
 }
 
 
-void tyr::EnumDropdown::ComponentTypeDropDown(const char* ImGuiID, ComponentType& selected) const
+void tyr::EnumDropdown::ComponentTypeDropdown(const char* ImGuiID, ComponentType& selected) const
 {
 	UINT castSelected = static_cast<UINT>(selected);
 
@@ -67,15 +76,15 @@ void tyr::EnumDropdown::ComponentTypeDropDown(const char* ImGuiID, ComponentType
 	selected = static_cast<ComponentType>(castSelected);
 	
 }
-void tyr::EnumDropdown::TagDropDown(const char* ImGuiID, Tag& selected) const
+void tyr::EnumDropdown::TagDropdown(const char* ImGuiID, Tag& selected) const
 {
 	UINT tag = TagToArrayIndex(selected);
-	if (SDXL_ImGui_BeginCombo(ImGuiID, m_TagItems[tag].c_str(), SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	if (SDXL_ImGui_BeginCombo(ImGuiID, m_TagItems[tag], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (UINT n = 0; n < m_TagCount; n++)
 		{
 			const bool isSelected = (tag == n);
-			if (SDXL_ImGui_Selectable(m_TagItems[n].c_str(), isSelected))
+			if (SDXL_ImGui_Selectable(m_TagItems[n], isSelected))
 			{
 				tag = n;
 
@@ -93,6 +102,48 @@ void tyr::EnumDropdown::TagDropDown(const char* ImGuiID, Tag& selected) const
 	}
 }
 
+void tyr::EnumDropdown::EquationDropdown(const char* ImGuiID, Equation& selected) const
+{
+	UINT castSelected = static_cast<UINT>(selected);
+
+
+	SDXL_ImGui_SetNextItemWidth(EQUATON_WIDTH);
+	if (SDXL_ImGui_BeginCombo(ImGuiID, m_EquationItems[castSelected], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (UINT n = 0; n < m_EquationCount; n++)
+		{
+			bool isSelected = (castSelected == n);
+			if (SDXL_ImGui_Selectable(m_EquationItems[n], isSelected))
+				castSelected = n;
+			if (isSelected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+
+	selected = static_cast<Equation>(castSelected);
+}
+void tyr::EnumDropdown::VariableTypeDropdown(const char* ImGuiID, VariableType& selected) const
+{
+	UINT castSelected = static_cast<UINT>(selected);
+
+
+	SDXL_ImGui_SetNextItemWidth(EQUATON_WIDTH);
+	if (SDXL_ImGui_BeginCombo(ImGuiID, m_VariableTypeItems[castSelected], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (UINT n = 0; n < m_VariableTypeCount; n++)
+		{
+			bool isSelected = (castSelected == n);
+			if (SDXL_ImGui_Selectable(m_VariableTypeItems[n], isSelected))
+				castSelected = n;
+			if (isSelected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+
+	selected = static_cast<VariableType>(castSelected);
+}
 
 
 UINT tyr::EnumDropdown::TagToArrayIndex(Tag theTag)

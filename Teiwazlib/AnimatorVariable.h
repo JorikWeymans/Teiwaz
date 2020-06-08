@@ -5,7 +5,11 @@ namespace tyr
 	class BinaryReader;
 	class BinaryWriter;
 
-	enum class VariableType : BYTE { Bool = 0, Float = 1 };
+	enum class VariableType : BYTE
+	{
+		Bool = 0,
+		Float = 1,
+	};
 	enum class Equation : BYTE
 	{
 		Equal = 0,

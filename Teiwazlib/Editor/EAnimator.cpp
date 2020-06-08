@@ -6,6 +6,7 @@
 #include "../Animator.h"
 #include "../Connection.h"
 #include "../StringManipulation.h"
+#include "../EnumDropdown.h"
 #endif
 tyr::EAnimator::EAnimator()
 	: m_pAnimator(nullptr)
@@ -32,7 +33,7 @@ void tyr::EAnimator::RenderEditor()
 		SDXL_ImGuiWindowFlags_MenuBar | SDXL_ImGuiWindowFlags_AlwaysAutoResize | SDXL_ImGuiWindowFlags_NoCollapse))
 
 	{
-		SDXL_ImGui_Text("LHS\t\tRHS\t\tComparison\t\tType\t\tvalue");
+		SDXL_ImGui_Text("LHS\t\tRHS\t\tEquation\t\tType\t\tvalue");
 
 		auto con = m_pAnimator->m_pConnections[0];
 
@@ -46,8 +47,13 @@ void tyr::EAnimator::RenderEditor()
 		SDXL_ImGui_SameLine();
 		CONTENT_MANAGER->EditorAnimationDropDown("##EAnimatorRHS", id2);
 
+		static Equation e = Equation::BiggerThan;
+		SDXL_ImGui_SameLine();
+		DROPDOWN_EQUATION("##EAnimatorEquation", e);
 
-
+		static VariableType v = VariableType::Bool;
+		SDXL_ImGui_SameLine();
+		DROPDOWN_VARIABLE_TYPE("##EAnimatorVariableType", v);
 
 
 
