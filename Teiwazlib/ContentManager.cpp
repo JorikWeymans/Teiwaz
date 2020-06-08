@@ -14,6 +14,7 @@
 #include "Font.h"
 #include "Texture.h"
 #include "Animation.h"
+#include "Animator.h"
 #include "Scene.h"
 
 

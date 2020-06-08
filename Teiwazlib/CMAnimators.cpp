@@ -4,6 +4,7 @@
 
 #include "BinStructureHelpers.h"
 #include "BinaryWriter.h"
+#include "Animator.h"
 tyr::CMAnimators::CMAnimators()
 	:CMBase("CMAnimator", "New Animator name")
 {

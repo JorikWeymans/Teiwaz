@@ -1,6 +1,6 @@
 #pragma once
 #include "CMBase.h"
-#include "Animator.h"
+
 namespace tyr
 {
 	class Animator;
