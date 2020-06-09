@@ -32,7 +32,7 @@ tyr::Animator* tyr::CMAnimators::GetAnimator(const std::string& animatorName) co
 
 	return nullptr;
 }
-
+#ifdef EDITOR_MODE
 void tyr::CMAnimators::Save(BinaryWriter& writer)
 {
 	writer.Write(ContentType::Animators);
@@ -62,3 +62,4 @@ void tyr::CMAnimators::GenerateTabItems()
 	CONTENT_MANAGER->GetContext()->pEditorUI->GetWindow<EWindowSouth>()->
 		GetTabItem<ETabAnimators>()->CreateTabItems();
 }
+#endif

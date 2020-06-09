@@ -13,7 +13,7 @@
 #include "EUI.h"
 #include "ETabAnimators.h"
 #include "EWindowSouth.h"
-#endif
+
 tyr::EAnimator::EAnimator()
 	: m_pAnimator(nullptr)
 	, m_WindowIsOpen(false)
@@ -183,3 +183,5 @@ void tyr::EAnimator::Menu()
 		SDXL_ImGui_EndMenuBar();
 	}
 }
+
+#endif

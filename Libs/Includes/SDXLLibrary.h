@@ -111,10 +111,10 @@ SDXLLibrary_API HWND SDXL_GetWindowHandle();
 // ***** ------------------------------------------------------------------------------------- *****
 
 #if defined(_DEBUG) && defined(x86)
-#define USE_IM_GUI
+#define EDITOR_MODE
 #endif
 
-#ifdef USE_IM_GUI
+#ifdef EDITOR_MODE
 
 // ****** ------------------ ******
 // *  ___ _  _ _   _ __  __ ___   *

@@ -15,6 +15,7 @@
 
 #if defined(_DEBUG) && defined(x86)
 #ifndef EDITOR_MODE
+#define USE_IM_GUI
 #define EDITOR_MODE
 #endif
 #endif

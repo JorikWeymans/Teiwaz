@@ -1,13 +1,13 @@
 #include "../tyrpch.h"
 #include "../CMScenes.h"
-
+#include "../Scene.h"
 #ifdef EDITOR_MODE
 #include <filesystem>
 #include "../StringManipulation.h"
 #include "../ContentManager.h"
 #include "../SceneManager.h"
 #include "../GameContext.h"
-#include "../Scene.h"
+
 
 #include "ETabScenes.h"
 tyr::ETabScenes::ETabScenes(GameContext* pContext)
