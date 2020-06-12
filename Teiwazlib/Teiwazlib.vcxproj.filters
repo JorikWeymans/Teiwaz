@@ -38,7 +38,7 @@
     <Filter Include="Editor\Windows\WindowSouth">
       <UniqueIdentifier>{b0d567ca-c453-490b-b9bf-e7bf88259842}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Content">
+    <Filter Include="ContentManagers">
       <UniqueIdentifier>{cc160844-e48d-4c33-b78b-c980ec930e14}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -188,7 +188,7 @@
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClInclude>
     <ClInclude Include="ContentManager.h">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClInclude>
     <ClInclude Include="BubbleShootingComp.h">
       <Filter>Components</Filter>
@@ -197,13 +197,13 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="CMTextures.h">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClInclude>
     <ClInclude Include="CMScenes.h">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClInclude>
     <ClInclude Include="CMAnimations.h">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClInclude>
     <ClInclude Include="AnimatorVariable.h">
       <Filter>Graphics</Filter>
@@ -215,10 +215,10 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="CMBase.h">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClInclude>
     <ClInclude Include="CMAnimators.h">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClInclude>
     <ClInclude Include="Editor\EAnimator.h">
       <Filter>Editor\Windows</Filter>
@@ -355,7 +355,7 @@
       <Filter>Editor\Windows\WindowSouth</Filter>
     </ClCompile>
     <ClCompile Include="ContentManager.cpp">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClCompile>
     <ClCompile Include="BubbleShootingComp.cpp">
       <Filter>Components</Filter>
@@ -367,13 +367,13 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="CMTextures.cpp">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClCompile>
     <ClCompile Include="CMScenes.cpp">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClCompile>
     <ClCompile Include="CMAnimations.cpp">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClCompile>
     <ClCompile Include="AnimatorVariable.cpp">
       <Filter>Graphics</Filter>
@@ -385,7 +385,7 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="CMAnimators.cpp">
-      <Filter>Graphics\Content</Filter>
+      <Filter>ContentManagers</Filter>
     </ClCompile>
     <ClCompile Include="Editor\EAnimator.cpp">
       <Filter>Editor\Windows</Filter>

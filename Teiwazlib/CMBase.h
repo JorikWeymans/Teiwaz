@@ -67,11 +67,19 @@ namespace tyr
 		virtual void Save(BinaryWriter& writer) = 0;
 		void ItemDropDown(const char* imGuiID, UINT&selectedID)
 		{
+			
+			const UINT contentSize = static_cast<UINT>(m_pContent.size());
+
+			//When content gets removed the id can exceed the array,  when it does, clamp this
+			if(selectedID >= contentSize)
+				selectedID = contentSize - 1;
+
+			
 			const char* currentItem = m_pContent[selectedID]->GetName().c_str();
 			SDXL_ImGui_SetNextItemWidth(m_SelectorItemWidth);
 			if (SDXL_ImGui_BeginCombo(imGuiID, currentItem, SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
 			{
-				for (UINT n = 0; n < static_cast<UINT>(m_pContent.size()); n++)
+				for (UINT n = 0; n < contentSize; n++)
 				{
 					bool IsSelected = (currentItem == m_pContent[n]->GetName().c_str());
 
