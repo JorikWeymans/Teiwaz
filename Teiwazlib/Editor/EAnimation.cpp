@@ -153,7 +153,7 @@ void tyr::EAnimation::MItemSettings()
 
 void tyr::EAnimation::SpriteWindow()
 {
-	if (SDXL_ImGui_BeginChild("Child", SDXL::Float2{ 600.f, 600.f }, true, SDXL_ImGuiWindowFlags_HorizontalScrollbar ))
+	if (SDXL_ImGui_BeginChild("Child", SDXL::Float2{ 600.f, 600.f }, true, SDXL_ImGuiWindowFlags_HorizontalScrollbar |SDXL_ImGuiWindowFlags_NoMove ))
 	{
 		auto mousePos = SDXL_ImGui_GetMousePos();
 		auto contentRegion = SDXL_ImGui_GetWindowContentRegionMin();
