@@ -30,47 +30,33 @@ tyr::AnimatorComp::~AnimatorComp()
 void tyr::AnimatorComp::Initialize()
 {
 	m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
+	m_pAnimator->Initialize();
 	
+	m_pTextureComp = GET_COMPONENT<TextureComp>();
 
-	m_pTextureComp = m_pSceneObject->GetComponent<TextureComp>();
-	
-	INPUT->AddAction("AEating", ButtonState::Pressed, VK_SPACE);
+
 }
-
 void tyr::AnimatorComp::Update()
 {
 	m_pAnimator->Update(GET_CONTEXT->pTime->deltaTime);
 	m_pTextureComp->SetSourceRect(m_pAnimator->GetCurrentAnimation());
-
-
-	static bool isEating = false;
 	
-	
-	if(INPUT->IsActionTriggered("AEating"))
-	{
-		isEating = true;
-		m_pAnimator->SetBool("IsEating", true);
-	}
-
-	if(isEating == true)
-	{
-	
-		
-		if(m_pAnimator->IsAtEnd())
-		{
-			isEating = false;
-			m_pAnimator->SetBool("IsEating", false);
-		}
-	}
-
 }
-void tyr::AnimatorComp::SetFloat(const std::string& variable, float amount)
+void tyr::AnimatorComp::SetFloat(const std::string& variable, float value)
 {
-	m_pAnimator->SetFloat(variable, amount);
+	m_pAnimator->SetFloat(variable, value);
+}
+void tyr::AnimatorComp::SetBool(const std::string& variable, bool value)
+{
+	m_pAnimator->SetBool(variable, value);
+}
+
+bool tyr::AnimatorComp::IsAtEnd() const noexcept
+{
+	return m_pAnimator->IsAtEnd();
 }
 
 #ifdef EDITOR_MODE
-
 
 void tyr::AnimatorComp::Debug()
 {
@@ -89,6 +75,9 @@ void tyr::AnimatorComp::InternalRenderEditor()
 	if(prev != m_AnimatorID)
 	{
 		m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
+		m_pAnimator->Initialize();
+
+		SDXL_ImGui_ConsoleLog("this is a log");
 	}
 }
 

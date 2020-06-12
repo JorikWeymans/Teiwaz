@@ -19,7 +19,9 @@ namespace tyr
 		void FixedUpdate() override {};
 		void Render() const override {};
 		
-		void SetFloat(const std::string& variable, float amount);
+		void SetFloat(const std::string& variable, float value);
+		void SetBool(const std::string& variable, bool value);
+		_NODISCARD bool IsAtEnd() const noexcept;
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void Save(BinaryWriter& writer) override;

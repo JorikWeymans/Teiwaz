@@ -18,6 +18,8 @@ namespace tyr
 		void SetFloat(const std::string& variable, float value);
 		void SetBool(const std::string& variable, bool value);
 
+		void Initialize();
+		
 		bool IsAtEnd() const;
 		const Rect& GetCurrentAnimation() const;
 

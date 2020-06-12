@@ -28,7 +28,9 @@ void tyr::Player1Controller::Initialize()
 	m_pBody = GET_COMPONENT<RigidBodyComp>();
 	m_pCont = GET_COMPONENT<CharacterControllerComp>();
 	m_pAni  = GET_COMPONENT<AnimatorComp>();
-	
+
+	INPUT->AddAction("AEating", ButtonState::Pressed, VK_SPACE);
+
 }
 
 void tyr::Player1Controller::Update()
@@ -37,6 +39,26 @@ void tyr::Player1Controller::Update()
 	{
 		if (m_pCont->IsGrounded())
 			m_pBody->AddForce(0, m_JumpForce);
+	}
+
+	static bool isEating = false;
+
+
+	if (INPUT->IsActionTriggered("AEating"))
+	{
+		isEating = true;
+		m_pAni->SetBool("IsEating", true);
+	}
+
+	if (isEating == true)
+	{
+
+
+		if (m_pAni->IsAtEnd())
+		{
+			isEating = false;
+			m_pAni->SetBool("IsEating", false);
+		}
 	}
 }
 

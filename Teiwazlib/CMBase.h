@@ -72,7 +72,7 @@ namespace tyr
 
 			//When content gets removed the id can exceed the array,  when it does, clamp this
 			if(selectedID >= contentSize)
-				selectedID = contentSize - 1;
+				selectedID = (contentSize ==0) ? 0 : contentSize - 1; //don't go negative
 
 			
 			const char* currentItem = m_pContent[selectedID]->GetName().c_str();

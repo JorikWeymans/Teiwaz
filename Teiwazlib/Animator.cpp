@@ -14,8 +14,8 @@
 //TODO: Should all the connections be checked every frame? Right now a connection gets checked when it gets set and it seem to work fine
 tyr::Animator::Animator()
 	: m_Name("")
-	, m_pCurrent(CONTENT_MANAGER->GetAnimation(0))
-{
+	, m_pCurrent(nullptr)
+{	
 }
 
 tyr::Animator::~Animator()
@@ -64,6 +64,11 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 
 	}
 	
+}
+
+void tyr::Animator::Initialize()
+{
+	m_pCurrent = CONTENT_MANAGER->GetAnimation(m_pConnections[0]->lhs);
 }
 
 bool tyr::Animator::IsAtEnd() const
@@ -144,6 +149,7 @@ tyr::Animator* tyr::Animator::GenerateNew(const std::string& name)
 {
 	Animator* pReturnAnimator = new Animator();
 	pReturnAnimator->m_Name = name;
+	pReturnAnimator->m_pConnections.emplace_back(new Connection(0, 0, new AnimatorVariable("default", false, Equation::Equal)));
 	pReturnAnimator->Save();
 	
 	return pReturnAnimator;
