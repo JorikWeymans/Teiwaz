@@ -23,6 +23,7 @@ namespace tyr
 		Animator,
 		BubbleShooting,
 		Bubble,
+		ZenChan,
 		Maita,
 		
 		//Append here

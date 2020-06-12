@@ -257,6 +257,7 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="TyrTypedefs.h" />
     <ClInclude Include="Vectors.h" />
+    <ClInclude Include="ZenChanComp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
@@ -319,6 +320,7 @@
     <ClCompile Include="TeiwazEngine.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Vectors.cpp" />
+    <ClCompile Include="ZenChanComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

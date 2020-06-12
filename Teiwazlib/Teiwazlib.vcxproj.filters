@@ -229,6 +229,9 @@
     <ClInclude Include="MaitaComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ZenChanComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -394,6 +397,9 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="MaitaComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenChanComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

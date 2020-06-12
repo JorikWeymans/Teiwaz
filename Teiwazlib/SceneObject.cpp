@@ -239,6 +239,9 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::BubbleShooting:
 				theComp = new BubbleShootingComp();
 			break;
+			case ComponentType::ZenChan:
+				theComp = new ZenChanComp();
+				break;
 			case ComponentType::Maita:
 				theComp = new MaitaComp();
 				break;

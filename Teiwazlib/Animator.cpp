@@ -69,6 +69,7 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 void tyr::Animator::Initialize()
 {
 	m_pCurrent = CONTENT_MANAGER->GetAnimation(m_pConnections[0]->lhs);
+	m_pCurrent->Reset();
 }
 
 bool tyr::Animator::IsAtEnd() const

@@ -2,7 +2,8 @@
 #define GET_CONTEXT m_pSceneObject->GetGameContext()
 #define GET_COMPONENT m_pSceneObject->GetComponent
 #define RAYCAST(pos, direction, length, refHit) GET_CONTEXT->pPhysics->Raycast(pos, direction, length, refHit, m_pSceneObject)
-#define INPUT m_pSceneObject->GetGameContext()->pInput
+#define INPUT GET_CONTEXT->pInput
+#define TIME  GET_CONTEXT->pTime
 #define ADD_COMPONENT m_pSceneObject->AddComponent
 
 #include "BinStructureHelpers.h"
