@@ -23,7 +23,7 @@ namespace tyr
 		void TagDropdown(const char* ImGuiID, Tag& selected, int customWidth = -1) const;
 		void EquationDropdown(const char* ImGuiID, Equation& selected, int customWidth = -1) const;
 		void VariableTypeDropdown(const char* ImGuiID, VariableType& selected, int customWidth = -1) const;
-		
+		void PivotModeDropDown(const char* ImGuiID, PivotMode& selected, int customWidth = -1) const;
 	private:
 		EnumDropdown();
 		
@@ -41,6 +41,11 @@ namespace tyr
 		const UINT m_VariableTypeCount;
 		std::vector<const char*> m_VariableTypeItems;
 
+		const UINT m_PivotModeCount;
+		std::vector<const char*> m_PivotModeItems;
+
+
+		
 		static UINT TagToArrayIndex(Tag theTag);
 	};
 

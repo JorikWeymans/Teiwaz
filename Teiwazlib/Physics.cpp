@@ -4,6 +4,7 @@
 #include "TeiwazEngine.h"
 #include "Color.h"
 #include "ColliderComp.h"
+#include "SceneObject.h"
 bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller)
 {
 	// Vec1
@@ -13,7 +14,7 @@ bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float l
 	for(auto pC : m_pColliders)
 	{
 		 auto tC = pC->GetColliderRect();
-		 if(pC->GetSceneObject() == pCaller)
+		 if(pC->GetSceneObject() == pCaller || !pC->GetSceneObject()->IsActive())
 		 {
 			 continue;
 		 }
@@ -41,6 +42,15 @@ void tyr::Physics::AddCollider(ColliderComp* pCollider)
 	if (found == m_pColliders.end())
 	{
 		m_pColliders.emplace_back(pCollider);
+	}
+}
+
+void tyr::Physics::RemoveCollider(ColliderComp* pCollider)
+{
+	auto found = std::find(m_pColliders.begin(), m_pColliders.end(), pCollider);
+	if (found != m_pColliders.end())
+	{
+		m_pColliders.erase(found);
 	}
 }
 

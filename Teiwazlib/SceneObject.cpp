@@ -36,7 +36,7 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 
 	auto intID = reinterpret_cast<uint32_t>(this);
 	m_UniqueId = "##" + std::to_string(intID); //Add the ## because we don't want to see that ID in the editor
-
+	m_IsActive = true;
 
 
 
@@ -58,50 +58,62 @@ tyr::SceneObject::~SceneObject()
 
 void tyr::SceneObject::Update()
 {
-	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
-		{
-			if (!m_IsDestroyed)
-				s->Update();
-		});
-
-	
-	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+	if(m_IsActive)
 	{
-		if(!m_IsDestroyed)
-			b->Update();
-	});
+		std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+			{
+				if (!m_IsDestroyed)
+					s->Update();
+			});
+
+
+		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+			{
+				if (!m_IsDestroyed)
+					b->Update();
+			});
+	}
+	
 }
 
 void tyr::SceneObject::FixedUpdate()
 {
-	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
-		{
-			if (!m_IsDestroyed)
-				s->FixedUpdate();
-		});
-
-	
-	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+	if (m_IsActive)
 	{
-		if(!m_IsDestroyed)
-		b->FixedUpdate();
-	});
+		std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+			{
+				if (!m_IsDestroyed)
+					s->FixedUpdate();
+			});
+
+
+		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+			{
+				if (!m_IsDestroyed)
+					b->FixedUpdate();
+			});
+	}
+
 }
 #ifdef EDITOR_MODE
 void tyr::SceneObject::Debug()
 {
-	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
-		{
-			if (!m_IsDestroyed)
-				s->Debug();
-		});
+	if(m_IsActive)
+	{
+		std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+			{
+				if (!m_IsDestroyed)
+					s->Debug();
+			});
 
-	
-	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
-		{
-			if (!m_IsDestroyed)
-				b->Debug();
-		});
+
+		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+			{
+				if (!m_IsDestroyed)
+					b->Debug();
+			});
+	}
+
 	
 }
 
@@ -111,8 +123,7 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 	if(!m_pChilds.empty() && showChildren)
 	{
 		SDXL_ImGui_Indent();
-
-
+		
 		for (int i{ 0 }; i < static_cast<int>(m_pChilds.size()); i++)
 		{
 			if (SDXL_ImGui_Selectable(m_pChilds[i]->GetEditorName().c_str(), m_SelectedItem == i))
@@ -256,17 +267,21 @@ void tyr::SceneObject::AddComponentButton()
 
 void tyr::SceneObject::Render() const
 {
-	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
-		{
-		if (!m_IsDestroyed)
-			s->Render();
-		});
-	
-	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
-	{if
-		(!m_IsDestroyed)
-		b->Render();
-	});
+	if(m_IsActive)
+	{
+		std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
+			{
+				if (!m_IsDestroyed)
+					s->Render();
+			});
+
+		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
+			{if
+			(!m_IsDestroyed)
+			b->Render();
+			});
+	}
+
 }
 
 
@@ -321,6 +336,11 @@ void tyr::SceneObject::RenderProperties()
 		PropertyTag(id);
 
 		DROPDOWN_TAG(id.c_str(), m_Tag);
+
+		SDXL_ImGui_Text("Active:  \t");
+		SDXL_ImGui_SameLine();
+		SDXL_ImGui_Checkbox("##SceneObjectIsActive", &m_IsActive);
+		
 		
 		SDXL_ImGui_PopItemWidth();
 	}

@@ -7,6 +7,8 @@
 #include "Physics.h"
 #include "BinaryWriter.h"
 #include "BinaryReader.h"
+#include "EnumDropdown.h"
+
 tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivotMode, bool isDynamic)
 	: tyr::BaseComponent(ComponentType::Collider, "Collider Component")
 	, m_Width(width), m_Height(height)
@@ -56,6 +58,33 @@ void tyr::ColliderComp::InternalRenderEditor()
 	name = "##ColliderCompColW" + std::to_string(m_UniqueId);
 	SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
 
+
+	SDXL_ImGui_Text("Pivot:   \t");
+	SDXL_ImGui_SameLine();
+	EnumDropdown::GetInstance()->PivotModeDropDown("##ColliderCompPivotMode", m_Pivot);
+
+	RenderIsDynamicProperty();
+	
+}
+
+void tyr::ColliderComp::RenderIsDynamicProperty()
+{
+	SDXL_ImGui_Text("Dynamic? \t");
+	SDXL_ImGui_SameLine();
+	const bool prev = m_IsDynamic;
+	SDXL_ImGui_Checkbox("##ColliderComp", &m_IsDynamic);
+
+	if(prev != m_IsDynamic)
+	{
+		if(m_IsDynamic)
+		{
+			GET_CONTEXT->pPhysics->RemoveCollider(this);
+		}
+		else
+		{
+			GET_CONTEXT->pPhysics->AddCollider(this);
+		}
+	}
 }
 
 void tyr::ColliderComp::Save(BinaryWriter& writer)

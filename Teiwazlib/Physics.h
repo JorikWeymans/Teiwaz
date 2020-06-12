@@ -19,7 +19,8 @@ namespace tyr
 	public:
 		Physics() = default;
 		bool Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller);
-		void AddCollider(ColliderComp* pCollider);
+		void AddCollider(ColliderComp* pCollider); 
+		void RemoveCollider(ColliderComp* pCollider);
 	private:
 		std::vector<ColliderComp*> m_pColliders;
 		static bool LineInterSection(const Vector2& pos1A, const Vector2& pos1B, const Vector2& pos2A, const Vector2& pos2B, RaycastHit& hit);

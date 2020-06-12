@@ -55,7 +55,7 @@ namespace tyr
 		void AddChild(SceneObject* pChild);
 		void Translate(float x, float y);
 		
-		TransformComp* GetTransform() const noexcept { return m_pTransform; }
+		_NODISCARD TransformComp* GetTransform() const noexcept { return m_pTransform; }
 		template <typename T>
 		_NODISCARD T* GetComponent(unsigned int index = 0) const  //index used when there are more than one component of the same type on the object.
 		{
@@ -78,8 +78,9 @@ namespace tyr
 		const GameContext* GetGameContext() const noexcept { return m_pContext; };
 		const std::string& GetName()        const noexcept { return m_name; }
 		const SceneObject* GetParent()      const noexcept { return m_pParent; }
-		Tag                GetTag()         const noexcept { return m_Tag; }
+		_NODISCARD Tag     GetTag()         const noexcept { return m_Tag; }
 
+		_NODISCARD bool IsActive()			const noexcept { return m_IsActive; }
 #ifdef EDITOR_MODE
 		std::string GetEditorName() const { return m_name + m_UniqueId; };
 #endif
@@ -98,12 +99,12 @@ namespace tyr
 
 		
 		static int counter;
-
+		bool m_IsActive;
 #ifdef EDITOR_MODE
 		int m_SelectedItem;
 		std::string m_UniqueId; //if you don't use a unique id, Only the first object with the same name will be selected
 		char m_ChangedObjectName[OBJECT_NAME_MAX_CHAR];
-
+		
 		void RenderProperties();
 		void PropertyChangeName(std::string& id);
 		void PropertyTag(std::string& id);

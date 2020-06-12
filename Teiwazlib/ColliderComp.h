@@ -30,6 +30,9 @@ namespace tyr
 		float m_Width, m_Height;
 		PivotMode m_Pivot;
 		bool m_IsDynamic;
+
+		void RenderIsDynamicProperty();
+		
 	public:
 		//ColliderComp() = delete;
 		ColliderComp(const ColliderComp&) = delete;

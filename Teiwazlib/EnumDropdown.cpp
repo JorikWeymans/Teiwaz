@@ -9,13 +9,14 @@
 #define TAG_WIDTH 120.f
 #define EQUATON_WIDTH 100.f
 #define VARIABLE_TYPE_WIDTH 60.f
-
+#define PIVOT_MODE_WIDTH 100.f
 tyr::EnumDropdown* tyr::EnumDropdown::pInstance = nullptr;
 tyr::EnumDropdown::EnumDropdown()
 	: m_ComponentCount(static_cast<UINT>(magic_enum::enum_count<ComponentType>()))
 	, m_TagCount(static_cast<UINT>(magic_enum::enum_count<Tag>()))
 	, m_EquationCount(static_cast<UINT>(magic_enum::enum_count<Equation>()))
 	, m_VariableTypeCount(static_cast<UINT>(magic_enum::enum_count<VariableType>()))
+	, m_PivotModeCount(static_cast<UINT>(magic_enum::enum_count<PivotMode>()))
 {
 
 	m_ComponentItems.resize(m_ComponentCount);
@@ -41,6 +42,11 @@ tyr::EnumDropdown::EnumDropdown()
 	//Manual because magic_enum fails this
 	m_VariableTypeItems[0] = "Bool";
 	m_VariableTypeItems[1] = "Float";
+
+
+	m_PivotModeItems.resize(m_PivotModeCount);
+	for (UINT i = 0; i < m_PivotModeCount; i++)
+		m_PivotModeItems[i] = magic_enum::enum_name(static_cast<PivotMode>(static_cast<int>(i))).data();
 	
 }
 tyr::EnumDropdown* tyr::EnumDropdown::GetInstance()
@@ -158,6 +164,31 @@ void tyr::EnumDropdown::VariableTypeDropdown(const char* ImGuiID, VariableType& 
 	}
 
 	selected = static_cast<VariableType>(castSelected);
+}
+
+void tyr::EnumDropdown::PivotModeDropDown(const char* ImGuiID, PivotMode& selected, int customWidth) const
+{
+	UINT castSelected = static_cast<UINT>(selected);
+
+	if (customWidth == -1)
+		SDXL_ImGui_SetNextItemWidth(PIVOT_MODE_WIDTH);
+	else
+		SDXL_ImGui_SetNextItemWidth(static_cast<float>(customWidth));
+
+	if (SDXL_ImGui_BeginCombo(ImGuiID, m_PivotModeItems[castSelected], SDXL_ImGuiComboFlags_HeightLargest)) // The second parameter is the label previewed before opening the combo.
+	{
+		for (UINT n = 0; n < m_PivotModeCount; n++)
+		{
+			bool isSelected = (castSelected == n);
+			if (SDXL_ImGui_Selectable(m_PivotModeItems[n], isSelected))
+				castSelected = n;
+			if (isSelected)
+				SDXL_ImGui_SetItemDefaultFocus();   // Set the initial focus when opening the combo (scrolling + for keyboard navigation support in the upcoming navigation branch)
+		}
+		SDXL_ImGui_EndCombo();
+	}
+
+	selected = static_cast<PivotMode>(castSelected);
 }
 
 

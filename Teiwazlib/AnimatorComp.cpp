@@ -76,8 +76,6 @@ void tyr::AnimatorComp::InternalRenderEditor()
 	{
 		m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
 		m_pAnimator->Initialize();
-
-		SDXL_ImGui_ConsoleLog("this is a log");
 	}
 }
 
