@@ -67,20 +67,32 @@ tyr::TextComp*                tyr::Factory::CreateTextComp(BinaryReader& reader)
 	
 }
 
-tyr::Player1Controller* tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
+tyr::Player1Controller*       tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
 {
 	const float force = reader.Read<float>();
 	return new Player1Controller(force);
 }
 
-tyr::AnimatorComp* tyr::Factory::CreateAnimatorComp(BinaryReader& reader)
+tyr::AnimatorComp*			  tyr::Factory::CreateAnimatorComp(BinaryReader& reader)
 {
 	const AnimatorID id = reader.Read<AnimatorID>();
 	return new AnimatorComp(id);
 }
 
-tyr::BubbleShootingComp* tyr::Factory::CreateBubbleShootingComp(BinaryReader& reader)
+tyr::BubbleShootingComp*	  tyr::Factory::CreateBubbleShootingComp(BinaryReader& reader)
 {
 	UNREFERENCED_PARAMETER(reader);
 	return new BubbleShootingComp();
+}
+
+tyr::ZenChanComp*			  tyr::Factory::CreateZenChanComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new ZenChanComp();
+}
+
+tyr::MaitaComp*			      tyr::Factory::CreateMaitaComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new MaitaComp();
 }

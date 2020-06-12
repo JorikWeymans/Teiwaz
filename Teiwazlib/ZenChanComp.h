@@ -22,6 +22,8 @@ namespace tyr
 #endif
 	private:
 		CharacterControllerComp* m_pCont;
+		bool m_IsGoingLeft;
+		float m_RayLength;
 	public:
 		ZenChanComp(const ZenChanComp&) = delete;
 		ZenChanComp(ZenChanComp&&) = delete;

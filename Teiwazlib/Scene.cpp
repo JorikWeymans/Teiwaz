@@ -271,6 +271,12 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::BubbleShooting:
 			newObject->AddComponent(Factory::CreateComponent<BubbleShootingComp>(reader));
 			break;
+		case ComponentType::Maita:
+			newObject->AddComponent(Factory::CreateComponent<MaitaComp>(reader));
+			break;
+		case ComponentType::ZenChan:
+			newObject->AddComponent(Factory::CreateComponent<ZenChanComp>(reader));
+			break;
 		default:;
 			THROW_ERROR(L"This component is not implemented yet");
 		}

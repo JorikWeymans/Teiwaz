@@ -15,40 +15,45 @@ namespace tyr
 	class Player1Controller;
 	class AnimatorComp;
 	class BubbleShootingComp;
+	class MaitaComp;
+	class ZenChanComp;
 	class Scene;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
 	class Factory final
 	{
 	public:
 		template<typename  T>
-		static T* CreateComponent(BinaryReader& reader)
+		_NODISCARD static T* CreateComponent(BinaryReader& reader)
 		{
 			UNREFERENCED_PARAMETER(reader);
 			THROW_ERROR(L"This component is not implemented yet");
 		}
-		template<> static TransformComp*			CreateComponent(BinaryReader& reader) { return CreateTransformComp(reader); }
-		template<> static CharacterControllerComp*	CreateComponent(BinaryReader& reader) { return CreateCharacterControllerComp(reader); }
-		template<> static ColliderComp*				CreateComponent(BinaryReader& reader) { return CreateColliderComp(reader); }
-		template<> static RigidBodyComp*			CreateComponent(BinaryReader& reader) { return CreateRigidBodyComp(reader); }
-		template<> static FPSComp*					CreateComponent(BinaryReader& reader) { return CreateFPSComp(reader); }
-		template<> static TextureComp*              CreateComponent(BinaryReader& reader) { return CreateTextureComp(reader); }
-		template<> static TextComp*                 CreateComponent(BinaryReader& reader) { return CreateTextComp(reader); }
-		template<> static Player1Controller*		CreateComponent(BinaryReader& reader) { return CreatePlayer1Comp(reader); }
-		template<> static AnimatorComp*				CreateComponent(BinaryReader& reader) { return CreateAnimatorComp(reader); }
-		template<> static BubbleShootingComp*       CreateComponent(BinaryReader& reader) { return CreateBubbleShootingComp(reader); }
-
+		template<> _NODISCARD static TransformComp*			  CreateComponent(BinaryReader& reader) { return CreateTransformComp(reader); }
+		template<> _NODISCARD static CharacterControllerComp* CreateComponent(BinaryReader& reader) { return CreateCharacterControllerComp(reader); }
+		template<> _NODISCARD static ColliderComp*			  CreateComponent(BinaryReader& reader) { return CreateColliderComp(reader); }
+		template<> _NODISCARD static RigidBodyComp*			  CreateComponent(BinaryReader& reader) { return CreateRigidBodyComp(reader); }
+		template<> _NODISCARD static FPSComp*				  CreateComponent(BinaryReader& reader) { return CreateFPSComp(reader); }
+		template<> _NODISCARD static TextureComp*             CreateComponent(BinaryReader& reader) { return CreateTextureComp(reader); }
+		template<> _NODISCARD static TextComp*                CreateComponent(BinaryReader& reader) { return CreateTextComp(reader); }
+		template<> _NODISCARD static Player1Controller*		  CreateComponent(BinaryReader& reader) { return CreatePlayer1Comp(reader); }
+		template<> _NODISCARD static AnimatorComp*			  CreateComponent(BinaryReader& reader) { return CreateAnimatorComp(reader); }
+		template<> _NODISCARD static BubbleShootingComp*      CreateComponent(BinaryReader& reader) { return CreateBubbleShootingComp(reader); }
+		template<> _NODISCARD static MaitaComp*               CreateComponent(BinaryReader& reader) { return CreateMaitaComp(reader); }
+		template<> _NODISCARD static ZenChanComp*             CreateComponent(BinaryReader& reader) { return CreateZenChanComp(reader); }
 		
 	private:
-		static TransformComp*           CreateTransformComp(BinaryReader& reader);
-		static CharacterControllerComp* CreateCharacterControllerComp(BinaryReader& reader);
-		static ColliderComp*            CreateColliderComp(BinaryReader& reader);
-		static RigidBodyComp*           CreateRigidBodyComp(BinaryReader& reader);
-		static FPSComp*					CreateFPSComp(BinaryReader& reader);
-		static TextureComp*             CreateTextureComp(BinaryReader& reader);
-		static TextComp*                CreateTextComp(BinaryReader& reader);
-		static Player1Controller*       CreatePlayer1Comp(BinaryReader& reader);
-		static AnimatorComp*            CreateAnimatorComp(BinaryReader& reader);
-		static BubbleShootingComp*      CreateBubbleShootingComp(BinaryReader& reader);
+		_NODISCARD static TransformComp*           CreateTransformComp(BinaryReader& reader);
+		_NODISCARD static CharacterControllerComp* CreateCharacterControllerComp(BinaryReader& reader);
+		_NODISCARD static ColliderComp*            CreateColliderComp(BinaryReader& reader);
+		_NODISCARD static RigidBodyComp*           CreateRigidBodyComp(BinaryReader& reader);
+		_NODISCARD static FPSComp*				   CreateFPSComp(BinaryReader& reader);
+		_NODISCARD static TextureComp*             CreateTextureComp(BinaryReader& reader);
+		_NODISCARD static TextComp*                CreateTextComp(BinaryReader& reader);
+		_NODISCARD static Player1Controller*       CreatePlayer1Comp(BinaryReader& reader);
+		_NODISCARD static AnimatorComp*            CreateAnimatorComp(BinaryReader& reader);
+		_NODISCARD static BubbleShootingComp*      CreateBubbleShootingComp(BinaryReader& reader);
+		_NODISCARD static MaitaComp*               CreateMaitaComp(BinaryReader& reader);
+		_NODISCARD static ZenChanComp*             CreateZenChanComp(BinaryReader& reader);
 	public:
 		Factory() = delete;
 		~Factory() = delete;

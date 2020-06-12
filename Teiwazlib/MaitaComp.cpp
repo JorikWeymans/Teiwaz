@@ -2,6 +2,7 @@
 #include "MaitaComp.h"
 #include "TyrComps.h"
 #include "SceneObject.h"
+#include "BinaryWriter.h"
 tyr::MaitaComp::MaitaComp()
 	:BaseComponent(ComponentType::Maita, "Maita Component")
 {
@@ -34,6 +35,7 @@ void tyr::MaitaComp::InternalRenderEditor()
 
 void tyr::MaitaComp::Save(BinaryWriter& writer)
 {
+	writer.Write(m_Type);
 	UNREFERENCED_PARAMETER(writer);
 }
 #endif
