@@ -15,6 +15,13 @@ namespace tyr
 		BotCenter,
 		BotRight,
 	};
+	enum class ColliderDirection : UINT
+	{
+		Top,
+		Left,
+		Bot,
+		Right
+	};
 	enum class Tag : BYTE
 	{
 		None       = 0x00,

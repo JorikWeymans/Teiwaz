@@ -1,7 +1,10 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Elapser.h"
+
 namespace tyr
 {
+	struct RaycastHit;
 	class CharacterControllerComp;
 	class ZenChanComp : public BaseComponent
 	{
@@ -15,6 +18,8 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override {}
 
+
+		void OnColliderHit(RaycastHit hit);
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void InternalRenderEditor() override;
@@ -22,6 +27,9 @@ namespace tyr
 #endif
 	private:
 		CharacterControllerComp* m_pCont;
+		Elapser m_NoDiSwitchTimer;
+
+		bool m_CanSwitchDirection;
 		bool m_IsGoingLeft;
 		float m_RayLength;
 	public:

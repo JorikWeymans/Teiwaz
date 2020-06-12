@@ -92,6 +92,8 @@ void tyr::TeiwazEngine::Run()
 		if (fixedElapsed >= m_FixedTimeStep)
 		{
 			m_pContext->pTime->fixedDeltaTime = fixedElapsed;
+			
+			
 			m_pSceneManager->FixedUpdate();
 
 			m_pSceneManager->Render(); // TODO: enable vsync, should be changed

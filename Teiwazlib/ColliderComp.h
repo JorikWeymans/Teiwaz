@@ -1,9 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
 #include "GameContext.h"
+#include <functional>
 
 namespace tyr
 {
+	struct RaycastHit;
 	enum class PivotMode;
 	class Vector2;
 	class ColliderComp final : public BaseComponent
@@ -19,9 +21,16 @@ namespace tyr
 		void Render() const override {};
 
 		Rect GetColliderRect() const;
+		_NODISCARD bool IsDynamic() const noexcept { return m_IsDynamic; }
+
+		std::function<void(RaycastHit)> onColliderHitFunction;
+		
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void Save(BinaryWriter& writer) override;
+
+		void OnColliderHit(RaycastHit hit);
+		
 	protected:
 		void InternalRenderEditor() override;
 #endif

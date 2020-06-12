@@ -19,8 +19,7 @@ tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivo
 
 void tyr::ColliderComp::Initialize()
 {
-	if(!m_IsDynamic)
-		GET_CONTEXT->pPhysics->AddCollider(this);
+	GET_CONTEXT->pPhysics->AddCollider(this);
 }
 
 
@@ -76,14 +75,7 @@ void tyr::ColliderComp::RenderIsDynamicProperty()
 
 	if(prev != m_IsDynamic)
 	{
-		if(m_IsDynamic)
-		{
-			GET_CONTEXT->pPhysics->RemoveCollider(this);
-		}
-		else
-		{
-			GET_CONTEXT->pPhysics->AddCollider(this);
-		}
+		GET_CONTEXT->pPhysics->SwitchVector(this);
 	}
 }
 
@@ -96,6 +88,13 @@ void tyr::ColliderComp::Save(BinaryWriter& writer)
 	
 	writer.Write(m_Pivot);
 	writer.Write(m_IsDynamic);
+}
+
+void tyr::ColliderComp::OnColliderHit(RaycastHit hit)
+{
+	if (onColliderHitFunction)
+		onColliderHitFunction(hit);
+	
 }
 
 #endif

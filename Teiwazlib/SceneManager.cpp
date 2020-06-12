@@ -17,6 +17,7 @@
 #include "Factory.h"
 #include "./Editor/EUI.h"
 #include "CMScenes.h"
+#include "Physics.h"
 tyr::SceneManager::SceneManager()
 	: m_pContext(nullptr)
 	, m_pCurrentScene(nullptr)
@@ -80,7 +81,11 @@ void tyr::SceneManager::Update()
 void tyr::SceneManager::FixedUpdate()
 {
 	if (!m_pContext->paused)
+	{
+		m_pContext->pPhysics->Update();
 		m_pCurrentScene->FixedUpdate();
+
+	}
 }
 
 void tyr::SceneManager::FlushCurrentScene()

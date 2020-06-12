@@ -7,14 +7,17 @@
 #include "BinaryWriter.h"
 tyr::ZenChanComp::ZenChanComp()
 	: BaseComponent(ComponentType::ZenChan, "ZenChan Component")
-	, m_IsGoingLeft(false)
+	, m_pCont(nullptr)
+	, m_IsGoingLeft(true)
+	, m_RayLength(0.f)
+	, m_NoDiSwitchTimer(0.2f)
+	, m_CanSwitchDirection(false)
 {
 }
 
 tyr::ZenChanComp::~ZenChanComp()
 {
 }
-
 void tyr::ZenChanComp::Initialize()
 {
 	//auto pTextureComp = GET_COMPONENT<TextureComp>();
@@ -22,11 +25,22 @@ void tyr::ZenChanComp::Initialize()
 
 	m_pCont = GET_COMPONENT<CharacterControllerComp>();
 	m_RayLength = GET_COMPONENT<ColliderComp>()->GetColliderRect().width * .5f + 3.f;
+
+	auto col = GET_COMPONENT<ColliderComp>();
+
+	//https://stackoverflow.com/questions/7582546/using-generic-stdfunction-objects-with-member-functions-in-one-class
+	//This is an override, each collider can only have one onColliderHitFunction
+	col->onColliderHitFunction = std::bind(&ZenChanComp::OnColliderHit, this, std::placeholders::_1);
+	
 	
 }
 
+
 void tyr::ZenChanComp::Update()
 {
+	if (m_NoDiSwitchTimer.Update(TIME->deltaTime))
+		m_CanSwitchDirection = true;
+	
 }
 
 void tyr::ZenChanComp::FixedUpdate()
@@ -48,13 +62,37 @@ void tyr::ZenChanComp::FixedUpdate()
 	{
 		if(out.other->GetTag() == Tag::Background)
 		{
-			SDXL_ImGui_ConsoleLog("Hit Background");
+			//SDXL_ImGui_ConsoleLog("Hit Background");
 		}
 	}
 	
 }
 
 #ifdef EDITOR_MODE
+void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
+{
+	if(hit.other->GetTag() == Tag::Background)
+	{
+		if(m_pSceneObject->GetTransform()->GetPosition().x < hit.other->GetTransform()->GetPosition().x && 
+			!m_IsGoingLeft && 
+			m_CanSwitchDirection)
+		{
+			m_IsGoingLeft = true;
+			m_CanSwitchDirection = false;
+			m_NoDiSwitchTimer.Reset();
+		}
+
+		if (m_pSceneObject->GetTransform()->GetPosition().x > hit.other->GetTransform()->GetPosition().x &&
+			m_IsGoingLeft && 
+			m_CanSwitchDirection)
+		{
+			m_IsGoingLeft = false;
+			m_CanSwitchDirection = false;
+			m_NoDiSwitchTimer.Reset();
+		}
+	}
+}
+
 void tyr::ZenChanComp::Debug()
 {
 	auto pos = m_pSceneObject->GetTransform()->GetPosition();
