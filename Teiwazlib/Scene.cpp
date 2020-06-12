@@ -162,11 +162,15 @@ void tyr::Scene::RenderEditor()
 
 	
 	SDXL_ImGui_Separator();
-	
-	if(SDXL_ImGui_Button("Add SceneObject"))
+
+	if(m_pContext->paused) //Only Add SceneObject when paused
 	{
-		AddSceneObject(new SceneObject());
+		if (SDXL_ImGui_Button("Add SceneObject"))
+		{
+			AddSceneObject(new SceneObject());
+		}
 	}
+
 	
 	SDXL_ImGui_End();
 }

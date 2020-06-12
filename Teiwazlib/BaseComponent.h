@@ -15,7 +15,7 @@ namespace tyr
 	class BaseComponent
 	{
 	public:
-		BaseComponent(ComponentType type, const std::string& name);
+		BaseComponent(ComponentType type, const std::string& name, bool canBeRemoved = true);
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
@@ -37,6 +37,7 @@ namespace tyr
 #ifdef EDITOR_MODE
 		uint32_t m_UniqueId; //if you don't use a unique id, every comp will change its value, auto generated for ease of use
 		std::string m_ImGuiHeaderID;
+		bool m_IsComponentOpen, m_CanBeRemoved;
 		virtual void InternalRenderEditor() = 0;
 #endif
 	public:

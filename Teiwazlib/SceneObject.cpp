@@ -179,6 +179,10 @@ void tyr::SceneObject::Save(BinaryWriter& writer)
 
 void tyr::SceneObject::AddComponentButton()
 {
+	//When playing, you are not able to add Components
+	if (!m_pContext->paused)
+		return;
+	
 	SDXL_ImGui_Separator();
 
 	static ComponentType selectedComp = ComponentType::CharacterController;
@@ -283,6 +287,19 @@ void tyr::SceneObject::AddChild(SceneObject* pChild)
 void tyr::SceneObject::Translate(float x, float y)
 {
 	m_pTransform->Translate(x, y);
+}
+
+void tyr::SceneObject::RemoveComponent(BaseComponent* pComp)
+{
+	auto found = std::find(m_pComponents.begin(), m_pComponents.end(), pComp);
+	
+	if(found != m_pComponents.end())
+	{
+		SAFE_DELETE(*found);
+		m_pComponents.erase(found);
+		
+	}
+
 }
 
 

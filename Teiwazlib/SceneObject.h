@@ -72,7 +72,9 @@ namespace tyr
 			}
 			return nullptr;
 		}
-		
+
+
+		void RemoveComponent(BaseComponent* pComp);
 		const GameContext* GetGameContext() const noexcept { return m_pContext; };
 		const std::string& GetName()        const noexcept { return m_name; }
 		const SceneObject* GetParent()      const noexcept { return m_pParent; }

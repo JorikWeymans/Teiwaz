@@ -541,6 +541,7 @@ SDXLLibrary_API bool SDXL_ImGui_CollapsingHeader(const char* label, SDXL_ImGuiTr
 // **---------------**
 // * - Selectable -- *
 // **---------------**
+SDXLLibrary_API bool SDXL_ImGui_CollapsingHeader(const char* label, bool* p_open, SDXL_ImGuiTreeNodeFlags flags = 0); // when 'p_open' isn't NULL, display an additional small close button on upper right of the header
 SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool selected = false, SDXL_ImGuiSelectableFlags flags = 0, const SDXL::Float2 & size = SDXL::Float2(0, 0));  // "bool selected" carry the selection state (read-only). Selectable() is clicked is returns true so you can modify your selection state. size.x==0.0: use remaining width, size.x>0.0: specify width. size.y==0.0: use label height, size.y>0.0: specify height
 SDXLLibrary_API bool SDXL_ImGui_Selectable(const char* label, bool* p_selected, SDXL_ImGuiSelectableFlags flags = 0, const SDXL::Float2& size = SDXL::Float2(0, 0));       // "bool* p_selected" point to the selection state (read-write), as a convenient helper.
 

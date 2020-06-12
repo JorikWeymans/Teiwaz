@@ -5,7 +5,7 @@
 #include "GameContext.h"
 #include "BinaryWriter.h"
 tyr::TransformComp::TransformComp(const Transform& transform)
-	: tyr::BaseComponent(ComponentType::Transform, "Tansform component")
+	: tyr::BaseComponent(ComponentType::Transform, "Tansform component", false)
 	, m_pTransform(new Transform(transform))
 {
 }
