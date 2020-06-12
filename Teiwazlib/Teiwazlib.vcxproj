@@ -231,6 +231,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="MaitaComp.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player1Controller.h" />
     <ClInclude Include="Proprties.h" />
@@ -292,6 +293,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="MaitaComp.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player1Controller.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />

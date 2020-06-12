@@ -9,7 +9,7 @@
 #include <iomanip>
 #include "BinaryWriter.h"
 tyr::FPSComp::FPSComp(const FPSCompType& type, unsigned int textIndex)
-	: tyr::BaseComponent(ComponentType::FPS)
+	: tyr::BaseComponent(ComponentType::FPS, "FPS Component")
 	, m_FPSType(type)
 	, m_pTextComp(nullptr)
 	, m_TextIndex(textIndex)

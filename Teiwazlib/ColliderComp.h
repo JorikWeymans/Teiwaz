@@ -21,8 +21,9 @@ namespace tyr
 		Rect GetColliderRect() const;
 #ifdef EDITOR_MODE
 		void Debug() override;
-		void RenderEditor() override;
 		void Save(BinaryWriter& writer) override;
+	protected:
+		void InternalRenderEditor() override;
 #endif
 
 	private:

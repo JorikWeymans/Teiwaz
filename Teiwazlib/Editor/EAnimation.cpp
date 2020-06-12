@@ -17,9 +17,9 @@ tyr::EAnimation::EAnimation(GameContext* pContext)
 	, m_pAnimation(nullptr)
 	, m_pTemp(nullptr)
 	, m_Name{}
-	, m_ShowAnimation(true) // Default it to 0
+	, m_ShowAnimation(true)
 	, m_WindowIsOpen(false)
-{	}
+{}
 
 tyr::EAnimation::~EAnimation()
 {

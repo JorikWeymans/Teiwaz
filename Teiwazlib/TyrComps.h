@@ -13,3 +13,5 @@
 
 #include "BubbleShootingComp.h"
 #include "BubbleComp.h"
+
+#include "MaitaComp.h"

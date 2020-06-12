@@ -264,7 +264,7 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::Animator:
 			newObject->AddComponent(Factory::CreateComponent<AnimatorComp>(reader));
 			break;
-		case ComponentType::BubbleShootingComp:
+		case ComponentType::BubbleShooting:
 			newObject->AddComponent(Factory::CreateComponent<BubbleShootingComp>(reader));
 			break;
 		default:;

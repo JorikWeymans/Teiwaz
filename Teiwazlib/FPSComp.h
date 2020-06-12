@@ -18,6 +18,8 @@ namespace tyr
 		void Render() const override;
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
+	protected:
+		void InternalRenderEditor() override {};
 #endif
 	private:
 		FPSCompType m_FPSType;

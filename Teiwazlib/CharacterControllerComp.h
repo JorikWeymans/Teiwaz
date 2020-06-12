@@ -24,7 +24,7 @@ namespace tyr
 		
 #ifdef EDITOR_MODE
 		void Debug() override;
-		void RenderEditor() override;
+		void InternalRenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif
 	private:

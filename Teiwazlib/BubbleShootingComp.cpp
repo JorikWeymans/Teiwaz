@@ -10,7 +10,7 @@
 #include "TeiwazEngine.h"
 
 tyr::BubbleShootingComp::BubbleShootingComp()
-	: BaseComponent(ComponentType::BubbleShootingComp)
+	: BaseComponent(ComponentType::BubbleShooting, "Bubble Shooting Component")
 {
 }
 
@@ -34,25 +34,9 @@ void tyr::BubbleShootingComp::Update()
 	}
 }
 #ifdef EDITOR_MODE
-void tyr::BubbleShootingComp::RenderEditor()
+void tyr::BubbleShootingComp::InternalRenderEditor()
 {
-	std::string name = "Bubble Shooting Component##" + std::to_string(m_UniqueId);
-	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		SDXL_ImGui_PushItemWidth(100.f);
 
-		//Raycast
-
-		//
-		//SDXL_ImGui_Text("Height: \t");
-		//SDXL_ImGui_SameLine();
-		//name = "##ColW" + std::to_string(m_UniqueId);
-		//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
-
-
-		SDXL_ImGui_PopItemWidth();
-	}
-	//SDXL_ImGui_End();
 }
 
 void tyr::BubbleShootingComp::Save(BinaryWriter& writer)

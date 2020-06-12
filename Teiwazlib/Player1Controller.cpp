@@ -9,7 +9,7 @@
 
 
 tyr::Player1Controller::Player1Controller(float m_JumpForce)
-	: tyr::BaseComponent(ComponentType::Player1Controller)
+	: tyr::BaseComponent(ComponentType::Player1Controller, "Player1 Controller Component")
 	, m_pCont(nullptr)
 	, m_pBody(nullptr)
 	, m_pAni(nullptr)
@@ -89,24 +89,15 @@ void tyr::Player1Controller::Save(BinaryWriter& writer)
 	
 }
 
-void tyr::Player1Controller::RenderEditor()
+void tyr::Player1Controller::InternalRenderEditor()
 {
-	const std::string strUniqueID = std::to_string(m_UniqueId);
-	std::string name = "Player1 Controller Component##" + strUniqueID;
+	std::string name;
 
-	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		SDXL_ImGui_PushItemWidth(100.f);
-
-		//m_JumpForce
-		SDXL_ImGui_Text("JumpForce: \t");
-		SDXL_ImGui_SameLine();
-		name = "##Player1ControllerComp" + strUniqueID;
-		SDXL_ImGui_DragFloat(name.c_str(), &m_JumpForce, 1, 10, 10);
-
-
-		SDXL_ImGui_PopItemWidth();
-	}
+	//m_JumpForce
+	SDXL_ImGui_Text("JumpForce: \t");
+	SDXL_ImGui_SameLine();
+	name = "##Player1ControllerComp" + std::to_string(m_UniqueId);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_JumpForce, 1, 10, 10);
 }
 
 #endif

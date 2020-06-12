@@ -26,11 +26,13 @@ namespace tyr
 		void SetSourceRect(const Rect& rect);
 
 #ifdef EDITOR_MODE
-		void RenderEditor() override;
 		void EditorTexture(std::string& name);
 		void EditorPosition(std::string& name);
 		void EditorOffset(std::string& name);
 		void Save(BinaryWriter& writer) override;
+
+	protected:
+		void InternalRenderEditor() override;
 #endif
 	private:
 		TextureID m_TextureID;

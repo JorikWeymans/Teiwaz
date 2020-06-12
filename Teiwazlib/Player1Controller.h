@@ -20,7 +20,8 @@ namespace tyr
 		
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
-		void RenderEditor() override;
+	protected:
+		void InternalRenderEditor() override;
 #endif
 	private:
 		CharacterControllerComp* m_pCont;

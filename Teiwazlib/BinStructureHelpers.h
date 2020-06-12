@@ -11,6 +11,7 @@ namespace tyr
 
 	enum class ComponentType : unsigned int //UINT
 	{
+		//Not in alphabetical order because when the first ones are added, the order cannot change
 		CharacterController,
 		Collider,
 		FPS,
@@ -20,14 +21,16 @@ namespace tyr
 		Transform,
 		Player1Controller,
 		Animator,
-		BubbleShootingComp,
-		BubbleComp,
+		BubbleShooting,
+		Bubble,
+		Maita,
+		
 		//Append here
 
 
 	};
 
-	enum class ContentType : unsigned char //BYTE (don't Expect to go over 256 values)
+	enum class ContentType : unsigned char //BYTE (I don't Expect to go over 256 values)
 	{
 		Texture,
 		Font,

@@ -23,13 +23,9 @@ namespace tyr
 
 		void SetPositionX(float x, bool convert = false);
 		void SetPositionY(float y, bool convert = false);
-		
-#ifdef EDITOR_MODE
-		void RenderEditor() override;
-		void Save(BinaryWriter& writer) override;
-#endif
+
 		static TransformComp* CreateComponent(BinaryReader& reader);
-		
+
 		const Transform& GetTransform() const;
 		Vector2 GetPosition() const;
 		Vector2 GetPositionRaw() const;
@@ -37,6 +33,14 @@ namespace tyr
 		float GetRotation() const;
 
 		Transform* GetTr();
+		
+#ifdef EDITOR_MODE
+		void Save(BinaryWriter& writer) override;
+
+	protected:
+		void InternalRenderEditor() override;
+#endif
+
 		
 	private:
 		Transform* m_pTransform;

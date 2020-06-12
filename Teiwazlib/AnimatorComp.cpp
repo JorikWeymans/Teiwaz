@@ -10,7 +10,7 @@
 #include "ContentManager.h"
 
 tyr::AnimatorComp::AnimatorComp()
-	: tyr::BaseComponent(ComponentType::Animator)
+	: tyr::BaseComponent(ComponentType::Animator, "Animator Component")
 	, m_pAnimator(nullptr)
 	, m_pTextureComp(nullptr)
 {
@@ -70,15 +70,15 @@ void tyr::AnimatorComp::Debug()
 {
 }
 
-void tyr::AnimatorComp::RenderEditor()
+void tyr::AnimatorComp::InternalRenderEditor()
 {
 	//if(SDXL_ImGui_Begin("Inspector"))
 	{
-		std::string name = "Animator Component##" + std::to_string(m_UniqueId);
-		if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			SDXL_ImGui_PushItemWidth(100.f);
-
+		//std::string name = "Animator Component##" + std::to_string(m_UniqueId);
+		//if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
+		//{
+		//	SDXL_ImGui_PushItemWidth(100.f);
+		//
 			//Raycast
 
 			//
@@ -88,8 +88,8 @@ void tyr::AnimatorComp::RenderEditor()
 			//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
 
 
-			SDXL_ImGui_PopItemWidth();
-		}
+			//SDXL_ImGui_PopItemWidth();
+		//}
 		//SDXL_ImGui_End();
 	}
 }

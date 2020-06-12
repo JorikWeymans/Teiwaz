@@ -3,7 +3,7 @@
 #include "TyrComps.h"
 #include "SceneObject.h"
 tyr::BubbleComp::BubbleComp()
-	: BaseComponent(ComponentType::BubbleComp)
+	: BaseComponent(ComponentType::Bubble, "Bubble Component")
 	, m_pBody(nullptr)
 {
 }
@@ -38,7 +38,7 @@ void tyr::BubbleComp::FixedUpdate()
 }
 
 #ifdef EDITOR_MODE
-void tyr::BubbleComp::RenderEditor()
+void tyr::BubbleComp::InternalRenderEditor()
 {
 }
 

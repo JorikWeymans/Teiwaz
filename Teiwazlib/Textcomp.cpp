@@ -9,7 +9,7 @@
 #include "TeiwazEngine.h"
 #include "BinaryWriter.h"
 tyr::TextComp::TextComp(const std::string& textPath, const std::string& text, const Color& color, const Vector2& offset)
-	: tyr::BaseComponent(ComponentType::Text)
+	: tyr::BaseComponent(ComponentType::Text, "Text Component")
 	, m_TextPath(textPath)
 	, m_Text(text)
 	, m_Color(color)

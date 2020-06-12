@@ -5,7 +5,7 @@
 #include "GameContext.h"
 #include "BinaryWriter.h"
 tyr::TransformComp::TransformComp(const Transform& transform)
-	: tyr::BaseComponent(ComponentType::Transform)
+	: tyr::BaseComponent(ComponentType::Transform, "Tansform component")
 	, m_pTransform(new Transform(transform))
 {
 }
@@ -81,38 +81,32 @@ void tyr::TransformComp::SetPositionY(float y, bool convert)
 
 
 #ifdef EDITOR_MODE
-void tyr::TransformComp::RenderEditor()
+void tyr::TransformComp::InternalRenderEditor()
 {
 	const std::string strUniqueId = std::to_string(m_UniqueId);
-	std::string name = "Tansform##" + strUniqueId;
-	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		SDXL_ImGui_PushItemWidth(100.f);
-		//POSITION
-		SDXL_ImGui_Text("Position:\t");
-		SDXL_ImGui_SameLine();
+	std::string name;
+	
+	//POSITION
+	SDXL_ImGui_Text("Position:\t");
+	SDXL_ImGui_SameLine();
 
-		name = "x##P" + strUniqueId;
-		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.x, 1, 0, GET_CONTEXT->pGameSpace->width);
-		SDXL_ImGui_SameLine();
-		name = "y##P" + strUniqueId;
-		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.y, 1,0, GET_CONTEXT->pGameSpace->height);
-		
-		
-		//SCALE
-		name = "Scale:   \t";
-		SDXL_ImGui_Text(name.c_str());
-		SDXL_ImGui_SameLine();
+	name = "x##P" + strUniqueId;
+	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.x, 1, 0, GET_CONTEXT->pGameSpace->width);
+	SDXL_ImGui_SameLine();
+	name = "y##P" + strUniqueId;
+	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.y, 1, 0, GET_CONTEXT->pGameSpace->height);
 
-		name = "x##S" + strUniqueId;
-		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->scale.x, 1, 0.1f, 10.f);
-		SDXL_ImGui_SameLine();
-		name = "y##S" + strUniqueId;
-		SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->scale.y, 1, 0.1f, 10.f);
 
-		
-		SDXL_ImGui_PopItemWidth();
-	}
+	//SCALE
+	name = "Scale:   \t";
+	SDXL_ImGui_Text(name.c_str());
+	SDXL_ImGui_SameLine();
+
+	name = "x##S" + strUniqueId;
+	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->scale.x, 1, 0.1f, 10.f);
+	SDXL_ImGui_SameLine();
+	name = "y##S" + strUniqueId;
+	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->scale.y, 1, 0.1f, 10.f);
 }
 
 void tyr::TransformComp::Save(BinaryWriter& writer)

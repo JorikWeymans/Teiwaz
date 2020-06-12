@@ -13,7 +13,7 @@ tyr::TextureComp::TextureComp(TextureID id, const PivotMode& pivotMode,
 {}
 
 tyr::TextureComp::TextureComp(TextureID id, const Vector2& pivot, const Rect& rect, const Vector2& offset)
-	: tyr::BaseComponent(ComponentType::Texture)
+	: tyr::BaseComponent(ComponentType::Texture, "Texture Component")
 	, m_TextureID(id)
 	, m_pTransform(nullptr)
 	, m_Pivot(pivot)
@@ -86,29 +86,22 @@ void tyr::TextureComp::SetSourceRect(const Rect& rect)
 }
 #ifdef EDITOR_MODE
 
-void tyr::TextureComp::RenderEditor()
+void tyr::TextureComp::InternalRenderEditor()
 {
-	std::string name = "Texture Component##" + std::to_string(m_UniqueId);
-	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-	{
+	std::string name = "";
 
-		SDXL_ImGui_PushItemWidth(100.f);
-		EditorTexture(name);
+	
+	EditorTexture(name);
 
-		SDXL_ImGui_Text("Text map:\t");
-		SDXL_ImGui_SameLine();
-		static bool b = false;
-		SDXL_ImGui_Checkbox("##Box", &b);
-		
-		EditorPosition(name);
-		EditorOffset(name);
-		
+	SDXL_ImGui_Text("Text map:\t");
+	SDXL_ImGui_SameLine();
+	static bool b = false;
+	SDXL_ImGui_Checkbox("##Box", &b);
+
+	EditorPosition(name);
+	EditorOffset(name);
 
 
-		SDXL_ImGui_PopItemWidth();
-
-		
-	}
 }
 
 void tyr::TextureComp::EditorTexture(std::string& name)

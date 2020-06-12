@@ -226,6 +226,9 @@
     <ClInclude Include="EnumDropdown.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="MaitaComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -389,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="EnumDropdown.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="MaitaComp.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -221,9 +221,12 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::Animator:
 				theComp = new AnimatorComp();
 			break;
-			case ComponentType::BubbleShootingComp:
+			case ComponentType::BubbleShooting:
 				theComp = new BubbleShootingComp();
 			break;
+			case ComponentType::Maita:
+				theComp = new MaitaComp();
+				break;
 			default:
 				usedNotImplemented = true;
 			 }

@@ -24,6 +24,10 @@ namespace tyr
 		void SetText(const std::string& newText);
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
+
+
+	protected:
+		void InternalRenderEditor() override {}
 #endif
 
 	private:

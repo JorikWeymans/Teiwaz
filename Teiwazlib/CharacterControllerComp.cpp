@@ -9,7 +9,7 @@
 #include "BinaryWriter.h"
 #include "time.h"
 tyr::CharacterControllerComp::CharacterControllerComp()
-	: tyr::BaseComponent(ComponentType::CharacterController)
+	: tyr::BaseComponent(ComponentType::CharacterController, "CharacterController Component")
 	, m_pTransform(nullptr)
 	, m_pCollider(nullptr)
 	, m_Force(Vector2(0.f,0.f))
@@ -152,27 +152,14 @@ void tyr::CharacterControllerComp::Debug()
 		static_cast<SDXL::SDXLVec2>(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset) + (Vector2(1, 0) * (m_pCollider->GetColliderRect().width / 2))), static_cast<SDXL::SDXLVec4>(ColorWhite));
 }
 
-void tyr::CharacterControllerComp::RenderEditor()
+void tyr::CharacterControllerComp::InternalRenderEditor()
 {
-	std::string name = "CharacterController Component##" + std::to_string(m_UniqueId);
-	if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-	{
-		SDXL_ImGui_PushItemWidth(100.f);
-
-		//Raycast
-		SDXL_ImGui_Text("Offset:  \t");
-		SDXL_ImGui_SameLine();
-		name = "##Offset" + std::to_string(m_UniqueId);
-		SDXL_ImGui_DragFloat(name.c_str(), &m_RayCastOffset, 1, 0, 48);
-		//
-		//SDXL_ImGui_Text("Height: \t");
-		//SDXL_ImGui_SameLine();
-		//name = "##ColW" + std::to_string(m_UniqueId);
-		//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
-
-
-		SDXL_ImGui_PopItemWidth();
-	}
+	std::string name;
+	//Raycast
+	SDXL_ImGui_Text("Offset:  \t");
+	SDXL_ImGui_SameLine();
+	name = "##CharControllerOffset" + std::to_string(m_UniqueId);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_RayCastOffset, 1, 0, 48);
 
 }
 
