@@ -75,8 +75,8 @@ tyr::Player1Controller* tyr::Factory::CreatePlayer1Comp(BinaryReader& reader)
 
 tyr::AnimatorComp* tyr::Factory::CreateAnimatorComp(BinaryReader& reader)
 {
-	UNREFERENCED_PARAMETER(reader);
-	return new AnimatorComp();
+	const AnimatorID id = reader.Read<AnimatorID>();
+	return new AnimatorComp(id);
 }
 
 tyr::BubbleShootingComp* tyr::Factory::CreateBubbleShootingComp(BinaryReader& reader)

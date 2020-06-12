@@ -67,6 +67,8 @@ namespace tyr
 		
 		void EditorTextureDropDown(const char* imGuiID, TextureID& textureID);
 		void EditorAnimationDropDown(const char* imGUiID, AnimationID& animationID);
+		void EditorAnimatorDropDown(const char* imGUiID, AnimatorID& animatorID);
+		
 		void Save();
 
 		friend TextureComp;

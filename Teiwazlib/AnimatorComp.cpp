@@ -10,8 +10,14 @@
 #include "ContentManager.h"
 
 tyr::AnimatorComp::AnimatorComp()
+	:AnimatorComp(0)
+{
+}
+
+tyr::AnimatorComp::AnimatorComp(AnimatorID id)
 	: tyr::BaseComponent(ComponentType::Animator, "Animator Component")
 	, m_pAnimator(nullptr)
+	, m_AnimatorID(id)
 	, m_pTextureComp(nullptr)
 {
 }
@@ -23,7 +29,7 @@ tyr::AnimatorComp::~AnimatorComp()
 
 void tyr::AnimatorComp::Initialize()
 {
-	m_pAnimator = CONTENT_MANAGER->GetAnimator(0);
+	m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
 	
 
 	m_pTextureComp = m_pSceneObject->GetComponent<TextureComp>();
@@ -72,30 +78,23 @@ void tyr::AnimatorComp::Debug()
 
 void tyr::AnimatorComp::InternalRenderEditor()
 {
-	//if(SDXL_ImGui_Begin("Inspector"))
+	SDXL_ImGui_Text("Animator:\t");
+	SDXL_ImGui_SameLine();
+
+	AnimatorID prev = m_AnimatorID;
+	const std::string name = "##AnimatorCompAnimatorSelection" + std::to_string(m_UniqueId);
+	
+	ContentManager::GetInstance()->EditorAnimatorDropDown(name.c_str(), m_AnimatorID);
+
+	if(prev != m_AnimatorID)
 	{
-		//std::string name = "Animator Component##" + std::to_string(m_UniqueId);
-		//if (SDXL_ImGui_CollapsingHeader(name.c_str(), SDXL_ImGuiTreeNodeFlags_DefaultOpen))
-		//{
-		//	SDXL_ImGui_PushItemWidth(100.f);
-		//
-			//Raycast
-
-			//
-			//SDXL_ImGui_Text("Height: \t");
-			//SDXL_ImGui_SameLine();
-			//name = "##ColW" + std::to_string(m_UniqueId);
-			//SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
-
-
-			//SDXL_ImGui_PopItemWidth();
-		//}
-		//SDXL_ImGui_End();
+		m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
 	}
 }
 
 void tyr::AnimatorComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
+	writer.Write(m_AnimatorID);
 }
 #endif

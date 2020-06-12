@@ -222,6 +222,11 @@ void tyr::ContentManager::EditorAnimationDropDown(const char* imGUiID, Animation
 	m_pCMAnimations->ItemDropDown(imGUiID, animationID);
 }
 
+void tyr::ContentManager::EditorAnimatorDropDown(const char* imGUiID, AnimatorID& animatorID)
+{
+	m_pCMAnimators->ItemDropDown(imGUiID, animatorID);
+}
+
 void tyr::ContentManager::Save()
 {
 	BinaryWriter writer(CONTENT_PATH);

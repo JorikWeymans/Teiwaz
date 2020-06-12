@@ -10,6 +10,7 @@ namespace tyr
 	{
 	public:
 		explicit AnimatorComp();
+		explicit AnimatorComp(AnimatorID id);
 		~AnimatorComp() override;
 
 		void Initialize() override;
@@ -28,7 +29,9 @@ namespace tyr
 
 	private:
 		Animator* m_pAnimator;
+		AnimatorID m_AnimatorID;
 		TextureComp* m_pTextureComp;
+		
 	public:
 		//AnimatorComp() = delete;
 		AnimatorComp(const AnimatorComp&) = delete;
