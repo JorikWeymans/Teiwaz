@@ -1,13 +1,17 @@
 #pragma once
 namespace tyr
 {
+	struct Color_POD
+	{
+		float r, g, b, a;
+	};
 	class Color
 	{
 	public:
 		explicit Color(float r, float g, float b, float a = 1.f);
 		explicit operator SDXL::SDXLVec4() const;
 		explicit operator SDXL::Float4() const;
-
+		Color_POD ToPOD() const;
 		
 		float r, g, b, a;
 	};

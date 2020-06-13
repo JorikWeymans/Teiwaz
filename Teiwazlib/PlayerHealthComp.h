@@ -4,7 +4,7 @@
 
 namespace tyr
 {
-	class PlayerHealthComp : public BaseComponent
+	class PlayerHealthComp final : public BaseComponent
 	{
 	public:
 		explicit PlayerHealthComp();

@@ -16,3 +16,8 @@ tyr::Color::operator SDXL::Float4() const
 {
 	return SDXL::Float4( r,g,b,a );
 }
+
+tyr::Color_POD tyr::Color::ToPOD() const
+{
+	return Color_POD{ r,g,b,a };
+}

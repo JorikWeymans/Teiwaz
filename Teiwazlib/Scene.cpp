@@ -158,6 +158,11 @@ tyr::SceneObject* tyr::Scene::GetFirstObjectWithName(const std::string& name) co
 	return nullptr;
 }
 
+void tyr::Scene::PostInitialize()
+{
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* pS) { pS->PostInitialize(); });
+}
+
 #ifdef EDITOR_MODE
 void tyr::Scene::RenderEditor()
 {
@@ -252,10 +257,7 @@ tyr::Scene* tyr::Scene::GenerateNew(const std::string& name, const std::string& 
 	return returnScene;
 }
 
-void tyr::Scene::PostInitialize()
-{
-	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* pS) { pS->PostInitialize(); });
-}
+
 
 void tyr::Scene::ESceneObjectManipulation()
 {

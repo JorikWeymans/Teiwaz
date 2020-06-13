@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 namespace tyr
 {
-	class MaitaComp : public BaseComponent
+	class MaitaComp final : public BaseComponent
 	{
 	public:
 		MaitaComp();

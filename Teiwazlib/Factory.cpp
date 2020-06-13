@@ -119,5 +119,7 @@ tyr::HealthDisplayComp*       tyr::Factory::CreateHealthDisplayComp(BinaryReader
 tyr::MenuSelectorComp*        tyr::Factory::CreateMenuSelectorComp(BinaryReader& reader)
 {
 	UNREFERENCED_PARAMETER(reader);
-	return new MenuSelectorComp();
+	const Color_POD selectedColor    = reader.Read<Color_POD>();
+	const Color_POD notSelectedColor = reader.Read<Color_POD>();
+	return new MenuSelectorComp(selectedColor, notSelectedColor);
 }

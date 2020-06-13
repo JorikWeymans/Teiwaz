@@ -6,7 +6,7 @@ namespace tyr
 {
 	class TextureComp;
 	
-	class HealthDisplayComp : public BaseComponent
+	class HealthDisplayComp final : public BaseComponent
 	{
 	public:
 		explicit HealthDisplayComp();

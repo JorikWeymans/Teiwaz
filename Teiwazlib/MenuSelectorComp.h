@@ -1,11 +1,15 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Color.h"
+
 namespace tyr
 {
-	class MenuSelectorComp : public BaseComponent
+	class TextComp;
+	class MenuSelectorComp final : public BaseComponent
 	{
 	public:
-		MenuSelectorComp();
+		explicit MenuSelectorComp(const Color& selected = Color(1.f, 1.f, 1.f), const Color& notSelected = Color(.7f, .7f,.7f));
+		explicit MenuSelectorComp(const Color_POD& selected, const Color_POD& notSelected);
 		~MenuSelectorComp();
 
 		void Initialize() override;
@@ -20,6 +24,10 @@ namespace tyr
 		void InternalRenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif
+	private:
+		TextComp* m_pStartGame, * m_pQuitGame;
+		UINT m_Selected;
+		Color m_SelectedColor, m_NotSelectedColor;
 	public:
 		MenuSelectorComp(const MenuSelectorComp&) = delete;
 		MenuSelectorComp(MenuSelectorComp&&) = delete;

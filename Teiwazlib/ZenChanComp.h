@@ -8,7 +8,7 @@ namespace tyr
 	struct RaycastHit;
 	class CharacterControllerComp;
 	class RigidBodyComp;
-	class ZenChanComp : public BaseComponent
+	class ZenChanComp final : public BaseComponent
 	{
 	public:
 		explicit ZenChanComp(float moveSpeed = 150.f);
