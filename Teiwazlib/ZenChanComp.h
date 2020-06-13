@@ -7,10 +7,11 @@ namespace tyr
 {
 	struct RaycastHit;
 	class CharacterControllerComp;
+	class RigidBodyComp;
 	class ZenChanComp : public BaseComponent
 	{
 	public:
-		ZenChanComp(float moveSpeed = 150.f);
+		explicit ZenChanComp(float moveSpeed = 150.f);
 		~ZenChanComp();
 
 		void Initialize() override;
@@ -28,6 +29,8 @@ namespace tyr
 #endif
 	private:
 		CharacterControllerComp* m_pCont;
+		RigidBodyComp* m_pBody;
+		Elapser m_JumpCounter;
 		Elapser m_NoDiSwitchTimer;
 		bool m_CanSwitchDirection;
 		bool m_IsGoingLeft;

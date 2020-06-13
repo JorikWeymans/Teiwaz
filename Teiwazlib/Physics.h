@@ -32,7 +32,7 @@ namespace tyr
 		static void AddCollider(ColliderComp* pCollider, std::vector<ColliderComp*>& vec);
 		static void RemoveCollider(ColliderComp* pCollider, std::vector<ColliderComp*>& vec);
 
-		bool Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit& hit);
+		bool Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit& hit, ColliderComp* pCaller = nullptr);
 	public:
 		Physics(const Physics&) = delete;
 		Physics(Physics&&) = delete;

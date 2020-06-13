@@ -46,21 +46,23 @@ void tyr::ColliderComp::Debug()
 void tyr::ColliderComp::InternalRenderEditor()
 {
 	std::string name;
+	std::string idString = std::to_string(m_UniqueId);
 	//POSITION
 	SDXL_ImGui_Text("Width:   \t");
 	SDXL_ImGui_SameLine();
-	name = "##ColliderCompColH" + std::to_string(m_UniqueId);
+	name = "##ColliderCompColH" + idString;
 	SDXL_ImGui_DragFloat(name.c_str(), &m_Width, 1, 0, GET_CONTEXT->pGameSpace->width);
 
 	SDXL_ImGui_Text("Height:  \t");
 	SDXL_ImGui_SameLine();
-	name = "##ColliderCompColW" + std::to_string(m_UniqueId);
+	name = "##ColliderCompColW" + idString;
 	SDXL_ImGui_DragFloat(name.c_str(), &m_Height, 1, 0, GET_CONTEXT->pGameSpace->height);
 
 
 	SDXL_ImGui_Text("Pivot:   \t");
 	SDXL_ImGui_SameLine();
-	EnumDropdown::GetInstance()->PivotModeDropDown("##ColliderCompPivotMode", m_Pivot);
+	name = "##ColliderCompPivotMode" + idString;
+	EnumDropdown::GetInstance()->PivotModeDropDown(name.c_str(), m_Pivot);
 
 	RenderIsDynamicProperty();
 	
