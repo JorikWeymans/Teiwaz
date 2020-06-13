@@ -118,6 +118,8 @@ void tyr::ContentManager::Initialize(GameContext* pContext)
 			}
 
 		case ContentType::Font:
+			LoadFont("Fonts/Arcade_20.fnt");
+
 			if(size > 0)
 				THROW_ERROR(L"Font is not implemented yet");
 

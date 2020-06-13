@@ -228,7 +228,7 @@ void tyr::SceneObject::AddComponentButton()
 				theComp = new RigidBodyComp(-150.f);
 			break;
 			case ComponentType::Text:
-				usedNotImplemented = true;
+				theComp = new TextComp(0, "New Text", Color(1, 1, 1, 1));
 			break;
 			case ComponentType::Texture:
 				theComp = new TextureComp(0);

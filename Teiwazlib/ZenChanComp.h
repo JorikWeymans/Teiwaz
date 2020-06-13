@@ -20,7 +20,6 @@ namespace tyr
 		void FixedUpdate() override;
 		void Render() const override {}
 
-
 		void OnColliderHit(RaycastHit hit);
 #ifdef EDITOR_MODE
 		void Debug() override;

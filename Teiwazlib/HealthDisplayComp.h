@@ -1,7 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
+#include <functional>
+
 namespace tyr
 {
+	class TextureComp;
+	
 	class HealthDisplayComp : public BaseComponent
 	{
 	public:
@@ -19,9 +23,13 @@ namespace tyr
 		void Save(BinaryWriter& writer) override;
 	protected:
 		void InternalRenderEditor() override;
+		
 #endif
 	private:
-
+		TextureComp* m_pTexture;
+		
+		void OnHealthChanged(int amountLeft);
+		std::function<void(int)> m_OnHealthChangedFunction;
 	public:
 		HealthDisplayComp(const HealthDisplayComp&) = delete;
 		HealthDisplayComp(HealthDisplayComp&&) = delete;

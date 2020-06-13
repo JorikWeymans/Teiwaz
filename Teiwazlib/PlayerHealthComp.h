@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
+#include <functional>
+
 namespace tyr
 {
 	class PlayerHealthComp : public BaseComponent
@@ -15,7 +17,12 @@ namespace tyr
 		void Render() const override {}
 
 		_NODISCARD UINT GetAmount() const noexcept { return m_NmbrLives; }
-		void RemoveHealth();
+		void LoseHealth();
+
+		void AddOnHealthChangedFunction(std::function<void(int)>*func);
+		void RemoveOnHealthChangedFunction(std::function<void(int)>* func);
+		
+		
 		
 #ifdef EDITOR_MODE
 		void Debug() override {};
@@ -25,6 +32,7 @@ namespace tyr
 #endif
 	private:
 		UINT m_NmbrLives;
+		std::vector<std::function<void(int)>*> m_pOnHealthChangedFunctions;
 	public:
 		PlayerHealthComp(const PlayerHealthComp&) = delete;
 		PlayerHealthComp(PlayerHealthComp&&) = delete;

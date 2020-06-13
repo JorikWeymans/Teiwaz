@@ -8,12 +8,13 @@
 #include "Font.h"
 #include "TeiwazEngine.h"
 #include "BinaryWriter.h"
-tyr::TextComp::TextComp(const std::string& textPath, const std::string& text, const Color& color, const Vector2& offset)
+
+tyr::TextComp::TextComp(FontID id, const std::string& text, const Color& color, const Vector2& offset)
 	: tyr::BaseComponent(ComponentType::Text, "Text Component")
-	, m_TextPath(textPath)
+	, m_TextPath("None")
 	, m_Text(text)
 	, m_Color(color)
-	, m_Font(0)
+	, m_FontID(id)
 	, m_pTransform(nullptr)
 	, m_Offset(offset)
 {}
@@ -25,7 +26,9 @@ tyr::TextComp::~TextComp()
 void tyr::TextComp::Initialize()
 {
 	m_pTransform = m_pSceneObject->GetTransform();
-	m_Font = CONTENT_MANAGER->LoadFont(m_TextPath);
+#ifdef EDITOR_MODE
+	strcpy_s(m_TempText, m_Text.c_str());
+#endif
 }
 
 void tyr::TextComp::Update()
@@ -42,7 +45,7 @@ void tyr::TextComp::Render() const
 	pos.x += m_Offset.x;
 	pos.y += m_Offset.y;
 	 
-	SDXL_RenderText(CONTENT_MANAGER->GetFont(m_Font)->SDXL(), std::wstring(m_Text.begin(), m_Text.end()), { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
+	SDXL_RenderText(CONTENT_MANAGER->GetFont(m_FontID)->SDXL(), std::wstring(m_Text.begin(), m_Text.end()), { pos.x, pos.y }, static_cast<SDXL::SDXLVec4>(m_Color));
 }
 
 void tyr::TextComp::Destroy()
@@ -59,7 +62,7 @@ void tyr::TextComp::Save(BinaryWriter& writer)
 	UNREFERENCED_PARAMETER(writer);
 	writer.Write(m_Type);
 
-	writer.WriteString(m_TextPath);
+	writer.Write(m_FontID);
 	writer.WriteString(m_Text);
 
 	writer.Write(m_Color.r);
@@ -69,6 +72,35 @@ void tyr::TextComp::Save(BinaryWriter& writer)
 
 	writer.Write(m_Offset.ToPOD());
 	
+	
+}
+
+void tyr::TextComp::InternalRenderEditor()
+{
+	std::string name;
+	std::string stringedID = std::to_string(m_UniqueId);
+
+
+	
+	SDXL_ImGui_Text("Text:   \t");
+	SDXL_ImGui_SameLine();
+
+	name = "##TextCompText" + stringedID;
+	SDXL_ImGui_InputText(name.c_str(), m_TempText, ARRAY_SIZE(m_TempText));
+
+
+	name = "Save##TextCompTextSave" + stringedID;
+	SDXL_ImGui_SameLine();
+	if(SDXL_ImGui_Button(name.c_str()))
+	{
+		m_Text = std::string(m_TempText);
+
+		for(int i{0}; i < ARRAY_SIZE(m_TempText); i++)
+		{
+			m_TempText[i] = static_cast<char>('\0');
+		}
+		strcpy_s(m_TempText, m_Text.c_str());
+	}
 	
 }
 #endif

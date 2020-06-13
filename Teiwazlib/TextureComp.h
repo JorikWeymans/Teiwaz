@@ -25,7 +25,7 @@ namespace tyr
 
 		void Destroy();
 		void SetSourceRect(const Rect& rect);
-
+		void SetRepeatingX(int value) noexcept { m_RepeatX = value; }
 #ifdef EDITOR_MODE
 
 		void Save(BinaryWriter& writer) override;

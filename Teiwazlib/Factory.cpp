@@ -58,7 +58,7 @@ tyr::TextureComp*             tyr::Factory::CreateTextureComp(BinaryReader& read
 tyr::TextComp*                tyr::Factory::CreateTextComp(BinaryReader& reader)
 {
 
-	const std::string path   = reader.ReadString();
+	const FontID fontID      = reader.Read<FontID>();
 	const std::string text   = reader.ReadString();
 
 	const float r            = reader.Read<float>();
@@ -68,7 +68,7 @@ tyr::TextComp*                tyr::Factory::CreateTextComp(BinaryReader& reader)
 
 	const Vector2_POD offset = reader.Read<Vector2_POD>();
 	
-	return new TextComp(path, text, Color(r, g, b, a), Vector2(offset));
+	return new TextComp(fontID, text, Color(r, g, b, a), Vector2(offset));
 
 	
 }

@@ -100,28 +100,15 @@ void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 	UNREFERENCED_PARAMETER(hit);
 	//if (hit.other->GetTag() == Tag::Player)
 		
-
-
-	//if(hit.other->GetTag() == Tag::Background)
-	//{
-	//	if(m_pSceneObject->GetTransform()->GetPosition().x < hit.other->GetTransform()->GetPosition().x && 
-	//		!m_IsGoingLeft && 
-	//		m_CanSwitchDirection)
-	//	{
-	//		m_IsGoingLeft = true;
-	//		m_CanSwitchDirection = false;
-	//		m_NoDiSwitchTimer.Reset();
-	//	}
-	//
-	//	if (m_pSceneObject->GetTransform()->GetPosition().x > hit.other->GetTransform()->GetPosition().x &&
-	//		m_IsGoingLeft && 
-	//		m_CanSwitchDirection)
-	//	{
-	//		m_IsGoingLeft = false;
-	//		m_CanSwitchDirection = false;
-	//		m_NoDiSwitchTimer.Reset();
-	//	}
-	//}
+	if(hit.other->GetTag() == Tag::Player)
+	{
+		static bool hasHitAlready = false;
+		if(!hasHitAlready)
+		{
+			hit.other->GetComponent<PlayerHealthComp>()->LoseHealth();
+			hasHitAlready = true;
+		}
+	}
 }
 
 #ifdef EDITOR_MODE
