@@ -56,6 +56,7 @@ bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float l
 
 void tyr::Physics::Update()
 {
+	//NOTE: Don't use position in this yet, this is not done yet
 	for (auto pDynamic : m_pDynamicColliders)
 	{
 		if(!pDynamic->GetSceneObject()->IsActive())
@@ -66,9 +67,9 @@ void tyr::Physics::Update()
 
 		const float offset = 0.f;
 		auto topLeft  = Vector2(tC.pos.x, tC.pos.y + offset);
-		auto topRight = Vector2(topLeft.x + tC.width, topLeft.y + 2.f);
+		auto topRight = Vector2(topLeft.x + tC.width, topLeft.y);
 		
-		auto botRight = Vector2(topRight.x, topRight.y + tC.height - 4.f);
+		auto botRight = Vector2(topRight.x, topRight.y + tC.height);
 		auto botLeft  = Vector2(topRight.x, botRight.y);
 		
 		if(Raycast(topLeft, topRight, hit))
@@ -164,13 +165,28 @@ bool tyr::Physics::Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit&
 
 bool tyr::Physics::LineInterSection(const Vector2& pos1A, const Vector2& pos1B, const Vector2& pos2A, const Vector2& pos2B, RaycastHit& hit)
 {
-	auto ab = pos1B - pos1A;
-	auto cd = pos2B - pos2A;
+	const auto ab = pos1B - pos1A;
+	const auto cd = pos2B - pos2A;
 
-	auto rsCross = ab.Cross(cd);
+	const auto rsCross = ab.Cross(cd);
 
-	auto e = (pos2A - pos1A).Cross(cd) / rsCross;
-	auto f = (pos2A - pos1A).Cross(ab) / rsCross;
+
+	auto e = (pos2A - pos1A).Cross(cd);
+	auto f = (pos2A - pos1A).Cross(ab);
+	
+	//when cross is 0 (they are on the same line)
+	if(std::abs(rsCross) < FLOAT_PRECISION)
+	{
+		////Overlapping?
+		//if(std::abs(e) < FLOAT_PRECISION && std::abs(f) < FLOAT_PRECISION)
+		//{
+		//	hit.point = pos2B;
+		//	return true;
+		//}
+		return false; //return false for now when on the same line
+	}
+	e /= rsCross;
+	f /= rsCross;
 
 	if (f >= 0 && f <= 1 && e >= 0 && e <= 1)
 	{

@@ -36,7 +36,7 @@ tyr::Rect tyr::ColliderComp::GetColliderRect() const
 void tyr::ColliderComp::Debug()
 {
 	const auto pos = m_pSceneObject->GetTransform()->GetPosition();
-
+	
 	Rect drawRect{ pos.x, pos.y, m_Width, m_Height };
 	Rect::AdjustRectToPivot(drawRect, m_Pivot);
 	

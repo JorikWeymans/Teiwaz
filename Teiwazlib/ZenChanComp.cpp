@@ -88,6 +88,8 @@ void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 {
 	//TODO: Implement this, to many bugs to fix easly
 	UNREFERENCED_PARAMETER(hit);
+
+	SDXL_ImGui_ConsoleLog("Hit wall");
 	
 	//if(hit.other->GetTag() == Tag::Background)
 	//{
@@ -120,12 +122,6 @@ void tyr::ZenChanComp::Debug()
 
 	SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(pos),
 		static_cast<SDXL::SDXLVec2>(pos + (Vector2(-1, 0) * m_RayLength)), static_cast<SDXL::SDXLVec4>(ColorCyan));
-
-	/*SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(Vector2(m_HitPoint.x, 0)),
-		static_cast<SDXL::SDXLVec2>(Vector2(m_HitPoint.x, 10000)), static_cast<SDXL::SDXLVec4>(ColorCyan));
-
-	SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(Vector2(0, m_HitPoint.y)),
-		static_cast<SDXL::SDXLVec2>(Vector2(10000, m_HitPoint.y)), static_cast<SDXL::SDXLVec4>(ColorCyan));*/
 
 }
 
