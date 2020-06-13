@@ -11,8 +11,8 @@ tyr::TransformComp*           tyr::Factory::CreateTransformComp(BinaryReader& re
 
 tyr::CharacterControllerComp* tyr::Factory::CreateCharacterControllerComp(BinaryReader& reader)
 {
-	UNREFERENCED_PARAMETER(reader);
-	return new CharacterControllerComp();
+	const float rayOffset = reader.Read<float>();
+	return new CharacterControllerComp(rayOffset);
 }
 
 tyr::ColliderComp*            tyr::Factory::CreateColliderComp(BinaryReader& reader)
@@ -88,7 +88,8 @@ tyr::BubbleShootingComp*	  tyr::Factory::CreateBubbleShootingComp(BinaryReader& 
 tyr::ZenChanComp*			  tyr::Factory::CreateZenChanComp(BinaryReader& reader)
 {
 	UNREFERENCED_PARAMETER(reader);
-	return new ZenChanComp();
+	const float moveSpeed = reader.Read<float>();
+	return new ZenChanComp(moveSpeed);
 }
 
 tyr::MaitaComp*			      tyr::Factory::CreateMaitaComp(BinaryReader& reader)

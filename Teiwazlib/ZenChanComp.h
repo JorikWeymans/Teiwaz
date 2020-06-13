@@ -10,7 +10,7 @@ namespace tyr
 	class ZenChanComp : public BaseComponent
 	{
 	public:
-		ZenChanComp();
+		ZenChanComp(float moveSpeed = 150.f);
 		~ZenChanComp();
 
 		void Initialize() override;
@@ -32,6 +32,7 @@ namespace tyr
 		bool m_CanSwitchDirection;
 		bool m_IsGoingLeft;
 		float m_RayLength;
+		float m_MoveSpeed;
 	public:
 		ZenChanComp(const ZenChanComp&) = delete;
 		ZenChanComp(ZenChanComp&&) = delete;

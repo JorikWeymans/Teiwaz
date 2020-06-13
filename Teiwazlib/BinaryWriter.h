@@ -16,7 +16,7 @@ namespace tyr
 		void Close();
 		void Open();
 
-		bool IsOpen() const;
+		_NODISCARD bool IsOpen() const;
 
 		template<typename T>
 		bool Write(T toWrite)

@@ -8,12 +8,14 @@
 #include "Physics.h"
 #include "BinaryWriter.h"
 #include "time.h"
-tyr::CharacterControllerComp::CharacterControllerComp()
+
+
+tyr::CharacterControllerComp::CharacterControllerComp(float rayCastOffset)
 	: tyr::BaseComponent(ComponentType::CharacterController, "CharacterController Component")
 	, m_pTransform(nullptr)
 	, m_pCollider(nullptr)
 	, m_Force(Vector2(0.f,0.f))
-	, m_RayCastOffset(0.f)
+	, m_RayCastOffset(rayCastOffset)
 	, m_IsOnGround(false)
 {
 }
@@ -24,7 +26,7 @@ void tyr::CharacterControllerComp::Initialize()
 	if (!m_pCollider) THROW_ERROR(L"CharacterController needs a collider to work!");
 	m_pTransform = m_pSceneObject->GetTransform();
 
-	m_RayCastOffset = m_pCollider->GetColliderRect().width / 2 - 5;
+	//m_RayCastOffset = m_pCollider->GetColliderRect().width / 2 - 5;
 }
 
 void tyr::CharacterControllerComp::FixedUpdate()
@@ -90,7 +92,6 @@ void tyr::CharacterControllerComp::Move(float x, float y)noexcept
 	Rect* playSpace = GET_CONTEXT->pGameSpace;
 
 	const bool canMoveY = CalculateFalling(y, playerColl, playSpace);
-	SDXL_ImGui_ConsoleLog(m_IsOnGround ? "Grounded" : "Not Grounded");
 	
 	if( x < 0.f && (playerColl.pos.x + x) > playSpace->pos.x)
 	{
@@ -163,7 +164,7 @@ void tyr::CharacterControllerComp::InternalRenderEditor()
 void tyr::CharacterControllerComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
-	
+	writer.Write(m_RayCastOffset);
 	
 }
 

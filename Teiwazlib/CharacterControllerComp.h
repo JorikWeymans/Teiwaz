@@ -9,7 +9,7 @@ namespace tyr
 	class CharacterControllerComp final : public BaseComponent
 	{
 	public:
-		CharacterControllerComp();
+		explicit CharacterControllerComp(float rayCastOffset = 19.f);
 		~CharacterControllerComp() override = default;
 
 		void Initialize() override;

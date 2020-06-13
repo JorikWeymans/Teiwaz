@@ -5,13 +5,14 @@
 #include "Time.h"
 #include "Physics.h"
 #include "BinaryWriter.h"
-tyr::ZenChanComp::ZenChanComp()
+tyr::ZenChanComp::ZenChanComp(float movespeed)
 	: BaseComponent(ComponentType::ZenChan, "ZenChan Component")
 	, m_pCont(nullptr)
 	, m_NoDiSwitchTimer(0.2f)
 	, m_CanSwitchDirection(false)
 	, m_IsGoingLeft(false)
 	, m_RayLength(0.f)
+	, m_MoveSpeed(movespeed)
 {
 }
 
@@ -49,7 +50,7 @@ void tyr::ZenChanComp::FixedUpdate()
 	m_RayLength = GET_COMPONENT<ColliderComp>()->GetColliderRect().width * .5f + 3.f; //in editor mode collider width can change, update this
 #endif
 	
-	const float elapsed = 150 * TIME->fixedDeltaTime;
+	const float elapsed = m_MoveSpeed * TIME->fixedDeltaTime;
 	if (m_IsGoingLeft)
 	{
 		m_pCont->Move(-elapsed, 0);
@@ -88,8 +89,6 @@ void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 {
 	//TODO: Implement this, to many bugs to fix easly
 	UNREFERENCED_PARAMETER(hit);
-
-	SDXL_ImGui_ConsoleLog("Hit wall");
 	
 	//if(hit.other->GetTag() == Tag::Background)
 	//{
@@ -127,10 +126,18 @@ void tyr::ZenChanComp::Debug()
 
 void tyr::ZenChanComp::InternalRenderEditor()
 {
+	std::string name;
+
+	name = "##ZenChanCompSpeed"  + std::to_string(m_UniqueId);
+	SDXL_ImGui_Text("Speed    :\t");
+	SDXL_ImGui_SameLine();
+	SDXL_ImGui_DragFloat(name.c_str(), &m_MoveSpeed);
+	
 }
 
 void tyr::ZenChanComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
+	writer.Write(m_MoveSpeed);
 }
 #endif

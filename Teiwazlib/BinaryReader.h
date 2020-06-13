@@ -16,16 +16,16 @@ namespace tyr
 
 		void Open();
 		void Close();
-		bool IsOpen() const { return m_IsOpen; }
+		_NODISCARD bool IsOpen() const { return m_IsOpen; }
 
-		int Peek() { return m_Reader.peek(); }
-		int GetBufferPosition();
+		_NODISCARD int Peek() { return m_Reader.peek(); }
+		_NODISCARD int GetBufferPosition();
 		void SetBufferPosition(int pos);
 		void moveBufferPosition(int amount);
 
 		std::string ReadString();
 		template<typename T>
-		T Read()
+		T Read() //no _NODISCARD, because the user can omit what he read to just move in file
 		{
 			T data;
 			if (!m_IsOpen || !std::is_pod<T>()) return T{};
