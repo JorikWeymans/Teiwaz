@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "Elapser.h"
+#include "Vectors.h"
 
 namespace tyr
 {
@@ -28,7 +29,6 @@ namespace tyr
 	private:
 		CharacterControllerComp* m_pCont;
 		Elapser m_NoDiSwitchTimer;
-
 		bool m_CanSwitchDirection;
 		bool m_IsGoingLeft;
 		float m_RayLength;

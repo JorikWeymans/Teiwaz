@@ -82,7 +82,7 @@ void tyr::SceneManager::FixedUpdate()
 {
 	if (!m_pContext->paused)
 	{
-		m_pContext->pPhysics->Update();
+		//m_pContext->pPhysics->Update();
 		m_pCurrentScene->FixedUpdate();
 
 	}

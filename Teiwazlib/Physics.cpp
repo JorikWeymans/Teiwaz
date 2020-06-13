@@ -64,16 +64,16 @@ void tyr::Physics::Update()
 		auto tC = pDynamic->GetColliderRect();
 		RaycastHit hit;
 
-		const float offset = 0.1f;
-		auto topLeft  = Vector2(tC.pos.x + offset, tC.pos.y + offset);
-		auto topRight = Vector2(topLeft.x + tC.width - offset * 2, topLeft.y);
+		const float offset = 0.f;
+		auto topLeft  = Vector2(tC.pos.x, tC.pos.y + offset);
+		auto topRight = Vector2(topLeft.x + tC.width, topLeft.y + 2.f);
 		
-		auto botRight = Vector2(topRight.x, topRight.y + tC.height - offset * 2);
+		auto botRight = Vector2(topRight.x, topRight.y + tC.height - 4.f);
 		auto botLeft  = Vector2(topRight.x, botRight.y);
 		
 		if(Raycast(topLeft, topRight, hit))
 		{
-			//pDynamic->OnColliderHit(hit);
+			pDynamic->OnColliderHit(hit);
 		}
 		if(Raycast(topRight, botRight, hit))
 		{
@@ -81,7 +81,7 @@ void tyr::Physics::Update()
 		}
 		if(Raycast(botRight, botLeft, hit))
 		{
-			//pDynamic->OnColliderHit(hit);
+			pDynamic->OnColliderHit(hit);
 		}
 		if(Raycast(botLeft, tC.pos, hit))
 		{

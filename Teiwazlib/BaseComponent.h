@@ -1,6 +1,7 @@
 #pragma once
 #define GET_CONTEXT m_pSceneObject->GetGameContext()
 #define GET_COMPONENT m_pSceneObject->GetComponent
+#define GET_TRANSFORM m_pSceneObject->GetTransform()
 #define RAYCAST(pos, direction, length, refHit) GET_CONTEXT->pPhysics->Raycast(pos, direction, length, refHit, m_pSceneObject)
 #define INPUT GET_CONTEXT->pInput
 #define TIME  GET_CONTEXT->pTime

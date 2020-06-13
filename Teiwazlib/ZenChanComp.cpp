@@ -8,10 +8,10 @@
 tyr::ZenChanComp::ZenChanComp()
 	: BaseComponent(ComponentType::ZenChan, "ZenChan Component")
 	, m_pCont(nullptr)
-	, m_IsGoingLeft(true)
-	, m_RayLength(0.f)
 	, m_NoDiSwitchTimer(0.2f)
 	, m_CanSwitchDirection(false)
+	, m_IsGoingLeft(false)
+	, m_RayLength(0.f)
 {
 }
 
@@ -52,17 +52,32 @@ void tyr::ZenChanComp::FixedUpdate()
 	const float elapsed = 150 * TIME->fixedDeltaTime;
 	if (m_IsGoingLeft)
 	{
-		m_pCont->Move(-elapsed, 0);	
+		m_pCont->Move(-elapsed, 0);
 	}
 	else
 		m_pCont->Move(elapsed, 0);
 
+	
 	RaycastHit out;
 	if (RAYCAST(m_pSceneObject->GetTransform()->GetPosition(), Vector2(1, 0), m_RayLength, out))
 	{
-		if(out.other->GetTag() == Tag::Background)
+		if(out.other->GetTag() == Tag::Background && m_CanSwitchDirection)
 		{
-			//SDXL_ImGui_ConsoleLog("Hit Background");
+			m_CanSwitchDirection = false;
+			m_NoDiSwitchTimer.Reset();
+			m_IsGoingLeft = true;
+			GET_TRANSFORM->SetScale(-1.f, 1.f);
+			
+		}
+	}
+	else if(RAYCAST(m_pSceneObject->GetTransform()->GetPosition(), Vector2(-1, 0), m_RayLength, out))
+	{
+		if (out.other->GetTag() == Tag::Background && m_CanSwitchDirection)
+		{
+			m_CanSwitchDirection = false;
+			m_NoDiSwitchTimer.Reset();
+			m_IsGoingLeft = false;
+			GET_TRANSFORM->SetScale(1.f, 1.f);
 		}
 	}
 	
@@ -71,26 +86,29 @@ void tyr::ZenChanComp::FixedUpdate()
 #ifdef EDITOR_MODE
 void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 {
-	if(hit.other->GetTag() == Tag::Background)
-	{
-		if(m_pSceneObject->GetTransform()->GetPosition().x < hit.other->GetTransform()->GetPosition().x && 
-			!m_IsGoingLeft && 
-			m_CanSwitchDirection)
-		{
-			m_IsGoingLeft = true;
-			m_CanSwitchDirection = false;
-			m_NoDiSwitchTimer.Reset();
-		}
-
-		if (m_pSceneObject->GetTransform()->GetPosition().x > hit.other->GetTransform()->GetPosition().x &&
-			m_IsGoingLeft && 
-			m_CanSwitchDirection)
-		{
-			m_IsGoingLeft = false;
-			m_CanSwitchDirection = false;
-			m_NoDiSwitchTimer.Reset();
-		}
-	}
+	//TODO: Implement this, to many bugs to fix easly
+	UNREFERENCED_PARAMETER(hit);
+	
+	//if(hit.other->GetTag() == Tag::Background)
+	//{
+	//	if(m_pSceneObject->GetTransform()->GetPosition().x < hit.other->GetTransform()->GetPosition().x && 
+	//		!m_IsGoingLeft && 
+	//		m_CanSwitchDirection)
+	//	{
+	//		m_IsGoingLeft = true;
+	//		m_CanSwitchDirection = false;
+	//		m_NoDiSwitchTimer.Reset();
+	//	}
+	//
+	//	if (m_pSceneObject->GetTransform()->GetPosition().x > hit.other->GetTransform()->GetPosition().x &&
+	//		m_IsGoingLeft && 
+	//		m_CanSwitchDirection)
+	//	{
+	//		m_IsGoingLeft = false;
+	//		m_CanSwitchDirection = false;
+	//		m_NoDiSwitchTimer.Reset();
+	//	}
+	//}
 }
 
 void tyr::ZenChanComp::Debug()
@@ -99,6 +117,15 @@ void tyr::ZenChanComp::Debug()
 	
 	SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(pos ),
 		static_cast<SDXL::SDXLVec2>(pos + (Vector2(1,0) * m_RayLength )), static_cast<SDXL::SDXLVec4>(ColorCyan));
+
+	SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(pos),
+		static_cast<SDXL::SDXLVec2>(pos + (Vector2(-1, 0) * m_RayLength)), static_cast<SDXL::SDXLVec4>(ColorCyan));
+
+	/*SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(Vector2(m_HitPoint.x, 0)),
+		static_cast<SDXL::SDXLVec2>(Vector2(m_HitPoint.x, 10000)), static_cast<SDXL::SDXLVec4>(ColorCyan));
+
+	SDXL_RenderDebugLine(static_cast<SDXL::SDXLVec2>(Vector2(0, m_HitPoint.y)),
+		static_cast<SDXL::SDXLVec2>(Vector2(10000, m_HitPoint.y)), static_cast<SDXL::SDXLVec4>(ColorCyan));*/
 
 }
 
