@@ -41,7 +41,7 @@ namespace tyr
 
 #ifdef EDITOR_MODE
 #define MAX_TEXT_SIZE 50
-		char m_TempText[MAX_TEXT_SIZE];
+		char m_TempText[MAX_TEXT_SIZE]{};
 #endif
 	public:
 		TextComp() = delete;

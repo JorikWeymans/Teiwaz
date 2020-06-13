@@ -28,14 +28,18 @@ namespace tyr
 		
 		void Update();
 		void FixedUpdate();
-		void SetActive(bool value) noexcept;
+		void Render() const;
+	
 #ifdef EDITOR_MODE
 		void Debug();
 		void RenderEditor(bool showChildren);
-		void Save(BinaryWriter& writer);
-		void AddComponentButton();
+		void Save(BinaryWriter& writer);	
 #endif
-		void Render() const;
+
+		void Destroy();
+		_NODISCARD bool IsDestroyed() const noexcept { return m_IsDestroyed; }
+		void SetActive(bool value) noexcept;
+		
 
 		template <typename T>
 		T* AddComponent(T* pComp) //return the comp so you can do T* comp = AddComponent(new T());
@@ -54,6 +58,9 @@ namespace tyr
 			
 		}
 		void AddChild(SceneObject* pChild);
+
+		void RemoveComponent(BaseComponent* pComp);
+		
 		void Translate(float x, float y);
 		
 		_NODISCARD TransformComp* GetTransform() const noexcept { return m_pTransform; }
@@ -73,17 +80,15 @@ namespace tyr
 			}
 			return nullptr;
 		}
-
-
-		void RemoveComponent(BaseComponent* pComp);
-		const GameContext* GetGameContext() const noexcept { return m_pContext; };
-		const std::string& GetName()        const noexcept { return m_name; }
-		const SceneObject* GetParent()      const noexcept { return m_pParent; }
+		_NODISCARD const GameContext* GetGameContext() const noexcept { return m_pContext; };
+		_NODISCARD const std::string& GetName()        const noexcept { return m_name; }
+		_NODISCARD const SceneObject* GetParent()      const noexcept { return m_pParent; }
 		_NODISCARD Tag     GetTag()         const noexcept { return m_Tag; }
 
 		_NODISCARD bool IsActive()			const noexcept { return m_IsActive; }
+		
 #ifdef EDITOR_MODE
-		std::string GetEditorName() const { return m_name + m_UniqueId; };
+		_NODISCARD std::string GetEditorName() const { return m_name + m_UniqueId; }
 #endif
 	private:
 		friend Scene;
@@ -109,7 +114,9 @@ namespace tyr
 		void RenderProperties();
 		void PropertyChangeName(std::string& id);
 		void PropertyTag(std::string& id);
+		void AddComponentButton();
 
+		void ESceneObjectManipulation();
 		
 #endif
 	public:

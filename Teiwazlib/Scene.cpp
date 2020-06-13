@@ -107,7 +107,28 @@ void tyr::Scene::Update()
 		
 		
 	}
-	
+
+	UINT size = static_cast<UINT>(m_pSceneObjects.size());
+	for(UINT i{0}; i < size; i++)
+	{
+		if(m_pSceneObjects[i]->IsDestroyed())
+		{
+			SceneObject* pDeleteObject = m_pSceneObjects[i];
+			if(i== m_pSceneObjects.size() -1)
+			{
+				m_pSceneObjects.pop_back();
+				SAFE_DELETE(pDeleteObject);
+				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
+			}
+			//else
+		
+			m_pSceneObjects.erase(std::find(m_pSceneObjects.begin(), m_pSceneObjects.end(), pDeleteObject));
+			SAFE_DELETE(pDeleteObject);
+			size--;
+		}
+	}
+
+
 	
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Update(); });
 }
@@ -184,11 +205,10 @@ void tyr::Scene::RenderEditor()
 
 	if(m_pContext->paused) //Only Add SceneObject when paused
 	{
-		if (SDXL_ImGui_Button("Add SceneObject"))
-		{
-			AddSceneObject(new SceneObject());
-		}
+		ESceneObjectManipulation();
+
 	}
+
 
 	
 	SDXL_ImGui_End();
@@ -231,7 +251,53 @@ tyr::Scene* tyr::Scene::GenerateNew(const std::string& name, const std::string& 
 	return returnScene;
 }
 
+void tyr::Scene::ESceneObjectManipulation()
+{
+	if (SDXL_ImGui_Button("Add Object"))
+	{
+		AddSceneObject(new SceneObject());
 
+	}
+
+	if (m_SelectedItem != -1)
+	{
+		SDXL_ImGui_SameLine();
+
+
+		if (SDXL_ImGui_Button("Remove Object"))
+		{
+			m_pSceneObjects[m_SelectedItem]->Destroy();
+			m_SelectedItem = -1;
+			Update(); // Do one update loop to update the list view
+		}
+	}
+
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("UP##SceneObject"))
+	{
+		if (m_SelectedItem > 0)
+		{
+			auto temp = m_pSceneObjects[m_SelectedItem - 1];
+			m_pSceneObjects[m_SelectedItem - 1] = m_pSceneObjects[m_SelectedItem];
+			m_pSceneObjects[m_SelectedItem] = temp;
+			m_SelectedItem--;
+
+		}
+	}
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("DOWN##SceneObject"))
+	{
+		if (m_SelectedItem >= 0 && m_SelectedItem < static_cast<int>(m_pSceneObjects.size() - 1))
+		{
+			auto temp = m_pSceneObjects[m_SelectedItem + 1];
+			m_pSceneObjects[m_SelectedItem + 1] = m_pSceneObjects[m_SelectedItem];
+			m_pSceneObjects[m_SelectedItem] = temp;
+			m_SelectedItem++;
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+}
 #endif
 void tyr::Scene::Flush()
 {
@@ -242,6 +308,8 @@ void tyr::Scene::Render() const
 {
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->Render(); });
 }
+
+
 
 tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::SceneObject* parent)
 {

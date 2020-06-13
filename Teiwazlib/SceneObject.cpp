@@ -7,6 +7,7 @@
 #include "TyrComps.h"
 #include <string_view>
 #include "EnumDropdown.h"
+#include "ContentManager.h"
 int tyr::SceneObject::counter = 0;
 tyr::SceneObject::SceneObject(const tyr::Transform& transform, const std::string& name, Tag tag, bool AppendCounter)
 	: SceneObject(new TransformComp(transform), name, tag, AppendCounter) {}
@@ -58,22 +59,47 @@ tyr::SceneObject::~SceneObject()
 
 void tyr::SceneObject::Update()
 {
+	UINT size = static_cast<UINT>(m_pChilds.size());
+	for (UINT i{ 0 }; i < size; i++)
+	{
+		if (m_pChilds[i]->IsDestroyed())
+		{
+			SceneObject* pDeleteObject = m_pChilds[i];
+			if (i == m_pChilds.size() - 1)
+			{
+				m_pChilds.pop_back();
+				SAFE_DELETE(pDeleteObject);
+				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
+			}
+			//else
+
+			m_pChilds.erase(std::find(m_pChilds.begin(), m_pChilds.end(), pDeleteObject));
+			SAFE_DELETE(pDeleteObject);
+			size--;
+		}
+	}
+
+
+	
 	if(m_IsActive)
 	{
+		//gameobject can be destroyed in ever comp, so that's why it is checked ever time
 		std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s)
-			{
-				if (!m_IsDestroyed)
-					s->Update();
-			});
-
-
+		{
+			if(!m_IsDestroyed)
+				s->Update();
+		});
 		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
-			{
-				if (!m_IsDestroyed)
-					b->Update();
-			});
+		{
+			if(!m_IsDestroyed)
+				b->Update();
+		});
 	}
-	
+}
+
+void tyr::SceneObject::Destroy()
+{
+	m_IsDestroyed = true;
 }
 
 void tyr::SceneObject::FixedUpdate()
@@ -142,8 +168,11 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 		if (m_SelectedItem != -1)
 		{
 			m_pChilds.at(m_SelectedItem)->RenderEditor(showChildren);
-		}
 
+			ESceneObjectManipulation();
+
+		}
+		
 		SDXL_ImGui_Unindent();
 	}
 
@@ -167,6 +196,7 @@ void tyr::SceneObject::RenderEditor(bool showChildren)
 		}
 		
 	}
+	
 	
 
 }
@@ -277,6 +307,53 @@ void tyr::SceneObject::AddComponentButton()
 		
 	}
 
+}
+
+void tyr::SceneObject::ESceneObjectManipulation()
+{
+	if (!m_pContext->paused) return;
+	
+	
+	if (SDXL_ImGui_Button("Add Child##SceneObject"))
+	{
+		AddChild(new SceneObject());
+	}
+	SDXL_ImGui_SameLine();
+	
+	
+	if (SDXL_ImGui_Button("Remove Child##SceneObject"))
+	{
+		m_pChilds[m_SelectedItem]->Destroy();
+		m_SelectedItem = -1;
+		Update();
+	}
+
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("UP##SceneObject"))
+	{
+		if (m_SelectedItem > 0)
+		{
+			auto temp = m_pChilds[m_SelectedItem - 1];
+			m_pChilds[m_SelectedItem - 1] = m_pChilds[m_SelectedItem];
+			m_pChilds[m_SelectedItem] = temp;
+			m_SelectedItem--;
+
+		}
+	}
+	SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("DOWN##SceneObject"))
+	{
+		if (m_SelectedItem >= 0 && m_SelectedItem < static_cast<int>(m_pChilds.size() - 1))
+		{
+			auto temp = m_pChilds[m_SelectedItem + 1];
+			m_pChilds[m_SelectedItem + 1] = m_pChilds[m_SelectedItem];
+			m_pChilds[m_SelectedItem] = temp;
+			m_SelectedItem++;
+			CONTENT_MANAGER->Save();
+
+		}
+	}
+	
 }
 #endif
 
