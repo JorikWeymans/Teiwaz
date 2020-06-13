@@ -20,6 +20,7 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 	, m_name(name)
 	, m_pContext(nullptr)
 	, m_Tag(tag)
+	, m_IsActive(true)
 #ifdef EDITOR_MODE
 	, m_SelectedItem(-1)
 #endif
@@ -36,7 +37,6 @@ tyr::SceneObject::SceneObject(TransformComp* pTransform, const std::string& name
 
 	auto intID = reinterpret_cast<uint32_t>(this);
 	m_UniqueId = "##" + std::to_string(intID); //Add the ## because we don't want to see that ID in the editor
-	m_IsActive = true;
 
 
 
@@ -94,6 +94,11 @@ void tyr::SceneObject::FixedUpdate()
 			});
 	}
 
+}
+
+void tyr::SceneObject::SetActive(bool value) noexcept
+{
+	m_IsActive = value;
 }
 #ifdef EDITOR_MODE
 void tyr::SceneObject::Debug()
@@ -171,6 +176,7 @@ void tyr::SceneObject::Save(BinaryWriter& writer)
 	writer.Write(ObjectType::SceneObject);
 	writer.WriteString(m_name);
 	writer.Write(m_Tag);
+	writer.Write(m_IsActive);
 	
 	UINT size = m_pComponents.size() + 1; //+1 is for the transform comp not saved in vec
 	writer.Write(size);

@@ -28,6 +28,7 @@ namespace tyr
 		
 		void Update();
 		void FixedUpdate();
+		void SetActive(bool value) noexcept;
 #ifdef EDITOR_MODE
 		void Debug();
 		void RenderEditor(bool showChildren);

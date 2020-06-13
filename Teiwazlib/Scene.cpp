@@ -229,6 +229,8 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 	SceneObject* newObject = nullptr;
 	const std::string newObjectName = reader.ReadString();
 	const Tag objectTag = reader.Read<Tag>();
+	const bool isActive = reader.Read<bool>();
+
 	UINT size = reader.Read<UINT>();
 	for (UINT i{ 0 }; i < size; i++)
 	{
@@ -239,7 +241,8 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		{
 		case ComponentType::Transform: //should always be the first
 			newObject = new SceneObject(Factory::CreateComponent<TransformComp>(reader), newObjectName, objectTag);
-
+			newObject->SetActive(isActive);
+			
 			if (parent) parent->AddChild(newObject);
 			else
 				AddSceneObject(newObject);
