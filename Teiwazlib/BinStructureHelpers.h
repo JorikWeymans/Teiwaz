@@ -27,6 +27,7 @@ namespace tyr
 		Maita,
 
 		PlayerHealth,
+		HealthDisplay,
 		//Append here
 
 

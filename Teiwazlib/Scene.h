@@ -23,7 +23,8 @@ namespace tyr
 		void Update();
 		void FixedUpdate();
 
-		
+		_NODISCARD SceneObject* GetFirstSceneObjectWithTag(Tag tag) const;
+		_NODISCARD SceneObject* GetFirstObjectWithName(const std::string& name) const;
 #ifdef EDITOR_MODE
 		void RenderEditor();
 		void Save();

@@ -230,6 +230,7 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComp.h" />
+    <ClInclude Include="HealthDisplayComp.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MaitaComp.h" />
     <ClInclude Include="Physics.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComp.cpp" />
+    <ClCompile Include="HealthDisplayComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="MaitaComp.cpp" />
     <ClCompile Include="Physics.cpp" />

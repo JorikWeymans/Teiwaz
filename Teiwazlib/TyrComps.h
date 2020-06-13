@@ -18,3 +18,4 @@
 #include "MaitaComp.h"
 
 #include "PlayerHealthComp.h"
+#include "HealthDisplayComp.h"

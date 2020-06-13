@@ -17,6 +17,9 @@ namespace tyr
 	class BubbleShootingComp;
 	class MaitaComp;
 	class ZenChanComp;
+	class PlayerHealthComp;
+	class HealthDisplayComp;
+	
 	class Scene;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
 	class Factory final
@@ -40,6 +43,8 @@ namespace tyr
 		template<> _NODISCARD static BubbleShootingComp*      CreateComponent(BinaryReader& reader) { return CreateBubbleShootingComp(reader); }
 		template<> _NODISCARD static MaitaComp*               CreateComponent(BinaryReader& reader) { return CreateMaitaComp(reader); }
 		template<> _NODISCARD static ZenChanComp*             CreateComponent(BinaryReader& reader) { return CreateZenChanComp(reader); }
+		template<> _NODISCARD static PlayerHealthComp*        CreateComponent(BinaryReader& reader) { return CreatePlayerHealthComp(reader); }
+		template<> _NODISCARD static HealthDisplayComp*       CreateComponent(BinaryReader& reader) { return CreateHealthDisplayComp(reader); }
 		
 	private:
 		_NODISCARD static TransformComp*           CreateTransformComp(BinaryReader& reader);
@@ -54,6 +59,9 @@ namespace tyr
 		_NODISCARD static BubbleShootingComp*      CreateBubbleShootingComp(BinaryReader& reader);
 		_NODISCARD static MaitaComp*               CreateMaitaComp(BinaryReader& reader);
 		_NODISCARD static ZenChanComp*             CreateZenChanComp(BinaryReader& reader);
+		_NODISCARD static PlayerHealthComp*        CreatePlayerHealthComp(BinaryReader& reader);
+		_NODISCARD static HealthDisplayComp*	   CreateHealthDisplayComp(BinaryReader& reader);
+
 	public:
 		Factory() = delete;
 		~Factory() = delete;

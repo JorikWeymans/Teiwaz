@@ -251,6 +251,12 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::Maita:
 				theComp = new MaitaComp();
 				break;
+			case ComponentType::PlayerHealth:
+				theComp = new PlayerHealthComp();
+				break;
+			case ComponentType::HealthDisplay:
+				theComp = new HealthDisplayComp();
+				break;
 			default:
 				usedNotImplemented = true;
 			 }

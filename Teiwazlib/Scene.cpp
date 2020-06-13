@@ -117,6 +117,25 @@ void tyr::Scene::FixedUpdate()
 	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {s->FixedUpdate(); });
 }
 
+tyr::SceneObject* tyr::Scene::GetFirstSceneObjectWithTag(Tag tag) const
+{
+	const auto found = std::find_if(m_pSceneObjects.begin(), m_pSceneObjects.end(), [tag](SceneObject* pS) {return pS->GetTag() == tag; });
+	if (found != m_pSceneObjects.end())
+		return *found;
+
+	return nullptr;
+	
+}
+
+tyr::SceneObject* tyr::Scene::GetFirstObjectWithName(const std::string& name) const
+{
+	const auto found = std::find_if(m_pSceneObjects.begin(), m_pSceneObjects.end(), [name](SceneObject* pS) {return pS->GetName() == name; });
+	if (found != m_pSceneObjects.end())
+		return *found;
+
+	return nullptr;
+}
+
 #ifdef EDITOR_MODE
 void tyr::Scene::RenderEditor()
 {
@@ -279,6 +298,12 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 			break;
 		case ComponentType::ZenChan:
 			newObject->AddComponent(Factory::CreateComponent<ZenChanComp>(reader));
+			break;
+		case ComponentType::PlayerHealth:
+			newObject->AddComponent(Factory::CreateComponent<PlayerHealthComp>(reader));
+			break;
+		case ComponentType::HealthDisplay:
+			newObject->AddComponent(Factory::CreateComponent<HealthDisplayComp>(reader));
 			break;
 		default:;
 			THROW_ERROR(L"This component is not implemented yet");

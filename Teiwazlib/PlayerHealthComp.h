@@ -13,6 +13,9 @@ namespace tyr
 		void Update() override {}
 		void FixedUpdate() override {}
 		void Render() const override {}
+
+		_NODISCARD UINT GetAmount() const noexcept { return m_NmbrLives; }
+		void RemoveHealth();
 		
 #ifdef EDITOR_MODE
 		void Debug() override {};

@@ -1,6 +1,6 @@
 #include "tyrpch.h"
 #include "PlayerHealthComp.h"
-
+#include "BinaryWriter.h"
 tyr::PlayerHealthComp::PlayerHealthComp()
 	: tyr::BaseComponent(ComponentType::PlayerHealth, "PlayerHealth Component")
 	, m_NmbrLives(3)
@@ -10,11 +10,16 @@ tyr::PlayerHealthComp::PlayerHealthComp()
 void tyr::PlayerHealthComp::Initialize()
 {
 }
-
+void tyr::PlayerHealthComp::RemoveHealth()
+{
+	m_NmbrLives--;
+}
 #ifdef EDITOR_MODE
+
+
 void tyr::PlayerHealthComp::Save(BinaryWriter& writer)
 {
-	UNREFERENCED_PARAMETER(writer);
+	writer.Write(m_Type);	
 }
 
 void tyr::PlayerHealthComp::InternalRenderEditor()

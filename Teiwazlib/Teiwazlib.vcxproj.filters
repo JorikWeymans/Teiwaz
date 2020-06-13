@@ -235,6 +235,9 @@
     <ClInclude Include="PlayerHealthComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="HealthDisplayComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -406,6 +409,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="PlayerHealthComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthDisplayComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
