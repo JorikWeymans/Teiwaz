@@ -17,6 +17,11 @@ tyr::ColliderComp::ColliderComp(float width, float height, const PivotMode& pivo
 {
 }
 
+tyr::ColliderComp::~ColliderComp()
+{
+	GET_CONTEXT->pPhysics->RemoveCollider(this);
+}
+
 void tyr::ColliderComp::Initialize()
 {
 	GET_CONTEXT->pPhysics->AddCollider(this);

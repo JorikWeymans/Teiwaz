@@ -12,7 +12,7 @@ namespace tyr
 	{
 	public:
 		explicit ColliderComp(float width, float height, const PivotMode& pivotMode, bool isDynamic = false);
-		~ColliderComp() override = default;
+		~ColliderComp() override;
 
 		void Initialize() override;
 
