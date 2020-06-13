@@ -234,6 +234,7 @@
     <ClInclude Include="MaitaComp.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player1Controller.h" />
+    <ClInclude Include="PlayerHealthComp.h" />
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
     <ClInclude Include="Editor\EWindowSouth.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="MaitaComp.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player1Controller.cpp" />
+    <ClCompile Include="PlayerHealthComp.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />
     <ClCompile Include="Editor\EWindowSouth.cpp" />
     <ClCompile Include="Textcomp.cpp" />

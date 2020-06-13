@@ -25,7 +25,8 @@ namespace tyr
 		Bubble,
 		ZenChan,
 		Maita,
-		
+
+		PlayerHealth,
 		//Append here
 
 

@@ -16,3 +16,5 @@
 
 #include "ZenChanComp.h"
 #include "MaitaComp.h"
+
+#include "PlayerHealthComp.h"

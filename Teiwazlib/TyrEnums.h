@@ -24,12 +24,12 @@ namespace tyr
 	};
 	enum class Tag : BYTE
 	{
-		None       = 0x00,
-		Default    = 0x01,
-		Player     = 0x02,
-		Enemy      = 0x04,
-		Bubble     = 0x08,
-		Background = 0x10,
+		None       = 0 << 0,
+		Default    = 1 << 0,
+		Player     = 1 << 1,
+		Enemy      = 1 << 2,
+		Bubble     = 1 << 3,
+		Background = 1 << 4,
 		All        = 0xFF,
 
 	};
