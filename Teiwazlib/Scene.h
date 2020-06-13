@@ -46,6 +46,8 @@ namespace tyr
 #ifdef EDITOR_MODE
 		bool m_ItemDoubleClicked = false;
 		int m_SelectedItem = -1;
+
+		void ESceneObjectManipulation();
 #endif
 		
 		SceneObject* LoadSceneObject(tyr::BinaryReader& reader, tyr::SceneObject* parent = nullptr);
