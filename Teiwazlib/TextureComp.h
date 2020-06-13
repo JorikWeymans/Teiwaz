@@ -43,7 +43,7 @@ namespace tyr
 		Vector2 m_Offset;
 
 		bool m_RepeatTexture;
-		int m_RepeatX, m_RepeatY; //Keep this together used in ImGui with dragInt2
+		int m_RepeatX, m_RepeatY;
 		void ResetRenderParameters();
 #ifdef EDITOR_MODE
 		void EditorTexture(std::string& name, const std::string& uID);

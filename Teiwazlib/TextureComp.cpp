@@ -200,11 +200,16 @@ void tyr::TextureComp::EditorRenderParameters(std::string& name, const std::stri
 
 	SDXL_ImGui_Text(" Pos:    \t");
 	SDXL_ImGui_SameLine();
-	name = "##TextureCompPos" + uID;
+	
 
 	Vector2 prevPos = m_SrcRect.pos;
-
-	if (SDXL_ImGui_DragFloat2(name.c_str(), &prevPos.x))
+	name = "x##TextureCompPos" + uID;
+	if (SDXL_ImGui_DragFloat(name.c_str(), &prevPos.x))
+	{
+		m_SrcRect.pos = prevPos;
+	} SDXL_ImGui_SameLine();
+	name = "y##TextureCompPos" + uID;
+	if (SDXL_ImGui_DragFloat(name.c_str(), &prevPos.y))
 	{
 		m_SrcRect.pos = prevPos;
 	}
@@ -242,12 +247,14 @@ void tyr::TextureComp::EditorIsRepeatedTexture(std::string& name, const std::str
 }
 void tyr::TextureComp::EditorRepeatParameters(std::string& name, const std::string& uID)
 {
-	SDXL_ImGui_Text("  X/Y:    \t");
+	SDXL_ImGui_Text(" Repeats \t");
 	SDXL_ImGui_SameLine();
-	name = "##TextureCompRepeatedX" + uID;
 
-	SDXL_ImGui_DragInt2(name.c_str(), &m_RepeatX,1,1,50);
-
+	name = "x##TextureCompRepeatedX" + uID;
+	SDXL_ImGui_DragInt(name.c_str(), &m_RepeatX,1,1,50);
+	SDXL_ImGui_SameLine();
+	name = "y##TextureCompRepeatedX" + uID;
+	SDXL_ImGui_DragInt(name.c_str(), &m_RepeatY, 1, 1, 50);
 
 
 }

@@ -101,6 +101,11 @@ void tyr::TextComp::InternalRenderEditor()
 		}
 		strcpy_s(m_TempText, m_Text.c_str());
 	}
+
+	SDXL_ImGui_Text("Color:  \t");
+	SDXL_ImGui_SameLine(); SDXL_ImGui_SetNextItemWidth(250.f);
+	name = "##TextCompColorSelector" + stringedID;
+	SDXL_ImGui_ColorEdit4(name.c_str(), &m_Color.r);
 	
 }
 #endif
