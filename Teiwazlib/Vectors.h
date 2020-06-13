@@ -112,8 +112,9 @@ namespace tyr
 		explicit operator bool() const;
 		Rect_POD ToPOD() const;
 		std::string ToString() const;
-		const Vector2& GetPos() const noexcept { return m_Pos; }
+		const Vector2& GetPos() const noexcept  { return m_Pos; }
 		const float& GetHeight() const noexcept { return m_Height; }
+		const float& GetWidth() const noexcept  { return m_Width; }
 		
 		PROPERTY(Vector2, pos); GET(pos) { return m_Pos; }  SET(pos) { m_Pos = value;}
 		PROPERTY(float, width); GET(width) { return m_Width; }  SET(width) { m_Width = value; }

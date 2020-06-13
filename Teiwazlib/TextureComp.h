@@ -11,9 +11,10 @@ namespace tyr
 	{
 	public:
 		explicit TextureComp(TextureID id, const PivotMode& pivotMode = PivotMode::TopLeft,
-							const Rect& rect = Rect(), const Vector2& offset = Vector2(0.f, 0.f));
+							const Rect& rect = Rect(), const Vector2& offset = Vector2(0.f, 0.f), bool isTextureMap = false,
+							bool isRepeating = false, int repeatX = 1, int repeatY = 1);
 			explicit TextureComp(TextureID id, const Vector2& pivot ,
-				const Rect& rect, const Vector2& offset);
+				const Rect& rect, const Vector2& offset, bool isTextureMap, bool isRepeating, int repeatX, int repeatY);
 		~TextureComp() override;
 		
 		void Initialize() override;
@@ -26,9 +27,7 @@ namespace tyr
 		void SetSourceRect(const Rect& rect);
 
 #ifdef EDITOR_MODE
-		void EditorTexture(std::string& name);
-		void EditorPosition(std::string& name);
-		void EditorOffset(std::string& name);
+
 		void Save(BinaryWriter& writer) override;
 
 	protected:
@@ -38,11 +37,23 @@ namespace tyr
 		TextureID m_TextureID;
 		TransformComp const* m_pTransform; //Weak pointer
 		Vector2 m_Pivot;
+
+		bool m_IsTextureMap;
 		Rect m_SrcRect;
 		Vector2 m_Offset;
 
+		bool m_RepeatTexture;
+		int m_RepeatX, m_RepeatY; //Keep this together used in ImGui with dragInt2
+		void ResetRenderParameters();
 #ifdef EDITOR_MODE
-
+		void EditorTexture(std::string& name, const std::string& uID);
+		void EditorPosition(std::string& name, const std::string& uID);
+		void EditorOffset(std::string& name, const std::string& uID);
+		void EditorIsTextureMap(std::string& name, const std::string uID);
+		void EditorRenderParameters(std::string& name, const std::string& uID);
+		
+		void EditorIsRepeatedTexture(std::string& name, const std::string& uID);
+		void EditorRepeatParameters(std::string& name, const std::string& uID);
 #endif
 	public:
 		TextureComp() = delete;
