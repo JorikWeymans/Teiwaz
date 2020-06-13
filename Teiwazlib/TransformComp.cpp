@@ -91,10 +91,10 @@ void tyr::TransformComp::InternalRenderEditor()
 	SDXL_ImGui_SameLine();
 
 	name = "x##P" + strUniqueId;
-	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.x, 1, 0, GET_CONTEXT->pGameSpace->width);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.x);
 	SDXL_ImGui_SameLine();
 	name = "y##P" + strUniqueId;
-	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.y, 1, 0, GET_CONTEXT->pGameSpace->height);
+	SDXL_ImGui_DragFloat(name.c_str(), &m_pTransform->position.y);
 
 
 	//SCALE

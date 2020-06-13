@@ -125,6 +125,7 @@ void tyr::TextureComp::InternalRenderEditor()
 		{
 			EditorRepeatParameters(name, stringedID);
 		}
+		SDXL_ImGui_Text("");
 	}
 
 
@@ -247,7 +248,7 @@ void tyr::TextureComp::EditorIsRepeatedTexture(std::string& name, const std::str
 }
 void tyr::TextureComp::EditorRepeatParameters(std::string& name, const std::string& uID)
 {
-	SDXL_ImGui_Text(" Repeats \t");
+	SDXL_ImGui_Text("  Repeats\t");
 	SDXL_ImGui_SameLine();
 
 	name = "x##TextureCompRepeatedX" + uID;

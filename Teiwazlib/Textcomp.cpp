@@ -106,6 +106,17 @@ void tyr::TextComp::InternalRenderEditor()
 	SDXL_ImGui_SameLine(); SDXL_ImGui_SetNextItemWidth(250.f);
 	name = "##TextCompColorSelector" + stringedID;
 	SDXL_ImGui_ColorEdit4(name.c_str(), &m_Color.r);
+
+	
+	SDXL_ImGui_Text("Offset: \t");
+	SDXL_ImGui_SameLine();
+	
+	name = "x##TextCompO" + stringedID;
+	SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.x);
+	SDXL_ImGui_SameLine();
+
+	name = "y##TextCompO" + stringedID;
+	SDXL_ImGui_DragFloat(name.c_str(), &m_Offset.y);
 	
 }
 #endif

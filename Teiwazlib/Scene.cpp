@@ -253,7 +253,14 @@ tyr::Scene* tyr::Scene::GenerateNew(const std::string& name, const std::string& 
 
 void tyr::Scene::ESceneObjectManipulation()
 {
-	if (SDXL_ImGui_Button("Add Object"))
+	if (m_SelectedItem != -1)
+	{
+		if(SDXL_ImGui_Button("Add Child##Scene"))
+		{
+			m_pSceneObjects[m_SelectedItem]->AddChild(new SceneObject());
+		}
+	} SDXL_ImGui_SameLine();
+	if (SDXL_ImGui_Button("Add Object##Scene"))
 	{
 		AddSceneObject(new SceneObject());
 
@@ -264,7 +271,7 @@ void tyr::Scene::ESceneObjectManipulation()
 		SDXL_ImGui_SameLine();
 
 
-		if (SDXL_ImGui_Button("Remove Object"))
+		if (SDXL_ImGui_Button("Remove Object##Scene"))
 		{
 			m_pSceneObjects[m_SelectedItem]->Destroy();
 			m_SelectedItem = -1;
@@ -273,7 +280,7 @@ void tyr::Scene::ESceneObjectManipulation()
 	}
 
 	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("UP##SceneObject"))
+	if (SDXL_ImGui_Button("UP##Scene"))
 	{
 		if (m_SelectedItem > 0)
 		{
@@ -285,7 +292,7 @@ void tyr::Scene::ESceneObjectManipulation()
 		}
 	}
 	SDXL_ImGui_SameLine();
-	if (SDXL_ImGui_Button("DOWN##SceneObject"))
+	if (SDXL_ImGui_Button("DOWN##Scene"))
 	{
 		if (m_SelectedItem >= 0 && m_SelectedItem < static_cast<int>(m_pSceneObjects.size() - 1))
 		{
