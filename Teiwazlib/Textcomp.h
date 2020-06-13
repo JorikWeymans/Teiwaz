@@ -22,12 +22,16 @@ namespace tyr
 		void Destroy();
 
 		void SetText(const std::string& newText);
+		void SetColor(const Color& newColor);
+		void SetColor(float r, float g, float b, float a);
+		
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
 
 
 	protected:
 		void InternalRenderEditor() override;
+		
 #endif
 
 	private:

@@ -115,3 +115,9 @@ tyr::HealthDisplayComp*       tyr::Factory::CreateHealthDisplayComp(BinaryReader
 	UNREFERENCED_PARAMETER(reader);
 	return new HealthDisplayComp();
 }
+
+tyr::MenuSelectorComp*        tyr::Factory::CreateMenuSelectorComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new MenuSelectorComp();
+}

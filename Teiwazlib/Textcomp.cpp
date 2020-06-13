@@ -56,6 +56,16 @@ void tyr::TextComp::SetText(const std::string& newText)
 {
 	m_Text = newText;
 }
+
+void tyr::TextComp::SetColor(const Color& newColor)
+{
+	m_Color = newColor;
+}
+void tyr::TextComp::SetColor(float r, float g, float b, float a)
+{
+	SetColor(Color(r, g, b, a));
+}
+
 #ifdef EDITOR_MODE
 void tyr::TextComp::Save(BinaryWriter& writer)
 {

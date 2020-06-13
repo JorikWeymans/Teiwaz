@@ -287,6 +287,9 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::HealthDisplay:
 				theComp = new HealthDisplayComp();
 				break;
+			case ComponentType::MenuSelector:
+				theComp = new MenuSelectorComp();
+				break;
 			default:
 				usedNotImplemented = true;
 			 }
@@ -414,6 +417,12 @@ void tyr::SceneObject::Initialize()
 {
 	m_pTransform->m_pSceneObject = this;
 	m_pTransform->Initialize();
+}
+
+void tyr::SceneObject::PostInitialize()
+{
+	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s) { s->PostInitialize(); });
+	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b) { b->PostInitialize(); });
 }
 
 #ifdef EDITOR_MODE

@@ -233,6 +233,7 @@
     <ClInclude Include="HealthDisplayComp.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MaitaComp.h" />
+    <ClInclude Include="MenuSelectorComp.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player1Controller.h" />
     <ClInclude Include="PlayerHealthComp.h" />
@@ -298,6 +299,7 @@
     <ClCompile Include="HealthDisplayComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="MaitaComp.cpp" />
+    <ClCompile Include="MenuSelectorComp.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player1Controller.cpp" />
     <ClCompile Include="PlayerHealthComp.cpp" />

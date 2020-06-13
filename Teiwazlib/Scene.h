@@ -43,6 +43,8 @@ namespace tyr
 		std::vector<SceneObject*> m_pSceneObjects;
 		std::vector<SceneObject*> m_pBufferedObjects;
 		bool m_IsLoaded;
+
+		void PostInitialize();
 #ifdef EDITOR_MODE
 		bool m_ItemDoubleClicked = false;
 		int m_SelectedItem = -1;

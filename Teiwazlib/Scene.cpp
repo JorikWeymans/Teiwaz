@@ -62,6 +62,7 @@ void tyr::Scene::Load()
 			}
 		}
 
+		PostInitialize();
 		m_IsLoaded = true;
 	}
 	catch (TyrException & e)
@@ -251,6 +252,11 @@ tyr::Scene* tyr::Scene::GenerateNew(const std::string& name, const std::string& 
 	return returnScene;
 }
 
+void tyr::Scene::PostInitialize()
+{
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* pS) { pS->PostInitialize(); });
+}
+
 void tyr::Scene::ESceneObjectManipulation()
 {
 	if (m_SelectedItem != -1)
@@ -380,7 +386,10 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::HealthDisplay:
 			newObject->AddComponent(Factory::CreateComponent<HealthDisplayComp>(reader));
 			break;
-		default:;
+		case ComponentType::MenuSelector:
+			newObject->AddComponent(Factory::CreateComponent<MenuSelectorComp>(reader));
+			break;
+		default:
 			THROW_ERROR(L"This component is not implemented yet");
 		}
 

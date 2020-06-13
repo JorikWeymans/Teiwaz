@@ -1,6 +1,7 @@
 #pragma once
 #define GET_CONTEXT m_pSceneObject->GetGameContext()
 #define GET_COMPONENT m_pSceneObject->GetComponent
+#define GET_COMPONENT_IN_CHILD m_pSceneObject->GetComponentInChild
 #define GET_TRANSFORM m_pSceneObject->GetTransform()
 #define GET_OBJECT_WITH_NAME GET_CONTEXT->pSceneManager->GetCurrentScene()->GetFirstObjectWithName
 #define RAYCAST(pos, direction, length, refHit) GET_CONTEXT->pPhysics->Raycast(pos, direction, length, refHit, m_pSceneObject)
@@ -22,6 +23,7 @@ namespace tyr
 		virtual ~BaseComponent() = default;
 
 		virtual void Initialize() = 0;
+		virtual void PostInitialize(){}
 		virtual void Update() = 0;
 		SceneObject* GetSceneObject() const { return m_pSceneObject; }
 		

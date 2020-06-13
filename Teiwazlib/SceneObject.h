@@ -29,7 +29,7 @@ namespace tyr
 		void Update();
 		void FixedUpdate();
 		void Render() const;
-	
+		
 #ifdef EDITOR_MODE
 		void Debug();
 		void RenderEditor(bool showChildren);
@@ -80,6 +80,15 @@ namespace tyr
 			}
 			return nullptr;
 		}
+		template <typename T>
+		_NODISCARD T* GetComponentInChild(unsigned int childIndex) const
+		{
+			if (m_pChilds.empty()) return nullptr;
+			if (childIndex > m_pChilds.size() - 1) return nullptr;
+
+			return m_pChilds[childIndex]->GetComponent<T>();
+			
+		}
 		_NODISCARD const GameContext* GetGameContext() const noexcept { return m_pContext; };
 		_NODISCARD const std::string& GetName()        const noexcept { return m_name; }
 		_NODISCARD const SceneObject* GetParent()      const noexcept { return m_pParent; }
@@ -93,6 +102,7 @@ namespace tyr
 	private:
 		friend Scene;
 		void Initialize();
+		void PostInitialize();
 		
 		std::vector<BaseComponent*> m_pComponents;
 		std::vector<SceneObject*> m_pChilds;
