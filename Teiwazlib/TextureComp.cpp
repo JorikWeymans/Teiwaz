@@ -75,8 +75,8 @@ void tyr::TextureComp::Render() const
 			for (int y{ 0 }; y < m_RepeatY; y++)
 			{
 				auto theDrawPos = pos;
-				theDrawPos.x += static_cast<float>(m_SrcRect.GetWidth() * x);
-				theDrawPos.y += static_cast<float>(m_SrcRect.GetWidth() * y);
+				theDrawPos.x += static_cast<float>(m_SrcRect.GetWidth() * x * scale.x);
+				theDrawPos.y += static_cast<float>(m_SrcRect.GetWidth() * y * scale.x);
 				
 				SDXL_RenderImage(pTexture->SDXL(), { theDrawPos.x, theDrawPos.y }, { m_Pivot.x,m_Pivot.y }, { scale.x, scale.y },
 					static_cast<SDXL::SDXLRect>(m_SrcRect), rot);
@@ -96,6 +96,15 @@ void tyr::TextureComp::Destroy()
 void tyr::TextureComp::SetSourceRect(const Rect& rect)
 {
 	m_SrcRect = rect;
+}
+void tyr::TextureComp::ResetRenderParameters()
+{
+	const Texture* pTexture = CONTENT_MANAGER->GetTexture(m_TextureID);
+	if (pTexture)
+	{
+		const auto di = pTexture->GetDimension();
+		m_SrcRect.Set(0.f, 0.f, di.x, di.y);
+	}
 }
 #ifdef EDITOR_MODE
 
@@ -130,15 +139,7 @@ void tyr::TextureComp::InternalRenderEditor()
 	
 }
 
-void tyr::TextureComp::ResetRenderParameters()
-{
-	const Texture* pTexture = CONTENT_MANAGER->GetTexture(m_TextureID);
-	if (pTexture)
-	{
-		const auto di = pTexture->GetDimension();
-		m_SrcRect.Set(0.f, 0.f, di.x, di.y);
-	}
-}
+
 
 
 void tyr::TextureComp::EditorTexture(std::string& name, const std::string& uID)

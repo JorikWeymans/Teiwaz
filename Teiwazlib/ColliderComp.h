@@ -24,12 +24,13 @@ namespace tyr
 		_NODISCARD bool IsDynamic() const noexcept { return m_IsDynamic; }
 
 		std::function<void(RaycastHit)> onColliderHitFunction;
+		void OnColliderHit(RaycastHit hit);
 		
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void Save(BinaryWriter& writer) override;
 
-		void OnColliderHit(RaycastHit hit);
+		
 		
 	protected:
 		void InternalRenderEditor() override;

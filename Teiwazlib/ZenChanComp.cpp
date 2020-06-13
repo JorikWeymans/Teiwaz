@@ -94,16 +94,14 @@ void tyr::ZenChanComp::FixedUpdate()
 	}
 	
 }
-
-#ifdef EDITOR_MODE
 void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 {
 	//TODO: Implement this, to many bugs to fix easly
 	UNREFERENCED_PARAMETER(hit);
-	if(hit.other->GetTag() == Tag::Player)
-		SDXL_ImGui_ConsoleLog("Player hit");
-	
-	
+	//if (hit.other->GetTag() == Tag::Player)
+		
+
+
 	//if(hit.other->GetTag() == Tag::Background)
 	//{
 	//	if(m_pSceneObject->GetTransform()->GetPosition().x < hit.other->GetTransform()->GetPosition().x && 
@@ -125,6 +123,8 @@ void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 	//	}
 	//}
 }
+
+#ifdef EDITOR_MODE
 
 void tyr::ZenChanComp::Debug()
 {

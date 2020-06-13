@@ -32,6 +32,12 @@ tyr::Rect tyr::ColliderComp::GetColliderRect() const
 	return rect;
 	
 }
+void tyr::ColliderComp::OnColliderHit(RaycastHit hit)
+{
+	if (onColliderHitFunction)
+		onColliderHitFunction(hit);
+
+}
 #ifdef EDITOR_MODE
 void tyr::ColliderComp::Debug()
 {
@@ -92,12 +98,7 @@ void tyr::ColliderComp::Save(BinaryWriter& writer)
 	writer.Write(m_IsDynamic);
 }
 
-void tyr::ColliderComp::OnColliderHit(RaycastHit hit)
-{
-	if (onColliderHitFunction)
-		onColliderHitFunction(hit);
-	
-}
+
 
 #endif
 

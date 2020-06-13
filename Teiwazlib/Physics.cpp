@@ -57,7 +57,7 @@ bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float l
 void tyr::Physics::Update()
 {
 	//NOTE: Don't use position in this yet, this is not done yet
-	std::for_each(m_pDynamicColliders.begin(), m_pDynamicColliders.end(), [&](auto pDynamic)
+	std::for_each(m_pDynamicColliders.begin(), m_pDynamicColliders.end(), [&](ColliderComp* pDynamic)
 		{
 			if (!pDynamic->GetSceneObject()->IsActive())
 				return;
@@ -71,7 +71,7 @@ void tyr::Physics::Update()
 
 			auto botRight = Vector2(topRight.x, topRight.y + tC.height);
 			auto botLeft = Vector2(topRight.x, botRight.y);
-
+		
 			if (Raycast(topLeft, topRight, hit, pDynamic))
 			{
 				pDynamic->OnColliderHit(hit);
