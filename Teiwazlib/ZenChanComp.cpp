@@ -102,12 +102,7 @@ void tyr::ZenChanComp::OnColliderHit(RaycastHit hit)
 		
 	if(hit.other->GetTag() == Tag::Player)
 	{
-		static bool hasHitAlready = false;
-		if(!hasHitAlready)
-		{
-			hit.other->GetComponent<PlayerHealthComp>()->LoseHealth();
-			hasHitAlready = true;
-		}
+		hit.other->GetComponent<PlayerHealthComp>()->LoseHealth();
 	}
 }
 

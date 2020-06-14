@@ -15,6 +15,7 @@ tyr::Player1Controller::Player1Controller(float m_JumpForce)
 	, m_pAni(nullptr)
 	, m_IsGoningLeft(false)
 	, m_JumpForce(m_JumpForce)
+	, m_OnHealthChangedFunction(std::bind(&Player1Controller::OnHealthChanged, this, std::placeholders::_1))
 {
 }
 
@@ -30,7 +31,14 @@ void tyr::Player1Controller::Initialize()
 	m_pAni  = GET_COMPONENT<AnimatorComp>();
 
 	INPUT->AddAction("AEating", ButtonState::Pressed, VK_SPACE);
+	m_StartPos = GET_TRANSFORM->GetPositionRaw();
+	
+}
 
+void tyr::Player1Controller::PostInitialize()
+{
+	
+	GET_COMPONENT<PlayerHealthComp>()->AddOnHealthChangedFunction(&m_OnHealthChangedFunction);
 }
 
 void tyr::Player1Controller::Update()
@@ -120,6 +128,13 @@ void tyr::Player1Controller::InternalRenderEditor()
 	SDXL_ImGui_SameLine();
 	name = "##Player1ControllerComp" + std::to_string(m_UniqueId);
 	SDXL_ImGui_DragFloat(name.c_str(), &m_JumpForce, 1, 10, 10);
+}
+
+void tyr::Player1Controller::OnHealthChanged(int amountLeft)
+{
+	GET_TRANSFORM->SetPositionX(m_StartPos.x);
+	GET_TRANSFORM->SetPositionY(m_StartPos.y);
+	UNREFERENCED_PARAMETER(amountLeft);
 }
 
 #endif
