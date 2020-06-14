@@ -8,6 +8,8 @@ namespace tyr
 	{
 	public:
 		explicit Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable* _pVariable);
+		explicit Connection(Connection* pOther);
+		
 		~Connection();
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer);

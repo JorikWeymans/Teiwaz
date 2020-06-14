@@ -6,7 +6,7 @@ namespace tyr
 	public:
 		Elapser();
 		explicit Elapser(float elapseTime);
-
+		Elapser& operator=(const Elapser& other) noexcept;
 		//return true when elapsed, only does it once
 		bool Update(float deltaTime);
 
@@ -23,8 +23,8 @@ namespace tyr
 	public:
 		Elapser(const Elapser&) = delete;
 		Elapser(Elapser&&) = delete;
-		Elapser& operator=(const Elapser&) = delete;
 		Elapser& operator=(Elapser&&) = delete;
+	
 	};
 
 

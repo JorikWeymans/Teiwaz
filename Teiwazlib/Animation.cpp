@@ -138,6 +138,26 @@ tyr::Animation* tyr::Animation::GenerateNew(const std::string& name)
 	
 	return pReturnAnimation;
 }
+
+tyr::Animation* tyr::Animation::CreateCopy()
+{
+	auto pReturn = new Animation();
+	pReturn->m_AnimationName = this->m_AnimationName;
+	pReturn->m_SpriteID      = this->m_SpriteID;
+	pReturn->m_AniElapser    = this->m_AniElapser;
+	pReturn->m_AniElapser.Reset();
+
+	const int size = static_cast<int>(this->m_AniSprites.size());
+	pReturn->m_AniSprites.resize(size);
+	for(int i{0}; i < size; i++)
+	{
+		pReturn->m_AniSprites[i] = this->m_AniSprites[i];
+	}
+	
+
+	return pReturn;
+	
+}
 #endif
 
 

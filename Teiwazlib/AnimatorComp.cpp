@@ -24,12 +24,13 @@ tyr::AnimatorComp::AnimatorComp(AnimatorID id)
 
 tyr::AnimatorComp::~AnimatorComp()
 {
+	SAFE_DELETE(m_pAnimator);
 }
 
 
 void tyr::AnimatorComp::Initialize()
 {
-	m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
+	m_pAnimator = CONTENT_MANAGER->GetAnimatorCopy(m_AnimatorID);
 	m_pAnimator->Initialize();
 	
 	m_pTextureComp = GET_COMPONENT<TextureComp>();
@@ -74,7 +75,8 @@ void tyr::AnimatorComp::InternalRenderEditor()
 
 	if(prev != m_AnimatorID)
 	{
-		m_pAnimator = CONTENT_MANAGER->GetAnimator(m_AnimatorID);
+		SAFE_DELETE(m_pAnimator);
+		m_pAnimator = CONTENT_MANAGER->GetAnimatorCopy(m_AnimatorID);
 		m_pAnimator->Initialize();
 	}
 }

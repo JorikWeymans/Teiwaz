@@ -15,6 +15,15 @@ tyr::Elapser::Elapser(float elapseTime)
 {
 }
 
+tyr::Elapser& tyr::Elapser::operator=(const Elapser& other) noexcept
+{
+	this->m_Current = other.m_Current;
+	this->m_HasElapsed = other.m_HasElapsed;
+	this->m_Max = other.m_Max;
+
+	return *this;
+}
+
 bool tyr::Elapser::Update(float deltaTime)
 {
 	if (m_HasElapsed) return false;

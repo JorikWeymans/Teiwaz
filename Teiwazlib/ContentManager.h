@@ -39,12 +39,14 @@ namespace tyr
 		_NODISCARD Texture*    GetTexture(TextureID id) const; 
 		_NODISCARD Font const* GetFont(FontID id) const;
 		
-		_NODISCARD Animation*  GetAnimation(AnimationID id) const; 
+		_NODISCARD Animation*  GetAnimation(AnimationID id) const;
+		_NODISCARD Animation*  GetAnimationCopy(AnimationID id) const; //The caller is in charge of deleting the copy
 		_NODISCARD Animation*  GetAnimation(const std::string& animationName) const; //this does not load the animation, returns pointer to an existing animation (else nullptr)
 		_NODISCARD AnimationID GetAnimationID(const std::string& animationName) const;
 		_NODISCARD AnimationID GetAnimationID(Animation* pAnimation) const noexcept;
 
 		_NODISCARD Animator* GetAnimator(AnimatorID id) const noexcept;
+		_NODISCARD Animator* GetAnimatorCopy(AnimatorID id) const; //The caller is in charge of deleting the copy
 		_NODISCARD Animator* GetAnimator(const std::string& animatorName) const;
 		
 		_NODISCARD Scene* GetCurrentScene() const noexcept;

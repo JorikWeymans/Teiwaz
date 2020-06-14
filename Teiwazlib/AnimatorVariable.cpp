@@ -19,6 +19,18 @@ tyr::AnimatorVariable::AnimatorVariable(const std::string& name, bool _Data, Equ
 	bSetValue = _Data;
 	bComparatorValue = _Data;
 }
+
+tyr::AnimatorVariable::AnimatorVariable(AnimatorVariable* pOther)
+	: m_Name(pOther->m_Name)
+	, m_Type(pOther->m_Type)
+	, m_Equation(pOther->m_Equation)
+	, fSetValue(pOther->fSetValue)
+	, fComparatorValue(pOther->fComparatorValue)
+{
+	bSetValue = pOther->bSetValue;
+	bComparatorValue = pOther->bComparatorValue;
+}
+
 tyr::AnimatorVariable::AnimatorVariable(AnimatorVariable&& other) noexcept
 	: m_Name(std::move(other.m_Name))
 	, m_Type(other.m_Type)

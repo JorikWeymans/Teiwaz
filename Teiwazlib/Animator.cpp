@@ -22,11 +22,46 @@ tyr::Animator::~Animator()
 {
 	std::for_each(m_pConnections.begin(), m_pConnections.end(), [](auto& a) {delete a; a = nullptr; });
 	m_pConnections.clear();
+	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](auto pA)
+		{
+			SAFE_DELETE(pA.second);
+		});
+	m_pAnimations.clear();
 }
 
 void tyr::Animator::SetAnimation(AnimationID id)
 {
-	m_pCurrent = CONTENT_MANAGER->GetAnimation(id);
+	m_pCurrent = m_pAnimations[id];
+}
+
+AnimationID tyr::Animator::GetAnimationID(Animation* pAnimation) const
+{
+	auto found = std::find_if(m_pAnimations.begin(), m_pAnimations.end(), [pAnimation](auto pA) { return pA.second == pAnimation; });
+
+	if(found != m_pAnimations.end())
+		return found->first;
+
+	return 0;
+}
+
+void tyr::Animator::ReloadAnimations()
+{
+	std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](auto pA)
+		{
+			SAFE_DELETE(pA.second);
+		});
+
+	m_pAnimations.clear();
+
+	for (auto pcon : m_pConnections)
+	{
+		if (m_pAnimations[pcon->lhs] == nullptr)
+			m_pAnimations[pcon->lhs] = CONTENT_MANAGER->GetAnimationCopy(pcon->lhs);
+
+		if (m_pAnimations[pcon->rhs] == nullptr)
+			m_pAnimations[pcon->rhs] = CONTENT_MANAGER->GetAnimationCopy(pcon->rhs);
+		
+	}
 }
 
 void tyr::Animator::Update(float elapsed)
@@ -40,7 +75,7 @@ void tyr::Animator::SetFloat(const std::string& variable, float value)
 	{
 		if (pcon->pVariable->GetName() != variable) continue;
 		if (pcon->pVariable->GetType() != VariableType::Float) continue;
-		if (pcon->lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
+		if (pcon->lhs != GetAnimationID(m_pCurrent)) continue;
 
 
 		if(pcon->pVariable->DoEquation(value))
@@ -55,7 +90,7 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 	{
 		if (pcon->pVariable->GetName() != variable) continue;
 		if (pcon->pVariable->GetType() != VariableType::Bool) continue;
-		if (pcon->lhs != CONTENT_MANAGER->GetAnimationID(m_pCurrent)) continue;
+		if (pcon->lhs != GetAnimationID(m_pCurrent)) continue;
 
 
 		if (pcon->pVariable->DoEquation(value))
@@ -68,8 +103,13 @@ void tyr::Animator::SetBool(const std::string& variable, bool value)
 
 void tyr::Animator::Initialize()
 {
-	m_pCurrent = CONTENT_MANAGER->GetAnimation(m_pConnections[0]->lhs);
+	//m_pCurrent = CONTENT_MANAGER->GetAnimation(m_pConnections[0]->lhs);
+
+	ReloadAnimations();
+	SetAnimation(m_pConnections[0]->lhs);
+
 	m_pCurrent->Reset();
+
 }
 
 bool tyr::Animator::IsAtEnd() const
@@ -106,8 +146,27 @@ tyr::Animator* tyr::Animator::Create(const std::string& path)
 	
 	return pTheAnimator;
 }
+tyr::Animator* tyr::Animator::CreateCopy()
+{
+	auto pReturn = new Animator();
+	pReturn->m_Name = this->m_Name;
+
+	const int size = this->m_pConnections.size();
+	pReturn->m_pConnections.resize(size);
+
+	for(int i{0}; i < size; i++)
+	{
+		pReturn->m_pConnections[i] = new Connection(this->m_pConnections[i]);
+	}
+	
+	return pReturn;
+}
+
+
+
 
 #ifdef EDITOR_MODE
+
 void tyr::Animator::Save()
 {
 	std::stringstream ss;

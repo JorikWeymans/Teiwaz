@@ -562,6 +562,16 @@ tyr::Animation* tyr::ContentManager::GetAnimation(AnimationID id) const
 {
 	return m_pCMAnimations->GetAnimation(id);
 }
+
+tyr::Animation* tyr::ContentManager::GetAnimationCopy(AnimationID id) const
+{
+	auto pOriginalAnimation = m_pCMAnimations->GetAnimation(id);
+	if(pOriginalAnimation)
+		return 	pOriginalAnimation->CreateCopy();
+
+	return nullptr;
+}
+
 tyr::Animation* tyr::ContentManager::GetAnimation(const std::string& animationName) const
 {
 	return m_pCMAnimations->GetAnimation(animationName);
@@ -579,6 +589,16 @@ tyr::Animator* tyr::ContentManager::GetAnimator(AnimatorID id) const noexcept
 {
 	return m_pCMAnimators->GetAnimator(id);
 }
+
+tyr::Animator* tyr::ContentManager::GetAnimatorCopy(AnimatorID id) const
+{
+	auto pOriginalAnimation = m_pCMAnimators->GetAnimator(id);
+	if (pOriginalAnimation)
+		return 	pOriginalAnimation->CreateCopy();
+
+	return nullptr;
+}
+
 tyr::Animator* tyr::ContentManager::GetAnimator(const std::string& animatorName) const
 {
 	return m_pCMAnimators->GetAnimator(animatorName);

@@ -11,6 +11,14 @@ tyr::Connection::Connection(AnimationID _Lhs, AnimationID _Rhs, AnimatorVariable
 {
 }
 
+tyr::Connection::Connection(Connection* pOther)
+	: lhs(pOther->lhs)
+	, rhs(pOther->rhs)
+	, pVariable(new AnimatorVariable(pOther->pVariable))
+{
+	
+}
+
 
 tyr::Connection* tyr::Connection::CreateNew()
 {

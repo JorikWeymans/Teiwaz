@@ -22,6 +22,8 @@ namespace tyr
 	public:
 		explicit AnimatorVariable(const std::string& name, float _Data, Equation _Equation);
 		explicit AnimatorVariable(const std::string& name, bool _Data,  Equation _Equation);
+		explicit AnimatorVariable(AnimatorVariable* pOther);
+		
 		AnimatorVariable(AnimatorVariable&& other) noexcept;
 		~AnimatorVariable() = default;
 		

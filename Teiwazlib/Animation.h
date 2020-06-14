@@ -28,6 +28,8 @@ namespace tyr
 		static Animation* GenerateNew(const std::string& name);
 #endif
 
+
+		Animation* CreateCopy();
 	private:
 		friend bool operator==(Animation* lhs, const std::string& rhs); //rhs == dataPath that gets hashed on creation
 
