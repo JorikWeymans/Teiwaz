@@ -245,7 +245,7 @@ void tyr::ZenChanPoppedState::Enter()
 
 void tyr::ZenChanPoppedState::Exit()
 {
-	FoodPrefab::Generate(m_pContext->pSceneManager->GetCurrentScene(), GET_TRANSFORM->GetPositionRaw());
+	FoodPrefab::Generate(m_pContext->pSceneManager->GetCurrentScene(), GET_TRANSFORM->GetPositionRaw(), FoodType::Melon);
 
 	m_pSceneObject->Destroy();
 }

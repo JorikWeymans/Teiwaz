@@ -46,6 +46,7 @@ void tyr::FoodComp::InternalRenderEditor()
 void tyr::FoodComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
+	writer.Write(m_FoodType);
 	UNREFERENCED_PARAMETER(writer);
 }
 
@@ -53,7 +54,17 @@ void tyr::FoodComp::OnColliderHit(RaycastHit hit)
 {
 	if (hit.other->GetTag() == Tag::Player)
 	{
-		GET_CONTEXT->pGameState->AddToScore(100);
+		switch (m_FoodType)
+		{
+			case FoodType::Melon:
+				GET_CONTEXT->pGameState->AddToScore(100);
+				break;
+			case FoodType::Fries:
+				_FALLTHROUGH
+			default:
+				GET_CONTEXT->pGameState->AddToScore(200);
+		; }
+		
 		m_pSceneObject->Destroy();
 		
 	}

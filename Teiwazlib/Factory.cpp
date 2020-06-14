@@ -132,8 +132,8 @@ tyr::ButtonComp*               tyr::Factory::CreateButtonComp(BinaryReader& read
 
 tyr::FoodComp* tyr::Factory::CreateFoodComp(BinaryReader& reader)
 {
-	UNREFERENCED_PARAMETER(reader);
-	return new FoodComp();
+	const FoodType fType = reader.Read<FoodType>();
+	return new FoodComp(fType);
 }
 
 tyr::ScoreDisplayComp* tyr::Factory::CreateScoreDisplayComp(BinaryReader& reader)

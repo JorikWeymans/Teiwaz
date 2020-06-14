@@ -6,7 +6,7 @@ namespace tyr
 	class FoodPrefab final
 	{
 	public:
-		static void Generate(Scene* pScene, const Vector2& pos);
+		static void Generate(Scene* pScene, const Vector2& pos, FoodType type);
 		
 	public:
 		FoodPrefab() = delete;
