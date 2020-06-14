@@ -2,6 +2,7 @@
 #include "BubbleComp.h"
 #include "TyrComps.h"
 #include "SceneObject.h"
+#include "Physics.h"
 tyr::BubbleComp::BubbleComp(bool GoLeft)
 	: BaseComponent(ComponentType::Bubble, "Bubble Component")
 	, m_pBody(nullptr)
@@ -12,7 +13,7 @@ tyr::BubbleComp::BubbleComp(bool GoLeft)
 void tyr::BubbleComp::Initialize()
 {
 	ADD_COMPONENT(new TextureComp(3, PivotMode::Center, tyr::Rect(576.f, 0.f, 48.f, 48.f)));
-	ADD_COMPONENT(new ColliderComp(48, 48, PivotMode::Center, false));
+	auto pColliderComp = ADD_COMPONENT(new ColliderComp(48, 48, PivotMode::Center, true));
 	ADD_COMPONENT(new CharacterControllerComp());
 	ADD_COMPONENT(new AnimatorComp(4));
 	
@@ -22,6 +23,10 @@ void tyr::BubbleComp::Initialize()
 		m_pBody->AddForce(-300.f, 0.f);
 	else
 		m_pBody->AddForce(300.f, 0.f);
+
+
+	pColliderComp->onColliderHitFunction = std::bind(&BubbleComp::OnColliderHit, this, std::placeholders::_1);
+	
 }
 
 void tyr::BubbleComp::Update()
@@ -45,6 +50,14 @@ void tyr::BubbleComp::FixedUpdate()
 #ifdef EDITOR_MODE
 void tyr::BubbleComp::InternalRenderEditor()
 {
+}
+
+void tyr::BubbleComp::OnColliderHit(RaycastHit hit)
+{
+	if(hit.other->GetTag() == Tag::Enemy)
+	{
+		SDXL_ImGui_ConsoleLog("Enemy hit");
+	}
 }
 
 void tyr::BubbleComp::Save(BinaryWriter& writer)

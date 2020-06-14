@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 namespace tyr
 {
+	struct RaycastHit;
 	class RigidBodyComp;
 	class BubbleComp : public BaseComponent
 	{
@@ -25,6 +26,8 @@ namespace tyr
 	private:
 		RigidBodyComp* m_pBody;
 		bool m_IsGoingLeft;
+
+		void OnColliderHit(RaycastHit hit);
 	public:
 		BubbleComp(const BubbleComp&) = delete;
 		BubbleComp(BubbleComp&&) = delete;

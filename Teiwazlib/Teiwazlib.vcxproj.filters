@@ -41,6 +41,9 @@
     <Filter Include="ContentManagers">
       <UniqueIdentifier>{cc160844-e48d-4c33-b78b-c980ec930e14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{d3c4b42f-52f9-404e-9b54-046a6da981ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TeiwazEngine.h">
@@ -245,6 +248,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Buttons.h" />
+    <ClInclude Include="ZenChanStates.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -428,6 +434,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Buttons.cpp" />
+    <ClCompile Include="ZenChanStates.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

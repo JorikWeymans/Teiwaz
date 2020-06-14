@@ -263,6 +263,7 @@
     <ClInclude Include="TyrTypedefs.h" />
     <ClInclude Include="Vectors.h" />
     <ClInclude Include="ZenChanComp.h" />
+    <ClInclude Include="ZenChanStates.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
@@ -331,6 +332,7 @@
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Vectors.cpp" />
     <ClCompile Include="ZenChanComp.cpp" />
+    <ClCompile Include="ZenChanStates.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

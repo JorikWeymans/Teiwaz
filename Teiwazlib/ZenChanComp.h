@@ -6,8 +6,7 @@
 namespace tyr
 {
 	struct RaycastHit;
-	class CharacterControllerComp;
-	class RigidBodyComp;
+	class ZenChanState;
 	class ZenChanComp final : public BaseComponent
 	{
 	public:
@@ -19,20 +18,15 @@ namespace tyr
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() const override {}
-
-		void OnColliderHit(RaycastHit hit);
+		
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void InternalRenderEditor() override;
 		void Save(BinaryWriter& writer) override;
 #endif
+
+		ZenChanState* m_pState;
 	private:
-		CharacterControllerComp* m_pCont;
-		RigidBodyComp* m_pBody;
-		Elapser m_JumpCounter;
-		Elapser m_NoDiSwitchTimer;
-		bool m_CanSwitchDirection;
-		bool m_IsGoingLeft;
 		float m_RayLength;
 		float m_MoveSpeed;
 	public:
