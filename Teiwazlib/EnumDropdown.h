@@ -10,7 +10,9 @@ namespace tyr
 #define DROPDOWN_COMPONENT_TYPE EnumDropdown::GetInstance()->ComponentTypeDropdown
 #define DROPDOWN_EQUATION EnumDropdown::GetInstance()->EquationDropdown
 #define DROPDOWN_VARIABLE_TYPE EnumDropdown::GetInstance()->VariableTypeDropdown
-
+#define DROPDOWN_PIVOT_MODE EnumDropdown::GetInstance()->PivotModeDropDown
+#define DROPDOWN_BUTTON_TYPE EnumDropdown::GetInstance()->ButtonTypeDropDown
+	
 	enum class ComponentType : UINT;
 	class EnumDropdown final
 	{
@@ -24,6 +26,7 @@ namespace tyr
 		void EquationDropdown(const char* ImGuiID, Equation& selected, int customWidth = -1) const;
 		void VariableTypeDropdown(const char* ImGuiID, VariableType& selected, int customWidth = -1) const;
 		void PivotModeDropDown(const char* ImGuiID, PivotMode& selected, int customWidth = -1) const;
+		void ButtonTypeDropDown(const char* ImGuiID, ButtonType& selected, int customWidth = -1) const;
 	private:
 		EnumDropdown();
 		
@@ -44,6 +47,8 @@ namespace tyr
 		const UINT m_PivotModeCount;
 		std::vector<const char*> m_PivotModeItems;
 
+		const UINT m_ButtonTypeCount;
+		std::vector<const char*> m_ButtonTypeItems;
 
 		
 		static UINT TagToArrayIndex(Tag theTag);

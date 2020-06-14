@@ -33,7 +33,11 @@ namespace tyr
 		All        = 0xFF,
 
 	};
-
+	enum class ButtonType : UINT
+	{
+		QuitGame,
+		Start,
+	};
 	Tag operator<<(const Tag& tag, const int& rhs);
 	Tag operator++(tyr::Tag& tag, int);
 	Tag operator>>(const Tag& tag, const int& rhs);

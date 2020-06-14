@@ -241,6 +241,9 @@
     <ClInclude Include="MenuSelectorComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ButtonComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -418,6 +421,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="MenuSelectorComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

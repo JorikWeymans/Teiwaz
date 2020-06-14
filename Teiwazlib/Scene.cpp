@@ -391,6 +391,9 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::MenuSelector:
 			newObject->AddComponent(Factory::CreateComponent<MenuSelectorComp>(reader));
 			break;
+		case ComponentType::Button:
+			newObject->AddComponent(Factory::CreateComponent<ButtonComp>(reader));
+			break;
 		default:
 			THROW_ERROR(L"This component is not implemented yet");
 		}

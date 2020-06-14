@@ -205,6 +205,7 @@
     <ClInclude Include="BinStructureHelpers.h" />
     <ClInclude Include="BubbleComp.h" />
     <ClInclude Include="BubbleShootingComp.h" />
+    <ClInclude Include="ButtonComp.h" />
     <ClInclude Include="CharacterControllerComp.h" />
     <ClInclude Include="CMAnimations.h" />
     <ClInclude Include="CMAnimators.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="BinaryWriter.cpp" />
     <ClCompile Include="BubbleComp.cpp" />
     <ClCompile Include="BubbleShootingComp.cpp" />
+    <ClCompile Include="ButtonComp.cpp" />
     <ClCompile Include="CharacterControllerComp.cpp" />
     <ClCompile Include="CMAnimations.cpp" />
     <ClCompile Include="CMAnimators.cpp" />

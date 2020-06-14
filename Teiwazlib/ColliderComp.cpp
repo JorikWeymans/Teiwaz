@@ -73,7 +73,7 @@ void tyr::ColliderComp::InternalRenderEditor()
 	SDXL_ImGui_Text("Pivot:   \t");
 	SDXL_ImGui_SameLine();
 	name = "##ColliderCompPivotMode" + idString;
-	EnumDropdown::GetInstance()->PivotModeDropDown(name.c_str(), m_Pivot);
+	DROPDOWN_PIVOT_MODE(name.c_str(), m_Pivot);
 
 	RenderIsDynamicProperty();
 	

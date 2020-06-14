@@ -8,8 +8,7 @@ namespace tyr
 	class MenuSelectorComp final : public BaseComponent
 	{
 	public:
-		explicit MenuSelectorComp(const Color& selected = Color(1.f, 1.f, 1.f), const Color& notSelected = Color(.7f, .7f,.7f));
-		explicit MenuSelectorComp(const Color_POD& selected, const Color_POD& notSelected);
+		explicit MenuSelectorComp();
 		~MenuSelectorComp();
 
 		void Initialize() override;
@@ -27,7 +26,6 @@ namespace tyr
 	private:
 		TextComp* m_pStartGame, * m_pQuitGame;
 		UINT m_Selected;
-		Color m_SelectedColor, m_NotSelectedColor;
 	public:
 		MenuSelectorComp(const MenuSelectorComp&) = delete;
 		MenuSelectorComp(MenuSelectorComp&&) = delete;

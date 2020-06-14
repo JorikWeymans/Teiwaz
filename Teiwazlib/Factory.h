@@ -20,7 +20,7 @@ namespace tyr
 	class PlayerHealthComp;
 	class HealthDisplayComp;
 	class MenuSelectorComp;
-	
+	class ButtonComp;
 	class Scene;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
 	class Factory final
@@ -47,6 +47,7 @@ namespace tyr
 		template<> _NODISCARD static PlayerHealthComp*        CreateComponent(BinaryReader& reader) { return CreatePlayerHealthComp(reader); }
 		template<> _NODISCARD static HealthDisplayComp*       CreateComponent(BinaryReader& reader) { return CreateHealthDisplayComp(reader); }
 		template<> _NODISCARD static MenuSelectorComp*	      CreateComponent(BinaryReader& reader) { return CreateMenuSelectorComp(reader); }
+		template<> _NODISCARD static ButtonComp*			  CreateComponent(BinaryReader& reader) { return CreateButtonComp(reader); }
 		
 	private:
 		_NODISCARD static TransformComp*           CreateTransformComp(BinaryReader& reader);
@@ -64,6 +65,7 @@ namespace tyr
 		_NODISCARD static PlayerHealthComp*        CreatePlayerHealthComp(BinaryReader& reader);
 		_NODISCARD static HealthDisplayComp*	   CreateHealthDisplayComp(BinaryReader& reader);
 		_NODISCARD static MenuSelectorComp*		   CreateMenuSelectorComp(BinaryReader& reader);
+		_NODISCARD static ButtonComp*		       CreateButtonComp(BinaryReader& reader);
 	public:
 		Factory() = delete;
 		~Factory() = delete;

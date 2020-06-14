@@ -290,6 +290,9 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::MenuSelector:
 				theComp = new MenuSelectorComp();
 				break;
+			case ComponentType::Button:
+				theComp = new ButtonComp();
+				break;
 			default:
 				usedNotImplemented = true;
 			 }

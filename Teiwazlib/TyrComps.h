@@ -20,3 +20,4 @@
 #include "PlayerHealthComp.h"
 #include "HealthDisplayComp.h"
 #include "MenuSelectorComp.h"
+#include "ButtonComp.h"

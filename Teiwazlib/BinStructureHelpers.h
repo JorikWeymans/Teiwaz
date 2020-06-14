@@ -29,6 +29,7 @@ namespace tyr
 		PlayerHealth,
 		HealthDisplay,
 		MenuSelector,
+		Button,
 		
 		//Append here
 
