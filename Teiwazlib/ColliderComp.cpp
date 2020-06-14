@@ -37,10 +37,28 @@ tyr::Rect tyr::ColliderComp::GetColliderRect() const
 	return rect;
 	
 }
+
+
+void tyr::ColliderComp::AddOnColliderHitFunction(std::function<void(RaycastHit)>* func)
+{
+	auto found = std::find_if(m_pOnColliderHitFunctions.begin(), m_pOnColliderHitFunctions.end(), [&func](auto f) {return f == func; });
+	if (found == m_pOnColliderHitFunctions.end())
+		m_pOnColliderHitFunctions.emplace_back(func);
+}
+void tyr::ColliderComp::RemoveOnColliderHitFunction(std::function<void(RaycastHit)>* func)
+{
+	auto found = std::find_if(m_pOnColliderHitFunctions.begin(), m_pOnColliderHitFunctions.end(), [&func](auto f) {return f == func; });
+	if (found != m_pOnColliderHitFunctions.end())
+		m_pOnColliderHitFunctions.erase(found);
+}
+
 void tyr::ColliderComp::OnColliderHit(RaycastHit hit)
 {
-	if (onColliderHitFunction)
-		onColliderHitFunction(hit);
+	std::for_each(m_pOnColliderHitFunctions.begin(), m_pOnColliderHitFunctions.end(), [&](std::function<void(RaycastHit)>* pFunc)
+		{
+			if ((*pFunc))
+				(*pFunc)(hit);
+		});
 
 }
 #ifdef EDITOR_MODE

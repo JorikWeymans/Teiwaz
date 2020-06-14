@@ -70,6 +70,7 @@ namespace tyr
 			unsigned int currIndex = 0;
 			for (auto* component : m_pComponents)
 			{
+				
 				if (component && typeid(*component) == typeid(T))
 				{
 					if (currIndex == index)

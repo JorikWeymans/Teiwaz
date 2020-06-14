@@ -27,6 +27,7 @@ tyr::ZenChanWanderingState::ZenChanWanderingState(GameContext const* pContext, S
 	, m_NoDiSwitchTimer(0.2f)
 	, m_CanSwitchDirection(false)
 	, m_IsGoingLeft(false)
+	, m_OnColliderHitFunction(std::bind(&ZenChanWanderingState::OnColliderHit, this, std::placeholders::_1))
 {
 }
 
@@ -40,7 +41,18 @@ void tyr::ZenChanWanderingState::Enter()
 
 	//https://stackoverflow.com/questions/7582546/using-generic-stdfunction-objects-with-member-functions-in-one-class
 	//This is an override, each collider can only have one onColliderHitFunction
-	col->onColliderHitFunction = std::bind(&ZenChanWanderingState::OnColliderHit, this, std::placeholders::_1);
+	col->AddOnColliderHitFunction(&m_OnColliderHitFunction);
+}
+
+void tyr::ZenChanWanderingState::Exit()
+{
+	if(m_pSceneObject && !m_pSceneObject->IsDestroyed())
+	{
+		auto col = GET_COMPONENT<ColliderComp>();
+		if (col)
+			col->RemoveOnColliderHitFunction(&m_OnColliderHitFunction);
+	}
+
 }
 
 

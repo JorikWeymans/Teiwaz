@@ -1,5 +1,6 @@
 #pragma once
 #include "Elapser.h"
+#include <functional>
 
 namespace tyr
 {
@@ -54,7 +55,7 @@ namespace tyr
 		_NODISCARD ZenChanState* FixedUpdate() override;
 
 		void Enter() override;
-		
+		void Exit() override;
 #ifdef EDITOR_MODE
 		void Debug() override;
 #endif
@@ -71,7 +72,7 @@ namespace tyr
 		bool m_IsGoingLeft;
 
 		void OnColliderHit(RaycastHit hit);
-
+		std::function<void(RaycastHit)> m_OnColliderHitFunction;
 	public:
 		ZenChanWanderingState(const ZenChanWanderingState&) = delete;
 		ZenChanWanderingState(ZenChanWanderingState&&) = delete;

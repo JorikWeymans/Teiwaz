@@ -17,6 +17,7 @@ tyr::ZenChanComp::ZenChanComp(float movespeed)
 
 tyr::ZenChanComp::~ZenChanComp()
 {
+	m_pState->Exit();
 	SAFE_DELETE(m_pState);
 }
 void tyr::ZenChanComp::Initialize()

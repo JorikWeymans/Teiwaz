@@ -24,7 +24,7 @@ tyr::Scene::Scene(const std::string& name, const std::string& path)
 
 tyr::Scene::~Scene()
 {
-	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) {SAFE_DELETE(s)});
+	std::for_each(m_pSceneObjects.begin(), m_pSceneObjects.end(), [](SceneObject* s) { s->m_IsDestroyed =true;  SAFE_DELETE(s)});
 }
 
 void tyr::Scene::Load()

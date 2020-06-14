@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
+#include <functional>
+
 namespace tyr
 {
 	struct RaycastHit;
@@ -8,7 +10,7 @@ namespace tyr
 	{
 	public:
 		explicit BubbleComp(bool goLeft);
-		~BubbleComp() override = default;
+		~BubbleComp() override;
 
 		void Initialize() override;
 
@@ -27,7 +29,9 @@ namespace tyr
 		RigidBodyComp* m_pBody;
 		bool m_IsGoingLeft;
 
+		
 		void OnColliderHit(RaycastHit hit);
+		std::function<void(RaycastHit)> m_OnColliderHitFunction;
 	public:
 		BubbleComp(const BubbleComp&) = delete;
 		BubbleComp(BubbleComp&&) = delete;

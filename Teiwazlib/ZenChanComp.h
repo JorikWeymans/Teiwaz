@@ -25,8 +25,10 @@ namespace tyr
 		void Save(BinaryWriter& writer) override;
 #endif
 
-		ZenChanState* m_pState;
+		
 	private:
+		ZenChanState* m_pState;
+		
 		float m_RayLength;
 		float m_MoveSpeed;
 	public:

@@ -23,7 +23,9 @@ namespace tyr
 		Rect GetColliderRect() const;
 		_NODISCARD bool IsDynamic() const noexcept { return m_IsDynamic; }
 
-		std::function<void(RaycastHit)> onColliderHitFunction;
+		void AddOnColliderHitFunction(std::function<void(RaycastHit)>* func);
+		void RemoveOnColliderHitFunction(std::function<void(RaycastHit)>* func);
+		
 		void OnColliderHit(RaycastHit hit);
 		
 #ifdef EDITOR_MODE
@@ -42,6 +44,9 @@ namespace tyr
 		bool m_IsDynamic;
 
 		void RenderIsDynamicProperty();
+
+		std::vector<std::function<void(RaycastHit)>*> m_pOnColliderHitFunctions;
+		
 		
 	public:
 		//ColliderComp() = delete;

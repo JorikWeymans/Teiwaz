@@ -7,7 +7,17 @@ tyr::BubbleComp::BubbleComp(bool GoLeft)
 	: BaseComponent(ComponentType::Bubble, "Bubble Component")
 	, m_pBody(nullptr)
 	, m_IsGoingLeft(GoLeft)
+	, m_OnColliderHitFunction(std::bind(&BubbleComp::OnColliderHit, this, std::placeholders::_1))
 {
+}
+
+tyr::BubbleComp::~BubbleComp()
+{
+	auto pColl = GET_COMPONENT<ColliderComp>();
+	if(pColl)
+	{
+		pColl->RemoveOnColliderHitFunction(&m_OnColliderHitFunction);
+	}
 }
 
 void tyr::BubbleComp::Initialize()
@@ -25,7 +35,7 @@ void tyr::BubbleComp::Initialize()
 		m_pBody->AddForce(300.f, 0.f);
 
 
-	pColliderComp->onColliderHitFunction = std::bind(&BubbleComp::OnColliderHit, this, std::placeholders::_1);
+	pColliderComp->AddOnColliderHitFunction(&m_OnColliderHitFunction);
 	
 }
 
