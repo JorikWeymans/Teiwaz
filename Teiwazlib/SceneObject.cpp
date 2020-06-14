@@ -274,6 +274,12 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::Button:
 				theComp = new ButtonComp();
 				break;
+			case ComponentType::Food:
+				theComp = new FoodComp();
+				break;
+			case ComponentType::ScoreDisplay:
+				theComp = new ScoreDisplayComp();
+				break;
 			default:
 				usedNotImplemented = true;
 			 }

@@ -135,3 +135,9 @@ tyr::FoodComp* tyr::Factory::CreateFoodComp(BinaryReader& reader)
 	UNREFERENCED_PARAMETER(reader);
 	return new FoodComp();
 }
+
+tyr::ScoreDisplayComp* tyr::Factory::CreateScoreDisplayComp(BinaryReader& reader)
+{
+	const int playerNmbr = reader.Read<int>();
+	return new ScoreDisplayComp();
+}

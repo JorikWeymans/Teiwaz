@@ -22,3 +22,4 @@
 #include "MenuSelectorComp.h"
 #include "ButtonComp.h"
 #include "FoodComp.h"
+#include "ScoreDisplayComp.h"

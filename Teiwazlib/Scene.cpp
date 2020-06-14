@@ -398,8 +398,12 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 			break;
 		case ComponentType::Button:
 			newObject->AddComponent(Factory::CreateComponent<ButtonComp>(reader));
+			break;
 		case ComponentType::Food:
 			newObject->AddComponent(Factory::CreateComponent<FoodComp>(reader));
+			break;
+		case ComponentType::ScoreDisplay:
+			newObject->AddComponent(Factory::CreateComponent<ScoreDisplayComp>(reader));
 			break;
 		default:
 			THROW_ERROR(L"This component is not implemented yet");

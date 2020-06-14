@@ -7,6 +7,7 @@ namespace tyr
 	class Rect;
 	class Physics;
 	class EUI;
+	class GameState;
 	class GameContext final
 	{
 	public:
@@ -18,6 +19,7 @@ namespace tyr
 		Rect* pGameSpace;
 		Physics* pPhysics;
 		SceneManager* const pSceneManager; //weak ptr
+		GameState* pGameState;
 		bool paused;
 #ifdef EDITOR_MODE
 #define E_UI m_pContext->pEditorUI

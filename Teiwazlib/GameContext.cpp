@@ -4,6 +4,7 @@
 #include "InputHandler.h"
 #include "Vectors.h"
 #include "Physics.h"
+#include "GameState.h"
 #include "SceneManager.h"
 
 tyr::GameContext::GameContext(Time* pTime, InputHandler* pInput, Rect* pGameSpace, Physics* pPhysics, SceneManager* pSceneManager)
@@ -12,6 +13,7 @@ tyr::GameContext::GameContext(Time* pTime, InputHandler* pInput, Rect* pGameSpac
 	, pGameSpace(pGameSpace)
 	, pPhysics(pPhysics)
 	, pSceneManager(pSceneManager)
+	, pGameState(new GameState())
 	, paused(false)
 #ifdef EDITOR_MODE
 	, pEditorUI(nullptr)
@@ -25,4 +27,5 @@ tyr::GameContext::~GameContext()
 	SAFE_DELETE(pInput);
 	SAFE_DELETE(pGameSpace);
 	SAFE_DELETE(pPhysics);
+	SAFE_DELETE(pGameState);
 }

@@ -234,6 +234,7 @@
     <ClInclude Include="FoodComp.h" />
     <ClInclude Include="FoodPrefab.h" />
     <ClInclude Include="FPSComp.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="HealthDisplayComp.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MaitaComp.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
     <ClInclude Include="Editor\EWindowSouth.h" />
+    <ClInclude Include="ScoreDisplayComp.h" />
     <ClInclude Include="StringManipulation.h" />
     <ClInclude Include="Textcomp.h" />
     <ClInclude Include="Texture.h" />
@@ -305,6 +307,7 @@
     <ClCompile Include="FoodComp.cpp" />
     <ClCompile Include="FoodPrefab.cpp" />
     <ClCompile Include="FPSComp.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HealthDisplayComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="MaitaComp.cpp" />
@@ -314,6 +317,7 @@
     <ClCompile Include="PlayerHealthComp.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />
     <ClCompile Include="Editor\EWindowSouth.cpp" />
+    <ClCompile Include="ScoreDisplayComp.cpp" />
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureComp.cpp" />

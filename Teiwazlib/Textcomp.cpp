@@ -105,10 +105,6 @@ void tyr::TextComp::InternalRenderEditor()
 	{
 		m_Text = std::string(m_TempText);
 
-		for(int i{0}; i < ARRAY_SIZE(m_TempText); i++)
-		{
-			m_TempText[i] = static_cast<char>('\0');
-		}
 		strcpy_s(m_TempText, m_Text.c_str());
 	}
 
