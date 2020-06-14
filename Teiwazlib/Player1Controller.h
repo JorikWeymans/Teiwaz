@@ -20,7 +20,8 @@ namespace tyr
 		void Update() override;
 		void FixedUpdate() override;
 		void Render() const override {};
-		
+
+		_NODISCARD bool IsGoingLeft() const noexcept { return m_IsGoningLeft; }
 #ifdef EDITOR_MODE
 		void Save(BinaryWriter& writer) override;
 	protected:

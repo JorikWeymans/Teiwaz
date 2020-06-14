@@ -22,9 +22,9 @@ tyr::Player1Controller::Player1Controller(float m_JumpForce)
 void tyr::Player1Controller::Initialize()
 {
 	
-	GET_CONTEXT->pInput->AddAction("Jump", tyr::ButtonState::Pressed, 'W');
-	GET_CONTEXT->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, 'A');
-	GET_CONTEXT->pInput->AddAction("MoveRight", tyr::ButtonState::Down, 'D');
+	GET_CONTEXT->pInput->AddAction("Jump", tyr::ButtonState::Pressed, 'W',ControllerButton::ButtonX);
+	GET_CONTEXT->pInput->AddAction("MoveLeft", tyr::ButtonState::Down, 'A', ControllerButton::ButtonLeft);
+	GET_CONTEXT->pInput->AddAction("MoveRight", tyr::ButtonState::Down, 'D', ControllerButton::ButtonRight);
 
 	m_pBody = GET_COMPONENT<RigidBodyComp>();
 	m_pCont = GET_COMPONENT<CharacterControllerComp>();

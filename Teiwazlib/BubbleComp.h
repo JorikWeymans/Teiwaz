@@ -6,7 +6,7 @@ namespace tyr
 	class BubbleComp : public BaseComponent
 	{
 	public:
-		BubbleComp();
+		explicit BubbleComp(bool goLeft);
 		~BubbleComp() override = default;
 
 		void Initialize() override;
@@ -24,6 +24,7 @@ namespace tyr
 
 	private:
 		RigidBodyComp* m_pBody;
+		bool m_IsGoingLeft;
 	public:
 		BubbleComp(const BubbleComp&) = delete;
 		BubbleComp(BubbleComp&&) = delete;

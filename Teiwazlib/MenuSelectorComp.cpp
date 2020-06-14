@@ -20,9 +20,9 @@ tyr::MenuSelectorComp::~MenuSelectorComp()
 
 void tyr::MenuSelectorComp::Initialize()
 {
-	GET_CONTEXT->pInput->AddAction("MenuUP", tyr::ButtonState::Pressed, 'W');
-	GET_CONTEXT->pInput->AddAction("MenuDown", tyr::ButtonState::Pressed, 'S');
-	GET_CONTEXT->pInput->AddAction("Confirm", tyr::ButtonState::Pressed, VK_SPACE);
+	GET_CONTEXT->pInput->AddAction("MenuUP", tyr::ButtonState::Pressed, 'W', ControllerButton::ButtonLS);
+	GET_CONTEXT->pInput->AddAction("MenuDown", tyr::ButtonState::Pressed, 'S', ControllerButton::ButtonRS);
+	GET_CONTEXT->pInput->AddAction("Confirm", tyr::ButtonState::Pressed, VK_SPACE, ControllerButton::ButtonA);
 }
 
 void tyr::MenuSelectorComp::PostInitialize()

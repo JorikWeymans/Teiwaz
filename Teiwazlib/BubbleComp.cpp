@@ -2,9 +2,10 @@
 #include "BubbleComp.h"
 #include "TyrComps.h"
 #include "SceneObject.h"
-tyr::BubbleComp::BubbleComp()
+tyr::BubbleComp::BubbleComp(bool GoLeft)
 	: BaseComponent(ComponentType::Bubble, "Bubble Component")
 	, m_pBody(nullptr)
+	, m_IsGoingLeft(GoLeft)
 {
 }
 
@@ -13,10 +14,14 @@ void tyr::BubbleComp::Initialize()
 	ADD_COMPONENT(new TextureComp(3, PivotMode::Center, tyr::Rect(576.f, 0.f, 48.f, 48.f)));
 	ADD_COMPONENT(new ColliderComp(48, 48, PivotMode::Center, false));
 	ADD_COMPONENT(new CharacterControllerComp());
+	ADD_COMPONENT(new AnimatorComp(4));
 	
 	m_pBody = ADD_COMPONENT(new RigidBodyComp(0.f, false,4.f));
-	m_pBody->AddForce(-300.f, 0.f);
-	
+
+	if(m_IsGoingLeft)
+		m_pBody->AddForce(-300.f, 0.f);
+	else
+		m_pBody->AddForce(300.f, 0.f);
 }
 
 void tyr::BubbleComp::Update()

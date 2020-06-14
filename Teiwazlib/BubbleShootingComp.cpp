@@ -47,13 +47,24 @@ void tyr::BubbleShootingComp::Save(BinaryWriter& writer)
 tyr::SceneObject* tyr::BubbleShootingComp::CreateBubble() const
 {
 	auto newPos = m_pSceneObject->GetTransform()->GetPositionRaw();
-	newPos.x -= 50.f;
+
+
+	bool isGoingLeft = GET_COMPONENT<Player1Controller>()->IsGoingLeft();
+	if(isGoingLeft)
+		newPos.x -= 50.f;
+	else
+		newPos.x += 50.f;
+
 	newPos.y += 2.f;
+
+
+
+	
 	auto pReturnObj = new SceneObject(Transform(newPos), "Bubble Object", Tag::Bubble, true);
 	GET_CONTEXT->pSceneManager->GetCurrentScene()->BufferSceneObject(pReturnObj);
 
 
-	pReturnObj->AddComponent(new BubbleComp());
+	pReturnObj->AddComponent(new BubbleComp(isGoingLeft));
 
 	
 	return pReturnObj;

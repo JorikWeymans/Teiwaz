@@ -16,6 +16,10 @@ namespace tyr
 		ButtonStart = XINPUT_GAMEPAD_START,
 		ButtonLS    = XINPUT_GAMEPAD_LEFT_SHOULDER,
 		ButtonRS    = XINPUT_GAMEPAD_RIGHT_SHOULDER,
+		ButtonUp    = XINPUT_GAMEPAD_DPAD_UP,
+		ButtonDown  = XINPUT_GAMEPAD_DPAD_DOWN,
+		ButtonLeft  = XINPUT_GAMEPAD_DPAD_LEFT,
+		ButtonRight = XINPUT_GAMEPAD_DPAD_RIGHT,
 	};
 	enum class ButtonState : WORD
 	{
