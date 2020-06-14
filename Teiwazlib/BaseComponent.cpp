@@ -5,6 +5,7 @@
 #include <sstream>
 tyr::BaseComponent::BaseComponent(ComponentType type, const std::string& name, bool canBeRemoved)
 	: m_Type(type)
+	, m_IsDestroyed(false)
 {
 #ifdef EDITOR_MODE
 	m_UniqueId = reinterpret_cast<uint32_t>(this);
@@ -18,6 +19,10 @@ tyr::BaseComponent::BaseComponent(ComponentType type, const std::string& name, b
 	UNREFERENCED_PARAMETER(name);
 	UNREFERENCED_PARAMETER(canBeRemoved);
 #endif
+}
+void tyr::BaseComponent::Destroy()
+{
+	m_IsDestroyed = true;
 }
 #ifdef EDITOR_MODE
 void tyr::BaseComponent::RenderEditor()
@@ -54,5 +59,6 @@ void tyr::BaseComponent::RenderEditor()
 	}
 	
 }
+
 #endif
 

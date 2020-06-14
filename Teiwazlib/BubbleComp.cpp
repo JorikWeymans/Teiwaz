@@ -13,11 +13,15 @@ tyr::BubbleComp::BubbleComp(bool GoLeft)
 
 tyr::BubbleComp::~BubbleComp()
 {
-	auto pColl = GET_COMPONENT<ColliderComp>();
-	if(pColl)
+	if(m_pSceneObject && !m_pSceneObject->IsDestroyed())
 	{
-		pColl->RemoveOnColliderHitFunction(&m_OnColliderHitFunction);
+		auto pColl = GET_COMPONENT<ColliderComp>();
+		if (pColl)
+		{
+			pColl->RemoveOnColliderHitFunction(&m_OnColliderHitFunction);
+		}
 	}
+
 }
 
 void tyr::BubbleComp::Initialize()

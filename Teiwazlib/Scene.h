@@ -44,6 +44,7 @@ namespace tyr
 		std::vector<SceneObject*> m_pBufferedObjects;
 		bool m_IsLoaded;
 
+		void CheckForDestroyedObjects();
 		void PostInitialize();
 #ifdef EDITOR_MODE
 		bool m_ItemDoubleClicked = false;

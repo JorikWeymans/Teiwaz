@@ -22,10 +22,6 @@ tyr::ZenChanComp::~ZenChanComp()
 }
 void tyr::ZenChanComp::Initialize()
 {
-	//auto pTextureComp = GET_COMPONENT<TextureComp>();
-	//if (!pTextureComp) ADD_COMPONENT(new TextureComp(0));
-	//
-
 	m_pState = new ZenChanWanderingState(GET_CONTEXT, m_pSceneObject, m_MoveSpeed, m_RayLength);
 
 	m_pState->Enter();
@@ -41,20 +37,29 @@ void tyr::ZenChanComp::Update()
 	{
 		SAFE_DELETE(m_pState);
 		m_pState = state;
+		
+		m_pState->Enter();
 	}
+
+	
 }
 
 void tyr::ZenChanComp::FixedUpdate()
 {
 #ifdef EDITOR_MODE
-	m_RayLength = GET_COMPONENT<ColliderComp>()->GetColliderRect().width * .5f + 3.f; //in editor mode collider width can change, update this
+	auto comp = GET_COMPONENT<ColliderComp>();
+	if(comp)
+		m_RayLength = comp->GetColliderRect().width * .5f + 3.f; //in editor mode collider width can change, update this
+	
 #endif
 
+	
 	ZenChanState* state =  m_pState->FixedUpdate();
 	if (state)
 	{
 		SAFE_DELETE(m_pState);
 		m_pState = state;
+		m_pState->Enter();
 	}
 }
 
@@ -81,11 +86,6 @@ void tyr::ZenChanComp::InternalRenderEditor()
 		GET_COMPONENT<AnimatorComp>()->SetBool("IsHit", true);
 	}
 
-
-
-
-	
-	
 }
 
 void tyr::ZenChanComp::Save(BinaryWriter& writer)

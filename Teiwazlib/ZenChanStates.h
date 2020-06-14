@@ -9,10 +9,13 @@ namespace tyr
 	class SceneObject;
 	class CharacterControllerComp;
 	class RigidBodyComp;
-
+	class AnimatorComp;
+	
 // *----------------*
 // *----- BASE -----*
 // *----------------*
+#pragma region Base
+
 	class ZenChanState
 	{
 	public:
@@ -41,10 +44,34 @@ namespace tyr
 		ZenChanState& operator=(const ZenChanState&) = delete;
 		ZenChanState& operator=(ZenChanState&&) = delete;
 	};
+#pragma endregion
+	
+// *----------------*
+// *---- EMPTY -----*
+// *----------------*
+#pragma region Empty
 
+	class ZenChanEmptyState final : public ZenChanState
+	{
+	public:
+		explicit ZenChanEmptyState();
+		virtual ~ZenChanEmptyState() = default;
+		
+
+		_NODISCARD ZenChanState* Update() override { return nullptr; }
+		
+		ZenChanEmptyState(const ZenChanEmptyState&) = delete;
+		ZenChanEmptyState(ZenChanEmptyState&&) = delete;
+		ZenChanEmptyState& operator=(const ZenChanEmptyState&) = delete;
+		ZenChanEmptyState& operator=(ZenChanEmptyState&&) = delete;
+	};
+#pragma endregion
+	
 // *----------------*
 // *-- WANDERING ---*
 // *----------------*
+#pragma region Wandering
+
 	class ZenChanWanderingState final : public ZenChanState
 	{
 	public:
@@ -70,7 +97,8 @@ namespace tyr
 		Elapser m_NoDiSwitchTimer;
 		bool m_CanSwitchDirection;
 		bool m_IsGoingLeft;
-
+		bool m_HasBeenHit;
+		
 		void OnColliderHit(RaycastHit hit);
 		std::function<void(RaycastHit)> m_OnColliderHitFunction;
 	public:
@@ -80,14 +108,63 @@ namespace tyr
 		ZenChanWanderingState& operator=(ZenChanWanderingState&&) = delete;
 
 	};
-	class ZenChanBrainDeadState final : public ZenChanState
+#pragma endregion
+	
+// *----------------*
+// *--- IN BUBBLE---*
+// *----------------*
+#pragma region InBubble
+
+	class ZenChanInBubbleState final : public ZenChanState
 	{
 	public:
-		explicit ZenChanBrainDeadState(GameContext const* pContext, SceneObject* pSceneObject);
-		virtual ~ZenChanBrainDeadState() = default;
+		explicit ZenChanInBubbleState(GameContext const* pContext, SceneObject* pSceneObject, RigidBodyComp* pBody);
+		virtual ~ZenChanInBubbleState() = default;
+
+		void Enter() override;
+		void Exit() override;
+		
+		_NODISCARD ZenChanState* Update() override;
+		_NODISCARD ZenChanState* FixedUpdate() override;
+	private:
+		RigidBodyComp* m_pBody;
+		bool m_HasBeenHit;
+		
+		void OnColliderHit(RaycastHit hit);
+		std::function<void(RaycastHit)> m_OnColliderHitFunction;
+		
+	public:
+		ZenChanInBubbleState(const ZenChanInBubbleState&) = delete;
+		ZenChanInBubbleState(ZenChanInBubbleState&&) = delete;
+		ZenChanInBubbleState& operator=(const ZenChanInBubbleState&) = delete;
+		ZenChanInBubbleState& operator=(ZenChanInBubbleState&&) = delete;
+	};
+#pragma endregion
+
+// *----------------*
+// *---- POPPED ----*
+// *----------------*
+#pragma region Popped
+
+	class ZenChanPoppedState final : public ZenChanState
+	{
+	public:
+		explicit ZenChanPoppedState(GameContext const* pContext, SceneObject* pSceneObject);
+		virtual ~ZenChanPoppedState() = default;
+
+		void Enter() override;
+		void Exit() override;
 
 		_NODISCARD ZenChanState* Update() override;
+	private:
+		AnimatorComp* m_pAni;
+		
+		ZenChanPoppedState(const ZenChanPoppedState&) = delete;
+		ZenChanPoppedState(ZenChanPoppedState&&) = delete;
+		ZenChanPoppedState& operator=(const ZenChanPoppedState&) = delete;
+		ZenChanPoppedState& operator=(ZenChanPoppedState&&) = delete;
 	};
+#pragma endregion
 }
 
 

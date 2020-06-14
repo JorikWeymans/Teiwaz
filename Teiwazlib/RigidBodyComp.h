@@ -20,6 +20,8 @@ namespace tyr
 
 		void AddForce(float x, float y) noexcept;
 		const Vector2& GetForce() const noexcept { return m_Force; }
+		void HasGravity(bool value) { m_UseGravity = value; }
+		void ResetForceAndVelocity();
 		
 #ifdef EDITOR_MODE
 		void Debug() override;

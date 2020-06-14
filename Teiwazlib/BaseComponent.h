@@ -8,6 +8,7 @@
 #define INPUT GET_CONTEXT->pInput
 #define TIME  GET_CONTEXT->pTime
 #define ADD_COMPONENT m_pSceneObject->AddComponent
+#define REMOVE_COMPONENT(CompType) m_pSceneObject->RemoveComponent(GET_COMPONENT<CompType>())
 
 #include "BinStructureHelpers.h"
 #include "BinaryReader.h"
@@ -35,14 +36,19 @@ namespace tyr
 		virtual void FixedUpdate() = 0;
 		virtual void Render() const = 0;
 
+		void Destroy();
+		_NODISCARD bool IsDestroyed() const noexcept { return m_IsDestroyed; }
+		
 	protected:
 		friend SceneObject;
 		SceneObject* m_pSceneObject = nullptr;
 		ComponentType m_Type;
+		bool m_IsDestroyed;
 #ifdef EDITOR_MODE
 		uint32_t m_UniqueId; //if you don't use a unique id, every comp will change its value, auto generated for ease of use
 		std::string m_ImGuiHeaderID;
 		bool m_IsComponentOpen, m_CanBeRemoved;
+
 		virtual void InternalRenderEditor() = 0;
 #endif
 	public:

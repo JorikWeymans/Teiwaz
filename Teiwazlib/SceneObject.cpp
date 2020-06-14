@@ -59,27 +59,8 @@ tyr::SceneObject::~SceneObject()
 
 void tyr::SceneObject::Update()
 {
-	UINT size = static_cast<UINT>(m_pChilds.size());
-	for (UINT i{ 0 }; i < size; i++)
-	{
-		if (m_pChilds[i]->IsDestroyed())
-		{
-			SceneObject* pDeleteObject = m_pChilds[i];
-			if (i == m_pChilds.size() - 1)
-			{
-				m_pChilds.pop_back();
-				SAFE_DELETE(pDeleteObject);
-				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
-			}
-			//else
-
-			m_pChilds.erase(std::find(m_pChilds.begin(), m_pChilds.end(), pDeleteObject));
-			SAFE_DELETE(pDeleteObject);
-			size--;
-		}
-	}
-
-
+	CheckForDestroyedChilds();
+	CheckForDestroyedComponents();
 	
 	if(m_IsActive)
 	{
@@ -115,7 +96,7 @@ void tyr::SceneObject::FixedUpdate()
 
 		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
 			{
-				if (!m_IsDestroyed)
+				if (!m_IsDestroyed && !b->IsDestroyed())
 					b->FixedUpdate();
 			});
 	}
@@ -331,7 +312,7 @@ void tyr::SceneObject::ESceneObjectManipulation()
 	{
 		m_pChilds[m_SelectedItem]->Destroy();
 		m_SelectedItem = -1;
-		Update();
+		CheckForDestroyedChilds();
 	}
 
 	SDXL_ImGui_SameLine();
@@ -374,9 +355,9 @@ void tyr::SceneObject::Render() const
 			});
 
 		std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b)
-			{if
-			(!m_IsDestroyed)
-			b->Render();
+			{
+				if (!m_IsDestroyed && !b->IsDestroyed())
+					b->Render();
 			});
 	}
 
@@ -404,14 +385,7 @@ void tyr::SceneObject::Translate(float x, float y)
 
 void tyr::SceneObject::RemoveComponent(BaseComponent* pComp)
 {
-	auto found = std::find(m_pComponents.begin(), m_pComponents.end(), pComp);
-	
-	if(found != m_pComponents.end())
-	{
-		SAFE_DELETE(*found);
-		m_pComponents.erase(found);
-		
-	}
+	pComp->Destroy();
 
 }
 
@@ -426,6 +400,52 @@ void tyr::SceneObject::PostInitialize()
 {
 	std::for_each(m_pChilds.begin(), m_pChilds.end(), [&](SceneObject* s) { s->PostInitialize(); });
 	std::for_each(m_pComponents.begin(), m_pComponents.end(), [&](BaseComponent* b) { b->PostInitialize(); });
+}
+
+void tyr::SceneObject::CheckForDestroyedChilds()
+{
+	UINT size = static_cast<UINT>(m_pChilds.size());
+	for (UINT i{ 0 }; i < size; i++)
+	{
+		if (m_pChilds[i]->IsDestroyed())
+		{
+			SceneObject* pDeleteObject = m_pChilds[i];
+			if (i == m_pChilds.size() - 1)
+			{
+				m_pChilds.pop_back();
+				SAFE_DELETE(pDeleteObject);
+				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
+			}
+			//else
+
+			m_pChilds.erase(std::find(m_pChilds.begin(), m_pChilds.end(), pDeleteObject));
+			SAFE_DELETE(pDeleteObject);
+			size--;
+		}
+	}
+}
+
+void tyr::SceneObject::CheckForDestroyedComponents()
+{
+	UINT size = static_cast<UINT>(m_pComponents.size());
+	for (UINT i{ 0 }; i < size; i++)
+	{
+		if (m_pComponents[i]->IsDestroyed())
+		{
+			BaseComponent* pDeleteComp = m_pComponents[i];
+			if (i == m_pComponents.size() - 1)
+			{
+				m_pComponents.pop_back();
+				SAFE_DELETE(pDeleteComp);
+				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
+			}
+			//else
+
+			m_pComponents.erase(std::find(m_pComponents.begin(), m_pComponents.end(), pDeleteComp));
+			SAFE_DELETE(pDeleteComp);
+			size--;
+		}
+	}
 }
 
 #ifdef EDITOR_MODE

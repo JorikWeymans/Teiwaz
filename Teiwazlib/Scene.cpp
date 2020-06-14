@@ -109,25 +109,7 @@ void tyr::Scene::Update()
 		
 	}
 
-	UINT size = static_cast<UINT>(m_pSceneObjects.size());
-	for(UINT i{0}; i < size; i++)
-	{
-		if(m_pSceneObjects[i]->IsDestroyed())
-		{
-			SceneObject* pDeleteObject = m_pSceneObjects[i];
-			if(i== m_pSceneObjects.size() -1)
-			{
-				m_pSceneObjects.pop_back();
-				SAFE_DELETE(pDeleteObject);
-				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
-			}
-			//else
-		
-			m_pSceneObjects.erase(std::find(m_pSceneObjects.begin(), m_pSceneObjects.end(), pDeleteObject));
-			SAFE_DELETE(pDeleteObject);
-			size--;
-		}
-	}
+	CheckForDestroyedObjects();
 
 
 	
@@ -156,6 +138,29 @@ tyr::SceneObject* tyr::Scene::GetFirstObjectWithName(const std::string& name) co
 		return *found;
 
 	return nullptr;
+}
+
+void tyr::Scene::CheckForDestroyedObjects()
+{
+	UINT size = static_cast<UINT>(m_pSceneObjects.size());
+	for (UINT i{ 0 }; i < size; i++)
+	{
+		if (m_pSceneObjects[i]->IsDestroyed())
+		{
+			SceneObject* pDeleteObject = m_pSceneObjects[i];
+			if (i == m_pSceneObjects.size() - 1)
+			{
+				m_pSceneObjects.pop_back();
+				SAFE_DELETE(pDeleteObject);
+				break; //Break to avoid mistakes, should not happen because it is the last one in the vec
+			}
+			//else
+
+			m_pSceneObjects.erase(std::find(m_pSceneObjects.begin(), m_pSceneObjects.end(), pDeleteObject));
+			SAFE_DELETE(pDeleteObject);
+			size--;
+		}
+	}
 }
 
 void tyr::Scene::PostInitialize()
@@ -283,7 +288,7 @@ void tyr::Scene::ESceneObjectManipulation()
 		{
 			m_pSceneObjects[m_SelectedItem]->Destroy();
 			m_SelectedItem = -1;
-			Update(); // Do one update loop to update the list view
+			CheckForDestroyedObjects();
 		}
 	}
 

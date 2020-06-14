@@ -104,6 +104,9 @@ namespace tyr
 		friend Scene;
 		void Initialize();
 		void PostInitialize();
+
+		void CheckForDestroyedChilds();
+		void CheckForDestroyedComponents();
 		
 		std::vector<BaseComponent*> m_pComponents;
 		std::vector<SceneObject*> m_pChilds;

@@ -67,6 +67,12 @@ void tyr::RigidBodyComp::UpdateForce() noexcept
 }
 
 #ifdef EDITOR_MODE
+void tyr::RigidBodyComp::ResetForceAndVelocity()
+{
+	m_Vel = Vector2();
+	m_Force = Vector2();
+}
+
 void tyr::RigidBodyComp::Debug()
 {
 }
