@@ -18,7 +18,7 @@ namespace tyr
 	{
 	public:
 		Physics() = default;
-		bool Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller);
+		bool Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller, bool ignoreDynamic);
 		void AddCollider(ColliderComp* pCollider); 
 		void RemoveCollider(ColliderComp* pCollider);
 		void SwitchVector(ColliderComp* pCollider); // Go from static to dynamic and visa versa, switch to other type before calling

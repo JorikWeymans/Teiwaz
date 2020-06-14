@@ -238,6 +238,7 @@
     <ClInclude Include="HealthDisplayComp.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MaitaComp.h" />
+    <ClInclude Include="MaitaStates.h" />
     <ClInclude Include="MenuSelectorComp.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player1Controller.h" />
@@ -245,6 +246,7 @@
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
     <ClInclude Include="Editor\EWindowSouth.h" />
+    <ClInclude Include="RockPrefab.h" />
     <ClInclude Include="ScoreDisplayComp.h" />
     <ClInclude Include="StringManipulation.h" />
     <ClInclude Include="Textcomp.h" />
@@ -311,12 +313,14 @@
     <ClCompile Include="HealthDisplayComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="MaitaComp.cpp" />
+    <ClCompile Include="MaitaStates.cpp" />
     <ClCompile Include="MenuSelectorComp.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player1Controller.cpp" />
     <ClCompile Include="PlayerHealthComp.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />
     <ClCompile Include="Editor\EWindowSouth.cpp" />
+    <ClCompile Include="RockPrefab.cpp" />
     <ClCompile Include="ScoreDisplayComp.cpp" />
     <ClCompile Include="Textcomp.cpp" />
     <ClCompile Include="Texture.cpp" />

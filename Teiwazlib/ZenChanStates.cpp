@@ -106,7 +106,7 @@ tyr::ZenChanState* tyr::ZenChanWanderingState::FixedUpdate()
 
 
 	RaycastHit out;
-	if (RAYCAST(m_pSceneObject->GetTransform()->GetPosition(), Vector2(1, 0), m_RayLength, out))
+	if (RAYCAST(m_pSceneObject->GetTransform()->GetPosition(), Vector2(1, 0), m_RayLength, out, true))
 	{
 		if (out.other->GetTag() == Tag::Background && m_CanSwitchDirection)
 		{
@@ -117,7 +117,7 @@ tyr::ZenChanState* tyr::ZenChanWanderingState::FixedUpdate()
 
 		}
 	}
-	else if (RAYCAST(m_pSceneObject->GetTransform()->GetPosition(), Vector2(-1, 0), m_RayLength, out))
+	else if (RAYCAST(m_pSceneObject->GetTransform()->GetPosition(), Vector2(-1, 0), m_RayLength, out, true))
 	{
 		if (out.other->GetTag() == Tag::Background && m_CanSwitchDirection)
 		{

@@ -4,7 +4,7 @@
 #define GET_COMPONENT_IN_CHILD m_pSceneObject->GetComponentInChild
 #define GET_TRANSFORM m_pSceneObject->GetTransform()
 #define GET_OBJECT_WITH_NAME GET_CONTEXT->pSceneManager->GetCurrentScene()->GetFirstObjectWithName
-#define RAYCAST(pos, direction, length, refHit) GET_CONTEXT->pPhysics->Raycast(pos, direction, length, refHit, m_pSceneObject)
+#define RAYCAST(pos, direction, length, refHit, ignoreDynamic) GET_CONTEXT->pPhysics->Raycast(pos, direction, length, refHit, m_pSceneObject, ignoreDynamic)
 #define INPUT GET_CONTEXT->pInput
 #define TIME  GET_CONTEXT->pTime
 #define ADD_COMPONENT m_pSceneObject->AddComponent

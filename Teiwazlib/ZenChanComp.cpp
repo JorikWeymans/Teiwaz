@@ -68,8 +68,6 @@ void tyr::ZenChanComp::FixedUpdate()
 
 void tyr::ZenChanComp::Debug()
 {
-	auto pos = GET_TRANSFORM->GetPosition();
-	
 	m_pState->Debug();
 
 }

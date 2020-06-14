@@ -60,8 +60,6 @@ void tyr::Player1Controller::Update()
 
 	if (isEating == true)
 	{
-
-
 		if (m_pAni->IsAtEnd())
 		{
 			isEating = false;

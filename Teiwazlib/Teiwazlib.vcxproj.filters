@@ -271,6 +271,12 @@
     <ClInclude Include="ScoreDisplayComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="MaitaStates.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="RockPrefab.h">
+      <Filter>Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -470,6 +476,12 @@
     </ClCompile>
     <ClCompile Include="ScoreDisplayComp.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MaitaStates.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="RockPrefab.cpp">
+      <Filter>Prefabs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

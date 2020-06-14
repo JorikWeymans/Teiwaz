@@ -8,9 +8,11 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "TeiwazEngine.h"
-
+#include "Time.h"
 tyr::BubbleShootingComp::BubbleShootingComp()
 	: BaseComponent(ComponentType::BubbleShooting, "Bubble Shooting Component")
+	, m_ShootCDElapser(0.5f)
+	, m_CanShoot(false)
 {
 }
 
@@ -21,8 +23,14 @@ void tyr::BubbleShootingComp::Initialize()
 
 void tyr::BubbleShootingComp::Update()
 {
-	if (GET_CONTEXT->pInput->IsActionTriggered("Shoot"))
+	if (m_ShootCDElapser.Update(TIME->deltaTime))
+		m_CanShoot = true;
+	
+	if (GET_CONTEXT->pInput->IsActionTriggered("Shoot") && m_CanShoot)
 	{
+		m_CanShoot = false;
+		m_ShootCDElapser.Reset();
+		
 		CreateBubble();
 
 		

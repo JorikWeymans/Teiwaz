@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Elapser.h"
+
 namespace tyr
 {
 	class BubbleShootingComp final : public BaseComponent
@@ -22,6 +24,9 @@ namespace tyr
 #endif
 
 	private:
+		Elapser m_ShootCDElapser;
+		bool m_CanShoot;
+		
 		SceneObject* CreateBubble() const;
 	public:
 		BubbleShootingComp(const BubbleShootingComp&) = delete;

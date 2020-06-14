@@ -5,29 +5,32 @@
 #include "Color.h"
 #include "ColliderComp.h"
 #include "SceneObject.h"
-bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller)
+bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float length, RaycastHit& hit, SceneObject* pCaller, bool ignoreDynamic)
 {
 	// Vec1
 	const auto A = pos;
 	const auto B = A + (direction * length);
-
-	for (auto pC : m_pDynamicColliders)
+	if(!ignoreDynamic)
 	{
-		auto tC = pC->GetColliderRect();
-		if (pC->GetSceneObject() == pCaller || !pC->GetSceneObject()->IsActive())
+		for (auto pC : m_pDynamicColliders)
 		{
-			continue;
-		}
+			auto tC = pC->GetColliderRect();
+			if (pC->GetSceneObject() == pCaller || !pC->GetSceneObject()->IsActive())
+			{
+				continue;
+			}
 
-		if (LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }, hit) || //Top
-			LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot
-			LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }, hit) || //Left
-			LineInterSection(A, B, Vector2{ tC.pos.x + tC.width, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit)) // Right
-		{
-			hit.other = pC->GetSceneObject();
-			return true;
+			if (LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }, hit) || //Top
+				LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot
+				LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }, hit) || //Left
+				LineInterSection(A, B, Vector2{ tC.pos.x + tC.width, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit)) // Right
+			{
+				hit.other = pC->GetSceneObject();
+				return true;
+			}
 		}
 	}
+
 	
 	for(auto pC : m_pStaticColliders)
 	{

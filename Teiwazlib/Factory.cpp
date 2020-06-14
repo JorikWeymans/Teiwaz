@@ -93,13 +93,13 @@ tyr::BubbleShootingComp*	  tyr::Factory::CreateBubbleShootingComp(BinaryReader& 
 
 tyr::MaitaComp*			      tyr::Factory::CreateMaitaComp(BinaryReader& reader)
 {
-	UNREFERENCED_PARAMETER(reader);
-	return new MaitaComp();
+	const float moveSpeed = reader.Read<float>();
+	const float playerDetection = reader.Read<float>();
+	return new MaitaComp(moveSpeed, playerDetection);
 }
 
 tyr::ZenChanComp*             tyr::Factory::CreateZenChanComp(BinaryReader& reader)
 {
-	UNREFERENCED_PARAMETER(reader);
 	const float moveSpeed = reader.Read<float>();
 	return new ZenChanComp(moveSpeed);
 }

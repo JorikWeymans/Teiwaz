@@ -39,9 +39,9 @@ void tyr::CharacterControllerComp::DoGroundCheck() noexcept
 {
 	RaycastHit out;
 
-	if (RAYCAST(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
+	if (RAYCAST(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out, true) ||
 
-		RAYCAST(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
+		RAYCAST(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), 0), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out, true)
 		)
 	{
 		//m_pSceneObject->GetTransform()->SetPositionY(out.point.y - m_pCollider->GetColliderRect().height / 2, true);
@@ -64,8 +64,8 @@ bool tyr::CharacterControllerComp::CalculateFalling(float y, const Rect& playerC
 
 		//check for collider, also clip with the collider to prevent getting stuck in ground
 		RaycastHit out;
-		if (RAYCAST(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out) ||
-			RAYCAST(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out)
+		if (RAYCAST(m_pTransform->GetPosition() - Vector2(m_RayCastOffset, y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out, true) ||
+			RAYCAST(m_pTransform->GetPosition() - Vector2(-(m_RayCastOffset), y), Vector2(0, 1), m_pCollider->GetColliderRect().width / 2, out, true)
 			)
 		{
 
@@ -97,7 +97,7 @@ void tyr::CharacterControllerComp::Move(float x, float y)noexcept
 	{
 
 		RaycastHit out;
-		if (RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out))
+		if (RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(-1, 0), m_pCollider->GetColliderRect().width / 2, out, true))
 		{
 			auto pos = m_pSceneObject->GetTransform()->GetPosition();
 			
@@ -110,7 +110,7 @@ void tyr::CharacterControllerComp::Move(float x, float y)noexcept
 	else if( x > 0.f && (playerColl.pos.x + x) < playSpace->pos.x + playSpace->width - playerColl.width)
 	{
 		RaycastHit out;
-		if (RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(1, 0), m_pCollider->GetColliderRect().width / 2, out))
+		if (RAYCAST(m_pTransform->GetPosition() - Vector2(0, -m_RayCastOffset), Vector2(1, 0), m_pCollider->GetColliderRect().width / 2, out, true))
 		{
 			auto pos = m_pSceneObject->GetTransform()->GetPosition();
 
