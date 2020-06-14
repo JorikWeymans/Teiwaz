@@ -4,7 +4,9 @@
 #include "SceneObject.h"
 #include "Physics.h"
 #include "Time.h"
+#include "SceneManager.h"
 
+#include "FoodPrefab.h"
 // *----------------*
 // *----- BASE -----*
 // *----------------*
@@ -243,6 +245,8 @@ void tyr::ZenChanPoppedState::Enter()
 
 void tyr::ZenChanPoppedState::Exit()
 {
+	FoodPrefab::Generate(m_pContext->pSceneManager->GetCurrentScene(), GET_TRANSFORM->GetPositionRaw());
+
 	m_pSceneObject->Destroy();
 }
 

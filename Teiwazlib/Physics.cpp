@@ -72,19 +72,19 @@ void tyr::Physics::Update()
 			auto botRight = Vector2(topRight.x, topRight.y + tC.height);
 			auto botLeft = Vector2(topRight.x, botRight.y);
 		
-			if (Raycast(topLeft, topRight, hit, pDynamic))
+			if (Raycast(topLeft, topRight, hit, pDynamic, pDynamic->GetSceneObject()->GetTag()))
 			{
 				pDynamic->OnColliderHit(hit);
 			}
-			if (Raycast(topRight, botRight, hit, pDynamic))
+			if (Raycast(topRight, botRight, hit, pDynamic, pDynamic->GetSceneObject()->GetTag()))
 			{
 				pDynamic->OnColliderHit(hit);
 			}
-			if (Raycast(botRight, botLeft, hit, pDynamic))
+			if (Raycast(botRight, botLeft, hit, pDynamic, pDynamic->GetSceneObject()->GetTag()))
 			{
 				pDynamic->OnColliderHit(hit);
 			}
-			if (Raycast(botLeft, tC.pos, hit, pDynamic))
+			if (Raycast(botLeft, tC.pos, hit, pDynamic, pDynamic->GetSceneObject()->GetTag()))
 			{
 				pDynamic->OnColliderHit(hit);
 			}
@@ -142,7 +142,7 @@ void tyr::Physics::RemoveCollider(ColliderComp* pCollider, std::vector<ColliderC
 	}
 }
 
-bool tyr::Physics::Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit& hit, ColliderComp* pCaller)
+bool tyr::Physics::Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit& hit, ColliderComp* pCaller, Tag ignoreTag)
 {
 	//no std::for_each because you want to return once you hit, if 1sth out of 1000 is hit, return and ignore the rest
 	for (auto pC : m_pStaticColliders)
@@ -152,6 +152,11 @@ bool tyr::Physics::Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit&
 			pC == pCaller) 
 			continue;
 
+		
+		if(ignoreTag != Tag::None && pC->GetSceneObject()->GetTag() == ignoreTag)
+			continue;
+
+		
 		if (LineInterSection(pos1, pos2, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }, hit) || //Top
 			LineInterSection(pos1, pos2, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot
 			LineInterSection(pos1, pos2, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }, hit) || //Left
@@ -168,7 +173,10 @@ bool tyr::Physics::Raycast(const Vector2& pos1, const Vector2& pos2, RaycastHit&
 		if (!pC->GetSceneObject()->IsActive() ||
 			pC == pCaller)
 			continue;
+		if (ignoreTag != Tag::None && pC->GetSceneObject()->GetTag() == ignoreTag)
+			continue;
 
+		
 		if (LineInterSection(pos1, pos2, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }, hit) || //Top
 			LineInterSection(pos1, pos2, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot
 			LineInterSection(pos1, pos2, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }, hit) || //Left

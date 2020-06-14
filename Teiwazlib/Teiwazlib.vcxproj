@@ -231,6 +231,8 @@
     <ClInclude Include="EnumDropdown.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="FoodComp.h" />
+    <ClInclude Include="FoodPrefab.h" />
     <ClInclude Include="FPSComp.h" />
     <ClInclude Include="HealthDisplayComp.h" />
     <ClInclude Include="InputHandler.h" />
@@ -300,6 +302,8 @@
     <ClCompile Include="EnumDropdown.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="FoodComp.cpp" />
+    <ClCompile Include="FoodPrefab.cpp" />
     <ClCompile Include="FPSComp.cpp" />
     <ClCompile Include="HealthDisplayComp.cpp" />
     <ClCompile Include="InputHandler.cpp" />

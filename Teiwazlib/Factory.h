@@ -21,6 +21,7 @@ namespace tyr
 	class HealthDisplayComp;
 	class MenuSelectorComp;
 	class ButtonComp;
+	class FoodComp;
 	class Scene;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
 	class Factory final
@@ -48,6 +49,7 @@ namespace tyr
 		template<> _NODISCARD static HealthDisplayComp*       CreateComponent(BinaryReader& reader) { return CreateHealthDisplayComp(reader); }
 		template<> _NODISCARD static MenuSelectorComp*	      CreateComponent(BinaryReader& reader) { return CreateMenuSelectorComp(reader); }
 		template<> _NODISCARD static ButtonComp*			  CreateComponent(BinaryReader& reader) { return CreateButtonComp(reader); }
+		template<> _NODISCARD static FoodComp*				  CreateComponent(BinaryReader& reader) { return CreateFoodComp(reader); }
 		
 	private:
 		_NODISCARD static TransformComp*           CreateTransformComp(BinaryReader& reader);
@@ -66,6 +68,7 @@ namespace tyr
 		_NODISCARD static HealthDisplayComp*	   CreateHealthDisplayComp(BinaryReader& reader);
 		_NODISCARD static MenuSelectorComp*		   CreateMenuSelectorComp(BinaryReader& reader);
 		_NODISCARD static ButtonComp*		       CreateButtonComp(BinaryReader& reader);
+		_NODISCARD static FoodComp*		           CreateFoodComp(BinaryReader& reader);
 	public:
 		Factory() = delete;
 		~Factory() = delete;

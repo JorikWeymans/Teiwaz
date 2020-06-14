@@ -30,6 +30,7 @@ namespace tyr
 		HealthDisplay,
 		MenuSelector,
 		Button,
+		Food,
 		
 		//Append here
 

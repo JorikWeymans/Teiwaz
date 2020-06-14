@@ -1,6 +1,9 @@
 #include "tyrpch.h"
 #include "PlayerHealthComp.h"
 #include "BinaryWriter.h"
+#include "SceneObject.h"
+#include "GameContext.h"
+#include "SceneManager.h"
 tyr::PlayerHealthComp::PlayerHealthComp()
 	: tyr::BaseComponent(ComponentType::PlayerHealth, "PlayerHealth Component")
 	, m_NmbrLives(3)
@@ -19,6 +22,9 @@ void tyr::PlayerHealthComp::LoseHealth()
 			if ((*pFunc))
 				(*pFunc)(m_NmbrLives);
 		});
+
+	if (m_NmbrLives == 0)
+		GET_CONTEXT->pSceneManager->SetCurrentScene("EndScene");
 }
 
 void tyr::PlayerHealthComp::AddOnHealthChangedFunction(std::function<void(int)>* func)

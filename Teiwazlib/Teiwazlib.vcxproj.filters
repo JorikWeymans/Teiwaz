@@ -44,6 +44,12 @@
     <Filter Include="FSM">
       <UniqueIdentifier>{d3c4b42f-52f9-404e-9b54-046a6da981ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Prefabs">
+      <UniqueIdentifier>{b84ad3e7-5764-4e21-b1df-e8c5437c8b7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{1a061924-e32a-48d7-aed6-553c792a7c5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TeiwazEngine.h">
@@ -247,9 +253,17 @@
     <ClInclude Include="ButtonComp.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Buttons.h" />
     <ClInclude Include="ZenChanStates.h">
       <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Buttons.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodPrefab.h">
+      <Filter>Prefabs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,9 +447,17 @@
     <ClCompile Include="ButtonComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Buttons.cpp" />
     <ClCompile Include="ZenChanStates.cpp">
       <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Buttons.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodPrefab.cpp">
+      <Filter>Prefabs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

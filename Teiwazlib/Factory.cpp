@@ -129,3 +129,9 @@ tyr::ButtonComp*               tyr::Factory::CreateButtonComp(BinaryReader& read
 	const Color_POD notSelectedColor = reader.Read<Color_POD>();
 	return new ButtonComp(type, selectedColor, notSelectedColor);
 }
+
+tyr::FoodComp* tyr::Factory::CreateFoodComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new FoodComp();
+}

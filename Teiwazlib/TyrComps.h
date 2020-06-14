@@ -21,3 +21,4 @@
 #include "HealthDisplayComp.h"
 #include "MenuSelectorComp.h"
 #include "ButtonComp.h"
+#include "FoodComp.h"
