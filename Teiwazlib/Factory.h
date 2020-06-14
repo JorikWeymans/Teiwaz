@@ -23,6 +23,9 @@ namespace tyr
 	class ButtonComp;
 	class FoodComp;
 	class ScoreDisplayComp;
+	class AutoDestroyComp;
+	class RockComp;
+	
 	
 	class Scene;
 	//This class helps when loading the scene (prevents functions in components itself which clutter the class
@@ -53,6 +56,8 @@ namespace tyr
 		template<> _NODISCARD static ButtonComp*			  CreateComponent(BinaryReader& reader) { return CreateButtonComp(reader); }
 		template<> _NODISCARD static FoodComp*				  CreateComponent(BinaryReader& reader) { return CreateFoodComp(reader); }
 		template<> _NODISCARD static ScoreDisplayComp*        CreateComponent(BinaryReader& reader) { return CreateScoreDisplayComp(reader); }
+		template<> _NODISCARD static AutoDestroyComp*         CreateComponent(BinaryReader& reader) { return CreateAutoDestroyComp(reader); }
+		template<> _NODISCARD static RockComp*                CreateComponent(BinaryReader& reader) { return CreateRockComp(reader); }
 		
 	private:
 		_NODISCARD static TransformComp*           CreateTransformComp(BinaryReader& reader);
@@ -73,6 +78,8 @@ namespace tyr
 		_NODISCARD static ButtonComp*		       CreateButtonComp(BinaryReader& reader);
 		_NODISCARD static FoodComp*		           CreateFoodComp(BinaryReader& reader);
 		_NODISCARD static ScoreDisplayComp*        CreateScoreDisplayComp(BinaryReader& reader);
+		_NODISCARD static AutoDestroyComp*	       CreateAutoDestroyComp(BinaryReader& reader);
+		_NODISCARD static RockComp*                CreateRockComp(BinaryReader& reader);
 	public:
 		Factory() = delete;
 		~Factory() = delete;

@@ -280,6 +280,12 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::ScoreDisplay:
 				theComp = new ScoreDisplayComp();
 				break;
+			case ComponentType::AutoDestroy:
+				theComp = new AutoDestroyComp(2.f);
+				break;
+			case ComponentType::Rock:
+				theComp = new RockComp();
+				break;
 			default:
 				usedNotImplemented = true;
 			 }

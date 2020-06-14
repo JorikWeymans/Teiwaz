@@ -23,3 +23,6 @@
 #include "ButtonComp.h"
 #include "FoodComp.h"
 #include "ScoreDisplayComp.h"
+
+#include "AutoDestroyComp.h"
+#include "RockComp.h"

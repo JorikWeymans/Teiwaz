@@ -277,6 +277,12 @@
     <ClInclude Include="RockPrefab.h">
       <Filter>Prefabs</Filter>
     </ClInclude>
+    <ClInclude Include="AutoDestroyComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RockComp.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -482,6 +488,12 @@
     </ClCompile>
     <ClCompile Include="RockPrefab.cpp">
       <Filter>Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoDestroyComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RockComp.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

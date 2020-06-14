@@ -405,6 +405,12 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::ScoreDisplay:
 			newObject->AddComponent(Factory::CreateComponent<ScoreDisplayComp>(reader));
 			break;
+		case ComponentType::AutoDestroy:
+			newObject->AddComponent(Factory::CreateComponent<AutoDestroyComp>(reader));
+			break;
+		case ComponentType::Rock:
+			newObject->AddComponent(Factory::CreateComponent<RockComp>(reader));
+			break;
 		default:
 			THROW_ERROR(L"This component is not implemented yet");
 		}

@@ -122,7 +122,7 @@ tyr::MenuSelectorComp*        tyr::Factory::CreateMenuSelectorComp(BinaryReader&
 	return new MenuSelectorComp();
 }
 
-tyr::ButtonComp*               tyr::Factory::CreateButtonComp(BinaryReader& reader)
+tyr::ButtonComp*              tyr::Factory::CreateButtonComp(BinaryReader& reader)
 {
 	const ButtonType type = reader.Read<ButtonType>();
 	const Color_POD selectedColor = reader.Read<Color_POD>();
@@ -130,14 +130,26 @@ tyr::ButtonComp*               tyr::Factory::CreateButtonComp(BinaryReader& read
 	return new ButtonComp(type, selectedColor, notSelectedColor);
 }
 
-tyr::FoodComp* tyr::Factory::CreateFoodComp(BinaryReader& reader)
+tyr::FoodComp*                tyr::Factory::CreateFoodComp(BinaryReader& reader)
 {
 	const FoodType fType = reader.Read<FoodType>();
 	return new FoodComp(fType);
 }
 
-tyr::ScoreDisplayComp* tyr::Factory::CreateScoreDisplayComp(BinaryReader& reader)
+tyr::ScoreDisplayComp*        tyr::Factory::CreateScoreDisplayComp(BinaryReader& reader)
 {
 	const int playerNmbr = reader.Read<int>();
 	return new ScoreDisplayComp();
+}
+
+tyr::AutoDestroyComp*         tyr::Factory::CreateAutoDestroyComp(BinaryReader& reader)
+{
+	const float lifeTime = reader.Read<float>();
+	return new AutoDestroyComp(lifeTime);
+}
+
+tyr::RockComp*                tyr::Factory::CreateRockComp(BinaryReader& reader)
+{
+	UNREFERENCED_PARAMETER(reader);
+	return new RockComp();
 }

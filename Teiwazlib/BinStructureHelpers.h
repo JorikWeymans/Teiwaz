@@ -31,8 +31,9 @@ namespace tyr
 		MenuSelector,
 		Button,
 		Food,
-		ScoreDisplay
-		
+		ScoreDisplay,
+		AutoDestroy,
+		Rock,
 		//Append here
 
 
