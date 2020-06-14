@@ -14,7 +14,9 @@ void tyr::RockPrefab::Generate(Scene* pScene, const Vector2& pos, bool isGoingLe
 	auto pBody = obj->AddComponent(new RigidBodyComp(0.f, false));
 	obj->AddComponent(new TextureComp(3, PivotMode::Center, Rect(528, 384, 48, 48), Vector2(0.5f, 0.5f), true));
 	obj->AddComponent(new AnimatorComp(5));
-
+	obj->AddComponent(new AutoDestroyComp(1.5f));
+	obj->AddComponent(new RockComp());
+	
 	if(isGoingLeft)
 		pBody->AddForce(-300.f, 0);
 	else

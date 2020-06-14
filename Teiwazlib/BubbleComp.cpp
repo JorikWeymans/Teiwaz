@@ -30,7 +30,7 @@ void tyr::BubbleComp::Initialize()
 	auto pColliderComp = ADD_COMPONENT(new ColliderComp(48, 48, PivotMode::Center, true));
 	ADD_COMPONENT(new CharacterControllerComp());
 	ADD_COMPONENT(new AnimatorComp(4));
-	
+	ADD_COMPONENT(new AutoDestroyComp(8.f));
 	m_pBody = ADD_COMPONENT(new RigidBodyComp(0.f, false,4.f));
 
 	if(m_IsGoingLeft)
@@ -55,7 +55,12 @@ void tyr::BubbleComp::FixedUpdate()
 	{
 		float pos = m_pSceneObject->GetTransform()->GetPositionRaw().y;
 		if(pos < 560.f)
+		{
+			
+		
 			m_pBody->AddForce(0.f, 1.f);
+		}
+			
 
 		
 	}
