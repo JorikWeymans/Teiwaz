@@ -242,7 +242,7 @@
     <ClInclude Include="MaitaStates.h" />
     <ClInclude Include="MenuSelectorComp.h" />
     <ClInclude Include="Physics.h" />
-    <ClInclude Include="Player1Controller.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerHealthComp.h" />
     <ClInclude Include="Proprties.h" />
     <ClInclude Include="RigidBodyComp.h" />
@@ -319,7 +319,7 @@
     <ClCompile Include="MaitaStates.cpp" />
     <ClCompile Include="MenuSelectorComp.cpp" />
     <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="Player1Controller.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerHealthComp.cpp" />
     <ClCompile Include="RigidBodyComp.cpp" />
     <ClCompile Include="Editor\EWindowSouth.cpp" />

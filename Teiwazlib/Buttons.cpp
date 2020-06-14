@@ -25,5 +25,25 @@ tyr::LoadScene1Button::LoadScene1Button(GameContext const* pContext)
 
 void tyr::LoadScene1Button::Execute()
 {
-	m_pContext->pSceneManager->SetCurrentScene(1);
+	m_pContext->pSceneManager->SetCurrentScene("GameScene1");
+}
+
+tyr::LoadScene2Button::LoadScene2Button(GameContext const* pContext)
+	: Button(pContext)
+{
+}
+
+void tyr::LoadScene2Button::Execute()
+{
+	m_pContext->pSceneManager->SetCurrentScene("GameScene2");
+}
+
+tyr::LoadScene3Button::LoadScene3Button(GameContext const* pContext)
+	: Button(pContext)
+{
+}
+
+void tyr::LoadScene3Button::Execute()
+{
+	m_pContext->pSceneManager->SetCurrentScene("GameScene3");
 }

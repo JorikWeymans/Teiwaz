@@ -13,33 +13,67 @@ tyr::BubbleShootingComp::BubbleShootingComp()
 	: BaseComponent(ComponentType::BubbleShooting, "Bubble Shooting Component")
 	, m_ShootCDElapser(0.5f)
 	, m_CanShoot(false)
+	, m_PlayerID(0)
+	, m_IsShooting(false)
 {
 }
 
 void tyr::BubbleShootingComp::Initialize()
 {
-	GET_CONTEXT->pInput->AddAction("Shoot", tyr::ButtonState::Pressed, VK_SPACE);
+	m_PlayerID = GET_COMPONENT<PlayerController>()->GetPlayerID();
+	m_pAni = GET_COMPONENT<AnimatorComp>();
 }
 
 void tyr::BubbleShootingComp::Update()
 {
 	if (m_ShootCDElapser.Update(TIME->deltaTime))
 		m_CanShoot = true;
-	
-	if (GET_CONTEXT->pInput->IsActionTriggered("Shoot") && m_CanShoot)
+
+	if(m_PlayerID == 1)
 	{
-		m_CanShoot = false;
-		m_ShootCDElapser.Reset();
-		
-		CreateBubble();
+		if (GET_CONTEXT->pInput->IsActionTriggered("P1Shoot") && m_CanShoot)
+		{
+			m_CanShoot = false;
+			m_ShootCDElapser.Reset();
 
-		
+			CreateBubble();
 
+			m_IsShooting = true;
+			m_pAni->SetBool("IsEating", true);
+		}
+	}
+	else
+	{
+		if (GET_CONTEXT->pInput->IsActionTriggered("P2Shoot") && m_CanShoot)
+		{
+			m_CanShoot = false;
+			m_ShootCDElapser.Reset();
+
+			CreateBubble();
+
+
+		}
+	}
+
+
+	if(m_IsShooting)
+	{
+		if(m_pAni->IsAtEnd())
+		{
+			m_IsShooting = false;
+			m_pAni->SetBool("IsEating", false);
+		}
+	}
+
+
+}
+
+void tyr::BubbleShootingComp::FixedUpdate()
+{
 
 #ifdef EDITOR_MODE
-		SDXL_ImGui_ConsoleLog("Shooting");
+	m_PlayerID = GET_COMPONENT<PlayerController>()->GetPlayerID();
 #endif
-	}
 }
 #ifdef EDITOR_MODE
 void tyr::BubbleShootingComp::InternalRenderEditor()
@@ -57,7 +91,7 @@ tyr::SceneObject* tyr::BubbleShootingComp::CreateBubble() const
 	auto newPos = m_pSceneObject->GetTransform()->GetPositionRaw();
 
 
-	bool isGoingLeft = GET_COMPONENT<Player1Controller>()->IsGoingLeft();
+	bool isGoingLeft = GET_COMPONENT<PlayerController>()->IsGoingLeft();
 	if(isGoingLeft)
 		newPos.x -= 50.f;
 	else

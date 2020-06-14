@@ -66,18 +66,19 @@ void tyr::BubbleComp::FixedUpdate()
 	}
 }
 
+void tyr::BubbleComp::OnColliderHit(RaycastHit hit)
+{
+	if (hit.other->GetTag() == Tag::Enemy)
+	{
+		//SDXL_ImGui_ConsoleLog("Enemy hit");
+	}
+}
 #ifdef EDITOR_MODE
 void tyr::BubbleComp::InternalRenderEditor()
 {
 }
 
-void tyr::BubbleComp::OnColliderHit(RaycastHit hit)
-{
-	if(hit.other->GetTag() == Tag::Enemy)
-	{
-		SDXL_ImGui_ConsoleLog("Enemy hit");
-	}
-}
+
 
 void tyr::BubbleComp::Save(BinaryWriter& writer)
 {

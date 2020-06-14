@@ -12,7 +12,7 @@ namespace tyr
 	class FPSComp;
 	class TextureComp;
 	class TextComp;
-	class Player1Controller;
+	class PlayerController;
 	class AnimatorComp;
 	class BubbleShootingComp;
 	class MaitaComp;
@@ -45,7 +45,7 @@ namespace tyr
 		template<> _NODISCARD static FPSComp*				  CreateComponent(BinaryReader& reader) { return CreateFPSComp(reader); }
 		template<> _NODISCARD static TextureComp*             CreateComponent(BinaryReader& reader) { return CreateTextureComp(reader); }
 		template<> _NODISCARD static TextComp*                CreateComponent(BinaryReader& reader) { return CreateTextComp(reader); }
-		template<> _NODISCARD static Player1Controller*		  CreateComponent(BinaryReader& reader) { return CreatePlayer1Comp(reader); }
+		template<> _NODISCARD static PlayerController*		  CreateComponent(BinaryReader& reader) { return CreatePlayer1Comp(reader); }
 		template<> _NODISCARD static AnimatorComp*			  CreateComponent(BinaryReader& reader) { return CreateAnimatorComp(reader); }
 		template<> _NODISCARD static BubbleShootingComp*      CreateComponent(BinaryReader& reader) { return CreateBubbleShootingComp(reader); }
 		template<> _NODISCARD static MaitaComp*               CreateComponent(BinaryReader& reader) { return CreateMaitaComp(reader); }
@@ -67,7 +67,7 @@ namespace tyr
 		_NODISCARD static FPSComp*				   CreateFPSComp(BinaryReader& reader);
 		_NODISCARD static TextureComp*             CreateTextureComp(BinaryReader& reader);
 		_NODISCARD static TextComp*                CreateTextComp(BinaryReader& reader);
-		_NODISCARD static Player1Controller*       CreatePlayer1Comp(BinaryReader& reader);
+		_NODISCARD static PlayerController*       CreatePlayer1Comp(BinaryReader& reader);
 		_NODISCARD static AnimatorComp*            CreateAnimatorComp(BinaryReader& reader);
 		_NODISCARD static BubbleShootingComp*      CreateBubbleShootingComp(BinaryReader& reader);
 		_NODISCARD static MaitaComp*               CreateMaitaComp(BinaryReader& reader);

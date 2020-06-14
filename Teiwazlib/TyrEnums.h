@@ -36,7 +36,9 @@ namespace tyr
 	enum class ButtonType : UINT
 	{
 		QuitGame,
-		Start,
+		LoadL1,
+		LoadL2,
+		LoadL3,
 	};
 	enum class FoodType : UINT
 	{

@@ -6,6 +6,7 @@
 #include "Physics.h"
 #include "BinaryWriter.h"
 #include "ZenChanStates.h"
+#include "GameState.h"
 tyr::ZenChanComp::ZenChanComp(float movespeed)
 	: BaseComponent(ComponentType::ZenChan, "ZenChan Component")
 	, m_pState(nullptr)
@@ -25,7 +26,7 @@ void tyr::ZenChanComp::Initialize()
 	m_pState = new ZenChanWanderingState(GET_CONTEXT, m_pSceneObject, m_MoveSpeed, m_RayLength);
 
 	m_pState->Enter();
-	
+	GET_CONTEXT->pGameState->AddEnemy();
 	
 }
 

@@ -93,6 +93,12 @@ void tyr::SceneManager::FlushCurrentScene()
 	m_pCurrentScene->Flush();
 	
 }
+
+const std::string& tyr::SceneManager::GetCurrentSceneName() const
+{
+	return m_pCurrentScene->GetName();
+}
+
 #ifdef EDITOR_MODE
 void tyr::SceneManager::RenderEditor()
 {
@@ -126,10 +132,6 @@ void tyr::SceneManager::SetCurrentSceneName(const std::string& name)
 	m_pCurrentScene->m_Name = name;
 }
 
-const std::string& tyr::SceneManager::GetCurrentSceneName() const
-{
-	return m_pCurrentScene->GetName();
-}
 
 bool tyr::SceneManager::DoesSceneExist(std::string& sceneName)
 {

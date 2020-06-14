@@ -247,8 +247,8 @@ void tyr::SceneObject::AddComponentButton()
 			case ComponentType::Transform:
 				usedNotImplemented = true;
 			break;
-			case ComponentType::Player1Controller:
-				theComp = new Player1Controller();
+			case ComponentType::PlayerController:
+				theComp = new PlayerController();
 			break;
 			case ComponentType::Animator:
 				theComp = new AnimatorComp();

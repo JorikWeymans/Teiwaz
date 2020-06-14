@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 
 #include "FoodPrefab.h"
+#include "GameState.h"
 // *----------------*
 // *----- BASE -----*
 // *----------------*
@@ -247,6 +248,8 @@ void tyr::ZenChanPoppedState::Exit()
 {
 	FoodPrefab::Generate(m_pContext->pSceneManager->GetCurrentScene(), GET_TRANSFORM->GetPositionRaw(), FoodType::Melon);
 
+	m_pContext->pGameState->RemoveEnemy(m_pContext);
+	
 	m_pSceneObject->Destroy();
 }
 

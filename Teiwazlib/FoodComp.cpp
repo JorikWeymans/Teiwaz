@@ -50,23 +50,25 @@ void tyr::FoodComp::Save(BinaryWriter& writer)
 	UNREFERENCED_PARAMETER(writer);
 }
 
+
+#endif
 void tyr::FoodComp::OnColliderHit(RaycastHit hit)
 {
 	if (hit.other->GetTag() == Tag::Player)
 	{
 		switch (m_FoodType)
 		{
-			case FoodType::Melon:
-				GET_CONTEXT->pGameState->AddToScore(100);
-				break;
-			case FoodType::Fries:
-				_FALLTHROUGH
-			default:
-				GET_CONTEXT->pGameState->AddToScore(200);
-		; }
-		
+		case FoodType::Melon:
+			GET_CONTEXT->pGameState->AddToScore(100);
+			break;
+		case FoodType::Fries:
+			_FALLTHROUGH
+		default:
+			GET_CONTEXT->pGameState->AddToScore(200);
+			;
+		}
+
 		m_pSceneObject->Destroy();
-		
+
 	}
 }
-#endif

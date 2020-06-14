@@ -157,9 +157,6 @@
     <ClInclude Include="StringManipulation.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="Player1Controller.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="AnimatorComp.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -283,6 +280,9 @@
     <ClInclude Include="RockComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -371,9 +371,6 @@
     </ClCompile>
     <ClCompile Include="Factory.cpp">
       <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Player1Controller.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="AnimatorComp.cpp">
       <Filter>Components</Filter>
@@ -493,6 +490,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="RockComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

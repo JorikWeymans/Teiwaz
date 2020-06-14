@@ -96,20 +96,26 @@ void tyr::ButtonComp::Save(BinaryWriter& writer)
 	
 }
 
+
+#endif
 void tyr::ButtonComp::SetButton()
 {
 	SAFE_DELETE(m_pButton);
 
-	
+
 	switch (m_ButtonType)
 	{
 	case ButtonType::QuitGame:
 		m_pButton = new QuitButton(GET_CONTEXT);
 		break;
-	case ButtonType::Start:
+	case ButtonType::LoadL1:
 		m_pButton = new LoadScene1Button(GET_CONTEXT);
 		break;
+	case ButtonType::LoadL2:
+		m_pButton = new LoadScene2Button(GET_CONTEXT);
+		break;
+	case ButtonType::LoadL3:
+		m_pButton = new LoadScene3Button(GET_CONTEXT);
 	default:;
 	}
 }
-#endif

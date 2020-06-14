@@ -10,26 +10,28 @@ bool tyr::Physics::Raycast(const Vector2& pos, const Vector2& direction, float l
 	// Vec1
 	const auto A = pos;
 	const auto B = A + (direction * length);
-	if(!ignoreDynamic)
-	{
+
 		for (auto pC : m_pDynamicColliders)
 		{
-			auto tC = pC->GetColliderRect();
-			if (pC->GetSceneObject() == pCaller || !pC->GetSceneObject()->IsActive())
+			if (!ignoreDynamic || pCaller->GetTag() == Tag::Player && pC->GetSceneObject()->GetTag() == Tag::Bubble)
 			{
-				continue;
+				auto tC = pC->GetColliderRect();
+				if (pC->GetSceneObject() == pCaller || !pC->GetSceneObject()->IsActive())
+				{
+					continue;
+				}
+
+				if (LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }, hit) || //Top
+					LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot
+					LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }, hit) || //Left
+					LineInterSection(A, B, Vector2{ tC.pos.x + tC.width, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit)) // Right
+				{
+					hit.other = pC->GetSceneObject();
+					return true;
+				}
 			}
 
-			if (LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y }, hit) || //Top
-				LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y + tC.height }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit) || //Bot
-				LineInterSection(A, B, Vector2{ tC.pos.x, tC.pos.y }, Vector2{ tC.pos.x, tC.pos.y + tC.height }, hit) || //Left
-				LineInterSection(A, B, Vector2{ tC.pos.x + tC.width, tC.pos.y }, Vector2{ tC.pos.x + tC.width, tC.pos.y + tC.height }, hit)) // Right
-			{
-				hit.other = pC->GetSceneObject();
-				return true;
-			}
 		}
-	}
 
 	
 	for(auto pC : m_pStaticColliders)

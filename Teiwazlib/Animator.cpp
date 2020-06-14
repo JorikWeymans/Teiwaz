@@ -151,7 +151,7 @@ tyr::Animator* tyr::Animator::CreateCopy()
 	auto pReturn = new Animator();
 	pReturn->m_Name = this->m_Name;
 
-	const int size = this->m_pConnections.size();
+	const int size = static_cast<int>(this->m_pConnections.size());
 	pReturn->m_pConnections.resize(size);
 
 	for(int i{0}; i < size; i++)

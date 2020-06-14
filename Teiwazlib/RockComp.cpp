@@ -42,12 +42,13 @@ void tyr::RockComp::InternalRenderEditor()
 {
 }
 
+
+#endif
 void tyr::RockComp::OnColliderHit(RaycastHit hit)
 {
-	if(hit.other->GetTag() == Tag::Player)
+	if (hit.other->GetTag() == Tag::Player)
 	{
 		hit.other->GetComponent<PlayerHealthComp>()->LoseHealth();
 		m_pSceneObject->Destroy();
 	}
 }
-#endif

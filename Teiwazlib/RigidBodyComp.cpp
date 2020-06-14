@@ -65,13 +65,13 @@ void tyr::RigidBodyComp::UpdateForce() noexcept
 	
 	//m_pController->Move(amountX, amountY);
 }
-
-#ifdef EDITOR_MODE
 void tyr::RigidBodyComp::ResetForceAndVelocity()
 {
 	m_Vel = Vector2();
 	m_Force = Vector2();
 }
+#ifdef EDITOR_MODE
+
 
 void tyr::RigidBodyComp::Debug()
 {

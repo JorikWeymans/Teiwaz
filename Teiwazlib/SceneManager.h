@@ -23,10 +23,11 @@ namespace  tyr
 
 		void Flush() { m_WantFlush = true; }
 		_NODISCARD Scene* GetCurrentScene() const noexcept { return m_pCurrentScene; }
+		const std::string& GetCurrentSceneName() const;
 #ifdef EDITOR_MODE
 		void SaveCurrentScene();
 		void SetCurrentSceneName(const std::string& name);
-		const std::string& GetCurrentSceneName() const;
+		
 		bool DoesSceneExist(std::string& sceneName);
 		void Render();
 #else

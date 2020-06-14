@@ -372,8 +372,8 @@ tyr::SceneObject* tyr::Scene::LoadSceneObject(tyr::BinaryReader& reader, tyr::Sc
 		case ComponentType::Texture:
 			newObject->AddComponent(Factory::CreateComponent<TextureComp>(reader));
 			break;
-		case ComponentType::Player1Controller:
-			newObject->AddComponent(Factory::CreateComponent<Player1Controller>(reader)); //WIP
+		case ComponentType::PlayerController:
+			newObject->AddComponent(Factory::CreateComponent<PlayerController>(reader)); //WIP
 			break;
 		case ComponentType::Animator:
 			newObject->AddComponent(Factory::CreateComponent<AnimatorComp>(reader));

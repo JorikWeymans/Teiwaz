@@ -26,5 +26,18 @@ namespace tyr
 		void Execute() override;
 	};
 
+	class LoadScene2Button : public Button
+	{
+	public:
+		explicit LoadScene2Button(GameContext const* pContext);
+		void Execute() override;
+	};
+	class LoadScene3Button : public Button
+	{
+	public:
+		explicit LoadScene3Button(GameContext const* pContext);
+		void Execute() override;
+	};
+
 }
 

@@ -20,18 +20,24 @@ tyr::MenuSelectorComp::~MenuSelectorComp()
 
 void tyr::MenuSelectorComp::Initialize()
 {
-	GET_CONTEXT->pInput->AddAction("MenuUP", tyr::ButtonState::Pressed, 'W', ControllerButton::ButtonLS);
-	GET_CONTEXT->pInput->AddAction("MenuDown", tyr::ButtonState::Pressed, 'S', ControllerButton::ButtonRS);
+	GET_CONTEXT->pInput->AddAction("MenuUP", tyr::ButtonState::Pressed, 'S', ControllerButton::ButtonLS);
+	GET_CONTEXT->pInput->AddAction("MenuDown", tyr::ButtonState::Pressed, 'W', ControllerButton::ButtonRS);
 	GET_CONTEXT->pInput->AddAction("Confirm", tyr::ButtonState::Pressed, VK_SPACE, ControllerButton::ButtonA);
 }
 
 void tyr::MenuSelectorComp::PostInitialize()
 {
-	m_pButtons.resize(2);
-	m_pButtons[0] = GET_COMPONENT_IN_CHILD<ButtonComp>(0);
-	m_pButtons[1] = GET_COMPONENT_IN_CHILD<ButtonComp>(1);
 
-
+	for(int i{0}; i < 10 ; i++)
+	{
+		auto pButton = GET_COMPONENT_IN_CHILD<ButtonComp>(i);
+		if (pButton)
+		{
+			m_pButtons.emplace_back(pButton);
+		}
+		else
+			break;
+	}
 	
 	const UINT size = static_cast<UINT>(m_pButtons.size());
 	for(UINT i{1}; i < size; i++)
@@ -59,7 +65,7 @@ void tyr::MenuSelectorComp::Update()
 	{
 		std::for_each(m_pButtons.begin(), m_pButtons.end(), [](ButtonComp* pB) {pB->DeSelect(); });
 		if (m_Selected == 0)
-			m_Selected = m_pButtons.size() - 1;
+			m_Selected = static_cast<UINT>(m_pButtons.size() - 1);
 		else
 			m_Selected--;
 

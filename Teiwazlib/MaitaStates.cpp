@@ -186,7 +186,6 @@ void tyr::MaitaWanderingState::UpdateThrowRock()
 			
 			RockPrefab::Generate(m_pContext->pSceneManager->GetCurrentScene(), pos, m_IsGoingLeft);
 			
-			SDXL_ImGui_ConsoleLog("hit player");
 		}
 	}
 

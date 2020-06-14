@@ -19,7 +19,7 @@ namespace tyr
 		Text,
 		Texture,
 		Transform,
-		Player1Controller,
+		PlayerController,
 		Animator,
 		BubbleShooting,
 		Bubble,
