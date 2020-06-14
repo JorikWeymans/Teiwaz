@@ -6,7 +6,7 @@ void tyr::GameState::ResetScoreP1()
 	m_ScoreP1 = 0;
 }
 
-void tyr::GameState::IncreaseScoreP1() noexcept
+void tyr::GameState::AddToScore(UINT amount) noexcept
 {
-	m_ScoreP1++;
+	m_ScoreP1 += amount;
 }

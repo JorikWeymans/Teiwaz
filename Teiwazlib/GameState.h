@@ -8,7 +8,7 @@ namespace tyr
 		~GameState() = default;
 
 		void ResetScoreP1();
-		void IncreaseScoreP1() noexcept;
+		void AddToScore(UINT amount) noexcept;
 		_NODISCARD UINT GetScorePlayer1() const noexcept { return m_ScoreP1; }
 	private:
 		UINT m_ScoreP1;

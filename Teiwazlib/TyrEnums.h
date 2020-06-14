@@ -38,6 +38,12 @@ namespace tyr
 		QuitGame,
 		Start,
 	};
+	enum class FoodType : UINT
+	{
+		Melon,
+		Fries
+	};
+	
 	Tag operator<<(const Tag& tag, const int& rhs);
 	Tag operator++(tyr::Tag& tag, int);
 	Tag operator>>(const Tag& tag, const int& rhs);

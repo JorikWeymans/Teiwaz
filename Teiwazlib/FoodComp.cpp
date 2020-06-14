@@ -3,18 +3,30 @@
 #include "TyrComps.h"
 #include "SceneObject.h"
 #include "BinaryWriter.h"
-tyr::FoodComp::FoodComp()
-	:BaseComponent(ComponentType::Food, "Food Component")
+#include "Physics.h"
+#include "GameState.h"
+tyr::FoodComp::FoodComp(FoodType type)
+	: BaseComponent(ComponentType::Food, "Food Component")
+	, m_FoodType(type)
+	, m_OnColliderHitFunction(std::bind(&FoodComp::OnColliderHit, this, std::placeholders::_1))
 {
 }
 
 tyr::FoodComp::~FoodComp()
 {
+	if (m_pSceneObject && !m_pSceneObject->IsDestroyed())
+	{
+		auto pColl = GET_COMPONENT<ColliderComp>();
+		if (pColl)
+		{
+			pColl->RemoveOnColliderHitFunction(&m_OnColliderHitFunction);
+		}
+	}
 }
 
 void tyr::FoodComp::Initialize()
 {
-
+	GET_COMPONENT<ColliderComp>()->AddOnColliderHitFunction(&m_OnColliderHitFunction);
 
 }
 
@@ -35,5 +47,15 @@ void tyr::FoodComp::Save(BinaryWriter& writer)
 {
 	writer.Write(m_Type);
 	UNREFERENCED_PARAMETER(writer);
+}
+
+void tyr::FoodComp::OnColliderHit(RaycastHit hit)
+{
+	if (hit.other->GetTag() == Tag::Player)
+	{
+		GET_CONTEXT->pGameState->AddToScore(100);
+		m_pSceneObject->Destroy();
+		
+	}
 }
 #endif
