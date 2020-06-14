@@ -1,10 +1,10 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Color.h"
+#include <vector>
 
 namespace tyr
 {
-	class TextComp;
+	class ButtonComp;
 	class MenuSelectorComp final : public BaseComponent
 	{
 	public:
@@ -24,7 +24,7 @@ namespace tyr
 		void Save(BinaryWriter& writer) override;
 #endif
 	private:
-		TextComp* m_pStartGame, * m_pQuitGame;
+		std::vector<ButtonComp*> m_pButtons;
 		UINT m_Selected;
 	public:
 		MenuSelectorComp(const MenuSelectorComp&) = delete;

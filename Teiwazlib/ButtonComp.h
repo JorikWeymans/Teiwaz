@@ -4,6 +4,7 @@
 namespace tyr
 {
 	class TextComp;
+	class Button;
 	class ButtonComp final : public BaseComponent
 	{
 	public:
@@ -18,9 +19,10 @@ namespace tyr
 		void FixedUpdate() override {}
 		void Render() const override {}
 
+		
 		void Select();
 		void DeSelect();
-		
+		void Execute();
 #ifdef EDITOR_MODE
 		void Debug() override;
 		void InternalRenderEditor() override;
@@ -30,6 +32,10 @@ namespace tyr
 		ButtonType m_ButtonType;
 		TextComp* m_pTextComp;
 		Color m_ColorSelected, m_ColorNotSelected;
+		Button* m_pButton;
+
+
+		void SetButton();
 	public:
 		ButtonComp(const ButtonComp&) = delete;
 		ButtonComp(ButtonComp&&) = delete;

@@ -244,6 +244,7 @@
     <ClInclude Include="ButtonComp.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Buttons.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TeiwazEngine.cpp">
@@ -426,6 +427,7 @@
     <ClCompile Include="ButtonComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Buttons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint">

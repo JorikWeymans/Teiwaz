@@ -8,8 +8,6 @@
 
 tyr::MenuSelectorComp::MenuSelectorComp()
 	:BaseComponent(ComponentType::MenuSelector, "Menu Selector Component")
-	, m_pStartGame(nullptr)
-	, m_pQuitGame(nullptr)
 	, m_Selected(0)
 {
 }
@@ -29,44 +27,49 @@ void tyr::MenuSelectorComp::Initialize()
 
 void tyr::MenuSelectorComp::PostInitialize()
 {
-	m_pStartGame = GET_COMPONENT_IN_CHILD<TextComp>(0);
-	m_pQuitGame = GET_COMPONENT_IN_CHILD<TextComp>(1);
+	m_pButtons.resize(2);
+	m_pButtons[0] = GET_COMPONENT_IN_CHILD<ButtonComp>(0);
+	m_pButtons[1] = GET_COMPONENT_IN_CHILD<ButtonComp>(1);
 
-	//m_pStartGame->SetColor(m_SelectedColor);
-	//m_pQuitGame->SetColor(m_NotSelectedColor);
+
+	
+	const UINT size = static_cast<UINT>(m_pButtons.size());
+	for(UINT i{1}; i < size; i++)
+	{
+		m_pButtons[i]->DeSelect();
+	}
+	m_pButtons[0]->Select();
 }
 
 void tyr::MenuSelectorComp::Update()
 {
 	if (GET_CONTEXT->pInput->IsActionTriggered("MenuUP"))
 	{
-		if (m_Selected == 1)
-		{
+		std::for_each(m_pButtons.begin(), m_pButtons.end(), [](ButtonComp* pB) {pB->DeSelect(); });
+		if (m_Selected == m_pButtons.size() - 1)
 			m_Selected = 0;
-			//m_pStartGame->SetColor(m_SelectedColor);
-			//m_pQuitGame->SetColor(m_NotSelectedColor);
+		else
+			m_Selected++;
 
-		}
+		m_pButtons[m_Selected]->Select();
+		
 	}
 
 	if (GET_CONTEXT->pInput->IsActionTriggered("MenuDown"))
 	{
-		if(m_Selected ==0)
-		{
-			m_Selected = 1;
-			//m_pStartGame->SetColor(m_NotSelectedColor);
-			//m_pQuitGame->SetColor(m_SelectedColor);
-			
-		}
+		std::for_each(m_pButtons.begin(), m_pButtons.end(), [](ButtonComp* pB) {pB->DeSelect(); });
+		if (m_Selected == 0)
+			m_Selected = m_pButtons.size() - 1;
+		else
+			m_Selected--;
+
+		m_pButtons[m_Selected]->Select();
 	}
 
 
 	if (GET_CONTEXT->pInput->IsActionTriggered("Confirm"))
 	{
-		if(m_Selected == 1)
-		{
-			TeiwazEngine::WantQuit = true;
-		}
+		m_pButtons[m_Selected]->Execute();
 	}
 }
 
