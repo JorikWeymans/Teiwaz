@@ -3,7 +3,7 @@ Game engine made to make Bubble bobble, but it should also be able to run games 
  
 Want to know what I'm working on? https://trello.com/b/G3iIxhFO/teiwaz-engine
 
-
+Other download link: https://we.tl/t-YwKJWRW42Y
 
 
 
