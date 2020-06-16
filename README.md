@@ -6,9 +6,9 @@ Want to know what I'm working on? https://trello.com/b/G3iIxhFO/teiwaz-engine
 Other download link: https://we.tl/t-YwKJWRW42Y
 
 
-
-
-
+# Builds 
+Realease 64x and 32x: https://we.tl/t-9UXNEp0l95
+Debug 32x (editor): https://we.tl/t-Y5ZZuGub5g
 
 # Design choices
 
